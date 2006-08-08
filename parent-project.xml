@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Copyright (c) 2006, Rajendra Kadam
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.  Redistributions
+in binary form must reproduce the above copyright notice, this list of
+conditions and the following disclaimer in the documentation and/or
+other materials provided with the distribution.  Neither the name of
+Cenqua Pty Ltd nor the names of its contributors may be used to
+endorse or promote products derived from this software without
+specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<project>
+    <pomVersion>3</pomVersion>
+    <id>confluence</id>
+    <name>Confluence</name>
+    <currentVersion>2.1.1</currentVersion>
+    <organization>
+        <name>Atlassian</name>
+        <logo>/images/atlassian_logo_man2.gif</logo>
+        <url>www.atlassian.com</url>
+    </organization>
+    <inceptionYear>2003</inceptionYear>
+    <package>com.atlassian.confluence</package>
+
+    <description>
+        Confluence is a secret new ultra-cool application that's like a 'Wiki on Mescalin' (copyright Aslak 2003 ;))
+    </description>
+
+    <dependencies>
+        <!-- Atlassian dependencies -->
+        <dependency>
+            <id>confluence</id>
+            <version>2.1.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.cvs.tag>confluence_2_1_1</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-mail</id>
+            <version>1.3.14</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.module.dir>mail</atlassian.module.dir>
+                <atlassian.cvs.tag>atlassian_mail_1_3_14</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-velocity</id>
+            <version>0.1.9</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.cvs.tag>atlassian_velocity_0_1_9</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-core</id>
+            <version>2.4.2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.cvs.tag>atlassian_core_2_4_2</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-bucket</id>
+            <version>2005.12.23</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.cvs.tag>atlassian_bucket_2005_12_23</atlassian.cvs.tag>
+                <atlassian.module.dir>bucket</atlassian.module.dir>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-profiling</id>
+            <version>1.1.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.cvs.tag>atlassian_profiling_1_1_1</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-trackback</id>
+            <version>0.7</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.module.dir>trackback</atlassian.module.dir>
+                <atlassian.cvs.tag>atlassian_trackback_0_7</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-extras</id>
+            <version>0.7.3</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>jar</atlassian.ship>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-johnson</id>
+            <version>0.3</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.module.dir>johnson</atlassian.module.dir>
+                <atlassian.cvs.tag>atlassian_johnson_0_3</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-plugins</id>
+            <version>0.3.12</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.module.dir>plugins</atlassian.module.dir>
+                <atlassian.cvs.tag>atlassian_plugins_0_3_12</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-bandana</id>
+            <version>0.1.2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.module.dir>bandana</atlassian.module.dir>
+                <atlassian.cvs.tag>atlassian_bandana_0_1_2</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-gregory</id>
+            <version>0.2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.module.dir>gregory</atlassian.module.dir>
+                <atlassian.cvs.tag>gregory_0_2</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-user</id>
+            <version>0.5.9</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.cvs.tag>atlassian_user_0_5_9</atlassian.cvs.tag>
+                <atlassian.module.dir>user</atlassian.module.dir>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>atlassian-renderer</id>
+            <version>2005.12.15</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <atlassian.module.dir>atlassian-renderer</atlassian.module.dir>
+                <atlassian.cvs.tag>atlassian_renderer_2005_12_15</atlassian.cvs.tag>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>joda-time</id>
+            <version>0.98</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>seraph</id>
+            <version>0.7.12</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>mockobjects+j2ee</id>
+            <version>0.07-jdk1.3</version>
+            <jar>mockobjects-0.07-j1.3-j2ee1.3.jar</jar>
+        </dependency>
+        <dependency>
+            <id>alt+j2ee</id>
+            <version>0.07-jdk1.3</version>
+            <jar>alt-0.07-j1.3-j2ee1.3.jar</jar>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>alt</id>
+            <version>0.07-jdk1.3</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>javamail</id>
+            <version>1.3</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>activation</id>
+            <version>1.0.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- OS dependencies -->
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0.4</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>log4j</id>
+            <version>1.2.8</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>commons-lang</id>
+            <version>1.0.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>commons-collections</id>
+            <version>2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>commons-beanutils</id>
+            <version>1.6.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>dwr</id>
+            <version>1.1b2-atlassian-2005-12-20</version>
+            <!-- see http://repository.atlassian.com/dwr/distributions for the source code for this version -->
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <!-- Hibernate dependencies -->
+        <dependency>
+            <id>hibernate</id>
+            <version>2.1.6</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>cglib</id>
+            <version>2.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>dom4j</id>
+            <version>1.4-full</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>odmg</id>
+            <version>3.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>c3p0</id>
+            <version>0.8.5.2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>ehcache</id>
+            <version>1.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>ant</id>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <id>jta</id>
+            <version>1.0.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- WebWork2 dependencies -->
+        <dependency>
+            <!-- TODO: Fix WebWork http://jira.atlassian.com/browse/CONF-1651
+
+                 Do not use a different Webwork version until WW-591 is fixed,
+                 or Confluence will break.
+                 
+            -->
+            <id>webwork</id>
+            <version>2.1.5</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>xwork</id>
+            <version>1.0.3</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>pell</id>
+            <jar>pell-multipart.jar</jar>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>ognl</id>
+            <version>2.6.5</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>oscore</id>
+            <version>2.2.4</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>oscache</id>
+            <version>2.2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>osuser</id>
+            <version>atl.user</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+                <atlassian.ship>source</atlassian.ship>
+                <!-- Not in a local CVS repository, so don't allow maven to check out the source.
+                    We expect it to be in the same directory as the other dependencies -->
+                <atlassian.cvsup>false</atlassian.cvsup>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>propertyset</id>
+            <version>1.3-21Nov03</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>velocity</id>
+            <version>1.3.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>servletapi</id>
+            <version>2.3</version>
+        </dependency>
+
+        <!-- Spring container dependencies -->
+<!-- NTOE: when we upgrade up to or past 1.1.5, we can remove com.atlassian.confluence.ext.jdbc.support.nativeJdbc.*
+           and revert to running with the version of the C3P0 support class shipped with spring, referenced by
+           applicationContext.xml
+-->
+        <dependency>
+            <id>spring</id>
+            <version>1.1.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>spring+aopalliance</id>
+            <version>1.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- SiteMesh dependencies -->
+        <dependency>
+            <id>sitemesh</id>
+            <version>2.2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>velocity-tools</id>
+            <version>view-1.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- Radeox dependencies -->
+        <dependency>
+            <id>radeox</id>
+            <version>1.0b2-forked-22Apr2004</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>jython</id>
+            <jar>jython-2.1-forked.jar</jar>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- Lucene dependencies -->
+        <dependency>
+            <id>lucene</id>
+            <version>1.4.2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>commons-digester</id>
+            <version>1.5</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>tm-extractors</id>
+            <version>0.4</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>pdfbox</id>
+            <version>0.7.2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>poi</id>
+            <version>2.0-final-20040126</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- FOP dependencies -->
+        <dependency>
+            <id>fop</id>
+            <version>0.20.5</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>jimi</id>
+            <jar>JimiProClasses1.0.jar</jar>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>css2parser</id>
+            <jar>ss_css2-0.9.3.jar</jar>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>avalon-framework</id>
+            <version>4.1.4</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>batik</id>
+            <version>1.5-fop-0.20-5</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>saxon</id>
+            <version>6.5.3-patched</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- JTidy dependencies -->
+        <dependency>
+            <id>jtidy</id>
+            <version>r8-20050104</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- Quartz dependencies -->
+        <dependency>
+            <id>quartz</id>
+            <version>1.4.2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- HSQL dependencies -->
+        <dependency>
+            <id>hsqldb</id>
+            <version>1.8.0.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- Testing / Mock dependencies -->
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <id>jwebunit</id>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <id>rhino</id>
+            <version>1.5R4.1</version>
+        </dependency>
+        <dependency>
+            <id>mockobjects+core</id>
+            <version>0.09</version>
+        </dependency>
+
+        <!-- eXML dependencies -->
+        <dependency>
+            <id>exml</id>
+            <version>7.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- Rome (RSS Util) dependencies -->
+        <dependency>
+            <id>rome</id>
+            <version>0.6-patched</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>jdom</id>
+            <version>1.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- JRCS / Diff dependencies -->
+        <dependency>
+            <id>commons-jrcs+diff</id>
+            <version>0.1.7</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <!-- deps for fatcow testing macro -->
+        <dependency>
+            <id>commons-httpclient</id>
+            <version>2.0.2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>httpunit</id>
+            <version>1.5.4</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>nekohtml</id>
+            <version>0.8.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>xerces</id>
+            <version>2.2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>xerces:xmlParserAPIs</id>
+            <version>2.2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <!-- end fat cow deps -->
+
+        <!-- XML-RPC -->
+        <!-- Vanilla 2.0 source with patch from http://issues.apache.org/jira/browse/XMLRPC-61 installed -->
+        <dependency>
+            <id>xmlrpc</id>
+            <version>2.0+xmlrpc61</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>glue</id>
+            <version>5.0b2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis-jaxrpc</artifactId>
+            <version>1.2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis-saaj</artifactId>
+            <version>1.2.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+          <groupId>axis</groupId>
+          <artifactId>axis-wsdl4j</artifactId>
+          <version>1.2.1</version>
+          <properties>
+            <war.bundle>true</war.bundle>
+          </properties>
+        </dependency>
+
+        <dependency>
+          <groupId>commons-discovery</groupId>
+          <artifactId>commons-discovery</artifactId>
+          <version>0.2</version>
+          <properties>
+            <war.bundle>true</war.bundle>
+          </properties>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.3</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- Trackback dependencies -->
+        <dependency>
+            <id>oro</id>
+            <version>2.0.7</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- WebDAV dependencies -->
+        <dependency>
+            <id>slide</id>
+            <version>2.0beta1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- XStream dependencies for serializing Objects to XML -->
+        <dependency>
+            <id>xstream</id>
+            <version>1.1.1</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <dependency>
+            <id>xpp3</id>
+            <version>1.1.3.4d_b4_min</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- library to allow us to parallel tasks so that they run concurrently -->
+        <dependency>
+            <id>concurrent</id>
+            <version>1.3.4</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+    <!-- script macro dependencies -->
+
+        <dependency>
+            <id>bsf</id>
+            <version>2.3.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <!--<dependency>
+            <id>beanshell</id>
+            <version>2.0b2</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>-->
+        <!-- jfreechart dependencies -->
+        <dependency>
+            <id>jcommon</id>
+            <version>1.0.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>jfreechart</id>
+            <version>1.0.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+
+        <!-- xalan not packaged with jdk 1.5.x, so we need to include this now. -->
+        <dependency>
+            <id>xalan</id>
+            <version>2.7.0</version>
+            <properties>
+                <war.bundle>true</war.bundle>
+            </properties>
+        </dependency>
+        <dependency>
+            <id>selenium</id>
+            <version>0.6-atlassian-2005.12.15</version>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+
+        <nagEmailAddress>nick@atlassian.com</nagEmailAddress>
+
+        <sourceDirectory>src/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/etc/</directory>
+                <include>atlassian-plugin.xml</include>
+                <include>**/*.vm</include>
+            </resource>
+        </resources>
+        <!--
+        <resources>
+            <resource>
+                <directory>src/etc/java</directory>
+                <includes>**/*.*</includes>
+            </resource>
+        </resources>
+		-->
+        <unitTestSourceDirectory>src/test/java</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/Test*.java</include>
+                <include>**/*TestCase.java</include>
+            </includes>
+            <excludes>
+                <exclude>**/ConfluenceTestCase.java</exclude>
+                <exclude>**/Abstract*TestCase.java</exclude>
+                <exclude>**/renderer/v2/**/*.*</exclude>
+            </excludes>
+            <resources>
+                <resource>
+                    <directory>src/test/etc</directory>
+                    <includes>**/*.*</includes>
+                </resource>
+                <resource>
+                    <directory>src/etc/java</directory>
+                    <includes>**/*.*</includes>
+                </resource>
+            </resources>
+        </unitTest>
+
+    </build>
+    <reports>
+        <!--        <report>maven-pmd-plugin</report>-->
+        <!--        <report>maven-simian-plugin</report>-->
+        <!--        <report>maven-jdepend-plugin</report>-->
+        <!--        <report>maven-jxr-plugin</report>-->
+        <!--        <report>maven-javadoc-plugin</report>-->
+        <!--        <report>maven-changes-plugin</report>-->
+        <!-- The Clover report MUST be before the JUnit report as the test:test
+        target is run only ONCE (due to the test:test postGoal) and clover needs to
+        "watch" the tests run, while JUnit report simply analyses the output from
+        the tests
+        -->
+        <report>maven-clover-plugin</report>
+        <report>maven-junit-report-plugin</report>
+    </reports>
+</project>
