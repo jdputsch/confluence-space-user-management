@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<project>
+
+    <extend>parent-project.xml</extend>
+    <pomVersion>3</pomVersion>
+
+    <id>permission-management</id>
+    <name>Plugin to manage users within given wiki space</name>
+    <currentVersion>1.0</currentVersion>
+
+    <organization>
+        <name>Rajendra Kadam</name>
+        <url>raju.kadam@gmail.com</url>
+    </organization>
+
+    <package>raju.kadam.confluence.permissionmgmt</package>
+
+    <description>Used for managing users within given wiki space</description>
+
+</project>
