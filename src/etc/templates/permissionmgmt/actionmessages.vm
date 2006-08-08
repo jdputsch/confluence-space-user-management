@@ -1,0 +1,13 @@
+		#set ($messages = $stack.findValue("actionMessages"))
+		#if($messages && ($messages.size() > 0) )
+		    <div class="success">
+		    <span class="successMessage">Results of Excuetion:</span>
+		    <ul>
+		        #foreach($message in $messages)
+		         	#if(!($!message == "") ) ## We will display message only if it's not null or empty string.
+			        	<li>$message</li>
+			     	#end
+		        #end
+		    </ul>
+		    </div>
+		#end

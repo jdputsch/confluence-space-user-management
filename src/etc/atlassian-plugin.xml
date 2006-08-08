@@ -1,0 +1,75 @@
+<atlassian-plugin key="raju.kadam.confluence.permissionmgmt" name="Custom Space User Management Plugin">
+    <plugin-info>
+        <description>Custom Space User Management</description>
+        <version>1.0</version>
+        <application-version min="1.4" max="1.5"/>
+        <vendor name="Rajendra Kadam" url="raju.kadam@gmail.com"/>
+    </plugin-info>
+
+    <!-- Modules here -->
+    
+	<xwork name="Configure Custom Space User Management Plugin" key="configure-delegateusermgmt">
+        
+        <description>Contains Action class to configure Custom Space Permission Management plugin.</description>
+        
+	    <package name="custompermissionsconfig" extends="default" namespace="/admin/plugins/custompermissionsconfig">
+	        <default-interceptor-ref name="defaultStack"/>
+	        
+	        <!-- 
+				To do configuration of :
+				URL: http://<host>/confluence/admin/plugins/custompermissionsconfig/config.action
+			-->
+            <action name="config" class="raju.kadam.confluence.permissionmgmt.CustomPermissionConfigAction" method="doDefault">
+                <result name="input" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>
+                <result name="error" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>
+            </action>
+            
+            <action name="doconfig" class="raju.kadam.confluence.permissionmgmt.CustomPermissionConfigAction">
+                <result name="input" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>
+                <result name="error" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>
+                <result name="success" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>
+            </action>
+	    </package>
+	</xwork>
+    
+ 	<xwork name="Custom Space User Mangement Actions" key="custompermissionmangementactions">
+        
+        <description>Contains Action classes to manage Space User / Usergroups Management</description>
+        
+         <package name="custompermissionmanagement" extends="default" namespace="/customspacemgmt/permissions">
+            <default-interceptor-ref name="defaultStack" />
+			<!-- 
+				Following two actions will be vaild if plug-in used from "Manage Users" tab.
+				For this user need to modify space.vmd!
+				
+				To access it:
+				1. Go to Browse Space and you should be able to see the "Manage Users" tab and click on it.
+				2. or access it using URL: http://<host>/confluence/customspacemgmt/permissions/custompermissionsmanage.action?key=<SPACEKEY>
+			-->
+            <action name="custompermissionsmanage" class="raju.kadam.confluence.permissionmgmt.CustomPermissionManagerAction" method="doDefault">
+                <result name="input" type="velocity">/templates/permissionmgmt/display.vm</result>
+                <result name="error" type="velocity">/templates/permissionmgmt/display.vm</result>
+            </action>
+
+            <action name="docustompermissionsmanage" class="raju.kadam.confluence.permissionmgmt.CustomPermissionManagerAction">
+                <result name="input" type="velocity">/templates/permissionmgmt/display.vm</result>
+                <result name="success" type="velocity">/templates/permissionmgmt/display.vm</result>
+                <result name="error" type="velocity">/templates/permissionmgmt/display.vm</result>
+            </action>
+        </package>
+    </xwork>
+
+    <web-item key="space-custom-usermanagement" name="Custom User Delegation Manager" section="system.space" weight="90">
+        <label key="customusermanagement.tab.name" />
+        <link>/customspacemgmt/permissions/custompermissionsmanage.action?key=$generalUtil.urlEncode($helper.spaceKey)</link>
+        <condition class="com.atlassian.confluence.plugin.descriptor.web.conditions.SpacePermissionCondition">
+            <param name="permission">administer</param>
+        </condition>
+    </web-item>
+
+    <rpc-xmlrpc key="userrolexmlrpcservice" name="Verfiy User Role" class="raju.kadam.confluence.rpc.xmlrpc.UserRoleXMLRpcServiceImpl">
+        <description>RPC User Role Verification Service</description>
+        <service-path>userroleservice</service-path>
+    </rpc-xmlrpc>
+
+</atlassian-plugin>

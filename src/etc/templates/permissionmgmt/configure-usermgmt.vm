@@ -1,0 +1,321 @@
+## All rights reserved.
+##
+## Redistribution and use in source and binary forms, with or without
+## modification, are permitted provided that the following conditions are
+## met:
+##
+## Redistributions of source code must retain the above copyright notice,
+## this list of conditions and the following disclaimer.  Redistributions
+## in binary form must reproduce the above copyright notice, this list of
+## conditions and the following disclaimer in the documentation and/or
+## other materials provided with the distribution.  Neither the name of
+## Cenqua Pty Ltd nor the names of its contributors may be used to
+## endorse or promote products derived from this software without
+## specific prior written permission.
+##
+## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+## OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+	<head>
+        <title>$action.getActionName($action.getClass().getName())</title>
+	</head>
+	<body>
+		<script language="javascript">
+		
+		    function toggleJiraSettingsInput(e)
+		    {
+		    	//If User Management delegated to jira then only ask user for jira URL and Jira JNDI values
+		        if (e.value == 'JIRA')
+		        {
+		            document.getElementById('updateJiraUrl').disabled = false;
+		            document.getElementById('updateJiraJNDILookupKey').disabled = false;
+		        }
+		        else
+		        {
+		            document.getElementById('updateJiraUrl').disabled = true;
+		          	document.getElementById('updateJiraUrl').value = '';
+		          	 
+		            document.getElementById('updateJiraJNDILookupKey').disabled = true;
+		          	document.getElementById('updateJiraJNDILookupKey').value = '';
+		            //document.forms["CustomUserManagementConfigForm"].updateJiraJNDILookupKey.value = '';
+		        }
+		    }
+
+		    function toggleLDAPSettingsInput(e)
+		    {
+		    	//if LDAP is used for Authentication, then get LDAP settings for user creation
+		        if (e.value == 'YES')
+		        {
+		            document.getElementById('updateCompanyLDAPUrl').disabled = false;
+		            document.getElementById('updateCompanyLDAPBaseDN').disabled = false;
+		        }
+		        else
+		        {
+		            document.getElementById('updateCompanyLDAPUrl').disabled = true;
+		            document.getElementById('updateCompanyLDAPUrl').value = '';
+		            		       
+		            document.getElementById('updateCompanyLDAPBaseDN').disabled = true;
+		            document.getElementById('updateCompanyLDAPBaseDN').value = ''
+		        }
+		    }
+		
+		</script>
+
+		#parse ( "/template/includes/actionerrors.vm" )
+       <!-- Display result of operation if successful -->
+		#parse ( "/templates/permissionmgmt/actionmessages.vm" )
+
+        <table class="grid" width="80%">
+        <tr>
+            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">Current Settings for Custom Space User Management Plugin:</td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">User Manager Location for Wiki:</td>
+            <td nowrap>
+                #if ($!action.userManagerLocation)
+                    <span style="color: green; font-weight: bold">$!action.userManagerLocation</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">Jira Url:</td>
+            <td nowrap>
+                #if ($action.jiraUrl)
+                    <span style="color: green; font-weight: bold">$!action.jiraUrl</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">Jira JNDI Datasource:</td>
+            <td nowrap>
+                #if ($action.jiraJNDILookupKey)
+                    <span style="color: green; font-weight: bold">$!action.jiraJNDILookupKey</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">LDAP Authentication Used?:</td>
+            <td nowrap>
+                    <span style="color: green; font-weight: bold">#if ($!action.isLdapAuthUsed == "YES") YES #else NO #end</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">LDAP Url:</td>
+            <td nowrap>
+                #if ($action.companyLDAPUrl)
+                    <span style="color: green; font-weight: bold">$!action.companyLDAPUrl</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">LDAP Search Base DN:</td>
+            <td nowrap>
+                #if ($action.companyLDAPBaseDN)
+                    <span style="color: green; font-weight: bold">$!action.companyLDAPBaseDN</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label" width="30%">Usergroups Matching Pattern:</td>
+            <td nowrap>
+                #if ($action.userGroupsMatchingPattern)
+                    <span style="color: green; font-weight: bold">$!action.userGroupsMatchingPattern</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="label" width="30%">Max UserId Limit:</td>
+            <td nowrap>
+                #if ($action.maxUserIDsLimit)
+                    <span style="color: green; font-weight: bold">$!action.maxUserIDsLimit</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label" width="30%">Is this plugin deactivated?:</td>
+            <td nowrap>
+                #if ($action.isPluginDown)
+                    <span style="color: green; font-weight: bold">$!action.isPluginDown</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="label" width="30%">Plugin Downtime Message:</td>
+            <td nowrap>
+                #if ($action.downTimeMessage)
+                    <span style="color: green; font-weight: bold">$!action.downTimeMessage</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">Update Settings for Custom Space User Management Module:</td>
+        </tr>
+
+       <form action="doconfig.action" method="POST" name="CustomUserManagementConfigForm">
+        <tr>
+            <td valign="top" class="label" width="30%">User Manager Location:</td>
+            <td>
+				#fielderror ('updateUserManagerLocation')
+                <input type="radio" name="updateUserManagerLocation" value="CONFLUENCE" #if ($action.updateUserManagerLocation == "CONFLUENCE") checked="true" #end  onclick="toggleJiraSettingsInput(this)" />CONFLUENCE &nbsp; 
+                <input type="radio" name="updateUserManagerLocation" value="JIRA" #if ($action.updateUserManagerLocation == "JIRA") checked="true" #end onclick="toggleJiraSettingsInput(this)" />JIRA
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">Jira Url:</td>
+            <td>
+				#fielderror ('updateJiraUrl')
+                <input type="text" name="updateJiraUrl" id="updateJiraUrl" value="$!action.updateJiraUrl" #if ($action.updateUserManagerLocation == "CONFLUENCE") disabled="true" #end size="50" />
+                <p>
+                    <font size="1">Example: http://acme.jira.com</font>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" class="label" width="30%">Jira JNDI Datasource:</td>
+            <td>
+				#fielderror ('updateJiraJNDILookupKey')
+                <input type="text" name="updateJiraJNDILookupKey" id="updateJiraJNDILookupKey" value="$!action.updateJiraJNDILookupKey" #if ($action.updateUserManagerLocation == "CONFLUENCE") disabled="true" #end size="50" />
+                <p>
+                    Enter Jira Datasource name that is being used during <b>Confluence and Jira Integration</b> as explained <a href="http://confluence.atlassian.com/display/DOC/How+to+delegate+user+management+in+Confluence+to+JIRA#HowtodelegateusermanagementinConfluencetoJIRA-2.SetupdatasourcetoJIRAuserbasewithinConfluence">here</a> &nbsp; <font size="1">Example: jdbc/JiraDS</font>
+                </p>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td valign="top" class="label" width="30%">Max UserIDs Limit:</td>
+            <td>
+                <input type="text" name="updateMaxUserIDsLimit" value="$!action.updateMaxUserIDsLimit" size="2" />
+                <p>
+                    <font size="1">If this value is not defined, then default max UserIDs limit is 20.</font>
+                </p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td valign="top" class="label" width="30%">Usergroups matching pattern:</td>
+            <td>
+                <input type="text" name="updateUserGroupsMatchingPattern" value="$!action.updateUserGroupsMatchingPattern" size="30" />
+                <p>
+                    <font size="1">
+                	e.g.: If SPACEKEY is "ds" then, pattern <b>SPACEKEY-.*</b> will match ds-users, ds-conf-users<br>
+                	Note: During run SPACEKEY will be replaced by key of selected Wiki Space
+                    </font>
+                </p>
+            </td>
+        </tr>
+        
+        <tr>     
+            <td valign="top" class="label" width="30%">Are you using LDAP for User Authentication?:</td>
+            <td>
+				#fielderror ('updateIsLdapAuthUsed')
+                <input type="radio" name="updateIsLdapAuthUsed" value="YES" #if ($!action.updateIsLdapAuthUsed == "YES") checked="true" #end onclick="toggleLDAPSettingsInput(this)" />YES &nbsp;
+                <input type="radio" name="updateIsLdapAuthUsed" value="NO" #if ($!action.updateIsLdapAuthUsed == "NO") checked="true" #end onclick="toggleLDAPSettingsInput(this)" />NO
+            </td>
+        </tr>
+        
+<!--
+        <tr>
+            <td width="100%" colspan="2">Following two questions needs to be entered only if you are using LDAP for user authentication.<br>
+	            <font size="1">This information is available in osuser.xml located in WEB-INF/lib/classes directory<br>Details of new users will be fetched from LDAP if available.</font>
+            </td>
+        </tr>
+-->
+        
+        <tr>
+            <td valign="top" class="label" width="30%">LDAP Url:</td>
+            <td>
+				#fielderror ('updateCompanyLDAPUrl')
+                 <input type="text" name="updateCompanyLDAPUrl" id="updateCompanyLDAPUrl" value="$!action.updateCompanyLDAPUrl" #if ($!action.updateIsLdapAuthUsed == "NO") disabled="true" #end size="50" />
+					<br>
+	            	<font size="1">Example: ldap://acme:389</font>                 
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">LDAP Search Base DN:</td>
+            <td>
+				#fielderror ('updateCompanyLDAPBaseDN')
+                 <input type="text" name="updateCompanyLDAPBaseDN" id="updateCompanyLDAPBaseDN" value="$!action.updateCompanyLDAPBaseDN" #if ($!action.updateIsLdapAuthUsed == "NO") disabled="true" #end size="50" />
+					<br>
+	            	<font size="1">Example: dc=acme,dc=com</font>                 
+            </td>
+        </tr>
+        
+        <tr>     
+            <td valign="top" class="label" width="30%">Want deactivate this plugin?:</td>
+            <td>
+                <input type="radio" name="updateIsPluginDown" value="YES" #if ($!action.updateIsPluginDown == "YES") checked="true" #end />YES &nbsp; 
+                <input type="radio" name="updateIsPluginDown" value="NO" #if ($!action.updateIsPluginDown == "NO") checked="true" #end />NO
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">Plugin Downtime Message:</td>
+            <td>
+   	         <textarea name="updateDownTimeMessage" value="$!action.updateDownTimeMessage"  cols="60" rows="6" class="monospaceInput"></textarea>
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="label" width="100%" colspan="2">
+                    <input type="submit" value="Update" />
+					<input id="cancelButton"  type="button" 
+					       name="Home of Admin Console"
+					       value="Cancel"
+					       onclick="location.href='$req.contextPath/admin/console.action'" />
+            </td>
+        </tr>
+        
+        <!--
+		<tr >
+			<td colspan="2" bgcolor="ffffff" nowrap class="fieldValueArea">
+				<font size="1">
+					<b>Note: Right now there is no validation done to make sure entered values are correct!</b>
+				</font>
+			</td>
+		</tr>
+		-->
+       </form>
+     </table>
+
+
+		#parse ( "/admin/admin-breadcrumbs.vm" )
+	</body>
+</html>
