@@ -1,3 +1,4 @@
+## Copyright (c) 2006, Rajendra Kadam
 ## All rights reserved.
 ##
 ## Redistribution and use in source and binary forms, with or without
@@ -24,6 +25,7 @@
 ## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 
 	<head>
         <title>$action.getActionName($action.getClass().getName())</title>
@@ -193,6 +195,10 @@
 				#fielderror ('updateUserManagerLocation')
                 <input type="radio" name="updateUserManagerLocation" value="CONFLUENCE" #if ($action.updateUserManagerLocation == "CONFLUENCE") checked="true" #end  onclick="toggleJiraSettingsInput(this)" />CONFLUENCE &nbsp; 
                 <input type="radio" name="updateUserManagerLocation" value="JIRA" #if ($action.updateUserManagerLocation == "JIRA") checked="true" #end onclick="toggleJiraSettingsInput(this)" />JIRA
+                <br>
+                <font size="1">
+            	Note: If you are using LDAP for user management, then please select option <b>CONFLUENCE</b>
+                </font>
             </td>
         </tr>
 
