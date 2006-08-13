@@ -123,9 +123,9 @@
 									                           #if($!group.name == "confluence-users") 
 									                           	<!--we do not want to display list of confluence-users as they can be too many-->
 															   #else
-																<!--<a href="docustompermissionsmanage.action?key=$action.space.key&adminAction=DisplayUsersInGroup&selectedGroupName=$group.name" onClick="window.open(this.href,'users_group_association_window', 'width=620, height=800, resizable, scrollbars'); return false;" title="Users 'n Group  association">view users</a> -->
+																<!--<a href="docustompermissionsmanage.action?key=$action.space.key&selectedGroupName=$group.name" onClick="window.open(this.href,'users_group_association_window', 'width=620, height=800, resizable, scrollbars'); return false;" title="Users 'n Group  association">view users</a> -->
 																<span class="logoSpaceLink">
-																	<a href="#" onClick="picker=window.open('custompermissionsusergroupsdisplay.action?key=$action.space.key&adminAction=DisplayUsersInGroup&selectedGroupName=$group.name',
+																	<a href="#" onClick="picker=window.open('custompermissionsusergroupsdisplay.action?key=$action.space.key&selectedGroupName=$group.name',
 																						'UsersNamesDisplayer',  'status=yes,resizable=yes,top=100,left=200,width=580,height=550,scrollbars=yes'); picker.focus(); return false;">view users</a>
 																</span>					
 															   #end	
