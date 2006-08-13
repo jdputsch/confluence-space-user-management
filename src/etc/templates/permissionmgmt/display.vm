@@ -1,6 +1,42 @@
+## Copyright (c) 2006, Rajendra Kadam
+## All rights reserved.
+##
+## Redistribution and use in source and binary forms, with or without
+## modification, are permitted provided that the following conditions are
+## met:
+##
+## Redistributions of source code must retain the above copyright notice,
+## this list of conditions and the following disclaimer.  Redistributions
+## in binary form must reproduce the above copyright notice, this list of
+## conditions and the following disclaimer in the documentation and/or
+## other materials provided with the distribution.  Neither the name of
+## Cenqua Pty Ltd nor the names of its contributors may be used to
+## endorse or promote products derived from this software without
+## specific prior written permission.
+##
+## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+## OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 <html>
     <head>
         <title>$action.getActionName($action.getClass().getName())</title>
+
+	    <style>
+			.userlink {color: #999999; text-decoration: none}
+			.userlink a:link {color: #999999; text-decoration: none}
+			.userlink a:visited {color: #999999; text-decoration: none}
+			.userlink a:active {color: #999999; text-decoration: none}
+			.userlink a:hover {color: #003366; text-decoration: none}
+	    </style>
     </head>
 
     #applyDecorator("root")
@@ -66,7 +102,7 @@
 		                                   Input User IDs:<input type="text" name="userList" value="$!action.userList" size="102"/>
 											<br/><br/>
 											<font size="1">
-												Comma separated list of User userids. Eg. ptusha,sachint,marykomb,sgraff
+												Comma separated list of userids. Eg. ptusha,sachin,marykomb
 												<br/>
 												Only <b>$action.maxUserIDsLimit</b> userids will be processed at a time.
 											</font>
@@ -79,12 +115,26 @@
 										<td bgcolor="ffffff" nowrap>
 												#fielderror ('groups_')
 								                #foreach ($group in $groups)
-									                    <input type="checkbox" name="groups_$group.name" #if($action.isGroupSelected($group.name)) checked #end #if($!group.name == "confluence-users") onclick="toggleRemoveButtonState(this)" #end />$group.name<br>
+									                    <input type="checkbox" 
+									                           name="groups_$group.name" 
+									                           #if($action.isGroupSelected($group.name)) checked #end 
+									                           #if($!group.name == "confluence-users") onclick="toggleRemoveButtonState(this)" #end 
+									                    />$group.name <font color=#999999> ($action.findUserCountForUserGroup($group.name))</font>
+									                           #if($!group.name == "confluence-users") 
+									                           	<!--we do not want to display list of confluence-users as they can be too many-->
+															   #else
+																<!--<a href="docustompermissionsmanage.action?key=$action.space.key&adminAction=DisplayUsersInGroup&selectedGroupName=$group.name" onClick="window.open(this.href,'users_group_association_window', 'width=620, height=800, resizable, scrollbars'); return false;" title="Users 'n Group  association">view users</a> -->
+																<span class="logoSpaceLink">
+																	<a href="#" onClick="picker=window.open('custompermissionsusergroupsdisplay.action?key=$action.space.key&adminAction=DisplayUsersInGroup&selectedGroupName=$group.name',
+																						'UsersNamesDisplayer',  'status=yes,resizable=yes,top=100,left=200,width=580,height=550,scrollbars=yes'); picker.focus(); return false;">view users</a>
+																</span>					
+															   #end	
+									                           <br>
 								                #end
 										</td>
 									</tr>
 									<tr>
-										<td width="30%">Select a Action -> </td>
+										<td width="30%">Select an Action -> </td>
 										<td bgcolor="ffffff" nowrap>
 										   #fielderror ('adminAction')
 					                            <input type="radio" name="adminAction" #if ($action.adminAction == "AddToGroups") checked="true" #end value="AddToGroups"> Add Users to Selected Groups<b>*</b> &nbsp;
@@ -95,8 +145,6 @@
 									
 									<tr>
 										<td colspan="2">
-									    <input type="hidden" name="NEXT_ACTION" value="ProcessUserInput" />
-											
 										<input type="submit" name="Process" value="Process" accesskey="S" />
 										<input id="cancelButton"  type="button" 
 										       accesskey="`"
