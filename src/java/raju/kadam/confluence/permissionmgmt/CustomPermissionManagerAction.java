@@ -1,3 +1,33 @@
+/*
+Copyright (c) 2006, Rajendra Kadam
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.  Redistributions
+in binary form must reproduce the above copyright notice, this list of
+conditions and the following disclaimer in the documentation and/or
+other materials provided with the distribution.  Neither the name of
+Cenqua Pty Ltd nor the names of its contributors may be used to
+endorse or promote products derived from this software without
+specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
 package raju.kadam.confluence.permissionmgmt;
 
 import java.sql.Connection;
@@ -12,16 +42,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
-import org.apache.xmlrpc.XmlRpcException;
 import javax.sql.DataSource;
 
 import org.apache.xmlrpc.XmlRpcClient;
 
-import raju.kadam.util.LDAP.*;
-
+import raju.kadam.util.LDAP.LDAPUser;
+import raju.kadam.util.LDAP.LDAPUtil;
 import bucket.container.ContainerManager;
 
 import com.atlassian.bandana.BandanaManager;
@@ -35,14 +66,8 @@ import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.confluence.util.SpaceComparator;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
-import com.opensymphony.user.DuplicateEntityException;
-import com.opensymphony.user.EntityNotFoundException;
-import com.opensymphony.user.ImmutableException;
+import com.atlassian.user.search.page.PagerUtils;
 import com.opensymphony.webwork.ServletActionContext;
-import java.util.regex.*;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
 
 public class CustomPermissionManagerAction extends AbstractSpaceAction implements SpaceAdministrative
 {
@@ -51,6 +76,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     private BootstrapManager bootStrapManager;
     private BandanaManager bandanaManager;
     private SpaceDao spDao;
+    
     //Following variables store user input, to display user input values if any input is incorrect! 
     private String userList = null;
     private Vector selectedUserGroupsList = null;
@@ -77,13 +103,10 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 	public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction - log - Inside execute...");
-		
-		String loggedInUser = getRemoteUser().getName();
-		
-    	//String key = ServletActionContext.getRequest().getParameter("key");
-		String key = getKey();
-    	//String adminAction = ServletActionContext.getRequest().getParameter("adminAction");
+
     	String actionDirective = getAdminAction();
+		String loggedInUser = getRemoteUser().getName();
+		String key = getKey();
     	//String userids = ServletActionContext.getRequest().getParameter("userList");
     	String userids = getUserList();
 
@@ -583,7 +606,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	selectedUserGroupsList = null;    	
     }
     
-	public String getUserManagerLocation() {
+    public String getUserManagerLocation() {
         return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_USER_MANAGER_LOCATION);
 	}
     
@@ -859,10 +882,15 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
        
        return resultList;
     }
-    
+
+    //Get total user count for given user group
+    public int findUserCountForUserGroup(String grpName)
+    {
+    	return PagerUtils.count(userAccessor.getMemberNames(userAccessor.getGroup(grpName)));
+    }
+
     public String getActionName(String fullClassName)
     {
     	return "Custom Space Usergroups Manager";
     }
-    
 }
