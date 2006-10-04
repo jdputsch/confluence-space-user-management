@@ -31,12 +31,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <atlassian-plugin key="raju.kadam.confluence.permissionmgmt" name="Custom Space User Management Plugin">
     <plugin-info>
         <description>Custom Space User Management</description>
-        <version>1.0</version>
+        <version>1.1</version>
         <application-version min="1.4" max="1.5"/>
         <vendor name="Rajendra Kadam" url="raju.kadam@gmail.com"/>
     </plugin-info>
 
     <!-- Modules here -->
+	<resource type="download" name="customusermanagement.css" location="templates/css/customusermanagement.css"/>        
     
 	<xwork name="Configure Custom Space User Management Plugin" key="configure-delegateusermgmt">
         
@@ -65,7 +66,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  	<xwork name="Custom Space User Mangement Actions" key="custompermissionmangementactions">
         
         <description>Contains Action classes to manage Space User / Usergroups Management</description>
-        
+		
          <package name="custompermissionmanagement" extends="default" namespace="/customspacemgmt/permissions">
             <default-interceptor-ref name="defaultStack" />
 			<!-- 

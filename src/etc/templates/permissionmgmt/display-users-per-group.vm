@@ -29,8 +29,14 @@
 <html>
 <head>
     <title>Group $action.selectedGroupName details</title>
+	<meta name="decorator" content="none" /> 
+	<link type="text/css" rel="StyleSheet" media="all" href="$req.contextPath/download/resources/raju.kadam.confluence.permissionmgmt:configure-delegateusermgmt/customusermanagement.css" />
 </head>
 <body>
+        <div class="pageheader">
+            <span class="pagetitle">Group $action.selectedGroupName details</span>
+        </div>
+        
 		<!-- Display all users associated to given group -->
 		<table border="0" cellpadding="5" cellspacing="0" width="100%">
 		  <tr>

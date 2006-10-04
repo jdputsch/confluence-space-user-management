@@ -41,6 +41,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,6 +70,15 @@ import com.atlassian.user.User;
 import com.atlassian.user.search.page.PagerUtils;
 import com.opensymphony.webwork.ServletActionContext;
 
+/**
+ * 
+ * @author rakadam
+ * Changes done on 6th Sep 06:
+ * 1. Added verification step validateUserGroupWikiSpaceAssociation() to make sure that Space Admin is modifying users for allowed usergroups only.
+ * 2. CSS added for usergroups detailed display.
+ * 3. System.out.println removed from CustoPermissionUserGroupsDisplayAction.java
+ * 4. Link to configure "Custom Space User Management" plugin has been added: it will be only visible for Confluence Administrators.
+ */
 public class CustomPermissionManagerAction extends AbstractSpaceAction implements SpaceAdministrative
 {
     public static final String RPC_PATH  = "/rpc/xmlrpc";
@@ -119,6 +129,13 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	boolean validationFlag = ((Boolean)resultList.get(0)).booleanValue();
     	if(!validationFlag) return ERROR;
 
+    	String userGroupsValidationMessage = validateUserGroupWikiSpaceAssociation(groupList);
+    	if(userGroupsValidationMessage != null)
+    	{
+    		addFieldError("NotPermittedUserGroupsErrorMessage", userGroupsValidationMessage);
+    		return ERROR;
+    	}
+    	
     	//Since validation is successful, 2nd element in resultList will contain list of userids to process
     	Vector vUserIDsVec = (Vector) resultList.get(1);
 
@@ -305,6 +322,40 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     public List getAllSpaces()
     {
         return spDao.findAllSorted("name");
+    }
+
+    //Get list of usergroups associated to given wiki space.
+    public String validateUserGroupWikiSpaceAssociation(Vector selectedUserGroups)
+    {
+    	String notAllowedGroups = null;
+    	Vector notAssociatedUserGroups = new Vector();
+    	
+    	//Set currentAssociatedUserGroupsSet = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, getSpace()).keySet();
+    	List currentAssociatedUserGroupsSet = getUsersGroupsAssociatedForSpace();
+
+        for (Iterator iterator = selectedUserGroups.iterator(); iterator.hasNext();)
+        {
+        	String grpName = (String) iterator.next();
+        	//check if this group name is present in current Associated usergroups for this wiki space or not.
+        	if(!currentAssociatedUserGroupsSet.contains(userAccessor.getGroup(grpName)))
+        	{
+        		log.debug("Not assoicated group -" + grpName);
+        		notAssociatedUserGroups.add(grpName);
+        	}
+        }
+
+       if(notAssociatedUserGroups.size()> 0)
+       {
+    	   notAllowedGroups = "";
+	       for(Iterator itr= notAssociatedUserGroups.iterator(); itr.hasNext();)
+	       {
+	    	   notAllowedGroups += ", " + (String)itr.next() ;
+	       }
+	       
+	       notAllowedGroups = "You are not authorized to modify usergroups - " + notAllowedGroups.replaceFirst(", ", "") ;
+       }
+       
+     return notAllowedGroups;
     }
     
     //This method will be used to create an user when Confluence is used for Managing Wiki Users

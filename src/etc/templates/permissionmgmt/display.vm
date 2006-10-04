@@ -83,6 +83,9 @@
             <tr>
                 <td bgcolor="#f0f0f0">
                 	Manage users/user groups for $action.space.name ( $action.space.key )
+				    #if ($permissionHelper.isGlobalAdministrator($remoteUser))
+						 &nbsp;&nbsp; <a href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">Configure </a> "Custom Space Usergroups Manager" Plugin
+				    #end					    
 				</td>                            
             </tr>
             
@@ -96,6 +99,7 @@
 	                        <table class="grid" width="100%">
 				               #if ($groups.size() > 0)
 		                            <tr>
+										#fielderror ('NotPermittedUserGroupsErrorMessage')		                            
 		                                <td colspan="2">
 		                                   ##input userlist
 										   #fielderror ('userList')

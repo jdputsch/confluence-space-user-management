@@ -87,7 +87,7 @@ public class CustomPermissionUserGroupsDisplayAction extends AbstractSpaceAction
             if (groupName != null && userAccessor.isDeactivated(user))
                 continue;
             
-            System.out.println(user);
+            log.debug(user);
             users.add(user);
         }
 

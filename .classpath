@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="src/java"/>
+	<classpathentry excluding="“**/.svn/”." kind="src" path="src/java"/>
 	<classpathentry kind="var" path="MAVEN_CONFLUENCE_REPO/confluence/jars/confluence-2.1.1.jar"/>
 	<classpathentry kind="var" path="MAVEN_CONFLUENCE_REPO/atlassian-mail/jars/atlassian-mail-1.3.14.jar"/>
 	<classpathentry kind="var" path="MAVEN_CONFLUENCE_REPO/atlassian-velocity/jars/atlassian-velocity-0.1.9.jar"/>

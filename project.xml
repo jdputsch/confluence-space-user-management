@@ -5,8 +5,8 @@
     <pomVersion>3</pomVersion>
 
     <id>permission-management</id>
-    <name>Plugin to manage users within given wiki space</name>
-    <currentVersion>1.0</currentVersion>
+    <name>Plugin to manage user-groups within given wiki space</name>
+    <currentVersion>1.1</currentVersion>
 
     <organization>
         <name>Rajendra Kadam</name>
@@ -15,6 +15,6 @@
 
     <package>raju.kadam.confluence.permissionmgmt</package>
 
-    <description>Used for managing users within given wiki space</description>
+    <description>Used for managing user-groups within given wiki space</description>
 
 </project>
