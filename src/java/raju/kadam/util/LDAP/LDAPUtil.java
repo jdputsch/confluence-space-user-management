@@ -39,6 +39,10 @@ import javax.naming.directory.*;
 import java.util.Hashtable;
 import org.apache.log4j.Category;
 
+/**
+ *
+ * @author Rajendra Kadam
+ */
 public class LDAPUtil {
 
     private static final Category log = Category.getInstance(LDAPUtil.class);

@@ -28,18 +28,28 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<!-- Note: if we fully move to maven 2 can use substitutions to replace key, name, plugin info fields with values from pom -->
 <atlassian-plugin key="raju.kadam.confluence.permissionmgmt" name="Custom Space User Management Plugin">
+    <!--
+    <plugin-info>
+        <description>${pom.description}</description>
+        <version>${pom.version}</version>
+        <vendor name="${pom.organization.name}" url="${pom.organization.url}"/>
+    </plugin-info>
+    -->
     <plugin-info>
         <description>Custom Space User Management</description>
-        <version>1.1</version>
+        <version>2.0</version>
         <application-version min="1.4" max="1.5"/>
         <vendor name="Rajendra Kadam" url="raju.kadam@gmail.com"/>
     </plugin-info>
-
+    
     <!-- Modules here -->
 	<resource type="download" name="customusermanagement.css" location="templates/css/customusermanagement.css"/>        
-    
-	<xwork name="Configure Custom Space User Management Plugin" key="configure-delegateusermgmt">
+
+    <resource type="i18n" name="i18n" location="raju/kadam/confluence/permissionmgmt/AtlassianPlugin" />
+
+    <xwork name="Configure Custom Space User Management Plugin" key="configure-delegateusermgmt">
         
         <description>Contains Action class to configure Custom Space Permission Management plugin.</description>
         

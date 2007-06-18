@@ -30,6 +30,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package raju.kadam.util.LDAP;
 
+/**
+ *
+ * @author Rajendra Kadam
+ */
 public class LDAPUser{
 
 	String userId;

@@ -33,7 +33,8 @@ package raju.kadam.confluence.rpc.xmlrpc;
 import java.util.List;
 
 import bucket.container.ContainerManager;
-import bucket.core.persistence.hibernate.HibernateConfig;
+//import bucket.core.persistence.hibernate.HibernateConfig;
+import com.atlassian.config.db.HibernateConfig;
 
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.spaces.Space;
@@ -43,6 +44,10 @@ import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.user.User;
 import org.apache.log4j.Category;
 
+/**
+ *
+ * @author Rajendra Kadam
+ */
 public class UserRoleXMLRpcServiceImpl implements UserRoleXMLRpcService
 {
     private static final Category log = Category.getInstance(UserRoleXMLRpcServiceImpl.class);

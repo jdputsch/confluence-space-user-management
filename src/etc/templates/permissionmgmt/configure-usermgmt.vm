@@ -149,7 +149,7 @@
         </tr>
         
         <tr>
-            <td class="label" width="30%">Max UserId Limit:</td>
+            <td class="label" width="30%">Max UserId/GroupId Limit:</td>
             <td nowrap>
                 #if ($action.maxUserIDsLimit)
                     <span style="color: green; font-weight: bold">$!action.maxUserIDsLimit</span>

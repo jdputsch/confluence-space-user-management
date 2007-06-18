@@ -46,7 +46,10 @@ import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.log4j.Category;
 
-
+/**
+ *
+ * @author Rajendra Kadam
+ */
 public class TestRpc
 {
     private static final Category log = Category.getInstance(TestRpc.class);

@@ -6,11 +6,35 @@
 
     <id>permission-management</id>
     <name>Plugin to manage user-groups within given wiki space</name>
-    <currentVersion>1.1</currentVersion>
+    <currentVersion>2.0</currentVersion>
+
+    <developers>
+        <developer>
+            <name>Rajendra Kadam</name>
+            <email>raju.kadam@gmail.com</email>
+            <roles><role>Developer - v1 All (User Management, LDAP, XML RPC, User Experience)</role></roles>
+        </developer>
+
+        <developer>
+            <name>Gary S. Weaver</name>
+            <email>gary.weaver@duke.edu</email>
+            <organization>Duke University</organization>
+            <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
+            <roles><role>Developer - v2 Group Management</role></roles>
+        </developer>
+
+        <developer>
+            <name>Ren Provey</name>
+            <email>renald.provey@duke.edu</email>
+            <organization>Duke University</organization>
+            <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
+            <roles><role>Developer - v2 User Experience</role></roles>
+        </developer>
+    </developers>
 
     <organization>
-        <name>Rajendra Kadam</name>
-        <url>raju.kadam@gmail.com</url>
+        <name>Custom Space Usergroups Management Plugin Team</name>
+        <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
     </organization>
 
     <package>raju.kadam.confluence.permissionmgmt</package>

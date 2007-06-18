@@ -34,15 +34,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,6 +44,7 @@ import javax.sql.DataSource;
 
 import org.apache.xmlrpc.XmlRpcClient;
 
+import raju.kadam.util.*;
 import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
 import bucket.container.ContainerManager;
@@ -72,12 +65,8 @@ import com.opensymphony.webwork.ServletActionContext;
 
 /**
  * 
- * @author rakadam
- * Changes done on 6th Sep 06:
- * 1. Added verification step validateUserGroupWikiSpaceAssociation() to make sure that Space Admin is modifying users for allowed usergroups only.
- * 2. CSS added for usergroups detailed display.
- * 3. System.out.println removed from CustoPermissionUserGroupsDisplayAction.java
- * 4. Link to configure "Custom Space User Management" plugin has been added: it will be only visible for Confluence Administrators.
+ * @author Rajendra Kadam
+ * @author Gary S. Weaver
  */
 public class CustomPermissionManagerAction extends AbstractSpaceAction implements SpaceAdministrative
 {
@@ -88,8 +77,9 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     private SpaceDao spDao;
     
     //Following variables store user input, to display user input values if any input is incorrect! 
-    private String userList = null;
-    private Vector selectedUserGroupsList = null;
+    private String users = null;
+    private String groupsToAdd = null;
+    private List selectedUserGroupsList = null;
     private String adminAction = null;
 
     public CustomPermissionManagerAction()
@@ -114,44 +104,48 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     {
 		log.debug("CustomPermissionManagerAction - log - Inside execute...");
 
-    	String actionDirective = getAdminAction();
-		String loggedInUser = getRemoteUser().getName();
+    	String loggedInUser = getRemoteUser().getName();
 		String key = getKey();
     	//String userids = ServletActionContext.getRequest().getParameter("userList");
-    	String userids = getUserList();
+    	String adminAction = getAdminAction();
 
-    	Map paramMap = ServletActionContext.getRequest().getParameterMap();
+        List userIdList = StringUtil.convertDelimitedStringToCleanedLowercaseList(getUsers());
+        List groupIdToAddList = StringUtil.convertDelimitedStringToCleanedLowercaseList(getGroupsToAdd());
+
+        Map paramMap = ServletActionContext.getRequest().getParameterMap();
     	//Get list of user selected usergroups checkboxes
-    	Vector groupList = retrieveListOfSelectedUserGroups(paramMap);
+    	List groupList = retrieveListOfSelectedUserGroups(paramMap);
 
     	//Validate user input
-    	ArrayList resultList = validateInput(adminAction, paramMap, userids);
-    	boolean validationFlag = ((Boolean)resultList.get(0)).booleanValue();
-    	if(!validationFlag) return ERROR;
+        boolean isValid = validateInput(adminAction, paramMap, userIdList, groupIdToAddList);
+    	if(!isValid)
+        {
+            log.debug("Input was invalid");
+            return ERROR;
+        }
 
     	String userGroupsValidationMessage = validateUserGroupWikiSpaceAssociation(groupList);
     	if(userGroupsValidationMessage != null)
     	{
-    		addFieldError("NotPermittedUserGroupsErrorMessage", userGroupsValidationMessage);
+            log.debug("There are no groups this user can currently administer. message=" + userGroupsValidationMessage);
+            addFieldError("NotPermittedUserGroupsErrorMessage", userGroupsValidationMessage);
     		return ERROR;
     	}
     	
-    	//Since validation is successful, 2nd element in resultList will contain list of userids to process
-    	Vector vUserIDsVec = (Vector) resultList.get(1);
-
     	//Process user groups as per type of User Management Service used. It can be from CONFLUENCE or JIRA
-    	String USER_MANGEMENT_APP = getUserManagerLocation(); 
-    	if(USER_MANGEMENT_APP.equals(CustomPermissionConfigAction.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
+    	String userManagementLocation = getUserManagerLocation();
+    	if(userManagementLocation.equals(CustomPermissionConfigAction.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
     	{
         	//Using Confluence for user management
             return manageUsersInConfluence( loggedInUser,
 											key,
-											vUserIDsVec,
+											userIdList,
 											groupList,
-											actionDirective);
+                                            groupIdToAddList,
+                                            adminAction);
     	}
     	//Using Jira for user management
-    	else if(USER_MANGEMENT_APP.equals(CustomPermissionConfigAction.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
+    	else if(userManagementLocation.equals(CustomPermissionConfigAction.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
     	{
         	//First generate a secret Id that we want to pass with data.
         	String secretId = getSecretId(loggedInUser);
@@ -165,7 +159,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             //call Jira RPC service
             callJiraRPCService( loggedInUser,
     							key,
-    							vUserIDsVec,
+    							userIdList,
     							groupList,
     							adminAction,
     							secretId);
@@ -174,7 +168,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
        return super.execute();
     }
 
-	//Helps to reterive usergroups selected by User - removed "groups_" from selected checkbox name
+	//Helps to retrieve usergroups selected by User - removed "groups_" from selected checkbox name
     public String buildUserGroupsFromCheckboxName(String checkboxName)
     {
         String[] splitUpCheckboxName = checkboxName.split("_", 2);
@@ -182,9 +176,9 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     //Get the list of user groups that user has selected
-    private Vector retrieveListOfSelectedUserGroups(Map paramMap)
+    private List retrieveListOfSelectedUserGroups(Map paramMap)
     {
-    	Vector selectedUserGroupsList = new Vector(4);
+    	List selectedUserGroupsList = new ArrayList(4);
     	
     	//Get all groups that user has selected.
         for (Iterator iterator = paramMap.keySet().iterator(); iterator.hasNext();)
@@ -202,60 +196,79 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     
     //If input group name matches with user select group, then return true
     //This function will be useful to remember user selection of checkbox during displaying errors!
-    public boolean isGroupSelected(String vGroupName)
+    public boolean isGroupSelected(String groupName)
     {
-    	if( selectedUserGroupsList!=null && selectedUserGroupsList.contains(vGroupName))
+    	if( selectedUserGroupsList!=null && selectedUserGroupsList.contains(groupName))
     	{
     		return true;
     	}
     	
       return false;
     }
+
+    public Pattern createGroupMatchingPattern() {
+        String groupPattern = getUserGroupsMatchingPattern();
+        if(groupPattern == null || (groupPattern.trim().equals("")))
+        {
+        	//This will only happen if we don't validate matching pattern during configuration.
+        	groupPattern = CustomPermissionConstants.SPACEKEY_REGEXP;
+        }
+
+    	//If spacekey is present in groupPattern then before compiling it replace it with current space key
+    	if(groupPattern.indexOf(CustomPermissionConstants.SPACEKEY)!= -1)
+    	{
+    		//Replace String "SPACEKEY" with input Space Key.
+    		groupPattern = groupPattern.replaceFirst(CustomPermissionConstants.SPACEKEY, getKey());
+    	}
+
+    	log.debug("group pattern -> " + groupPattern);
+
+        Pattern pat=Pattern.compile(groupPattern);
+
+        return pat;
+    }
+
+    public boolean doesGroupMatchPattern(String grpName, Pattern pat) {
+        log.debug("attempting to match group '" + grpName + "'");
+        Matcher matcher = pat.matcher(grpName);
+        return matcher.matches();
+    }
     
-    //Get all users groups which Space Admins can manage 
+    //Get all users groups which Space Admins can manage
     public List getUsersGroupsAssociatedForSpace()
     {
     	ArrayList notAllowedUserGroups = new ArrayList();
     	notAllowedUserGroups.add("confluence-administrators");
 
-    	Pattern pat = null;
-    	Matcher matcher = null;
-    	
-        String groupPattern = getUserGroupsMatchingPattern();
-        if(groupPattern == null || (groupPattern.trim().equals("")))
-        {
-        	//This will only happen if we don't validate matching pattern during configuration.
-        	groupPattern = "SPACEKEY-.*";
-        }
-        
-    	//If spacekey is present in groupPattern then before compiling it replace it with current space key
-    	if(groupPattern.indexOf("SPACEKEY")!= -1)
-    	{
-    		//Replace String "SPACEKEY" with input Space Key. 
-    		groupPattern = groupPattern.replaceFirst("SPACEKEY", getKey());
-    	}
-
-    	log.debug("group pattern -> " + groupPattern);
-    	
-        pat=Pattern.compile(groupPattern);
+    	Pattern pat = createGroupMatchingPattern();
         
         List result = new ArrayList();
 
         //VIEWSPACE_PERMISSION is basic permission that every user group can have.
-        for (Iterator iterator = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, getSpace()).keySet().iterator(); iterator.hasNext();)
+        Map map = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, getSpace());
+        if ( map==null || map.size()==0 ) {
+            log.debug("No groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION");
+        }
+        else {
+            log.debug("Got the following groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION: " + getCollectionAsString(map.keySet()));
+        }
+
+        for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();)
         {
         	String grpName = (String) iterator.next();
-        	matcher = pat.matcher(grpName);
-        	
-        	//If notAllowedUserGroups doesn't contain this group name 
+            //If notAllowedUserGroups doesn't contain this group name 
         	//and group name matches the pattern, then only add this user-group for display.
     		//log.debug("Selected Groups .....");
-        	if( (!notAllowedUserGroups.contains(grpName)) && (matcher.matches()))
+            boolean isPatternMatch = doesGroupMatchPattern(grpName, pat);
+            if( (!notAllowedUserGroups.contains(grpName)) && isPatternMatch)
         	{
-        		//log.debug("group - " +	 grpName);
-        		result.add(userAccessor.getGroup(grpName));
-        	}
-    		//log.debug("-------End of Groups---------");
+        		log.debug("group '" + grpName + "' allowed");
+        		result.add(userAccessor.getGroup(grpName));                
+            }
+            else {
+                log.debug("group '" + grpName + "' not allowed. notAllowedUserGroups=" + getCollectionAsString(notAllowedUserGroups) + " isPatternMatch=" + isPatternMatch );
+            }
+            //log.debug("-------End of Groups---------");
     		
         }
 
@@ -324,38 +337,78 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return spDao.findAllSorted("name");
     }
 
-    //Get list of usergroups associated to given wiki space.
-    public String validateUserGroupWikiSpaceAssociation(Vector selectedUserGroups)
-    {
-    	String notAllowedGroups = null;
-    	Vector notAssociatedUserGroups = new Vector();
-    	
-    	//Set currentAssociatedUserGroupsSet = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, getSpace()).keySet();
-    	List currentAssociatedUserGroupsSet = getUsersGroupsAssociatedForSpace();
-
-        for (Iterator iterator = selectedUserGroups.iterator(); iterator.hasNext();)
-        {
-        	String grpName = (String) iterator.next();
-        	//check if this group name is present in current Associated usergroups for this wiki space or not.
-        	if(!currentAssociatedUserGroupsSet.contains(userAccessor.getGroup(grpName)))
-        	{
-        		log.debug("Not assoicated group -" + grpName);
-        		notAssociatedUserGroups.add(grpName);
-        	}
+    public String getCollectionAsString(Collection c) {
+        if ( c != null ) {
+            StringBuffer sb = new StringBuffer();
+            boolean needSeparator = false;
+            for (Iterator iterator = c.iterator(); iterator.hasNext();) {
+                if ( needSeparator ) {
+                    sb.append( ", " );
+                }
+                sb.append( '\'' );
+                sb.append( (String) iterator.next() );
+                sb.append( '\'' );
+                needSeparator = true;
+            }
+            return sb.toString();
         }
+        return null;
+    }
 
-       if(notAssociatedUserGroups.size()> 0)
-       {
-    	   notAllowedGroups = "";
-	       for(Iterator itr= notAssociatedUserGroups.iterator(); itr.hasNext();)
-	       {
-	    	   notAllowedGroups += ", " + (String)itr.next() ;
-	       }
-	       
-	       notAllowedGroups = "You are not authorized to modify usergroups - " + notAllowedGroups.replaceFirst(", ", "") ;
-       }
+    //Get list of usergroups associated to given wiki space.
+    public String validateUserGroupWikiSpaceAssociation(List selectedUserGroups)
+    {
+        String notAllowedGroups = null;
+
+        if ( selectedUserGroups != null )
+        {
+
+            if (log.isDebugEnabled())
+            {
+                log.debug("validateUserGroupWikiSpaceAssociation() called with groups:" +
+                        getCollectionAsString(selectedUserGroups));
+            }
+
+            List notAssociatedUserGroups = new ArrayList();
+
+            //Set currentAssociatedUserGroupsSet = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, getSpace()).keySet();
+            List currentAssociatedUserGroupsSet = getUsersGroupsAssociatedForSpace();
+            for (Iterator iterator = selectedUserGroups.iterator(); iterator.hasNext();)
+            {
+                String grpName = (String) iterator.next();
+
+                //check if this group name is present in current Associated usergroups for this wiki space or not.
+                if(!currentAssociatedUserGroupsSet.contains(userAccessor.getGroup(grpName)))
+                {
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Group '" + grpName + "' was not found in currentAssociatedUserGroupsSet: " + getCollectionAsString(currentAssociatedUserGroupsSet));
+                    }
+
+                    notAssociatedUserGroups.add(grpName);
+                }
+                else
+                {
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Can manage group '" + grpName + "'");
+                    }
+                }
+            }
+
+           if(notAssociatedUserGroups.size()> 0)
+           {
+               notAllowedGroups = "";
+               for(Iterator itr= notAssociatedUserGroups.iterator(); itr.hasNext();)
+               {
+                   notAllowedGroups += ", " + (String)itr.next() ;
+               }
+
+               notAllowedGroups = "You are not authorized to modify usergroups - " + notAllowedGroups.replaceFirst(", ", "") ;
+           }
+        }
        
-     return notAllowedGroups;
+        return notAllowedGroups;
     }
     
     //This method will be used to create an user when Confluence is used for Managing Wiki Users
@@ -385,27 +438,51 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 		return vUser;
 	}
 
+    //This method will be used to create a group when Confluence is used for Managing Wiki Groups
+	private Group createConfSpaceGroup(String creationGroupName)
+	{
+		Group vGroup = null;
+
+		log.debug("create a confluence group -> " + creationGroupName);
+
+		try {
+			vGroup = userAccessor.addGroup(creationGroupName);
+        } catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return vGroup;
+	}
+
     public String manageUsersInConfluence(String actionPerformerUser,
 			 String spaceKey,
-			 Vector iUserIDsVec,
-			 Vector iGroupList,
-			 String actionDirective)
+			 List userIdList,
+			 List groupList,
+             List groupIdToAddList,
+             String adminAction)
 	{
-		//Result Vector. it Looks like we can't sent status as output object, rpc call doesn't support custom objects! Not sure....
-		Vector resultVector = new Vector();
+		//Result List. it Looks like we can't sent status as output object, rpc call doesn't support custom objects! Not sure....
+		List resultList = new ArrayList();
 		String opMessage = null;
 		//Following vector holds all those userids, which are not in system and also we couldn't create them as LDAP doesn't have information about it. 
 		String vNotCreatedUsers = "";
-		//Following vector holds all groups to which we are not able to add users.
+        String vNotCreatedGroups = "";
+        String vGroupsNotMatched = "";
+        //Following vector holds all groups to which we are not able to add users.
 		String vNotUsedGroup = "";
 
-		if(actionDirective.equals("AddToGroups"))
+		if (adminAction==null) {
+            resultList.add("Please select an action.");
+            setActionErrors(resultList);
+            return ERROR;
+        }
+        else if(adminAction.equals("AddToGroups"))
         {
 	        boolean isLDAPPresent = getIsLdapAuthUsed().equals(CustomPermissionConfigAction.DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE) ? true : false;
     		try
     		{
         		//Associate selected user-groups to all users.
-        		for(Iterator itr = iUserIDsVec.iterator(); itr.hasNext();)
+        		for(Iterator itr = userIdList.iterator(); itr.hasNext();)
         		{
         			//First check if given user is present or not
         			String userid = (String) itr.next();
@@ -441,7 +518,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         			if (currUser != null)
         			{
         	        	//Associate this user to all selected user-groups
-        	        	for(Iterator iterator = iGroupList.iterator(); iterator.hasNext();)
+        	        	for(Iterator iterator = groupList.iterator(); iterator.hasNext();)
         	        	{
         	        		userAccessor.addMembership((String)iterator.next(), userid);
         	        	}
@@ -452,8 +529,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     		catch(Exception e)
     		{
     			e.printStackTrace();
-    			resultVector.add("Error! - " + e.getMessage());
-            	setActionErrors(resultVector);
+    			resultList.add("Error! - " + e.getMessage());
+            	setActionErrors(resultList);
     			return ERROR;
     		}
 
@@ -478,10 +555,10 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 				opMessage = "<font color=\"green\">All users are added successfully!</font>";
 			}
 			
-			resultVector.add(opMessage);
-			resultVector.add(vNotCreatedUsers);
+			resultList.add(opMessage);
+			resultList.add(vNotCreatedUsers);
 			
-        	setActionMessages(resultVector);
+        	setActionMessages(resultList);
         	flushUserInputs();
         	return SUCCESS;
         }
@@ -489,10 +566,10 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         {
         	try{
 	        	//Remove User from all mentioned groups         	
-        		for(Iterator itr = iUserIDsVec.iterator(); itr.hasNext();)
+        		for(Iterator itr = userIdList.iterator(); itr.hasNext();)
 	    		{
         			String userid = (String) itr.next();
-		        	for(Iterator iterator = iGroupList.iterator(); iterator.hasNext();)
+		        	for(Iterator iterator = groupList.iterator(); iterator.hasNext();)
 		        	{
 		        		userAccessor.removeMembership((String)iterator.next(), userid);
 		        	}
@@ -501,40 +578,168 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     		catch(Exception e)
     		{
     			e.printStackTrace();
-    			resultVector.add("Error! - " + e.getMessage());
+    			resultList.add("Error! - " + e.getMessage());
     			return ERROR;
     		}
     		
 			opMessage = "<font color=\"green\">All users are successfully removed from selected groups!</font>";
-			resultVector.add(opMessage);
-        	setActionMessages(resultVector);
+			resultList.add(opMessage);
+        	setActionMessages(resultList);
         	flushUserInputs();
         	
         	return SUCCESS;
         }
+        else if(adminAction.equals("AddGroups"))
+        {
+	        try
+    		{
+        		//Add groups
+
+                for(Iterator itr = groupIdToAddList.iterator(); itr.hasNext();)
+        		{
+        			//First check if given group is present or not
+        			String groupid = (String) itr.next();
+        			Group currGroup = userAccessor.getGroup(groupid);
+        			if(currGroup == null)
+        			{
+        				//create a group only if it matches pattern
+                        Pattern pat = createGroupMatchingPattern();
+                        boolean isPatternMatch = doesGroupMatchPattern(groupid, pat);
+
+                        if (isPatternMatch) {
+
+                            currGroup = userAccessor.addGroup(groupid);
+                            if(currGroup == null)
+                            {
+                                //ok for some reasons we are unable to create user.
+                                //Let's add it to our notCreatedUser List.
+                                vNotCreatedGroups += ", " + groupid;
+                                //let's jump to next userid.
+                                log.debug("Group '" + groupid + "' not created");
+                            }
+                        }
+                        else {
+                            if (vGroupsNotMatched.length()>0) {
+                                vGroupsNotMatched += ", ";
+                            }
+
+                            vGroupsNotMatched += groupid;
+                            log.debug("Group '" + groupid + "' not created because it didn't match pattern");
+                        }
+                    }
+
+        			//If group exists then set all required permissions
+        			if (currGroup != null)
+        			{
+        	        	SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION,
+                                getSpace(), currGroup.getName());
+                        getSpace().addPermission(perm);
+
+        			}
+        		}
+    		}
+    		catch(Exception e)
+    		{
+    			e.printStackTrace();
+    			resultList.add("Error! - " + e.getMessage());
+            	setActionErrors(resultList);
+    			return ERROR;
+    		}
+
+        	//Set the Message for Add operation appropriately
+			if(!("".equals(vNotCreatedUsers)) || !("".equals(vGroupsNotMatched)))
+			{
+				opMessage = "Some of the Groups may not have been added to System.";
+                resultList.add("<font color=\"red\">" + opMessage + "</font>");
+
+                if (!("".equals(vNotCreatedUsers))) {
+                    resultList.add("<font color=\"red\">List of not added Groupids: " + vNotCreatedGroups.replaceFirst(",", "") + "</font>");
+                }
+                if (!("".equals(vGroupsNotMatched))) {
+                    resultList.add("<font color=\"red\">List of not added Groupids that weren't added because they didn't match: " + vGroupsNotMatched + "</font>");
+                }
+            }
+			else
+			{
+				opMessage = "All groups are added successfully!";
+                resultList.add("<font color=\"green\">" + opMessage + "</font>");
+			}
+
+
+			setActionMessages(resultList);
+        	flushUserInputs();
+        	return SUCCESS;
+        }
+        else if(adminAction.equals("RemoveGroups"))
+        {
+        	String groupsNotDeleted = "";
+            try{
+	        	//Remove Selected Groups
+        		for(Iterator iterator = groupList.iterator(); iterator.hasNext();)
+                {
+                    String grpName = (String)iterator.next();
+                    Pattern pat = createGroupMatchingPattern();
+                    if (!grpName.startsWith("conf") && doesGroupMatchPattern(grpName, pat)) {
+                        Group group = userAccessor.getGroup(grpName);
+                        if (group!=null) {
+                            userAccessor.removeGroup(group);
+                        }
+                    }
+                    else {
+                        log.debug("Not deleting group '" + grpName + "', as either it started with 'conf' or didn't match pattern " + getUserGroupsMatchingPattern());
+
+                        if (!("".equals(groupsNotDeleted))) {
+                            groupsNotDeleted += ",";
+                        }
+
+                        groupsNotDeleted += grpName;
+                    }
+                }
+        	}
+    		catch(Exception e)
+    		{
+    			e.printStackTrace();
+    			resultList.add("Error! - " + e.getMessage());
+    			return ERROR;
+    		}
+
+            if ("".equals(groupsNotDeleted)) {
+                opMessage = "The selected groups were successfully removed!";
+                resultList.add("<font color=\"green\">" + opMessage + "</font>");
+            }
+            else {
+                opMessage = "The following selected groups were not deleted, either because they started with 'conf' or didn't match pattern " + getUserGroupsMatchingPattern() + ": " + groupsNotDeleted;
+                resultList.add("<font color=\"red\">" + opMessage + "</font>");
+            }
+
+            setActionMessages(resultList);
+        	flushUserInputs();
+
+        	return SUCCESS;
+        }
 		
-		return SUCCESS;
+        return SUCCESS;
 	}
 	
     //call Jira RPC Service
     public void callJiraRPCService(String actionPerformerUser,
     								 String spaceKey,
-    								 Vector iUserIDsVec,
-    								 Vector iGroupList,
-    								 String actionDirective,
+    								 List userIdList,
+    								 List groupList,
+    								 String adminAction,
     								 String secretId)
     {
-        Vector resultVec = null;
+        List resultVec = null;
         String errorMsg = null; 
         
         String tempUserIDs = "";
-		for(Iterator itr = iUserIDsVec.iterator(); itr.hasNext();)
+		for(Iterator itr = userIdList.iterator(); itr.hasNext();)
 		{
 			tempUserIDs +=(String) itr.next() + ",";
 		}
 
         String groupNames = "";
-		for(Iterator itr = iGroupList.iterator(); itr.hasNext();)
+		for(Iterator itr = groupList.iterator(); itr.hasNext();)
 		{
 			groupNames +=(String) itr.next()+ ",";
 		}
@@ -543,7 +748,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 		log.debug("Space Key - " + spaceKey);
 		log.debug("Input Users - " + tempUserIDs);
 		log.debug("Input Group names - " + groupNames);
-        log.debug("ActionDirective - " + actionDirective);
+        log.debug("AdminAction - " + adminAction);
         log.debug("Secretid - " + secretId );
         log.debug("getJiraJNDILookupKey - " + getJiraJNDILookupKey());
         log.debug("getLdapAuthKey() - " + getIsLdapAuthUsed() );
@@ -568,9 +773,9 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             //Space Name.
             rpcParams.add(spaceKey);
             //Get the list of user ids on which we want to act upon.
-            rpcParams.add(iUserIDsVec);
+            rpcParams.add(userIdList);
             //Groups to which users need to associate.
-            rpcParams.add(iGroupList);
+            rpcParams.add(groupList);
             //Jira Datasource
             rpcParams.add(getJiraJNDILookupKey());
             //Confluence Url
@@ -578,7 +783,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             //Secret Id
             rpcParams.add(secretId);
             
-            if(actionDirective.equalsIgnoreCase("AddToGroups"))
+            if(adminAction.equalsIgnoreCase("AddToGroups"))
             {
                 log.debug( " Adding users to group");
 
@@ -591,7 +796,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 	            resultVec = (Vector) rpcClient.execute("delegateusermgmt.addUsersToGroups", rpcParams);
 	            log.debug("Result is - " + resultVec.get(0));
             }
-            else if(actionDirective.equalsIgnoreCase("RemoveFromGroups"))
+            else if(adminAction.equalsIgnoreCase("RemoveFromGroups"))
             {
                 log.debug( " Removing users from group");
 	            resultVec = (Vector)rpcClient.execute("delegateusermgmt.removeUsersFromGroups", rpcParams);
@@ -625,18 +830,29 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         }
     }
 
-    //Getter / Setters for userList input text box - Helps to remember values during error display
-    public String getUserList()
+    //Getter / Setters for users input text box - Helps to remember values during error display
+    public String getUsers()
     {
-    	return userList;
+    	return users;
     }
 
-    public void setUserList(String userList)
+    public void setUsers(String users)
     {
-    	this.userList = userList;
+    	this.users = users;
     }
 
-    //Getter / Setters for userList adminAction radio button - Helps to remember values during error display
+    //Getter / Setters for groupsToAdd input text box - Helps to remember values during error display
+    public String getGroupsToAdd()
+    {
+    	return groupsToAdd;
+    }
+
+    public void setGroupsToAdd(String groupsToAdd)
+    {
+    	this.groupsToAdd = groupsToAdd;
+    }
+
+    //Getter / Setters for adminAction radio button - Helps to remember values during error display
     public String getAdminAction()
     {
     	return adminAction;
@@ -652,9 +868,10 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     public void flushUserInputs()
     {
     	//No need to remember User Input
-    	userList = null;
-    	adminAction = null;
-    	selectedUserGroupsList = null;    	
+    	setUsers(null);
+        setGroupsToAdd(null);
+        setAdminAction(null);
+    	this.selectedUserGroupsList = null;    	
     }
     
     public String getUserManagerLocation() {
@@ -852,86 +1069,90 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	
     }
 
-    //Validate user input. reurn ERROR if incorrect data sent.
-    public ArrayList validateInput(String adminAction, Map paramMap, String userids )
-    {
-    	Vector vUserIDsVec = null;
-    	Boolean validationFlag = new Boolean(true); //By default validation will be successful
-    	ArrayList resultList = new ArrayList();
-    	
-    	if(adminAction == null)
-    	{
-    		//user has not selected which action to perform.
-            addFieldError("adminAction", "Please select a action to perform!");
-    	}
-    	
-    	boolean isGroupSelected = false;
+    private boolean isGroupSelected(Map paramMap) {
+        boolean result = false;
         for (Iterator iterator = paramMap.keySet().iterator(); iterator.hasNext();)
         {
             String paramKey = (String) iterator.next();
             if(paramKey != null && paramKey.startsWith("groups_"))
             {
-            	isGroupSelected = true;
-            	break;
+                result = true;
+                break;
             }
         }
-        
-        if(!isGroupSelected)
-        {
-            addFieldError("groups_", "Please select a user group.");
-        }
-        
-    	boolean userInputErrorFlag = false;
-    	if(userids == null || userids.equals(""))
-    	{
-            addFieldError("userList", "Please enter list of usernames to act on");
-            userInputErrorFlag = true;
-    	}
+        return result;
+    }
 
-    	boolean overlimitUserIdsInputFlag = false;
-    	//User has enter usernames, check if they are not more than 50.
-    	if (!userInputErrorFlag)
+    //Validate user input. return false if data invalid.
+    public boolean validateInput(String adminAction, Map paramMap, List userIdList, List groupToAddIdList )
+    {
+        log.debug("Validating adminAction=" + adminAction +
+                ", paramMap=" + paramMap +
+                ", userIdList=" + ListUtil.convertListToCommaDelimitedString(userIdList) +
+                ", groupToAddIdList=" + ListUtil.convertListToCommaDelimitedString(groupToAddIdList));
+
+        boolean isValid = true; //By default validation will be successful
+
+        //Will use default of 20 if we don't validate max UserIDLimit during configuration or user has changed value by modifying xml file (confluence-home/config/confluence-global.bandana.xml).
+        int maxUserIDLimit = ConfigUtil.getIntOrUseDefault("maxUserIDLimit", getMaxUserIDsLimit(), 20);
+
+        if(adminAction == null)
     	{
-			//Userids should be lowercase.
-	    	userids = userids.toLowerCase().trim();
-			userids = userids.replaceAll("[<>/]", "");
-			//Get list of all userids in string array.
-			String[] userIDArray = userids.split("[:;,]");
-			
-			int maxUserIDLimit = 20;
-			try
-			{
-				maxUserIDLimit = Integer.parseInt(getMaxUserIDsLimit());
-			}
-			catch(Exception e)
-			{
-				//This will happen only if we don't validate max UserIDLimit during configuration or user has changed value by modifying xml file (confluence-home/config/confluence-global.bandana.xml).
-				maxUserIDLimit = 20;
-			}
-			
-			if( userIDArray.length > maxUserIDLimit)
-			{
-				overlimitUserIdsInputFlag = true;
-	            addFieldError("userList", "Only "+ maxUserIDLimit + " userids will be processed at a time");
-				//return ERROR;
-			}
-			else
-			{
-				//set input for processing.
-				vUserIDsVec = new Vector(Arrays.asList(userIDArray));
-			}
-			
-    	}
-        
-        if((adminAction == null)||(!isGroupSelected) || (userInputErrorFlag) || (overlimitUserIdsInputFlag))
+    		//user has not selected which action to perform.
+            addFieldError("adminAction", "Please select an action.");
+            isValid = false;
+        }
+        else if(adminAction.equals("AddToGroups") || adminAction.equals("RemoveFromGroups")) {
+
+            if(!isGroupSelected(paramMap))
+            {
+                addFieldError("groups_", "Please select at least one group.");
+                isValid = false;
+            }
+            else if(userIdList == null || userIdList.size()==0)
+            {
+                addFieldError("users", "Please enter list of usernames to act on.");
+                isValid = false;
+            }
+            else
+            {
+                if( ListUtil.isListSizeOverMaxNum( userIdList, maxUserIDLimit ) )
+                {
+                    addFieldError("users", "Only "+ maxUserIDLimit + " users will be processed at a time.");
+                    isValid = false;
+                }
+            }
+        }
+        else if(adminAction.equals("AddGroups"))
         {
-        	validationFlag = new Boolean(false);
+            if(groupToAddIdList == null || groupToAddIdList.size()==0)
+            {
+                addFieldError("groupsToAdd", "Please enter list of groups to add.");
+                isValid = false;
+            }
+            else
+            {
+                if( ListUtil.isListSizeOverMaxNum( userIdList, maxUserIDLimit ) )
+                {
+                    addFieldError("groupsToAdd", "Only "+ maxUserIDLimit + " groups will be processed at a time.");
+                    isValid = false;
+                }
+            }
+        }
+        else if(adminAction.equals("RemoveGroups"))
+        {
+            if(!isGroupSelected(paramMap))
+            {
+                addFieldError("groups_", "Please select at least one group.");
+                isValid = false;
+            }
+        }
+        else {
+    		addFieldError("adminAction", "'" +adminAction + "' is not a valid action!");
+            isValid = false;
         }
 
-       resultList.add(validationFlag);
-       resultList.add(vUserIDsVec);
-       
-       return resultList;
+        return isValid;
     }
 
     //Get total user count for given user group

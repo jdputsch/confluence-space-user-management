@@ -1,0 +1,186 @@
+<!--
+  This file describes your project to Maven 2. If working from an existing plugin,
+  you will need to migrate the appropriate values from the project.xml file.
+  See the various 'TODO:' items below for details.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>raju.kadam.confluence.permissionmgmt</groupId>
+    <artifactId>permission-management</artifactId>
+    <packaging>atlassian-plugin</packaging>
+
+    <name>Custom Space Usergroups Management Plugin</name>
+    <version>2.0-SNAPSHOT</version>
+    <url>raju.kadam@gmail.com</url>
+    <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces</description>
+
+    <properties>
+        <!-- The plugin key. This will be injected into the atlassian-plugins.xml file when built. -->
+        <atlassian.plugin.key>raju.kadam.confluence.permissionmgmt</atlassian.plugin.key>
+    </properties>
+
+    <scm>
+        <connection>scm:svn:http://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk</connection>
+        <developerConnection>scm:svn:https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk</developerConnection>
+        <url>http://svn.atlassian.com/fisheye/browse/public/contrib/confluence/custom-space-user-management/trunk</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Rajendra Kadam</name>
+            <email>raju.kadam@gmail.com</email>
+            <roles><role>Developer - v1 All (User Management, LDAP, XML RPC, User Experience)</role></roles>
+        </developer>
+
+        <developer>
+            <name>Gary S. Weaver</name>
+            <email>gary.weaver@duke.edu</email>
+            <organization>Duke University</organization>
+            <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
+            <roles><role>Developer - v2 Group Management</role></roles>
+        </developer>
+
+        <developer>
+            <name>Ren Provey</name>
+            <email>renald.provey@duke.edu</email>
+            <organization>Duke University</organization>
+            <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
+            <roles><role>Developer - v2 User Experience</role></roles>
+        </developer>
+    </developers>
+
+    <organization>
+        <name>Custom Space Usergroups Management Plugin Team</name>
+        <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
+    </organization>
+
+    <dependencies>
+            <dependency>
+                <groupId>com.atlassian.confluence</groupId>
+                <artifactId>confluence</artifactId>
+                <version>2.5.3</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.atlassian.config</groupId>
+                <artifactId>atlassian-config</artifactId>
+                <version>0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>atlassian-bucket</groupId>
+                <artifactId>atlassian-bucket</artifactId>
+                <version>2006.11.24</version>
+            </dependency>
+            <dependency>
+                <groupId>atlassian-bandana</groupId>
+                <artifactId>atlassian-bandana</artifactId>
+                <version>0.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>atlassian-user</groupId>
+                <artifactId>atlassian-user</artifactId>
+                <version>2007-04-05</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.8</version>
+            </dependency>
+            <dependency>
+                <groupId>webwork</groupId>
+                <artifactId>webwork</artifactId>
+                <version>2.1.5</version>
+            </dependency>
+            <dependency>
+                <groupId>opensymphony</groupId>
+                <artifactId>oscore</artifactId>
+                <version>2.2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>xmlrpc</groupId>
+                <artifactId>xmlrpc</artifactId>
+                <version>2.0</version>
+            </dependency>
+
+            <!-- testing -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>3.8.1</version>
+            </dependency>
+    </dependencies>
+
+    <build>
+
+        <sourceDirectory>src/java</sourceDirectory>
+        <!-- This will automatically put POM settings into atlassian-plugin.xml when building.  -->
+        <resources>
+            <resource>
+                <directory>src/etc</directory>
+                <excludes>
+                    <exclude>atlassian-plugin.xml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/etc</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>atlassian-plugin.xml</include>
+                    <include>**/*.vm</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>atlassian-pdk</artifactId>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>atlassian-m2-contrib</id>
+            <name>Atlassian Maven 2 Contributor Repository</name>
+            <url>http://svn.atlassian.com/svn/public/contrib/repositories/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>atlassian-m2-repository</id>
+            <name>Atlassian Maven 2 Repository</name>
+            <url>http://repository.atlassian.com/maven2</url>
+        </repository>
+        <!--
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>central-m2-repository</id>
+            <name>Central Maven 2 Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        -->
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>atlassian-m2-contrib</id>
+            <name>Atlassian Maven 2 Contributor Repository</name>
+            <url>http://svn.atlassian.com/svn/public/contrib/repositories/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

@@ -41,6 +41,10 @@ import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
 
+/**
+ *
+ * @author Rajendra Kadam
+ */
 public class CustomPermissionUserGroupsDisplayAction extends AbstractSpaceAction
 {
 	private String selectedGroupName = null;

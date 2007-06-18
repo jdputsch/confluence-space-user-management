@@ -30,6 +30,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package raju.kadam.confluence.rpc.xmlrpc;
 
+/**
+ *
+ * @author Rajendra Kadam
+ */
 public interface UserRoleXMLRpcService
 {
 	Boolean verifySpaceAdminRole(String userid, String spaceKey);

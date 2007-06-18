@@ -42,6 +42,8 @@ import org.apache.log4j.Category;
 
 /**
  * Action to configure User Management Module like Jira JNDI lookup, LDAP availability etc.
+ * @author Rajendra Kadam
+ * @author Gary S. Weaver
  */
 public class CustomPermissionConfigAction extends ConfluenceActionSupport implements Administrative
 {
@@ -128,7 +130,7 @@ public class CustomPermissionConfigAction extends ConfluenceActionSupport implem
         //If group matching pattern is not set, then assign default pattern as "SPACEKEY-.*" which will match only usergroups specific for that wiki space 
         if( (v_userGroupsMatchingPattern == null) || (v_userGroupsMatchingPattern.trim().equals("")))
         {
-            bandanaManager.setValue(new ConfluenceBandanaContext(), DELEGATE_USER_MGMT_USERGROUPS_MATCHING_PATTERN, "SPACEKEY-.*");
+            bandanaManager.setValue(new ConfluenceBandanaContext(), DELEGATE_USER_MGMT_USERGROUPS_MATCHING_PATTERN, CustomPermissionConstants.SPACEKEY_REGEXP);
         }
         
         v_isLdapAuthUsed = getIsLdapAuthUsed();

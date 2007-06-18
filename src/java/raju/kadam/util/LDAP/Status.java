@@ -33,6 +33,10 @@ package raju.kadam.util.LDAP;
 import java.util.*;
 import org.apache.log4j.Category;
 
+/**
+ *
+ * @author Rajendra Kadam
+ */
 public class Status{
 
     private static final Category log = Category.getInstance(Status.class);

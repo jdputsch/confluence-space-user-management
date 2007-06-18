@@ -1,0 +1,11 @@
+Directions for compiling using Maven 2
+======================================
+
+If you haven't already, install maven 2.
+
+Due to strange a problem using the atlassian-pdk in this project, mvn install doesn't always work. For now use this:
+mvn clean compile jar:jar
+
+After that uninstall the plugin from confluence and reinstall the new one in target/...jar
+
+
