@@ -536,7 +536,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         			if(currGroup == null)
         			{
         				//create a group only if it matches pattern
-                        Pattern pat = GroupMatchingUtil.createGroupMatchingPattern(bandanaManager, getKey());
+                        Pattern pat = GroupMatchingUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), getSpace().getKey());
                         boolean isPatternMatch = GroupMatchingUtil.doesGroupMatchPattern(groupid, pat);
 
                         if (isPatternMatch) {
@@ -606,22 +606,24 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         else if(adminAction.equals("RemoveGroups"))
         {
         	String groupsNotDeleted = "";
+            Pattern pat = null;
             try{
 	        	//Remove Selected Groups
         		for(Iterator iterator = groupList.iterator(); iterator.hasNext();)
                 {
                     String grpName = (String)iterator.next();
-                    Pattern pat = GroupMatchingUtil.createGroupMatchingPattern(bandanaManager, getKey());
+                    pat = GroupMatchingUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), getSpace().getKey());
                     boolean isPatternMatch = GroupMatchingUtil.doesGroupMatchPattern(grpName, pat);
 
-                    if (!grpName.startsWith("conf") && isPatternMatch) {
+                    // Space admin should not be able to delete any groups whose names begin with "confluence"
+                    if (!grpName.startsWith("confluence") && isPatternMatch) {
                         Group group = userAccessor.getGroup(grpName);
                         if (group!=null) {
                             userAccessor.removeGroup(group);
                         }
                     }
                     else {
-                        log.debug("Not deleting group '" + grpName + "', as either it started with 'conf' or didn't match pattern " + GroupMatchingUtil.getUserGroupsMatchingPattern(bandanaManager));
+                        log.debug("Not deleting group '" + grpName + "', as either it started with 'confluence' or didn't match pattern " + pat.pattern());
 
                         if (!("".equals(groupsNotDeleted))) {
                             groupsNotDeleted += ",";
@@ -643,7 +645,12 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
                 resultList.add("<font color=\"green\">" + opMessage + "</font>");
             }
             else {
-                opMessage = "The following selected groups were not deleted, either because they started with 'conf' or didn't match pattern " + GroupMatchingUtil.getUserGroupsMatchingPattern(bandanaManager) + ": " + groupsNotDeleted;
+                if (pat!=null) {
+                    opMessage = "Some groups were not deleted, either because they started with 'confluence' or didn't match pattern " + pat.pattern();
+                }
+                else {
+                    opMessage = "Some groups were not deleted, because they started with 'confluence' or pattern was bad";
+                }
                 resultList.add("<font color=\"red\">" + opMessage + "</font>");
             }
 

@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import raju.kadam.confluence.permissionmgmt.CustomPermissionConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -21,16 +22,9 @@ public class GroupMatchingUtil {
     private static Log log = LogFactory.getLog(GroupMatchingUtil.class);
 
 
-    //Get Pattern to display all groups
-    public static String getUserGroupsMatchingPattern(BandanaManager bandanaManager)
+    public static Pattern createGroupMatchingPattern(CustomPermissionConfiguration config, String spaceKey)
     {
-        return ((String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_USERGROUPS_MATCHING_PATTERN));
-    }
-    
-
-    public static Pattern createGroupMatchingPattern(BandanaManager bandanaManager, String groupNameMatchRegExp)
-    {
-        String groupPattern = getUserGroupsMatchingPattern(bandanaManager);
+        String groupPattern = config.getUserGroupsMatchingPattern();
         if (groupPattern == null || (groupPattern.trim().equals(""))) {
             //This will only happen if we don't validate matching pattern during configuration.
             groupPattern = CustomPermissionConstants.SPACEKEY_REGEXP;
@@ -39,7 +33,7 @@ public class GroupMatchingUtil {
         //If spacekey is present in groupPattern then before compiling it replace it with current space key
         if (groupPattern.indexOf(CustomPermissionConstants.SPACEKEY) != -1) {
             //Replace String "SPACEKEY" with input Space Key.
-            groupPattern = groupPattern.replaceFirst(CustomPermissionConstants.SPACEKEY, groupNameMatchRegExp);
+            groupPattern = groupPattern.replaceFirst(CustomPermissionConstants.SPACEKEY, spaceKey);
         }
 
         log.debug("group pattern -> " + groupPattern);
@@ -50,8 +44,19 @@ public class GroupMatchingUtil {
     }
 
     public static boolean doesGroupMatchPattern(String grpName, Pattern pat) {
-        log.debug("attempting to match group '" + grpName + "'");
         Matcher matcher = pat.matcher(grpName);
-        return matcher.matches();
+        boolean isMatch = matcher.matches();
+
+        if (log.isDebugEnabled()) {
+            String pattern = pat.pattern();
+            if (isMatch) {
+                log.debug("group '" + grpName + "' matches pattern " + pattern);
+            }
+            else {
+                log.debug("group '" + grpName + "' did not match pattern " + pattern);
+            }
+        }
+
+        return isMatch;
     }
 }
