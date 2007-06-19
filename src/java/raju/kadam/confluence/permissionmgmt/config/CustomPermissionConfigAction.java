@@ -28,7 +28,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package raju.kadam.confluence.permissionmgmt;
+package raju.kadam.confluence.permissionmgmt.config;
 
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.core.Administrative;
@@ -37,8 +37,9 @@ import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.spring.container.ContainerManager;
 import org.apache.log4j.Category;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
-import raju.kadam.confluence.permissionmgmt.config.ConfigurationAction;
+import raju.kadam.confluence.permissionmgmt.config.BaseCustomPermissionConfigAction;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import raju.kadam.confluence.permissionmgmt.CustomPermissionConstants;
 import raju.kadam.util.ConfigUtil;
 
 /**
@@ -46,7 +47,7 @@ import raju.kadam.util.ConfigUtil;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class CustomPermissionConfigAction extends ConfigurationAction implements Administrative
+public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction implements Administrative
 {
     private static final Category log = Category.getInstance(CustomPermissionConfigAction.class);
 

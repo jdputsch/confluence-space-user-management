@@ -75,12 +75,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				To do configuration of :
 				URL: http://<host>/confluence/admin/plugins/custompermissionsconfig/config.action
 			-->
-            <action name="config" class="raju.kadam.confluence.permissionmgmt.CustomPermissionConfigAction" method="doDefault">
+            <action name="config" class="raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigAction" method="doDefault">
                 <result name="input" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>
                 <result name="error" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>
             </action>
             
-            <action name="doconfig" class="raju.kadam.confluence.permissionmgmt.CustomPermissionConfigAction">
+            <action name="doconfig" class="raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigAction">
                 <result name="input" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>
                 <result name="error" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>
                 <result name="success" type="velocity">/templates/permissionmgmt/configure-usermgmt.vm</result>

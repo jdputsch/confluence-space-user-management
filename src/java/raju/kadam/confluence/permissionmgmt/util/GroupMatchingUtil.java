@@ -4,7 +4,6 @@ import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import raju.kadam.confluence.permissionmgmt.CustomPermissionConfigAction;
 import raju.kadam.confluence.permissionmgmt.CustomPermissionConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 

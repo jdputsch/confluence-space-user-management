@@ -9,7 +9,7 @@ import com.atlassian.confluence.core.Administrative;
  * Date: Jun 19, 2007
  * Time: 9:14:23 AM
  */
-public class ConfigurationAction  extends ConfluenceActionSupport implements Administrative, CustomPermissionConfigurable {
+public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements Administrative, CustomPermissionConfigurable {
 
     private String userManagerLocation;
     private String jiraUrl;
