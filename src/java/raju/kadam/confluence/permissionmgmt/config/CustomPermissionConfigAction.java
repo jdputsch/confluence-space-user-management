@@ -36,9 +36,6 @@ import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.spring.container.ContainerManager;
 import org.apache.log4j.Category;
-import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
-import raju.kadam.confluence.permissionmgmt.config.BaseCustomPermissionConfigAction;
-import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import raju.kadam.confluence.permissionmgmt.CustomPermissionConstants;
 import raju.kadam.util.ConfigUtil;
 
@@ -115,7 +112,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
         //if user is not using LDAP, then we have to set "" values to LDAPUrl and BaseDN as we can't sent null values!
         //Note null values will be passed from input as those two inputs are disabled
-        if(CustomPermissionConfigConstants.DELEGATE_USER_LDAP_AUTH_KEY_NO_VALUE.equals(getLdapAuthUsed()))
+        if(CustomPermissionConfigConstants.NO.equals(getLdapAuthUsed()))
         {
         	setCompanyLDAPUrl("");
         	setCompanyLDAPBaseDN("");
@@ -170,7 +167,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 			}
 		}
 		
-		boolean isLDAPAvailable = (getLdapAuthUsed() != null) && (getLdapAuthUsed().equals(CustomPermissionConfigConstants.DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE) ? true : false);
+		boolean isLDAPAvailable = (getLdapAuthUsed() != null) && (getLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false);
 		boolean isCompanyLDAPUrlSet = true;
 		boolean isCompanyLDAPBaseDNSet = true;
 		if(isLDAPAvailable)
@@ -191,8 +188,16 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 	            isCompanyLDAPBaseDNSet = false;
 			}
 		}
+
+        boolean isGroupActionsPermittedSet = true;
+        if ( getGroupActionsPermitted() == null )
+        {
+            addFieldError("groupActionsPermitted", "Please indicate whether addition or removal of groups should be permitted");
+            isGroupActionsPermittedSet = false;
+        }
         		
-        if(isUserManagerLocationSet && isJiraUrlSet && isJiraJNDISet && isCompanyLDAPUrlSet && isCompanyLDAPBaseDNSet)
+        if(isUserManagerLocationSet && isJiraUrlSet && isJiraJNDISet && isCompanyLDAPUrlSet && isCompanyLDAPBaseDNSet
+                && isGroupActionsPermittedSet)
 		{
 			//If all above values are set that means settings are good to go!
 			log.debug("CustomPermissionConfigAction - validation successful ..");

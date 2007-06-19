@@ -235,13 +235,27 @@
         </tr>
         
         <tr>
-            <td valign="top" class="label" width="30%">Usergroups matching pattern:</td>
+            <td valign="top" class="label" width="30%">Usergroups Matching Pattern:</td>
             <td>
                 <input type="text" name="userGroupsMatchingPattern" value="$!action.userGroupsMatchingPattern" size="30" />
                 <p>
                     <font size="1">
                 	e.g.: If SPACEKEY is "ds" then, pattern <b>SPACEKEY-.*</b> will match ds-users, ds-conf-users<br>
                 	Note: During run SPACEKEY will be replaced by key of selected Wiki Space
+                    </font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">Group Actions Permitted:</td>
+            <td>
+				#fielderror ('groupActionsPermitted')
+                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end />YES &nbsp;
+                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end />NO
+                <p>
+                    <font size="1">
+                	This enables the ability to add/remove groups whose name matches the pattern specified above, effectively enabling the ability to have space-specific groups manageable by space administrators.
                     </font>
                 </p>
             </td>

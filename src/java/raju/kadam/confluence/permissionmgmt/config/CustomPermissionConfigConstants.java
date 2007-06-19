@@ -18,10 +18,11 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_PLUGIN_STATUS = "ext.delegateusermgmt.plugin.status";
     public static final String DELEGATE_USER_MGMT_USERGROUPS_MATCHING_PATTERN = "ext.delegateusermgmt.usergroups.matching.pattern";
     public static final String DELEGATE_USER_MGMT_DOWNTIME_MESSAGE = "ext.delegateusermgmt.downtime.message.value";
+    public static final String DELEGATE_USER_MGMT_GROUP_ACTIONS_PERMITTED = "ext.delegateusermgmt.group.actions.permitted.value";
 
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";
     public static final String DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE = "JIRA";
 
-    public static final String DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE= "YES";
-    public static final String DELEGATE_USER_LDAP_AUTH_KEY_NO_VALUE= "NO";
+    public static final String YES = "YES";
+    public static final String NO = "NO";
 }

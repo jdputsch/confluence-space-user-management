@@ -21,6 +21,7 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String userGroupsMatchingPattern;
     private String pluginDown;
     private String downTimeMessage;
+    private String groupActionsPermitted;
 
 
     public String getUserManagerLocation() {
@@ -101,5 +102,13 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setDownTimeMessage(String downTimeMessage) {
         this.downTimeMessage = downTimeMessage;
+    }
+
+    public String getGroupActionsPermitted() {
+        return groupActionsPermitted;
+    }
+
+    public void setGroupActionsPermitted(String groupActionsPermitted) {
+        this.groupActionsPermitted = groupActionsPermitted;
     }
 }

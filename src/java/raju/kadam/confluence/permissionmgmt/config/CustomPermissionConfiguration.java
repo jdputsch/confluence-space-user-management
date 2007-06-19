@@ -32,6 +32,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setCompanyLDAPBaseDN(getCompanyLDAPBaseDN());
         config.setPluginDown(getPluginDown());
         config.setDownTimeMessage(getDownTimeMessage());
+        config.setGroupActionsPermitted(getGroupActionsPermitted());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -45,6 +46,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setCompanyLDAPBaseDN(config.getCompanyLDAPBaseDN());
         setPluginDown(config.getPluginDown());
         setDownTimeMessage(config.getDownTimeMessage());
+        setGroupActionsPermitted(config.getGroupActionsPermitted());
     }
 
     public String getUserManagerLocation() {
@@ -125,6 +127,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setDownTimeMessage(String downTimeMessage) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_DOWNTIME_MESSAGE, downTimeMessage);
+    }
+
+    public String getGroupActionsPermitted() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_GROUP_ACTIONS_PERMITTED);
+    }
+
+    public void setGroupActionsPermitted(String groupActionsPermitted) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_GROUP_ACTIONS_PERMITTED, groupActionsPermitted);
     }
 
     public BandanaManager getBandanaManager() {

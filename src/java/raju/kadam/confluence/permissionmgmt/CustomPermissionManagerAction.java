@@ -411,7 +411,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         }
         else if(adminAction.equals("AddToGroups"))
         {
-	        boolean isLDAPPresent = getIsLdapAuthUsed().equals(CustomPermissionConfigConstants.DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE) ? true : false;
+	        boolean isLDAPPresent = getIsLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false;
     		try
     		{
         		//Associate selected user-groups to all users.
@@ -691,7 +691,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         log.debug("getCompanyLDAPUrl - " + getCompanyLDAPUrl());
         log.debug("getCompanyLDAPBaseDN - " + getCompanyLDAPBaseDN());
                 		
-        Boolean isLDAPLookupAvailable = new Boolean(getIsLdapAuthUsed().equals(CustomPermissionConfigConstants.DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE) ? true : false);
+        Boolean isLDAPLookupAvailable = new Boolean(getIsLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false);
         log.debug( "isLDAPLookupAvailable - " + isLDAPLookupAvailable);
 
         //Ok time to call Jira RPC plugin as we have all data that needs to be processed.

@@ -92,7 +92,7 @@
 		  #if($isPluginConfigurationDone)
 	
 	               #set ($groups = $action.UsersGroupsAssociatedForSpace)
-	               
+
 	             <tr>
 	                    <td>
 	                        <form method="POST" action="docustompermissionsmanage.action?key=${key}" name="ManageUsersForm">
@@ -113,6 +113,9 @@
 		                                    
 		                                </td>
 		                            </tr>
+
+		                            #if ($action.customPermissionConfiguration.groupActionsPermitted == "YES")
+
 		                            <tr>
 		                                <td colspan="2">
 		                                   ##input userlist
@@ -127,6 +130,8 @@
 
 		                                </td>
 		                            </tr>
+
+		                            #end
 		                            
 									<tr>
 										<td width="30%">User Groups associated with this space:</td>
@@ -158,8 +163,13 @@
 					                            <input type="radio" name="adminAction" #if ($action.adminAction == "AddToGroups") checked="true" #end value="AddToGroups"> Add Users to Selected Groups<b>*</b> &nbsp;
 					                            <!-- Remove button will be disabled if user has pre-selected "confluence-users" user group! -->
 					                            <input type="radio" name="adminAction" id="RemoveFromGroups" #if ($action.adminAction == "RemoveFromGroups") checked="true" #end #if($action.isGroupSelected("confluence-users")) disabled #end value="RemoveFromGroups"> Remove Users from Selected Groups<b>**</b>
+
+					                            #if ($action.customPermissionConfiguration.groupActionsPermitted == "YES")
+
 					                            <input type="radio" name="adminAction" #if ($action.adminAction == "AddGroups") checked="true" #end value="AddGroups"> Add New Groups &nbsp;
 					                            <input type="radio" name="adminAction" #if ($action.adminAction == "RemoveGroups") checked="true" #end value="RemoveGroups"> Remove Groups &nbsp;
+
+					                            #end
 										</td>
 									</tr>
 									

@@ -37,4 +37,7 @@ public interface CustomPermissionConfigurable {
     
     public String getDownTimeMessage();
     public void setDownTimeMessage(String downTimeMessage);
+
+    public String getGroupActionsPermitted();
+    public void setGroupActionsPermitted(String groupActionsPermitted);
 }
