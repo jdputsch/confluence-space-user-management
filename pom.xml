@@ -70,9 +70,9 @@
                 <version>0.4</version>
             </dependency>
             <dependency>
-                <groupId>atlassian-bucket</groupId>
-                <artifactId>atlassian-bucket</artifactId>
-                <version>2006.11.24</version>
+                <groupId>com.atlassian.spring</groupId>
+                <artifactId>atlassian-spring</artifactId>
+                <version>0.2</version>
             </dependency>
             <dependency>
                 <groupId>atlassian-bandana</groupId>

@@ -35,7 +35,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.naming.InitialContext;
@@ -47,7 +46,10 @@ import org.apache.xmlrpc.XmlRpcClient;
 import raju.kadam.util.*;
 import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
-import bucket.container.ContainerManager;
+import raju.kadam.confluence.permissionmgmt.service.GroupManagementService;
+import raju.kadam.confluence.permissionmgmt.util.GroupMatchingUtil;
+import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
@@ -61,6 +63,7 @@ import com.atlassian.confluence.util.SpaceComparator;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
 import com.atlassian.user.search.page.PagerUtils;
+import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
 
 /**
@@ -81,6 +84,9 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     private String groupsToAdd = null;
     private List selectedUserGroupsList = null;
     private String adminAction = null;
+
+    private GroupManagementService groupManagementService;
+    private CustomPermissionConfiguration customPermissionConfiguration;
 
     public CustomPermissionManagerAction()
 	{
@@ -134,7 +140,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	
     	//Process user groups as per type of User Management Service used. It can be from CONFLUENCE or JIRA
     	String userManagementLocation = getUserManagerLocation();
-    	if(userManagementLocation.equals(CustomPermissionConfigAction.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
+    	if(userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
     	{
         	//Using Confluence for user management
             return manageUsersInConfluence( loggedInUser,
@@ -145,7 +151,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
                                             adminAction);
     	}
     	//Using Jira for user management
-    	else if(userManagementLocation.equals(CustomPermissionConfigAction.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
+    	else if(userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
     	{
         	//First generate a secret Id that we want to pass with data.
         	String secretId = getSecretId(loggedInUser);
@@ -168,7 +174,11 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
        return super.execute();
     }
 
-	//Helps to retrieve usergroups selected by User - removed "groups_" from selected checkbox name
+    public List getUsersGroupsAssociatedForSpace() {
+        return this.getGroupManagementService().findGroups(this.getSpace());
+    }
+
+    //Helps to retrieve usergroups selected by User - removed "groups_" from selected checkbox name
     public String buildUserGroupsFromCheckboxName(String checkboxName)
     {
         String[] splitUpCheckboxName = checkboxName.split("_", 2);
@@ -204,83 +214,6 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	}
     	
       return false;
-    }
-
-    public Pattern createGroupMatchingPattern() {
-        String groupPattern = getUserGroupsMatchingPattern();
-        if(groupPattern == null || (groupPattern.trim().equals("")))
-        {
-        	//This will only happen if we don't validate matching pattern during configuration.
-        	groupPattern = CustomPermissionConstants.SPACEKEY_REGEXP;
-        }
-
-    	//If spacekey is present in groupPattern then before compiling it replace it with current space key
-    	if(groupPattern.indexOf(CustomPermissionConstants.SPACEKEY)!= -1)
-    	{
-    		//Replace String "SPACEKEY" with input Space Key.
-    		groupPattern = groupPattern.replaceFirst(CustomPermissionConstants.SPACEKEY, getKey());
-    	}
-
-    	log.debug("group pattern -> " + groupPattern);
-
-        Pattern pat=Pattern.compile(groupPattern);
-
-        return pat;
-    }
-
-    public boolean doesGroupMatchPattern(String grpName, Pattern pat) {
-        log.debug("attempting to match group '" + grpName + "'");
-        Matcher matcher = pat.matcher(grpName);
-        return matcher.matches();
-    }
-    
-    //Get all users groups which Space Admins can manage
-    public List getUsersGroupsAssociatedForSpace()
-    {
-    	ArrayList notAllowedUserGroups = new ArrayList();
-    	notAllowedUserGroups.add("confluence-administrators");
-
-    	Pattern pat = createGroupMatchingPattern();
-        
-        List result = new ArrayList();
-
-        //VIEWSPACE_PERMISSION is basic permission that every user group can have.
-        Map map = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, getSpace());
-        if ( map==null || map.size()==0 ) {
-            log.debug("No groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION");
-        }
-        else {
-            log.debug("Got the following groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION: " + getCollectionAsString(map.keySet()));
-        }
-
-        for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();)
-        {
-        	String grpName = (String) iterator.next();
-            //If notAllowedUserGroups doesn't contain this group name 
-        	//and group name matches the pattern, then only add this user-group for display.
-    		//log.debug("Selected Groups .....");
-            boolean isPatternMatch = doesGroupMatchPattern(grpName, pat);
-            if( (!notAllowedUserGroups.contains(grpName)) && isPatternMatch)
-        	{
-        		log.debug("group '" + grpName + "' allowed");
-        		result.add(userAccessor.getGroup(grpName));                
-            }
-            else {
-                log.debug("group '" + grpName + "' not allowed. notAllowedUserGroups=" + getCollectionAsString(notAllowedUserGroups) + " isPatternMatch=" + isPatternMatch );
-            }
-            //log.debug("-------End of Groups---------");
-    		
-        }
-
-        Collections.sort(result, new Comparator()
-        {
-            public int compare(Object o, Object o1)
-            {
-                return ((Group) o).getName().compareToIgnoreCase(((Group) o1).getName());
-            }
-        });
-
-        return result;
     }
 
     /*
@@ -372,7 +305,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             List notAssociatedUserGroups = new ArrayList();
 
             //Set currentAssociatedUserGroupsSet = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, getSpace()).keySet();
-            List currentAssociatedUserGroupsSet = getUsersGroupsAssociatedForSpace();
+            List currentAssociatedUserGroupsSet = getGroupManagementService().findGroups(getSpace());
             for (Iterator iterator = selectedUserGroups.iterator(); iterator.hasNext();)
             {
                 String grpName = (String) iterator.next();
@@ -478,7 +411,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         }
         else if(adminAction.equals("AddToGroups"))
         {
-	        boolean isLDAPPresent = getIsLdapAuthUsed().equals(CustomPermissionConfigAction.DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE) ? true : false;
+	        boolean isLDAPPresent = getIsLdapAuthUsed().equals(CustomPermissionConfigConstants.DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE) ? true : false;
     		try
     		{
         		//Associate selected user-groups to all users.
@@ -603,8 +536,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         			if(currGroup == null)
         			{
         				//create a group only if it matches pattern
-                        Pattern pat = createGroupMatchingPattern();
-                        boolean isPatternMatch = doesGroupMatchPattern(groupid, pat);
+                        Pattern pat = GroupMatchingUtil.createGroupMatchingPattern(bandanaManager, getKey());
+                        boolean isPatternMatch = GroupMatchingUtil.doesGroupMatchPattern(groupid, pat);
 
                         if (isPatternMatch) {
 
@@ -678,15 +611,17 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         		for(Iterator iterator = groupList.iterator(); iterator.hasNext();)
                 {
                     String grpName = (String)iterator.next();
-                    Pattern pat = createGroupMatchingPattern();
-                    if (!grpName.startsWith("conf") && doesGroupMatchPattern(grpName, pat)) {
+                    Pattern pat = GroupMatchingUtil.createGroupMatchingPattern(bandanaManager, getKey());
+                    boolean isPatternMatch = GroupMatchingUtil.doesGroupMatchPattern(grpName, pat);
+
+                    if (!grpName.startsWith("conf") && isPatternMatch) {
                         Group group = userAccessor.getGroup(grpName);
                         if (group!=null) {
                             userAccessor.removeGroup(group);
                         }
                     }
                     else {
-                        log.debug("Not deleting group '" + grpName + "', as either it started with 'conf' or didn't match pattern " + getUserGroupsMatchingPattern());
+                        log.debug("Not deleting group '" + grpName + "', as either it started with 'conf' or didn't match pattern " + GroupMatchingUtil.getUserGroupsMatchingPattern(bandanaManager));
 
                         if (!("".equals(groupsNotDeleted))) {
                             groupsNotDeleted += ",";
@@ -708,7 +643,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
                 resultList.add("<font color=\"green\">" + opMessage + "</font>");
             }
             else {
-                opMessage = "The following selected groups were not deleted, either because they started with 'conf' or didn't match pattern " + getUserGroupsMatchingPattern() + ": " + groupsNotDeleted;
+                opMessage = "The following selected groups were not deleted, either because they started with 'conf' or didn't match pattern " + GroupMatchingUtil.getUserGroupsMatchingPattern(bandanaManager) + ": " + groupsNotDeleted;
                 resultList.add("<font color=\"red\">" + opMessage + "</font>");
             }
 
@@ -756,7 +691,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         log.debug("getCompanyLDAPUrl - " + getCompanyLDAPUrl());
         log.debug("getCompanyLDAPBaseDN - " + getCompanyLDAPBaseDN());
                 		
-        Boolean isLDAPLookupAvailable = new Boolean(getIsLdapAuthUsed().equals(CustomPermissionConfigAction.DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE) ? true : false);
+        Boolean isLDAPLookupAvailable = new Boolean(getIsLdapAuthUsed().equals(CustomPermissionConfigConstants.DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE) ? true : false);
         log.debug( "isLDAPLookupAvailable - " + isLDAPLookupAvailable);
 
         //Ok time to call Jira RPC plugin as we have all data that needs to be processed.
@@ -875,43 +810,38 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
     
     public String getUserManagerLocation() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_USER_MANAGER_LOCATION);
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_USER_MANAGER_LOCATION);
 	}
     
 	public String getJiraUrl() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_MGMT_JIRA_URL);
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_URL);
 	}
    
 	public String getIsLdapAuthUsed()
     {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_MGMT_LDAP_AUTH_STATUS_KEY);
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_AUTH_STATUS_KEY);
     }
 	
     public String getJiraJNDILookupKey()
     {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_MGMT_JIRA_JNDI_KEY);
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_JNDI_KEY);
     }
 
 	public String getCompanyLDAPBaseDN() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_MGMT_COMPANY_LDAP_BASE_DN_KEY);
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_COMPANY_LDAP_BASE_DN_KEY);
 	}
 
 	public String getCompanyLDAPUrl() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_MGMT_COMPANY_LDAP_URL_KEY);
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_COMPANY_LDAP_URL_KEY);
 	}
 	
 	//Get the count which indicates total no. of userids that can be processed at a time.
 	public String getMaxUserIDsLimit() {
-        return ((String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT));
+        return ((String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT));
 	}
 
-	//Get Pattern to display all groups 
-	public String getUserGroupsMatchingPattern() {
-        return ((String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_MGMT_USERGROUPS_MATCHING_PATTERN));
-	}
-	
 	public String getIsPluginDown() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigAction.DELEGATE_USER_MGMT_PLUGIN_STATUS);
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PLUGIN_STATUS);
 	}
 	
 	public String getConfluenceUrl(){
@@ -935,7 +865,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	boolean isPluginOkToRun = false; //This will be true only we need to get plugin offilne by displaying downtime message.
     	
     	String userManagementLocation = getUserManagerLocation();
-    	if( (userManagementLocation!= null)&& (userManagementLocation.equals(CustomPermissionConfigAction.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE)) )
+    	if( (userManagementLocation!= null)&& (userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE)) )
     	{
     		//if user is using JIRA for User Management then we need to Jira Information
         	if( (getJiraUrl()!= null) ||  (getJiraJNDILookupKey()!=null))
@@ -944,7 +874,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         		isJiraSettingDone = true;
         	}
     	}
-    	else if( (userManagementLocation!= null)&& (userManagementLocation.equals(CustomPermissionConfigAction.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE)) )
+    	else if( (userManagementLocation!= null)&& (userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE)) )
     	{
     		//Since we are using Confluence, no need for Jira information. We will set flag as true
     		isJiraSettingDone = true;
@@ -1088,13 +1018,13 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     {
         log.debug("Validating adminAction=" + adminAction +
                 ", paramMap=" + paramMap +
-                ", userIdList=" + ListUtil.convertListToCommaDelimitedString(userIdList) +
-                ", groupToAddIdList=" + ListUtil.convertListToCommaDelimitedString(groupToAddIdList));
+                ", userIdList=" + StringUtil.convertCollectionToCommaDelimitedString(userIdList) +
+                ", groupToAddIdList=" + StringUtil.convertCollectionToCommaDelimitedString(groupToAddIdList));
 
         boolean isValid = true; //By default validation will be successful
 
         //Will use default of 20 if we don't validate max UserIDLimit during configuration or user has changed value by modifying xml file (confluence-home/config/confluence-global.bandana.xml).
-        int maxUserIDLimit = ConfigUtil.getIntOrUseDefault("maxUserIDLimit", getMaxUserIDsLimit(), 20);
+        int maxUserIDLimit = ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIDLimit", getMaxUserIDsLimit(), 20);
 
         if(adminAction == null)
     	{
@@ -1161,8 +1091,24 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	return PagerUtils.count(userAccessor.getMemberNames(userAccessor.getGroup(grpName)));
     }
 
+    public GroupManagementService getGroupManagementService() {
+        return groupManagementService;
+    }
+
+    public void setGroupManagementService(GroupManagementService groupManagementService) {
+        this.groupManagementService = groupManagementService;
+    }
+
+    public CustomPermissionConfiguration getCustomPermissionConfiguration() {
+        return customPermissionConfiguration;
+    }
+
+    public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
+        this.customPermissionConfiguration = customPermissionConfiguration;
+    }
+
     public String getActionName(String fullClassName)
     {
     	return "Custom Space Usergroups Manager";
     }
-}
+  }

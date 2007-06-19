@@ -22,4 +22,23 @@ public class StringUtil {
         List result = Arrays.asList(valueArray);
         return result;
     }
+
+    public static String convertCollectionToCommaDelimitedString( Collection collection ) {
+            StringBuffer sb = new StringBuffer();
+            if ( collection != null ) {
+                Iterator iter = collection.iterator();
+                int count = 0;
+                while (iter.hasNext()) {
+                    String item = (String)iter.next();
+                    if (count!=0) {
+                        sb.append(", ");
+                    }
+                    sb.append(item);
+                    count++;
+                }
+            }
+            return sb.toString();
+        }
+
+
 }

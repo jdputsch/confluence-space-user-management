@@ -86,13 +86,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             </properties>
         </dependency>
         <dependency>
-            <id>atlassian-bucket</id>
-            <version>2005.12.23</version>
+            <id>atlassian-spring</id>
+            <version>0.2</version>
             <properties>
                 <war.bundle>true</war.bundle>
                 <atlassian.ship>source</atlassian.ship>
-                <atlassian.cvs.tag>atlassian_bucket_2005_12_23</atlassian.cvs.tag>
-                <atlassian.module.dir>bucket</atlassian.module.dir>
+                <atlassian.cvs.tag>atlassian_spring_0_2</atlassian.cvs.tag>
+                <atlassian.module.dir>spring</atlassian.module.dir>
             </properties>
         </dependency>
         <dependency>

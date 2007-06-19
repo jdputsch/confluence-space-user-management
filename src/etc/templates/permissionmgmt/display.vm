@@ -184,7 +184,7 @@
 								 #else
 									<tr>
 										<td colspan="2">
-											<font color="red">You can not manage user-groups  associated with this wiki space. Please check with Confluence Administrators.</font>
+											<font color="red">You can not manage user-groups associated with this wiki space. Please check with Confluence Administrators.</font>
 										</td>
 									</tr>
 								 #end							
@@ -212,8 +212,8 @@
 			  #else
 					<tr>
 						<td colspan="2">
-							#if($isPluginDown == "yes")
-								$downTimeMessage
+							#if($customPermissionConfiguration.pluginDown == "yes")
+								$customPermissionConfiguration.downTimeMessage
 							#else
 							<h4>An administrator must configure "Custom Space Usergroups Manager" before you start using it.</h4>
 							#end

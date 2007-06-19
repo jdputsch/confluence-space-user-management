@@ -10,20 +10,6 @@ import java.util.List;
  */
 public class ListUtil {
 
-    public static String convertListToCommaDelimitedString( List list ) {
-        StringBuffer sb = new StringBuffer();
-        if ( list != null ) {
-            for ( int i=0; i<list.size(); i++ ) {
-                String item = (String)list.get(i);
-                if (i!=0) {
-                    sb.append(", ");
-                }
-                sb.append(item);
-            }
-        }
-        return sb.toString();
-    }
-
     public static boolean isListSizeOverMaxNum( List list, int max ) {
         boolean result = false;
         if ( list != null && list.size() > max ) {

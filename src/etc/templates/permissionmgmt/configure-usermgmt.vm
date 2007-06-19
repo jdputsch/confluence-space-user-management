@@ -83,8 +83,8 @@
         <tr>
             <td class="label" width="30%">User Manager Location for Wiki:</td>
             <td nowrap>
-                #if ($!action.userManagerLocation)
-                    <span style="color: green; font-weight: bold">$!action.userManagerLocation</span>
+                #if ($!action.customPermissionConfiguration.userManagerLocation)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.userManagerLocation</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -93,8 +93,8 @@
         <tr>
             <td class="label" width="30%">Jira Url:</td>
             <td nowrap>
-                #if ($action.jiraUrl)
-                    <span style="color: green; font-weight: bold">$!action.jiraUrl</span>
+                #if ($action.customPermissionConfiguration.jiraUrl)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraUrl</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -103,8 +103,8 @@
         <tr>
             <td class="label" width="30%">Jira JNDI Datasource:</td>
             <td nowrap>
-                #if ($action.jiraJNDILookupKey)
-                    <span style="color: green; font-weight: bold">$!action.jiraJNDILookupKey</span>
+                #if ($action.customPermissionConfiguration.jiraJNDILookupKey)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraJNDILookupKey</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -113,14 +113,14 @@
         <tr>
             <td class="label" width="30%">LDAP Authentication Used?:</td>
             <td nowrap>
-                    <span style="color: green; font-weight: bold">#if ($!action.isLdapAuthUsed == "YES") YES #else NO #end</span>
+                    <span style="color: green; font-weight: bold">#if ($!action.customPermissionConfiguration.ldapAuthUsed == "YES") YES #else NO #end</span>
             </td>
         </tr>
         <tr>
             <td class="label" width="30%">LDAP Url:</td>
             <td nowrap>
-                #if ($action.companyLDAPUrl)
-                    <span style="color: green; font-weight: bold">$!action.companyLDAPUrl</span>
+                #if ($action.customPermissionConfiguration.companyLDAPUrl)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.companyLDAPUrl</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -129,8 +129,8 @@
         <tr>
             <td class="label" width="30%">LDAP Search Base DN:</td>
             <td nowrap>
-                #if ($action.companyLDAPBaseDN)
-                    <span style="color: green; font-weight: bold">$!action.companyLDAPBaseDN</span>
+                #if ($action.customPermissionConfiguration.companyLDAPBaseDN)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.companyLDAPBaseDN</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -140,8 +140,8 @@
         <tr>
             <td class="label" width="30%">Usergroups Matching Pattern:</td>
             <td nowrap>
-                #if ($action.userGroupsMatchingPattern)
-                    <span style="color: green; font-weight: bold">$!action.userGroupsMatchingPattern</span>
+                #if ($action.customPermissionConfiguration.userGroupsMatchingPattern)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.userGroupsMatchingPattern</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -151,8 +151,8 @@
         <tr>
             <td class="label" width="30%">Max UserId/GroupId Limit:</td>
             <td nowrap>
-                #if ($action.maxUserIDsLimit)
-                    <span style="color: green; font-weight: bold">$!action.maxUserIDsLimit</span>
+                #if ($action.customPermissionConfiguration.maxUserIDsLimit)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.maxUserIDsLimit</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -160,10 +160,10 @@
         </tr>
 
         <tr>
-            <td class="label" width="30%">Is this plugin deactivated?:</td>
+            <td class="label" width="30%">Plugin Deactivated:</td>
             <td nowrap>
-                #if ($action.isPluginDown)
-                    <span style="color: green; font-weight: bold">$!action.isPluginDown</span>
+                #if ($action.customPermissionConfiguration.pluginDown)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.pluginDown</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -173,8 +173,8 @@
         <tr>
             <td class="label" width="30%">Plugin Downtime Message:</td>
             <td nowrap>
-                #if ($action.downTimeMessage)
-                    <span style="color: green; font-weight: bold">$!action.downTimeMessage</span>
+                #if ($action.customPermissionConfiguration.downTimeMessage)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.downTimeMessage</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -192,9 +192,9 @@
         <tr>
             <td valign="top" class="label" width="30%">User Manager Location:</td>
             <td>
-				#fielderror ('updateUserManagerLocation')
-                <input type="radio" name="updateUserManagerLocation" value="CONFLUENCE" #if ($action.updateUserManagerLocation == "CONFLUENCE") checked="true" #end  onclick="toggleJiraSettingsInput(this)" />CONFLUENCE &nbsp; 
-                <input type="radio" name="updateUserManagerLocation" value="JIRA" #if ($action.updateUserManagerLocation == "JIRA") checked="true" #end onclick="toggleJiraSettingsInput(this)" />JIRA
+				#fielderror ('userManagerLocation')
+                <input type="radio" name="userManagerLocation" value="CONFLUENCE" #if ($action.userManagerLocation == "CONFLUENCE") checked="true" #end  onclick="toggleJiraSettingsInput(this)" />CONFLUENCE &nbsp;
+                <input type="radio" name="userManagerLocation" value="JIRA" #if ($action.userManagerLocation == "JIRA") checked="true" #end onclick="toggleJiraSettingsInput(this)" />JIRA
                 <br>
                 <font size="1">
             	Note: If you are using LDAP for user management, then please select option <b>CONFLUENCE</b>
@@ -205,8 +205,8 @@
         <tr>
             <td valign="top" class="label" width="30%">Jira Url:</td>
             <td>
-				#fielderror ('updateJiraUrl')
-                <input type="text" name="updateJiraUrl" id="updateJiraUrl" value="$!action.updateJiraUrl" #if ($action.updateUserManagerLocation == "CONFLUENCE") disabled="true" #end size="50" />
+				#fielderror ('jiraUrl')
+                <input type="text" name="jiraUrl" id="jiraUrl" value="$!action.jiraUrl" #if ($action.userManagerLocation == "CONFLUENCE") disabled="true" #end size="50" />
                 <p>
                     <font size="1">Example: http://acme.jira.com</font>
                 </p>
@@ -215,8 +215,8 @@
         <tr>
             <td valign="top" class="label" width="30%">Jira JNDI Datasource:</td>
             <td>
-				#fielderror ('updateJiraJNDILookupKey')
-                <input type="text" name="updateJiraJNDILookupKey" id="updateJiraJNDILookupKey" value="$!action.updateJiraJNDILookupKey" #if ($action.updateUserManagerLocation == "CONFLUENCE") disabled="true" #end size="50" />
+				#fielderror ('jiraJNDILookupKey')
+                <input type="text" name="jiraJNDILookupKey" id="jiraJNDILookupKey" value="$!action.jiraJNDILookupKey" #if ($action.userManagerLocation == "CONFLUENCE") disabled="true" #end size="50" />
                 <p>
                     Enter Jira Datasource name that is being used during <b>Confluence and Jira Integration</b> as explained <a href="http://confluence.atlassian.com/display/DOC/How+to+delegate+user+management+in+Confluence+to+JIRA#HowtodelegateusermanagementinConfluencetoJIRA-2.SetupdatasourcetoJIRAuserbasewithinConfluence">here</a> &nbsp; <font size="1">Example: jdbc/JiraDS</font>
                 </p>
@@ -227,7 +227,7 @@
         <tr>
             <td valign="top" class="label" width="30%">Max UserIDs Limit:</td>
             <td>
-                <input type="text" name="updateMaxUserIDsLimit" value="$!action.updateMaxUserIDsLimit" size="2" />
+                <input type="text" name="maxUserIDsLimit" value="$!action.maxUserIDsLimit" size="2" />
                 <p>
                     <font size="1">If this value is not defined, then default max UserIDs limit is 20.</font>
                 </p>
@@ -237,7 +237,7 @@
         <tr>
             <td valign="top" class="label" width="30%">Usergroups matching pattern:</td>
             <td>
-                <input type="text" name="updateUserGroupsMatchingPattern" value="$!action.updateUserGroupsMatchingPattern" size="30" />
+                <input type="text" name="userGroupsMatchingPattern" value="$!action.userGroupsMatchingPattern" size="30" />
                 <p>
                     <font size="1">
                 	e.g.: If SPACEKEY is "ds" then, pattern <b>SPACEKEY-.*</b> will match ds-users, ds-conf-users<br>
@@ -248,27 +248,19 @@
         </tr>
         
         <tr>     
-            <td valign="top" class="label" width="30%">Are you using LDAP for User Authentication?:</td>
+            <td valign="top" class="label" width="30%">Use LDAP for User Authentication:</td>
             <td>
-				#fielderror ('updateIsLdapAuthUsed')
-                <input type="radio" name="updateIsLdapAuthUsed" value="YES" #if ($!action.updateIsLdapAuthUsed == "YES") checked="true" #end onclick="toggleLDAPSettingsInput(this)" />YES &nbsp;
-                <input type="radio" name="updateIsLdapAuthUsed" value="NO" #if ($!action.updateIsLdapAuthUsed == "NO") checked="true" #end onclick="toggleLDAPSettingsInput(this)" />NO
+				#fielderror ('ldapAuthUsed')
+                <input type="radio" name="ldapAuthUsed" value="YES" #if ($!action.ldapAuthUsed == "YES") checked="true" #end onclick="toggleLDAPSettingsInput(this)" />YES &nbsp;
+                <input type="radio" name="ldapAuthUsed" value="NO" #if ($!action.ldapAuthUsed == "NO") checked="true" #end onclick="toggleLDAPSettingsInput(this)" />NO
             </td>
-        </tr>
-        
-<!--
-        <tr>
-            <td width="100%" colspan="2">Following two questions needs to be entered only if you are using LDAP for user authentication.<br>
-	            <font size="1">This information is available in osuser.xml located in WEB-INF/lib/classes directory<br>Details of new users will be fetched from LDAP if available.</font>
-            </td>
-        </tr>
--->
+        </tr>        
         
         <tr>
             <td valign="top" class="label" width="30%">LDAP Url:</td>
             <td>
-				#fielderror ('updateCompanyLDAPUrl')
-                 <input type="text" name="updateCompanyLDAPUrl" id="updateCompanyLDAPUrl" value="$!action.updateCompanyLDAPUrl" #if ($!action.updateIsLdapAuthUsed == "NO") disabled="true" #end size="50" />
+				#fielderror ('companyLDAPUrl')
+                 <input type="text" name="companyLDAPUrl" id="companyLDAPUrl" value="$!action.companyLDAPUrl" #if ($!action.ldapAuthUsed == "NO") disabled="true" #end size="50" />
 					<br>
 	            	<font size="1">Example: ldap://acme:389</font>                 
             </td>
@@ -277,25 +269,25 @@
         <tr>
             <td valign="top" class="label" width="30%">LDAP Search Base DN:</td>
             <td>
-				#fielderror ('updateCompanyLDAPBaseDN')
-                 <input type="text" name="updateCompanyLDAPBaseDN" id="updateCompanyLDAPBaseDN" value="$!action.updateCompanyLDAPBaseDN" #if ($!action.updateIsLdapAuthUsed == "NO") disabled="true" #end size="50" />
+				#fielderror ('companyLDAPBaseDN')
+                 <input type="text" name="companyLDAPBaseDN" id="companyLDAPBaseDN" value="$!action.companyLDAPBaseDN" #if ($!action.ldapAuthUsed == "NO") disabled="true" #end size="50" />
 					<br>
 	            	<font size="1">Example: dc=acme,dc=com</font>                 
             </td>
         </tr>
         
         <tr>     
-            <td valign="top" class="label" width="30%">Want deactivate this plugin?:</td>
+            <td valign="top" class="label" width="30%">Plugin Deactivated:</td>
             <td>
-                <input type="radio" name="updateIsPluginDown" value="YES" #if ($!action.updateIsPluginDown == "YES") checked="true" #end />YES &nbsp; 
-                <input type="radio" name="updateIsPluginDown" value="NO" #if ($!action.updateIsPluginDown == "NO") checked="true" #end />NO
+                <input type="radio" name="pluginDown" value="YES" #if ($!action.pluginDown == "YES") checked="true" #end />YES &nbsp;
+                <input type="radio" name="pluginDown" value="NO" #if ($!action.pluginDown == "NO") checked="true" #end />NO
             </td>
         </tr>
 
         <tr>
             <td valign="top" class="label" width="30%">Plugin Downtime Message:</td>
             <td>
-   	         <textarea name="updateDownTimeMessage" value="$!action.updateDownTimeMessage"  cols="60" rows="6" class="monospaceInput"></textarea>
+   	         <textarea name="downTimeMessage" cols="60" rows="6" class="monospaceInput">$!action.downTimeMessage</textarea>
             </td>
         </tr>
         

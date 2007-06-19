@@ -42,12 +42,27 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <version>2.0</version>
         <application-version min="1.4" max="1.5"/>
         <vendor name="Rajendra Kadam" url="raju.kadam@gmail.com"/>
+        <param name="configure.url">/admin/plugins/custompermissionsconfig/config.action</param>
     </plugin-info>
     
+    <spring name="Custom Permission Configuration"
+        key="customPermissionConfiguration"
+        class="raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration" />        
+
     <!-- Modules here -->
 	<resource type="download" name="customusermanagement.css" location="templates/css/customusermanagement.css"/>        
 
     <resource type="i18n" name="i18n" location="raju/kadam/confluence/permissionmgmt/AtlassianPlugin" />
+
+    <!-- Used for autowiring -->
+    <component name="Group Management Service"
+        key="groupManagementService"
+        class="raju.kadam.confluence.permissionmgmt.service.impl.SpaceConfGroupManagementService" />
+
+    <!-- Used for autowiring -->
+    <component name="User Management Service"
+        key="userManagementService"
+        class="raju.kadam.confluence.permissionmgmt.service.impl.SpaceConfUserManagementService" />    
 
     <xwork name="Configure Custom Space User Management Plugin" key="configure-delegateusermgmt">
         
@@ -117,7 +132,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </condition>
     </web-item>
 
-    <rpc-xmlrpc key="userrolexmlrpcservice" name="Verfiy User Role" class="raju.kadam.confluence.rpc.xmlrpc.UserRoleXMLRpcServiceImpl">
+    <rpc-xmlrpc key="userrolexmlrpcservice" name="Verify User Role" class="raju.kadam.confluence.rpc.xmlrpc.UserRoleXMLRpcServiceImpl">
         <description>RPC User Role Verification Service</description>
         <service-path>userroleservice</service-path>
     </rpc-xmlrpc>

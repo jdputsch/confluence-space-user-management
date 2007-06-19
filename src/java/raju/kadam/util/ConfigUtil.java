@@ -13,21 +13,40 @@ public class ConfigUtil {
 
     private static final Log log = LogFactory.getLog(ConfigUtil.class);
 
-    public static int getIntOrUseDefault( String name, String value, int defaultInt ) {
-        int result = defaultInt;
+    public static String getTrimmedStringOrNull( String value ) {
+        String result = value;
+        if ( result != null ) {
+            result = value.trim();
+        }
+
+        return result;
+    }
+
+    public static String getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty( String name, String value, String defaultValue ) {
+        String result = defaultValue;
         if ( value != null ) {
-            int maxUserIDLimit = 20;
-                try
-                {
-                    result = Integer.parseInt(value);
-                }
-                catch(NumberFormatException nfe)
-                {
-                    log.debug("Could not parse " + name + " value of '" + value +
-                            "'. Using default value " + defaultInt );
-                    //This will happen only if we don't validate max UserIDLimit during configuration or user has changed value by modifying xml file (confluence-home/config/confluence-global.bandana.xml).
-                    maxUserIDLimit = 20;
-                }
+            result = value.trim();
+            if ( "".equals(value) ) {
+                result = defaultValue;
+            }
+        }
+
+        return result;
+    }
+
+    public static int getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger( String name, String value, int defaultValue ) {
+        int result = defaultValue;
+        if ( value != null ) {
+            value = value.trim();
+            try
+            {
+                result = Integer.parseInt(value);
+            }
+            catch(NumberFormatException nfe)
+            {
+                log.debug("Could not parse " + name + " value of '" + value +
+                        "'. Using default value " + defaultValue );
+            }
         }
         
         return result;
