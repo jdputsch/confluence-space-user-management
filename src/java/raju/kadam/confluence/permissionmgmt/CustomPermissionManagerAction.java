@@ -48,6 +48,8 @@ import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
 import raju.kadam.confluence.permissionmgmt.service.GroupManagementService;
 import raju.kadam.confluence.permissionmgmt.util.GroupMatchingUtil;
+import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
+import raju.kadam.confluence.permissionmgmt.util.RpcResponse;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
@@ -73,9 +75,7 @@ import com.opensymphony.webwork.ServletActionContext;
  */
 public class CustomPermissionManagerAction extends AbstractSpaceAction implements SpaceAdministrative
 {
-    public static final String RPC_PATH  = "/rpc/xmlrpc";
-
-    private BootstrapManager bootStrapManager;
+    private BootstrapManager bootstrapManager;
     private BandanaManager bandanaManager;
     private SpaceDao spDao;
     
@@ -90,7 +90,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
     public CustomPermissionManagerAction()
 	{
-		spDao = (SpaceDao) ContainerManager.getComponent("spaceDao");
+		bootstrapManager = (BootstrapManager) ContainerManager.getComponent("bootstrapManager");
+        spDao = (SpaceDao) ContainerManager.getComponent("spaceDao");
 	}
     
     public void setBandanaManager(BandanaManager bandanaManager)
@@ -110,20 +111,23 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     {
 		log.debug("CustomPermissionManagerAction - log - Inside execute...");
 
-    	String loggedInUser = getRemoteUser().getName();
-		String key = getKey();
+        CustomPermissionManagerActionContext context = new CustomPermissionManagerActionContext();
+        String loggedInUser = getRemoteUser().getName();
+        context.setLoggedInUser(loggedInUser);
+		context.setKey(getKey());
     	//String userids = ServletActionContext.getRequest().getParameter("userList");
-    	String adminAction = getAdminAction();
-
-        List userIdList = StringUtil.convertDelimitedStringToCleanedLowercaseList(getUsers());
-        List groupIdToAddList = StringUtil.convertDelimitedStringToCleanedLowercaseList(getGroupsToAdd());
-
+    	context.setAdminAction(getAdminAction());
+        context.setUsersToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getUsers()));
+        context.setGroupsToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getGroupsToAdd()));
+        context.setBootstrapManager(this.bootstrapManager);
+        context.setSpaceKey(this.getSpace().getKey());
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-    	//Get list of user selected usergroups checkboxes
+    	context.setParamMap(paramMap);
+        //Get list of user selected usergroups checkboxes
     	List groupList = retrieveListOfSelectedUserGroups(paramMap);
 
     	//Validate user input
-        boolean isValid = validateInput(adminAction, paramMap, userIdList, groupIdToAddList);
+        boolean isValid = validateInput(context);
     	if(!isValid)
         {
             log.debug("Input was invalid");
@@ -143,19 +147,15 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	if(userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
     	{
         	//Using Confluence for user management
-            return manageUsersInConfluence( loggedInUser,
-											key,
-											userIdList,
-											groupList,
-                                            groupIdToAddList,
-                                            adminAction);
+            return manageUsersInConfluence(context);
     	}
     	//Using Jira for user management
     	else if(userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
     	{
         	//First generate a secret Id that we want to pass with data.
-        	String secretId = getSecretId(loggedInUser);
-        	if(secretId == null)
+        	String secretId = JiraUtil.getSecretId(loggedInUser, getCustomPermissionConfiguration().getJiraJNDILookupKey());
+        	context.setSecretId(secretId);
+            if(secretId == null)
         	{
         		//Looks like there is some problem in getting id for given user. Is JiraDS configuration wrong ?
         		addActionError("Error! Couldn't get User details, Please verify Jira JNDI Datasource with Confluence Administrator.");
@@ -163,13 +163,19 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         	}
 
             //call Jira RPC service
-            callJiraRPCService( loggedInUser,
-    							key,
-    							userIdList,
-    							groupList,
-    							adminAction,
-    							secretId);
-    	}
+            RpcResponse resp = JiraUtil.callJiraRPCService(context, getCustomPermissionConfiguration());
+            //depending upon result of action, display messages.
+            if (resp.isError())
+            {
+                setActionErrors(resp.getMessages());
+            }
+            else
+            {
+               setActionMessages(resp.getMessages());
+               //Since action is carried successfully, clean user input
+               flushUserInputs();
+            }
+        }
 
        return super.execute();
     }
@@ -387,12 +393,13 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 		return vGroup;
 	}
 
-    public String manageUsersInConfluence(String actionPerformerUser,
-			 String spaceKey,
-			 List userIdList,
-			 List groupList,
-             List groupIdToAddList,
-             String adminAction)
+    public String manageUsersInConfluence(CustomPermissionManagerActionContext context)
+    //public String manageUsersInConfluence(String actionPerformerUser,
+			 //String spaceKey,
+			 //List userIdList,
+			 //List groupList,
+             //List groupIdToAddList,
+             //String adminAction)
 	{
 		//Result List. it Looks like we can't sent status as output object, rpc call doesn't support custom objects! Not sure....
 		List resultList = new ArrayList();
@@ -401,10 +408,10 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 		String vNotCreatedUsers = "";
         String vNotCreatedGroups = "";
         String vGroupsNotMatched = "";
-        //Following vector holds all groups to which we are not able to add users.
-		String vNotUsedGroup = "";
 
-		if (adminAction==null) {
+        String adminAction = context.getAdminAction();
+
+        if (adminAction==null) {
             resultList.add("Please select an action.");
             setActionErrors(resultList);
             return ERROR;
@@ -415,7 +422,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     		try
     		{
         		//Associate selected user-groups to all users.
-        		for(Iterator itr = userIdList.iterator(); itr.hasNext();)
+        		for(Iterator itr = context.getUsersToAddList().iterator(); itr.hasNext();)
         		{
         			//First check if given user is present or not
         			String userid = (String) itr.next();
@@ -451,7 +458,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         			if (currUser != null)
         			{
         	        	//Associate this user to all selected user-groups
-        	        	for(Iterator iterator = groupList.iterator(); iterator.hasNext();)
+        	        	for(Iterator iterator = context.getSelectedGroups().iterator(); iterator.hasNext();)
         	        	{
         	        		userAccessor.addMembership((String)iterator.next(), userid);
         	        	}
@@ -499,10 +506,10 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         {
         	try{
 	        	//Remove User from all mentioned groups         	
-        		for(Iterator itr = userIdList.iterator(); itr.hasNext();)
+        		for(Iterator itr = context.getUsersToRemoveList().iterator(); itr.hasNext();)
 	    		{
         			String userid = (String) itr.next();
-		        	for(Iterator iterator = groupList.iterator(); iterator.hasNext();)
+		        	for(Iterator iterator = context.getSelectedGroups().iterator(); iterator.hasNext();)
 		        	{
 		        		userAccessor.removeMembership((String)iterator.next(), userid);
 		        	}
@@ -528,7 +535,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     		{
         		//Add groups
 
-                for(Iterator itr = groupIdToAddList.iterator(); itr.hasNext();)
+                for(Iterator itr = context.getGroupsToAddList().iterator(); itr.hasNext();)
         		{
         			//First check if given group is present or not
         			String groupid = (String) itr.next();
@@ -609,7 +616,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             Pattern pat = null;
             try{
 	        	//Remove Selected Groups
-        		for(Iterator iterator = groupList.iterator(); iterator.hasNext();)
+        		for(Iterator iterator = context.getGroupsToRemoveList().iterator(); iterator.hasNext();)
                 {
                     String grpName = (String)iterator.next();
                     pat = GroupMatchingUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), getSpace().getKey());
@@ -663,114 +670,6 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return SUCCESS;
 	}
 	
-    //call Jira RPC Service
-    public void callJiraRPCService(String actionPerformerUser,
-    								 String spaceKey,
-    								 List userIdList,
-    								 List groupList,
-    								 String adminAction,
-    								 String secretId)
-    {
-        List resultVec = null;
-        String errorMsg = null; 
-        
-        String tempUserIDs = "";
-		for(Iterator itr = userIdList.iterator(); itr.hasNext();)
-		{
-			tempUserIDs +=(String) itr.next() + ",";
-		}
-
-        String groupNames = "";
-		for(Iterator itr = groupList.iterator(); itr.hasNext();)
-		{
-			groupNames +=(String) itr.next()+ ",";
-		}
-		
-		log.debug("Space Admin - " + actionPerformerUser);
-		log.debug("Space Key - " + spaceKey);
-		log.debug("Input Users - " + tempUserIDs);
-		log.debug("Input Group names - " + groupNames);
-        log.debug("AdminAction - " + adminAction);
-        log.debug("Secretid - " + secretId );
-        log.debug("getJiraJNDILookupKey - " + getJiraJNDILookupKey());
-        log.debug("getLdapAuthKey() - " + getIsLdapAuthUsed() );
-        log.debug("getJiraUrl() - " + getJiraUrl());
-        log.debug("getCompanyLDAPUrl - " + getCompanyLDAPUrl());
-        log.debug("getCompanyLDAPBaseDN - " + getCompanyLDAPBaseDN());
-                		
-        Boolean isLDAPLookupAvailable = new Boolean(getIsLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false);
-        log.debug( "isLDAPLookupAvailable - " + isLDAPLookupAvailable);
-
-        //Ok time to call Jira RPC plugin as we have all data that needs to be processed.
-        try
-        {
-            // Initialise RPC Client
-            XmlRpcClient rpcClient = new XmlRpcClient(getJiraUrl() + RPC_PATH);
-            log.debug( " Making call to Jira RPC Client");
-
-            // Login and retrieve logon token
-            Vector rpcParams = new Vector(10);
-            //Enter User who is sending this request to RPC call.
-            rpcParams.add(actionPerformerUser);
-            //Space Name.
-            rpcParams.add(spaceKey);
-            //Get the list of user ids on which we want to act upon.
-            rpcParams.add(userIdList);
-            //Groups to which users need to associate.
-            rpcParams.add(groupList);
-            //Jira Datasource
-            rpcParams.add(getJiraJNDILookupKey());
-            //Confluence Url
-            rpcParams.add(getConfluenceUrl());
-            //Secret Id
-            rpcParams.add(secretId);
-            
-            if(adminAction.equalsIgnoreCase("AddToGroups"))
-            {
-                log.debug( " Adding users to group");
-
-                //If LDAP Lookup available, then pass that info for user creation
-                //Note if isLDAPLookupAvailable is false, then LDAPurl, BaseDN should contain empty strings "" else xml-rpc will throw error!
-                rpcParams.add(isLDAPLookupAvailable);
-                rpcParams.add(getCompanyLDAPUrl());
-                rpcParams.add(getCompanyLDAPBaseDN());
-
-	            resultVec = (Vector) rpcClient.execute("delegateusermgmt.addUsersToGroups", rpcParams);
-	            log.debug("Result is - " + resultVec.get(0));
-            }
-            else if(adminAction.equalsIgnoreCase("RemoveFromGroups"))
-            {
-                log.debug( " Removing users from group");
-	            resultVec = (Vector)rpcClient.execute("delegateusermgmt.removeUsersFromGroups", rpcParams);
-            }
-            
-            //depending upon result of action, display messages.
-            if( ((String)resultVec.get(0)).startsWith("Error"))
-            {
-            	setActionErrors(resultVec);
-            }
-            else
-            {
-            	setActionMessages(resultVec);
-            	//Since action is carried successfully, clean user input
-            	flushUserInputs();
-            }
-            return;
-            
-        }
-        catch (Exception e)
-        {
-        	errorMsg = e.getMessage();
-            e.printStackTrace();
-        }
-        
-        if(errorMsg != null)
-        {
-        	resultVec = new Vector();
-        	resultVec.add(errorMsg + ". Please verify this error with confluence administrator.");
-            setActionErrors(resultVec);
-        }
-    }
 
     //Getter / Setters for users input text box - Helps to remember values during error display
     public String getUsers()
@@ -851,12 +750,6 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PLUGIN_STATUS);
 	}
 	
-	public String getConfluenceUrl(){
-    	//Get base URL for confluence installation
-        bootStrapManager = (BootstrapManager) ContainerManager.getInstance().getContainerContext().getComponent("bootstrapManager");
-        return bootStrapManager.getDomainName();
-	}
-    
 	//If Any of configuration parameter is not set then display Plugin Configurtion Screen!
     public boolean getIsPluginConfigurationDone()
     {
@@ -928,83 +821,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	return flag;
     }
 
-	//For requester Space Administrator, get the id value from jira schema
-    //This value will be passed along with data on which we want to act.
-    //If this id matches with one that is reterived there, then this user request is really coming from Authentic Space Administrator related to given space.
-    public String getSecretId(String requesterUserId)
-    {
-    	String secretId = null;
-    	
-        Connection connection = null;
-        PreparedStatement statement = null;
-		ResultSet resultSet = null;
-        DataSource ds = null;
-        String jiraJNDI = "java:comp/env/" + getJiraJNDILookupKey() ;
-        InitialContext ctx = null;
-        
-		try
-		{
-			ctx = new InitialContext();
-            try {
-                ds = (DataSource) ctx.lookup(jiraJNDI);
-			}
-            catch (NameNotFoundException exception) {
-                log.debug("dataSource: " + jiraJNDI + " not found.");
-                exception.printStackTrace();
-                //not able to connect to jira database.
-               return secretId;
-            }
-            
-            connection = ds.getConnection();
-            String sql = "select id from userbase where username = ?";
-			statement = null;
-
-			try {
-				statement = connection.prepareStatement(sql);
-				statement.setString(1,requesterUserId);
-                resultSet = statement.executeQuery();
-                if(resultSet != null && resultSet.next())
-                {
-                	secretId = resultSet.getString(1);
-                }
-            }
-            catch (SQLException sqlException) { 
-            	// this case shouldn't come, as requester User's verification is already done successfully.
-            	sqlException.printStackTrace();
-                //not able to connect to jira database.
-            }
-		}
-    	catch(Exception exception)
-		{
-			exception.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				if (resultSet != null)
-				{
-					resultSet.close();
-				}
-				
-				if (statement != null)
-				{
-					statement.close();
-				}
-				
-				if (connection != null)
-				{
-					connection.close();
-				}
-			}
-			catch(Exception discard) {}
-		}
-	 
-		//log.debug("Secret id for user " + requesterUserId + " is " + secretId);
-		
-	  return secretId;
-    	
-    }
+	
 
     private boolean isGroupSelected(Map paramMap) {
         boolean result = false;
@@ -1021,17 +838,16 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     //Validate user input. return false if data invalid.
-    public boolean validateInput(String adminAction, Map paramMap, List userIdList, List groupToAddIdList )
+    public boolean validateInput(CustomPermissionManagerActionContext context)
     {
-        log.debug("Validating adminAction=" + adminAction +
-                ", paramMap=" + paramMap +
-                ", userIdList=" + StringUtil.convertCollectionToCommaDelimitedString(userIdList) +
-                ", groupToAddIdList=" + StringUtil.convertCollectionToCommaDelimitedString(groupToAddIdList));
+        log.debug("Validating form. " + context);
 
         boolean isValid = true; //By default validation will be successful
 
         //Will use default of 20 if we don't validate max UserIDLimit during configuration or user has changed value by modifying xml file (confluence-home/config/confluence-global.bandana.xml).
         int maxUserIDLimit = ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIDLimit", getMaxUserIDsLimit(), 20);
+
+        String adminAction = context.getAdminAction();
 
         if(adminAction == null)
     	{
@@ -1039,21 +855,42 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             addFieldError("adminAction", "Please select an action.");
             isValid = false;
         }
-        else if(adminAction.equals("AddToGroups") || adminAction.equals("RemoveFromGroups")) {
+        else if(adminAction.equals("AddToGroups")) {
 
-            if(!isGroupSelected(paramMap))
+            if(!isGroupSelected(context.getParamMap()))
             {
-                addFieldError("groups_", "Please select at least one group.");
+                addFieldError("groups_", "Please select at least one group to which you want to add users.");
                 isValid = false;
             }
-            else if(userIdList == null || userIdList.size()==0)
+            else if(context.getUsersToAddList() == null || context.getUsersToAddList().size()==0)
             {
-                addFieldError("users", "Please enter list of usernames to act on.");
+                addFieldError("users", "Please enter usernames you'd like to add to the group.");
                 isValid = false;
             }
             else
             {
-                if( ListUtil.isListSizeOverMaxNum( userIdList, maxUserIDLimit ) )
+                if( ListUtil.isListSizeOverMaxNum( context.getUsersToAddList(), maxUserIDLimit ) )
+                {
+                    addFieldError("users", "Only "+ maxUserIDLimit + " users will be processed at a time.");
+                    isValid = false;
+                }
+            }
+        }
+        else if(adminAction.equals("RemoveFromGroups")) {
+
+            if(!isGroupSelected(context.getParamMap()))
+            {
+                addFieldError("groups_", "Please select at least one group from which you want to remove users.");
+                isValid = false;
+            }
+            else if(context.getUsersToAddList() == null || context.getUsersToAddList().size()==0)
+            {
+                addFieldError("users", "Please select users you wish to remove from the group.");
+                isValid = false;
+            }
+            else
+            {
+                if( ListUtil.isListSizeOverMaxNum( context.getUsersToAddList(), maxUserIDLimit ) )
                 {
                     addFieldError("users", "Only "+ maxUserIDLimit + " users will be processed at a time.");
                     isValid = false;
@@ -1062,14 +899,14 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         }
         else if(adminAction.equals("AddGroups"))
         {
-            if(groupToAddIdList == null || groupToAddIdList.size()==0)
+            if(context.getGroupsToAddList() == null || context.getGroupsToAddList().size()==0)
             {
-                addFieldError("groupsToAdd", "Please enter list of groups to add.");
+                addFieldError("groupsToAdd", "Please enter one or more groups to add, separated by commas.");
                 isValid = false;
             }
             else
             {
-                if( ListUtil.isListSizeOverMaxNum( userIdList, maxUserIDLimit ) )
+                if( ListUtil.isListSizeOverMaxNum( context.getGroupsToAddList(), maxUserIDLimit ) )
                 {
                     addFieldError("groupsToAdd", "Only "+ maxUserIDLimit + " groups will be processed at a time.");
                     isValid = false;
@@ -1078,14 +915,14 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         }
         else if(adminAction.equals("RemoveGroups"))
         {
-            if(!isGroupSelected(paramMap))
+            if(!isGroupSelected(context.getParamMap()))
             {
-                addFieldError("groups_", "Please select at least one group.");
+                addFieldError("groups_", "Please select at least one group to remove.");
                 isValid = false;
             }
         }
         else {
-    		addFieldError("adminAction", "'" +adminAction + "' is not a valid action!");
+    		addFieldError("adminAction", "'" + adminAction + "' is not a valid action!");
             isValid = false;
         }
 

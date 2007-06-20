@@ -32,16 +32,14 @@ package raju.kadam.confluence.rpc.xmlrpc;
 
 import java.util.List;
 
-import bucket.container.ContainerManager;
-//import bucket.core.persistence.hibernate.HibernateConfig;
 import com.atlassian.config.db.HibernateConfig;
-
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.user.User;
+import com.atlassian.spring.container.ContainerManager;
 import org.apache.log4j.Category;
 
 /**
