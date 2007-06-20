@@ -48,6 +48,8 @@
 			form#groupManagement fieldset input {}
 			form#groupManagement fieldset span.fieldExample {display:block;}
 			form#groupManagement fieldset span.fieldNotes {display:block;}
+
+			div.submit {clear:both;}
 	    </style>
     </head>
 
@@ -85,63 +87,139 @@
 		</script>
 				    
 <div class="pagecontent">
+#parse ( "/templates/permissionmgmt/actionmessages.vm" )
+
+    <div id="csumHeader">
+        <h3>Manage users/user groups for $action.space.name ( $action.space.key )</h3>
+    </div>
+
+    #if($isPluginConfigurationDone)
+        <div id="csumSpaceGroups">
+            #set ($groups = $action.groups)
+            <ul>
+                #foreach ($group in $groups)
+                ## TODO: LINK TO POINT AT?
+                <li><a href="">$group.name</a></li>
+                #end
+            <ul>
+            ## TODO: LINK TO POINT AT?  METHOD?
+            <form action="" method="">
+                <input name="" type="text"></input>
+                <input type="submit"></input>
+            </form>
+        </div>
+        #if($action.selectedGroup)  ## What is the best way to test to see if a group has been selected?
+        <div id="csumGroupEdit">
+            <h3>Group Name</h3>
+            #set ($users = $action.findUsers)
+            <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="ManageUsersForm">
+                <ul>
+                    #foreach ($user in $users)
+                    <li>$user.name ($user.email)<input="checkbox" name="$user.name"/></li>
+                    #end
+                <ul>
+                <input name="usersToAdd" type="text"></input>
+                <input type="submit"></input>
+            </form>
+        </div>
+    #else
+        #if($customPermissionConfiguration.pluginDown == "yes")
+            $customPermissionConfiguration.downTimeMessage
+		#else
+		    <p>An administrator must configure "Custom Space Usergroups Manager" before you start using it.</p>
+		#end
+    #end
+
+#parse ( "/admin/admin-breadcrumbs.vm" )
+</div>
+</body>
+#end
+</html>
+
+#*
     <!-- actionerrors.vm is already included by space.vmd, hence it's not needed to add it here. -->
     <!-- Display result of operation if successful -->
     #parse ( "/templates/permissionmgmt/actionmessages.vm" )
 
     <div id="csumHeader">
         <h2>Manage users/user groups for $action.space.name ( $action.space.key )</h2>
-        #if ($permissionHelper.isGlobalAdministrator($remoteUser))
-             <a id="adminConfigLink" href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">Configure Custom Space Usergroups Manager Plugin</a>
+        #if ($)
+             <a id="adminConfigLink" href="$req.contextPath/permissionHelper.isGlobalAdministrator($remoteUser)admin/plugins/custompermissionsconfig/config.action">Configure Custom Space Usergroups Manager Plugin</a>
         #end
     </div>
 
 	#if($isPluginConfigurationDone)
 	    #set ($groups = $action.UsersGroupsAssociatedForSpace)
 
-        <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="ManageUsersForm">
+        <div id="groupslist" style="width:300px; float:left; margin:1em; border:1px solid green;">
+            #fielderror ('groups_')
             #if ($groups.size() > 0)
-                <fieldset>
-                    #fielderror ('NotPermittedUserGroupsErrorMessage')
-                    ##input userlist
-                    #fielderror ('users')
-                    <label>Input User IDs:</label>
-                    <input type="text" id="users" name="users" value="$!action.users" />
-                    <span class="fieldExample">Comma separated list of userids. Eg. ptusha,sachin,marykomb</span>
-                    <span class="fieldNotes">Only <b>$action.maxUserIDsLimit</b> userids will be processed at a time.</span>
-                </fieldset>
-
-                #if ($action.customPermissionConfiguration.groupActionsPermitted == "YES")
-                    <fieldset>
-                        ##input userlist
-                        #fielderror ('groupsToAdd')
-                        <label>Input Group IDs:</label>
-                        <input type="text" id="groups" name="groupsToAdd" value="$!action.groupsToAdd" />
-                        <span class="fieldExample">Comma separated list of groupnames for addition. Eg. accounting,operations,developers</span>
-                        <span class="fieldNotes">Only <b>$action.maxUserIDsLimit</b> groupids will be processed at a time.</span>
-                    </fieldset>
-                #end
-
-                #fielderror ('groups_')
-                <ul>
+            <ul>
                 #foreach ($group in $groups)
-                    <li>
-                        <input type="checkbox" name="groups_$group.name"
-                            #if($action.isGroupSelected($group.name)) checked #end
-                            #if($!group.name == "confluence-users") onclick="toggleRemoveButtonState(this)" #end
-                        />$group.name ($action.findUserCountForUserGroup($group.name))
-                        #if($!group.name == "confluence-users")
-                            <!--we do not want to display list of confluence-users as they can be too many-->
-                        #else
-                            <!--<a href="docustompermissionsmanage.action?key=$action.space.key&selectedGroupName=$group.name" onClick="window.open(this.href,'users_group_association_window', 'width=620, height=800, resizable, scrollbars'); return false;" title="Users 'n Group  association">view users</a> -->
-                            <span class="logoSpaceLink">
-                                <a href="#" onClick="picker=window.open('custompermissionsusergroupsdisplay.action?key=$action.space.key&selectedGroupName=$group.name', 'UsersNamesDisplayer',  'status=yes,resizable=yes,top=100,left=200,width=580,height=550,scrollbars=yes'); picker.focus(); return false;">view users</a>
-                            </span>
-                        #end
-                    </li>
+                <li>
+                    $group.name ($action.findUserCountForUserGroup($group.name))
+                    #if($!group.name == "confluence-users")
+                        <!--we do not want to display list of confluence-users as they can be too many-->
+                    #else
+                    <!--<a href="docustompermissionsmanage.action?key=$action.space.key&selectedGroupName=$group.name" onClick="window.open(this.href,'users_group_association_window', 'width=620, height=800, resizable, scrollbars'); return false;" title="Users 'n Group  association">view users</a> -->
+                    <span class="logoSpaceLink">
+                        <a href="#" onClick="picker=window.open('custompermissionsusergroupsdisplay.action?key=$action.space.key&selectedGroupName=$group.name', 'UsersNamesDisplayer',  'status=yes,resizable=yes,top=100,left=200,width=580,height=550,scrollbars=yes'); picker.focus(); return false;">view users</a>
+                    </span>
+                    #end
+                </li>
                 #end
-                </ul>
+            </ul>
+            <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="ManageUsersForm">
+                #if ($action.customPermissionConfiguration.groupActionsPermitted == "YES")
+                <fieldset>
+                    ##input groupslist
+                    #fielderror ('groupsToAdd')
+                    <label>Input Group IDs:</label>
+                    <input type="text" id="groups" name="groupsToAdd" value="$!action.groupsToAdd" />
+                    <!--
+                    <span class="fieldExample">Comma separated list of groupnames for addition. Eg. editors</span>
+                    <span class="fieldNotes">Only <b>$action.maxUserIDsLimit</b> groupids will be processed at a time.</span>
+                    !-->
+                </fieldset>
+                #end
+            </form>
+        </div>
 
+        <div id="userlist" style="margin:1em; width:500px; float:left; border:1px solid orange;">
+        #if ($action.selectedGroupName != null)
+            <fieldset>
+                #fielderror ('NotPermittedUserGroupsErrorMessage')
+                ##input userlist
+                #fielderror ('users')
+                <label>Input User IDs:</label>
+                <input type="text" id="users" name="users" value="$!action.users" />
+                <span class="fieldExample">Comma separated list of userids. Eg. ptusha,sachin,marykomb</span>
+                <span class="fieldNotes">Only <b>$action.maxUserIDsLimit</b> userids will be processed at a time.</span>
+            </fieldset>
+
+            #set ($group_name = $action.selectedGroupName)
+            <h4>Group $action.selectedGroupName details ($action.findUserCountForUserGroup($group_name) users)</h4>
+            #if ($group_name == "confluence-users")
+                -All Users In Confluence Wiki-
+            #else
+                #set ($users = $action.findUserDetailsForAGroup($group_name))
+                #if( $users.size() > 0)
+                <ul>
+                    #foreach($user in $users)
+                    <li>
+                     <a href="$req.contextPath/display/~$generalUtil.doubleUrlEncode($user.name)">$generalUtil.htmlEncode($user.fullName)</a> <span class="smalltext">($user.name)</span><br>
+                             <span class="smalltext">$generalUtil.maskEmail($user.email)</span>
+                    </li>
+                    #end
+                </ul>
+                #end
+            #end
+        #end
+        </div>
+
+
+
+<div style="clear:both;">
         Select an Action ->
         #fielderror ('adminAction')
         <input type="radio" name="adminAction" #if ($action.adminAction == "AddToGroups") checked="true" #end value="AddToGroups"> Add Users to Selected Groups<b>*</b> &nbsp;
@@ -151,22 +229,25 @@
                 <input type="radio" name="adminAction" #if ($action.adminAction == "AddGroups") checked="true" #end value="AddGroups"> Add New Groups &nbsp;
                 <input type="radio" name="adminAction" #if ($action.adminAction == "RemoveGroups") checked="true" #end value="RemoveGroups"> Remove Groups &nbsp;
             #end
-        <fieldset>
-            <input type="submit" name="Process" value="Process" accesskey="S" />
-            <input id="cancelButton"  type="button"
-                   accesskey="`"
-                   title="Cancel (Alt + `)"
-                   name="Go to Space Home Page"
-                   value="Cancel"
-                   onclick="location.href='$req.contextPath/display/${key}'"
-             />
-         </fieldset>
-
-        </form>
-        <div>
+</div>
+        <div class="submit">
+            <fieldset style="clear:both;">
+                <input type="submit" name="Process" value="Process" accesskey="S" />
+                <input id="cancelButton"  type="button"
+                       accesskey="`"
+                       title="Cancel (Alt + `)"
+                       name="Go to Space Home Page"
+                       value="Cancel"
+                       onclick="location.href='$req.contextPath/display/${key}'"
+                 />
+             </fieldset>
             *  - New users will be added to Wiki provided Confluence Administrator has enabled LDAP Settings.<br/>
             ** - users can not be removed from default user group "confluence-users". Hence upon selection of this group, "Remove..." option will be disabled
         </div>
+
+
+        </form>
+
 
         #else
         <div>
@@ -199,10 +280,6 @@
 		    <a href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">Configure "Custom Space Usergroups Manager" Plugin</a>
 		#end
 	#end
+*#
 
-    #parse ( "/admin/admin-breadcrumbs.vm" )
-</div>
-</body>
-#end
-</html>
 
