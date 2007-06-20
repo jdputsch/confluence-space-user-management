@@ -99,7 +99,7 @@
             <ul>
                 #foreach ($group in $groups)
                 ## TODO: LINK TO POINT AT?
-                <li><a href="docustompermissionsmanage.action?key=${key}">$group.name</a></li>
+                <li><a href="docustompermissionsmanage.action?key=${key}&${group.name}">$group.name</a></li>
                 #end
             <ul>
             ## TODO: LINK TO POINT AT
@@ -111,7 +111,7 @@
         #if($action.selectedGroup)  ## What is the best way to test to see if a group has been selected?
         <div id="csumGroupEdit">
             <h3>Group Name</h3>
-            #set ($users = $action.findUsers)
+            #set ($users = $action.findUsers($group))
             <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="ManageUsersForm">
                 <ul>
                     #foreach ($user in $users)
