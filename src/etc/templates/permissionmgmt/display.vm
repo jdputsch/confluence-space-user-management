@@ -99,12 +99,12 @@
             <ul>
                 #foreach ($group in $groups)
                 ## TODO: LINK TO POINT AT?
-                <li><a href="">$group.name</a></li>
+                <li><a href="docustompermissionsmanage.action?key=${key}">$group.name</a></li>
                 #end
             <ul>
-            ## TODO: LINK TO POINT AT?  METHOD?
-            <form action="" method="">
-                <input name="" type="text"></input>
+            ## TODO: LINK TO POINT AT
+            <form action="" method="POST">
+                <input name="groupsToAdd" type="text"></input>
                 <input type="submit"></input>
             </form>
         </div>
@@ -122,6 +122,7 @@
                 <input type="submit"></input>
             </form>
         </div>
+        #end
     #else
         #if($customPermissionConfiguration.pluginDown == "yes")
             $customPermissionConfiguration.downTimeMessage
