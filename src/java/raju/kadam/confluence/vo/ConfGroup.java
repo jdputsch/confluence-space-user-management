@@ -17,9 +17,9 @@ public interface ConfGroup {
     public String getName();
 
     /**
-     * Gets the users that belong to this group.
+     * Gets the List of User that belong to this group.
      *
      * @return java.util.List of ConfUser instances
      */
-    public List getConfUsers();
+    public List getUsers();
 }

@@ -47,6 +47,7 @@ import raju.kadam.util.*;
 import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
 import raju.kadam.confluence.permissionmgmt.service.GroupManagementService;
+import raju.kadam.confluence.permissionmgmt.service.UserManagementService;
 import raju.kadam.confluence.permissionmgmt.util.GroupMatchingUtil;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.util.RpcResponse;
@@ -86,6 +87,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     private String adminAction = null;
 
     private GroupManagementService groupManagementService;
+    private UserManagementService userManagementService;
     private CustomPermissionConfiguration customPermissionConfiguration;
 
     public CustomPermissionManagerAction()
@@ -178,10 +180,6 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         }
 
        return super.execute();
-    }
-
-    public List getUsersGroupsAssociatedForSpace() {
-        return this.getGroupManagementService().findGroups(this.getSpace());
     }
 
     //Helps to retrieve usergroups selected by User - removed "groups_" from selected checkbox name
@@ -943,12 +941,28 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         this.groupManagementService = groupManagementService;
     }
 
+    public UserManagementService getUserManagementService() {
+        return userManagementService;
+    }
+
+    public void setUserManagementService(UserManagementService userManagementService) {
+        this.userManagementService = userManagementService;
+    }
+
     public CustomPermissionConfiguration getCustomPermissionConfiguration() {
         return customPermissionConfiguration;
     }
 
     public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
         this.customPermissionConfiguration = customPermissionConfiguration;
+    }
+
+    public List getGroups() {
+        return this.getGroupManagementService().findGroups(this.getSpace());
+    }
+
+    public List findUsers(Group group) {
+        return this.getUserManagementService().findUsersForGroup(group);
     }
 
     public String getActionName(String fullClassName)

@@ -20,7 +20,7 @@ public class ConfGroupImpl implements ConfGroup {
 
     private UserAccessor userAccessor;
     private Group group;
-    private List confUsers;
+    private List users;
 
 
     public String getName() {
@@ -31,10 +31,10 @@ public class ConfGroupImpl implements ConfGroup {
         return name;
     }
 
-    public List getConfUsers() {
-        if (this.confUsers==null) {
+    public List getUsers() {
+        if (this.users==null) {
             try {
-                this.confUsers = retrieveConfUsers();
+                this.users = retrieveConfUsers();
             }
             catch (Throwable t) {
                 log.error("Problem retrieving conf users for group " + getName(), t);

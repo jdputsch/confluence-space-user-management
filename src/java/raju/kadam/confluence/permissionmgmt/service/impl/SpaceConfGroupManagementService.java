@@ -3,6 +3,7 @@ package raju.kadam.confluence.permissionmgmt.service.impl;
 import raju.kadam.confluence.permissionmgmt.service.GroupManagementService;
 import raju.kadam.confluence.permissionmgmt.util.GroupMatchingUtil;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import raju.kadam.confluence.vo.ConfGroup;
 import raju.kadam.util.StringUtil;
 import raju.kadam.util.ListUtil;
 
