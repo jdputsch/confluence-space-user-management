@@ -29,28 +29,6 @@
 <html>
     <head>
         <title>$action.getActionName($action.getClass().getName())</title>
-
-	    <style>
-			.userlink {color: #999999; text-decoration: none}
-			.userlink a:link {color: #999999; text-decoration: none}
-			.userlink a:visited {color: #999999; text-decoration: none}
-			.userlink a:active {color: #999999; text-decoration: none}
-			.userlink a:hover {color: #003366; text-decoration: none}
-
-			div.pagecontent {}
-			div#csumHeader {}
-            div#csumHeader h2 {}
-            div#csumHeader #adminConfigLink {display:block;}
-
-			form#groupManagement {}
-			form#groupManagement fieldset {}
-			form#groupManagement fieldset label {}
-			form#groupManagement fieldset input {}
-			form#groupManagement fieldset span.fieldExample {display:block;}
-			form#groupManagement fieldset span.fieldNotes {display:block;}
-
-			div.submit {clear:both;}
-	    </style>
     </head>
 
     #applyDecorator("root")
@@ -86,40 +64,85 @@
 		    }
 		</script>               
 				    
+	    <style>
+			form {margin:0; padding:0;}
+            fieldset {border:none; padding:none; margin:none;}
+            input {margin:0; padding:0; font-size:1.2em; width:100%;}
+            label {font-size:1.1em;}
+
+            div#PageContent {padding:0 0 2em 0;}
+
+            div#csumHeader {margin:0 0 20px 0;}
+
+            div#csumGroups {padding:0 1em;}
+            div#csumGroups ul {margin:0; padding:0;}
+            div#csumGroups ul li {list-style: none inside url(/images/icons/group_16.gif);}
+            div#csumGroups ul li a {display:block; line-height:1.5; padding:.2em .4em; font-size:.9em; text-decoration:none;}
+            div#csumGroups ul li a:hover {background-color:#DDD;}
+
+            div#csumGroupEditor {padding:0 1em;}
+
+            .submitBttn {width:auto;}
+	    </style>
+
 <div class="pagecontent">
 #parse ( "/templates/permissionmgmt/actionmessages.vm" )
 
     <div id="csumHeader">
-        <h3>Manage users/user groups for $action.space.name ( $action.space.key )</h3>
+        <!--<h3>Manage users/user groups for $action.space.name ( $action.space.key )</h3>-->
     </div>
 
     #if($isPluginConfigurationDone)
-        <div id="csumSpaceGroups">
+        <div id="csumGroups" style="width:300px; float:left; margin:0; border-right:1px solid orange;">
+            <h3>$action.space.name ($action.space.key)</h3>
             #set ($groups = $action.groups)
+            ## TODO: LINK TO POINT AT
+            <form action="" method="POST">
+                <fieldset>
+					<label>Add Group:</label>
+                    ##$action.newGroupPrefix
+                    <input type="text" name="groupToAdd" />
+                    ##$action.newGroupSuffix
+                    <span style="display:block; font-size:.8em;">Entering "Duke-Presidents" will create the group "${action.space.key}-Duke-Presidents"</span>
+                </fieldset>
+                <fieldset>
+					<input class="submitBttn" type="submit"></input>
+				</fieldset>
+            </form>
             <ul>
                 #foreach ($group in $groups)
                 ## TODO: LINK TO POINT AT?
                 <li><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">$group.name</a></li>
                 #end
             <ul>
-            ## TODO: LINK TO POINT AT
-            <form action="" method="POST">
-                $action.newGroupPrefix<input type="text" name="groupToAdd" />$action.newGroupSuffix
-                <input type="submit"></input>
-            </form>
         </div>
+        
         #if($action.selectedGroup)  ## What is the best way to test to see if a group has been selected?
-        <div id="csumGroupEdit">
-            <h3>Group Name</h3>
+        <div id="csumGroupEditor" style="margin:0; width:500px; float:left;">
+		    <h3>Edit GROUP</h3>
             #set ($users = $action.findUsers($group))
             <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="ManageUsersForm">
-                <ul>
-                    #foreach ($user in $users)
-                    <li>$user.name ($user.email)<input="checkbox" name="$user.name"/></li>
-                    #end
-                <ul>
-                <input name="usersToAdd" type="text"></input>
-                <input type="submit"></input>
+				<fieldset>
+				    <label>Add User(s) to GROUP:</label>
+				    <input type="text" id="usersToAdd" name="usersToAdd"/>
+				    <span style="font-size:.8em;">eg. rb04, nk93, kb85, ts69</span>
+					<div id="myContainer"></div>
+                </fieldset>
+
+                <fieldset>
+					<table width="100%">
+						<tr><th>Full Name</th><th>NetID</th><th>Email</th><th>Delete user?</th></tr>
+                        <tr>
+                            #foreach ($user in $users)
+                            <th>FULL NAME</th><th>$user.name</th><th>$user.email</th><th><input="checkbox" name="$user.name"/></th>
+                            #end
+                        </tr>
+                    </table>
+                </fieldset>
+
+                <fieldset>
+					<input class="submitBttn" type="submit"></input>
+				</fieldset>
             </form>
         </div>
         #end
@@ -132,6 +155,9 @@
     #end
 
 #parse ( "/admin/admin-breadcrumbs.vm" )
+
+<div style="clear:both;"></div>
+
 </div>
 </body>
 #end
