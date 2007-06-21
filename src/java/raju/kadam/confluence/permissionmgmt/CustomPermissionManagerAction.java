@@ -38,6 +38,7 @@ import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
 import raju.kadam.confluence.permissionmgmt.service.GroupManagementService;
 import raju.kadam.confluence.permissionmgmt.service.UserManagementService;
+import raju.kadam.confluence.permissionmgmt.service.impl.AdvancedUserQuery;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.util.RpcResponse;
@@ -965,6 +966,10 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
     public List findUsersWhoseNameStartsWith(String partialName) {
         return this.getUserManagementService().findUsersWhoseNameStartsWith(partialName);
+    }
+
+    public List findUsers(AdvancedUserQuery query) {
+        return this.getUserManagementService().findUsers(query);
     }
 
     public String getActionName(String fullClassName)

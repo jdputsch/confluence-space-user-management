@@ -5,6 +5,8 @@ import com.atlassian.user.User;
 
 import java.util.List;
 
+import raju.kadam.confluence.permissionmgmt.service.impl.AdvancedUserQuery;
+
 /**
  * (c) 2007 Duke University
  * User: gary.weaver@duke.edu
@@ -12,6 +14,8 @@ import java.util.List;
  * Time: 11:37:32 AM
  */
 public interface UserManagementService {
+
+    public List findUsers(AdvancedUserQuery advancedUserQuery);
 
     public List findUsersForGroup( Group group );
 
