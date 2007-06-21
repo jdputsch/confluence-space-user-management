@@ -39,6 +39,7 @@ import raju.kadam.util.LDAP.LDAPUtil;
 import raju.kadam.confluence.permissionmgmt.service.GroupManagementService;
 import raju.kadam.confluence.permissionmgmt.service.UserManagementService;
 import raju.kadam.confluence.permissionmgmt.service.impl.AdvancedUserQuery;
+import raju.kadam.confluence.permissionmgmt.service.impl.AdvancedQueryType;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.util.RpcResponse;
@@ -57,6 +58,7 @@ import com.atlassian.confluence.util.SpaceComparator;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
 import com.atlassian.user.search.page.PagerUtils;
+import com.atlassian.user.search.query.TermQuery;
 import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
 
@@ -968,7 +970,32 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return this.getUserManagementService().findUsersWhoseNameStartsWith(partialName);
     }
 
-    public List findUsers(AdvancedUserQuery query) {
+    // TODO: is there a better way of doing this? Velocity doesn't have ability to call constructor
+    public AdvancedUserQuery getAdvancedUserQuery() {
+        return new AdvancedUserQuery();
+    }
+
+    //TODO: is there a better way to access this?
+    public String getSubstringContains() {
+        return AdvancedQueryType.SUBSTRING_CONTAINS;
+    }
+
+    //TODO: is there a better way to access this?
+    public String getSubstringEndsWith() {
+        return AdvancedQueryType.SUBSTRING_ENDS_WITH;
+    }
+
+    //TODO: is there a better way to access this?
+    public String getSubstringStartsWith() {
+        return AdvancedQueryType.SUBSTRING_STARTS_WITH;
+    }
+
+    //TODO: is there a better way to access this?
+    public String getWildcard() {
+        return AdvancedQueryType.WILDCARD;
+    }
+
+    public List findUsersAdvanced(AdvancedUserQuery query) {
         return this.getUserManagementService().findUsers(query);
     }
 
