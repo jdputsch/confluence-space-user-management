@@ -103,6 +103,20 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return super.doDefault();
     }
 
+    public String doAddGroup() throws Exception
+    {
+        try {
+            Map paramMap = ServletActionContext.getRequest().getParameterMap();
+            String identifier = getParameterValue(paramMap, "groupsToAdd");
+            getGroupManagementService().createGroup(identifier, getSpace());
+        }
+        catch (Throwable t) {
+            return ERROR;
+        }
+        
+        return SUCCESS;
+    }
+
     private String getParameterValue(Map paramMap, String param) {
         String[] values = (String[])paramMap.get(param);
         if ( values != null && values.length > 0 ) {
@@ -129,14 +143,14 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
         // TODO: consider converting selectedGroup from List to single element
         context.setSelectedGroups(getParameterValues( paramMap, "selectedGroup"));
-        context.setGroupsToAddList(getParameterValues( paramMap, "groupsToAdd"));
-        context.setGroupsToRemoveList(getParameterValues( paramMap, "groupsToRemove"));
+        context.setGroupsToAddList(getParameterValues( paramMap, "groupToAdd"));
+        context.setGroupsToRemoveList(getParameterValues( paramMap, "groupToRemove"));
         context.setUsersToAddList(getParameterValues( paramMap, "usersToAdd"));
         context.setUsersToRemoveList(getParameterValues( paramMap, "usersToRemove"));
         context.setLoggedInUser(getRemoteUser().getName());
 		context.setKey(getKey());
     	//String userids = ServletActionContext.getRequest().getParameter("userList");
-    	context.setAdminAction(getAdminAction());
+    	context.setAdminAction(getParameterValue( paramMap, "adminAction"));
         //context.setUsersToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getUsers()));
         //context.setGroupsToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getGroupsToAdd()));
         context.setBootstrapManager(this.bootstrapManager);
@@ -158,14 +172,25 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         if (context.getSelectedGroups()!=null && context.getSelectedGroups().size()>0) {
             setSelectedGroup((String)context.getSelectedGroups().get(0));
         }
+        if (context.getAdminAction()!=null) {
+            setAdminAction(context.getAdminAction());
+        }
 
+        //if (adminAction==null) {
+        //    throw new RuntimeException("adminAction null inside manageUsersInConfluence()");
+        //}
+        //else if (adminAction!=null) {
+        //   throw new RuntimeException("adminAction=" + adminAction + " and context is " + context);
+        //}
+
+        // TODO: rewrite validation and include errors in display.vm
         //Validate user input
-        boolean isValid = validateInput(context);
-    	if(!isValid)
-        {
-            log.debug("Input was invalid");
-            return ERROR;
-        }        
+        //boolean isValid = validateInput(context);
+    	//if(!isValid)
+        //{
+        //    log.debug("Input was invalid");
+        //    return ERROR;
+        //}
 
         String userGroupsValidationMessage = validateUserGroupWikiSpaceAssociation(context.getSelectedGroups());
     	if(userGroupsValidationMessage != null)
@@ -442,6 +467,13 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
         String adminAction = context.getAdminAction();
 
+        //if (adminAction==null) {
+        //    throw new RuntimeException("adminAction null inside manageUsersInConfluence()");
+        //}
+        //else if (adminAction!=null) {
+        //    throw new RuntimeException("adminAction=" + adminAction + " and context is " + context);
+        //}
+
         if (adminAction==null) {
             resultList.add("Please select an action.");
             setActionErrors(resultList);
@@ -570,43 +602,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         		{
         			//First check if given group is present or not
         			String groupid = (String) itr.next();
-        			Group currGroup = userAccessor.getGroup(groupid);
-        			if(currGroup == null)
-        			{
-        				//create a group only if it matches pattern
-                        Pattern pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), getSpace().getKey());
-                        boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(groupid, pat);
-
-                        if (isPatternMatch) {
-
-                            currGroup = userAccessor.addGroup(groupid);
-                            if(currGroup == null)
-                            {
-                                //ok for some reasons we are unable to create user.
-                                //Let's add it to our notCreatedUser List.
-                                vNotCreatedGroups += ", " + groupid;
-                                //let's jump to next userid.
-                                log.debug("Group '" + groupid + "' not created");
-                            }
-                        }
-                        else {
-                            if (vGroupsNotMatched.length()>0) {
-                                vGroupsNotMatched += ", ";
-                            }
-
-                            vGroupsNotMatched += groupid;
-                            log.debug("Group '" + groupid + "' not created because it didn't match pattern");
-                        }
-                    }
-
-        			//If group exists then set all required permissions
-        			if (currGroup != null)
-        			{
-        	        	SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION,
-                                getSpace(), currGroup.getName());
-                        getSpace().addPermission(perm);
-
-        			}
+        			this.getGroupManagementService().createGroup(groupid,space);
         		}
     		}
     		catch(Exception e)

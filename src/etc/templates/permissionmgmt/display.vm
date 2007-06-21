@@ -97,7 +97,7 @@
             <h3>$action.space.name ($action.space.key)</h3>
             #set ($groups = $action.groups)
             ## TODO: LINK TO POINT AT
-            <form action="" method="POST">
+            <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="AddGroupForm">
                 <fieldset>
 					<label>Add Group:</label>
                     ##$action.newGroupPrefix
@@ -106,6 +106,7 @@
                     <span style="display:block; font-size:.8em;">Entering "Duke-Presidents" will create the group "${action.space.key}-Duke-Presidents"</span>
                 </fieldset>
                 <fieldset>
+                    <input type="hidden" name="adminAction" value="AddGroups"/>
 					<input class="submitBttn" type="submit"></input>
 				</fieldset>
             </form>

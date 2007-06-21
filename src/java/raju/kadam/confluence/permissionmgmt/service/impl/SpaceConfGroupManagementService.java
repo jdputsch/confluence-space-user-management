@@ -105,7 +105,24 @@ public class SpaceConfGroupManagementService implements GroupManagementService {
         log.debug("create a confluence group -> " + groupName);
 
 		try {
-			vGroup = userAccessor.addGroup(groupName);
+            if (userAccessor.getGroup(groupName) == null) {
+
+                vGroup = userAccessor.addGroup(groupName);
+                log.debug("created " + groupName);
+
+                //If group exists then set all required permissions
+                if (vGroup != null)
+                {
+                    SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION,
+                            space, vGroup.getName());
+                    space.addPermission(perm);
+                    log.debug("added viewspace perm to " + groupName);
+                }
+            }
+            else {
+                log.debug("group was already there, so didn't do anything.");
+            }
+
         } catch (Exception e) {
 			e.printStackTrace();
 		}
