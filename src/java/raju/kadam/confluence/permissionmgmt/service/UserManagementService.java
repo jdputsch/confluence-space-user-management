@@ -17,6 +17,8 @@ public interface UserManagementService {
 
     public List findUsers(AdvancedUserQuery advancedUserQuery);
 
+    public List findUsersForGroup( String groupName );
+
     public List findUsersForGroup( Group group );
 
     public List findUsersWhoseNameStartsWith( String partialName );

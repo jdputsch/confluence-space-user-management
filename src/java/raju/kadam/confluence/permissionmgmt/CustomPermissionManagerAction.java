@@ -78,6 +78,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     private String groupsToAdd = null;
     private List selectedUserGroupsList = null;
     private String adminAction = null;
+    private String selectedGroup = null;
 
     private GroupManagementService groupManagementService;
     private UserManagementService userManagementService;
@@ -102,34 +103,71 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return super.doDefault();
     }
 
+    private String getParameterValue(Map paramMap, String param) {
+        String[] values = (String[])paramMap.get(param);
+        if ( values != null && values.length > 0 ) {
+            return values[0];
+        }
+        return null;
+    }
+
+    private List getParameterValues(Map paramMap, String param) {
+        String[] values = (String[])paramMap.get(param);
+        if ( values != null && values.length > 0 ) {
+            return Arrays.asList(values);
+        }
+
+        return new ArrayList();
+    }
+
+    public CustomPermissionManagerActionContext createContext() {
+
+        CustomPermissionManagerActionContext context = new CustomPermissionManagerActionContext();
+
+        Map paramMap = ServletActionContext.getRequest().getParameterMap();
+        context.setParamMap(paramMap);
+
+        // TODO: consider converting selectedGroup from List to single element
+        context.setSelectedGroups(getParameterValues( paramMap, "selectedGroup"));
+        context.setGroupsToAddList(getParameterValues( paramMap, "groupsToAdd"));
+        context.setGroupsToRemoveList(getParameterValues( paramMap, "groupsToRemove"));
+        context.setUsersToAddList(getParameterValues( paramMap, "usersToAdd"));
+        context.setUsersToRemoveList(getParameterValues( paramMap, "usersToRemove"));
+        context.setLoggedInUser(getRemoteUser().getName());
+		context.setKey(getKey());
+    	//String userids = ServletActionContext.getRequest().getParameter("userList");
+    	context.setAdminAction(getAdminAction());
+        //context.setUsersToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getUsers()));
+        //context.setGroupsToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getGroupsToAdd()));
+        context.setBootstrapManager(this.bootstrapManager);
+        context.setSpaceKey(this.getSpace().getKey());    	
+        
+        return context;
+    }
+
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction - log - Inside execute...");
 
-        CustomPermissionManagerActionContext context = new CustomPermissionManagerActionContext();
         String loggedInUser = getRemoteUser().getName();
-        context.setLoggedInUser(loggedInUser);
-		context.setKey(getKey());
-    	//String userids = ServletActionContext.getRequest().getParameter("userList");
-    	context.setAdminAction(getAdminAction());
-        context.setUsersToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getUsers()));
-        context.setGroupsToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getGroupsToAdd()));
-        context.setBootstrapManager(this.bootstrapManager);
-        context.setSpaceKey(this.getSpace().getKey());
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-    	context.setParamMap(paramMap);
-        //Get list of user selected usergroups checkboxes
-    	List groupList = retrieveListOfSelectedUserGroups(paramMap);
+        
+        CustomPermissionManagerActionContext context = createContext();
 
-    	//Validate user input
+        // TODO: setting on action after getting values from request param and setting on context seems like too much overhead.
+        if (context.getSelectedGroups()!=null && context.getSelectedGroups().size()>0) {
+            setSelectedGroup((String)context.getSelectedGroups().get(0));
+        }
+
+        //Validate user input
         boolean isValid = validateInput(context);
     	if(!isValid)
         {
             log.debug("Input was invalid");
             return ERROR;
-        }
+        }        
 
-    	String userGroupsValidationMessage = validateUserGroupWikiSpaceAssociation(groupList);
+        String userGroupsValidationMessage = validateUserGroupWikiSpaceAssociation(context.getSelectedGroups());
     	if(userGroupsValidationMessage != null)
     	{
             log.debug("There are no groups this user can currently administer. message=" + userGroupsValidationMessage);
@@ -183,6 +221,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     //Get the list of user groups that user has selected
+    /*
     private List retrieveListOfSelectedUserGroups(Map paramMap)
     {
     	List selectedUserGroupsList = new ArrayList(4);
@@ -200,6 +239,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     	this.selectedUserGroupsList = selectedUserGroupsList;
     	return selectedUserGroupsList;
     }
+    */
     
     //If input group name matches with user select group, then return true
     //This function will be useful to remember user selection of checkbox during displaying errors!
@@ -950,12 +990,20 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         this.customPermissionConfiguration = customPermissionConfiguration;
     }
 
+    public String getSelectedGroup() {
+        return selectedGroup;
+    }
+
+    public void setSelectedGroup(String selectedGroup) {
+        this.selectedGroup = selectedGroup;
+    }
+
     public List getGroups() {
         return this.getGroupManagementService().findGroups(this.getSpace());
     }
 
-    public List findUsers(Group group) {
-        return this.getUserManagementService().findUsersForGroup(group);
+    public List findUsers(String groupName) {        
+        return this.getUserManagementService().findUsersForGroup(groupName);
     }
 
     public String getNewGroupPrefix() {

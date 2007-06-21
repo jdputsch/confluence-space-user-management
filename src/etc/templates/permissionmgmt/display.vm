@@ -120,7 +120,7 @@
         #if($action.selectedGroup)  ## What is the best way to test to see if a group has been selected?
         <div id="csumGroupEditor" style="margin:0; width:500px; float:left;">
 		    <h3>Edit GROUP</h3>
-            #set ($users = $action.findUsers($group))
+            #set ($users = $action.findUsers($selectedGroup))
             <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="ManageUsersForm">
 				<fieldset>
 				    <label>Add User(s) to GROUP:</label>
@@ -129,16 +129,23 @@
 					<div id="myContainer"></div>
                 </fieldset>
 
+                #if($users)
                 <fieldset>
 					<table width="100%">
 						<tr><th>Full Name</th><th>NetID</th><th>Email</th><th>Delete user?</th></tr>
+                    #foreach ($user in $users)
+                        #set ($userFullName = $user.getFullName())
+                        #set ($userName = $user.getName())
+                        #set ($userEmail = $user.getEmail())                        
                         <tr>
-                            #foreach ($user in $users)
-                            <th>FULL NAME</th><th>$user.name</th><th>$user.email</th><th><input="checkbox" name="$user.name"/></th>
-                            #end
+                            <td>$!userFullName</td><td>$!userName</td><td>$!userEmail</td><td><input="checkbox" name="$!userName"/></td>
                         </tr>
+                    #end                        
                     </table>
                 </fieldset>
+                #else
+                    No users found in group $selectedGroup
+                #end
 
                 <fieldset>
 					<input class="submitBttn" type="submit"></input>

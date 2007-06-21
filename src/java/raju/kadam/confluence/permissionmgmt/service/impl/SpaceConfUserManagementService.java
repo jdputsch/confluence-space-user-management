@@ -34,9 +34,24 @@ public class SpaceConfUserManagementService implements UserManagementService {
         com.atlassian.spring.container.ContainerManager.autowireComponent(this);
     }
 
+    public List findUsersForGroup(String groupName) {
+        Group group = userAccessor.getGroup(groupName);
+        return findUsersForGroup(group);
+    }
+
     public List findUsersForGroup(Group group) {
+
+        //TODO: too many queries. will be unacceptably slow with lots of users and needs workaround.
+        List results = new ArrayList();
         Pager pager = userAccessor.getMemberNames(group);
-        return PagerUtils.toList(pager);
+        List memberNames = PagerUtils.toList(pager);
+        for (int i=0;i<memberNames.size();i++) {
+            String username = (String)memberNames.get(i);
+            User user = userAccessor.getUser(username);
+            results.add(user);
+        }
+
+        return results;
     }
 
     public List findUsersWhoseNameStartsWith(String partialName) {
