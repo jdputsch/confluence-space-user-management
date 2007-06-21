@@ -99,12 +99,12 @@
             <ul>
                 #foreach ($group in $groups)
                 ## TODO: LINK TO POINT AT?
-                <li><a href="docustompermissionsmanage.action?key=${key}&${group.name}">$group.name</a></li>
+                <li><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">$group.name</a></li>
                 #end
             <ul>
             ## TODO: LINK TO POINT AT
             <form action="" method="POST">
-                <input name="groupsToAdd" type="text"></input>
+                $action.newGroupPrefix<input type="text" name="groupToAdd" />$action.newGroupSuffix
                 <input type="submit"></input>
             </form>
         </div>
