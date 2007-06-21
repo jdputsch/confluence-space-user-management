@@ -15,6 +15,8 @@ public interface UserManagementService {
 
     public List findUsersForGroup( Group group );
 
+    public List findUsersWhoseNameStartsWith( String partialName );
+
     public List addUserToGroup( User user, Group group );
 
     public List removeUserFromGroup( User user, Group group );
