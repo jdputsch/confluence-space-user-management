@@ -83,8 +83,8 @@ public class SpaceConfUserManagementService implements UserManagementService {
             }
         }
 
-        if (advancedUserQuery.getPartialFullName() != null && !"".equals(advancedUserQuery.getPartialFullName()) &&
-                advancedUserQuery.getFullNameSearchType() != null) {
+        if (advancedUserQuery.getPartialEmail() != null && !"".equals(advancedUserQuery.getPartialEmail()) &&
+                advancedUserQuery.getEmailSearchType() != null) {
             try {
                 EmailTermQuery query = new EmailTermQuery(advancedUserQuery.getPartialEmail(), advancedUserQuery.getEmailSearchType());
                 SearchResult result = userAccessor.findUsers(query);
@@ -98,7 +98,7 @@ public class SpaceConfUserManagementService implements UserManagementService {
         if (advancedUserQuery.getPartialGroupName() != null && !"".equals(advancedUserQuery.getPartialGroupName()) &&
                 advancedUserQuery.getGroupNameSearchType() != null) {
             try {
-                GroupNameTermQuery query = new GroupNameTermQuery(advancedUserQuery.getPartialGroupName(), advancedUserQuery.getPartialGroupName());
+                GroupNameTermQuery query = new GroupNameTermQuery(advancedUserQuery.getPartialGroupName(), advancedUserQuery.getGroupNameSearchType());
                 SearchResult result = userAccessor.findGroups(query);
                 List groups = PagerUtils.toList(result.pager());
                 List usersOfAllMatchingGroups = new ArrayList();
