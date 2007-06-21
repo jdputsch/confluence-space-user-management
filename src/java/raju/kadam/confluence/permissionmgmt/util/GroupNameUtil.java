@@ -1,11 +1,8 @@
 package raju.kadam.confluence.permissionmgmt.util;
 
-import com.atlassian.bandana.BandanaManager;
-import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import raju.kadam.confluence.permissionmgmt.CustomPermissionConstants;
-import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
 import java.util.regex.Pattern;
@@ -17,10 +14,20 @@ import java.util.regex.Matcher;
  * Date: Jun 18, 2007
  * Time: 1:38:19 PM
  */
-public class GroupMatchingUtil {
+public class GroupNameUtil {
 
-    private static Log log = LogFactory.getLog(GroupMatchingUtil.class);
+    private static Log log = LogFactory.getLog(GroupNameUtil.class);
 
+
+    public static String replaceSpaceKey(String groupPattern, String spaceKey) {
+        //If spacekey is present in groupPattern then before compiling it replace it with current space key
+        if (groupPattern.indexOf(CustomPermissionConstants.SPACEKEY) != -1) {
+            //Replace String "SPACEKEY" with input Space Key.
+            groupPattern = groupPattern.replaceFirst(CustomPermissionConstants.SPACEKEY, spaceKey);
+        }
+
+        return groupPattern;
+    }
 
     public static Pattern createGroupMatchingPattern(CustomPermissionConfiguration config, String spaceKey)
     {
@@ -30,11 +37,7 @@ public class GroupMatchingUtil {
             groupPattern = CustomPermissionConstants.SPACEKEY_REGEXP;
         }
 
-        //If spacekey is present in groupPattern then before compiling it replace it with current space key
-        if (groupPattern.indexOf(CustomPermissionConstants.SPACEKEY) != -1) {
-            //Replace String "SPACEKEY" with input Space Key.
-            groupPattern = groupPattern.replaceFirst(CustomPermissionConstants.SPACEKEY, spaceKey);
-        }
+        groupPattern = replaceSpaceKey(groupPattern, spaceKey);
 
         log.debug("group pattern -> " + groupPattern);
 

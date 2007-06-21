@@ -147,7 +147,37 @@
                 #end
             </td>
         </tr>
-        
+
+        <tr>
+            <td class="label" width="30%">Group Actions Permitted:</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.groupActionsPermitted)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.groupActionsPermitted</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label" width="30%">New Group Name Creation Pattern:</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.newGroupNameCreationPrefixPattern)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.newGroupNameCreationPrefixPattern</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+
+                &nbsp;(group identifier)&nbsp;
+
+                #if ($action.customPermissionConfiguration.newGroupNameCreationSuffixPattern)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.newGroupNameCreationSuffixPattern</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
         <tr>
             <td class="label" width="30%">Max UserId/GroupId Limit:</td>
             <td nowrap>
@@ -240,8 +270,15 @@
                 <input type="text" name="userGroupsMatchingPattern" value="$!action.userGroupsMatchingPattern" size="30" />
                 <p>
                     <font size="1">
-                	e.g.: If SPACEKEY is "ds" then, pattern <b>SPACEKEY-.*</b> will match ds-users, ds-conf-users<br>
-                	Note: During run SPACEKEY will be replaced by key of selected Wiki Space
+                    This pattern is just a
+                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html">
+                    Java regular expression pattern</a> with the exception that the text <b>SPACEKEY</b>
+                    is replaced by the key of the selected Wiki space at runtime.
+                    </font>
+                </p>
+                <p>
+                    <font size="1">
+                	e.g.: If SPACEKEY is "ds", then pattern <b>SPACEKEY-.*</b> will match ds-users, ds-conf-users<br>
                     </font>
                 </p>
             </td>
@@ -257,6 +294,52 @@
                     <font size="1">
                 	This enables the ability to add/remove groups whose name matches the pattern specified above, effectively enabling the ability to have space-specific groups manageable by space administrators.
                     </font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">New Group Name Creation Pattern:</td>
+            <td>
+                <!-- TODO: Cleanup ugly table and CSS. -->
+				<table style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				    <tr style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            #fielderror ('newGroupNameCreationPrefixPattern')
+				        </td>
+				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            &nbsp;
+				        </td>
+				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            #fielderror ('newGroupNameCreationSuffixPattern')
+				        </td>
+				    </tr>
+				    <tr style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            <input type="text" name="newGroupNameCreationPrefixPattern" id="newGroupNameCreationPrefixPattern" value="$!action.newGroupNameCreationPrefixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
+				        </td>
+				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            &nbsp;(group identifier)&nbsp;
+				        </td>
+				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            <input type="text" name="newGroupNameCreationSuffixPattern" id="newGroupNameCreationSuffixPattern" value="$!action.newGroupNameCreationSuffixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
+				        </td>
+				    </tr>
+				</table>
+                <p>
+                    <font size="1">
+                    Anywhere that SPACEKEY occurs within the prefix or suffix is replaced by the key of the
+                    selected Wiki space at runtime. The prefix and suffix are NOT regular expressions.
+                    </font>
+                </p>
+                <p>
+                    <font size="1">
+                    Examples: If prefix <b>SPACEKEY-</b> and no suffix are specified, and SPACEKEY is "tst", then only
+                	groups that start with <b>tst-</b> can be created like "tst-apples" and "tst-oranges".<br/>
+                	If prefix <b>sa.</b> and suffix <b>.SPACEKEY</b> are specified, and SPACEKEY is "tst", then only
+                	groups that start with <b>sa.</b> and end in <b>.tst</b> can be created like "sa.apples.tst" and
+                	"sa.oranges.tst".
+                	</font>
                 </p>
             </td>
         </tr>

@@ -1,17 +1,14 @@
 package raju.kadam.confluence.permissionmgmt.service.impl;
 
 import raju.kadam.confluence.permissionmgmt.service.GroupManagementService;
-import raju.kadam.confluence.permissionmgmt.util.GroupMatchingUtil;
+import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
-import raju.kadam.confluence.vo.ConfGroup;
 import raju.kadam.util.StringUtil;
-import raju.kadam.util.ListUtil;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
 import com.atlassian.user.Group;
-import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.setup.BootstrapManager;
@@ -52,7 +49,7 @@ public class SpaceConfGroupManagementService implements GroupManagementService {
         ArrayList notAllowedUserGroups = new ArrayList();
     	notAllowedUserGroups.add("confluence-administrators");
 
-    	Pattern pat = GroupMatchingUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), space.getKey());
+    	Pattern pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), space.getKey());
 
         //VIEWSPACE_PERMISSION is basic permission that every user group can have.
         Map map = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, space);
@@ -69,7 +66,7 @@ public class SpaceConfGroupManagementService implements GroupManagementService {
             //If notAllowedUserGroups doesn't contain this group name
         	//and group name matches the pattern, then only add this user-group for display.
     		//log.debug("Selected Groups .....");
-            boolean isPatternMatch = GroupMatchingUtil.doesGroupMatchPattern(grpName, pat);
+            boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(grpName, pat);
             if( (!notAllowedUserGroups.contains(grpName)) && isPatternMatch)
         	{
         		log.debug("Group '" + grpName + "' allowed and matched pattern " + pat.pattern() );
@@ -93,8 +90,27 @@ public class SpaceConfGroupManagementService implements GroupManagementService {
         return result;
     }
 
-    public void createGroup(Group group, Space space) {
+    public Group createGroup( String identifier, Space space )
+    {
+        Group vGroup = null;
 
+        String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
+        log.debug("group name prefix will be " + prefix);
+
+        String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
+        log.debug("group name suffix will be " + suffix);
+
+        String groupName = prefix + identifier + suffix;
+
+        log.debug("create a confluence group -> " + groupName);
+
+		try {
+			vGroup = userAccessor.addGroup(groupName);
+        } catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return vGroup;
     }
 
     public void deleteGroup(Group group, Space space) {

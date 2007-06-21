@@ -33,6 +33,8 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setPluginDown(getPluginDown());
         config.setDownTimeMessage(getDownTimeMessage());
         config.setGroupActionsPermitted(getGroupActionsPermitted());
+        config.setNewGroupNameCreationPrefixPattern(getNewGroupNameCreationPrefixPattern());
+        config.setNewGroupNameCreationSuffixPattern(getNewGroupNameCreationSuffixPattern());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -47,6 +49,8 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setPluginDown(config.getPluginDown());
         setDownTimeMessage(config.getDownTimeMessage());
         setGroupActionsPermitted(config.getGroupActionsPermitted());
+        setNewGroupNameCreationPrefixPattern(config.getNewGroupNameCreationPrefixPattern());
+        setNewGroupNameCreationSuffixPattern(config.getNewGroupNameCreationSuffixPattern());
     }
 
     public String getUserManagerLocation() {
@@ -135,6 +139,22 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setGroupActionsPermitted(String groupActionsPermitted) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_GROUP_ACTIONS_PERMITTED, groupActionsPermitted);
+    }
+
+    public String getNewGroupNameCreationPrefixPattern() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_PREFIX_PATTERN);
+    }
+
+    public void setNewGroupNameCreationPrefixPattern(String newGroupNameCreationPrefixPattern) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_PREFIX_PATTERN, newGroupNameCreationPrefixPattern);
+    }
+
+    public String getNewGroupNameCreationSuffixPattern() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_SUFFIX_PATTERN);
+    }
+
+    public void setNewGroupNameCreationSuffixPattern(String newGroupNameCreationSuffixPattern) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_SUFFIX_PATTERN, newGroupNameCreationSuffixPattern);
     }
 
     public BandanaManager getBandanaManager() {

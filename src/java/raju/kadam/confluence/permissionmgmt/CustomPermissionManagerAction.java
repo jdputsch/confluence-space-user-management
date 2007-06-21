@@ -30,25 +30,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package raju.kadam.confluence.permissionmgmt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Pattern;
-
-import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
-import javax.sql.DataSource;
-
-import org.apache.xmlrpc.XmlRpcClient;
 
 import raju.kadam.util.*;
 import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
 import raju.kadam.confluence.permissionmgmt.service.GroupManagementService;
 import raju.kadam.confluence.permissionmgmt.service.UserManagementService;
-import raju.kadam.confluence.permissionmgmt.util.GroupMatchingUtil;
+import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.util.RpcResponse;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
@@ -541,8 +531,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         			if(currGroup == null)
         			{
         				//create a group only if it matches pattern
-                        Pattern pat = GroupMatchingUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), getSpace().getKey());
-                        boolean isPatternMatch = GroupMatchingUtil.doesGroupMatchPattern(groupid, pat);
+                        Pattern pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), getSpace().getKey());
+                        boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(groupid, pat);
 
                         if (isPatternMatch) {
 
@@ -617,8 +607,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         		for(Iterator iterator = context.getGroupsToRemoveList().iterator(); iterator.hasNext();)
                 {
                     String grpName = (String)iterator.next();
-                    pat = GroupMatchingUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), getSpace().getKey());
-                    boolean isPatternMatch = GroupMatchingUtil.doesGroupMatchPattern(grpName, pat);
+                    pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), getSpace().getKey());
+                    boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(grpName, pat);
 
                     // Space admin should not be able to delete any groups whose names begin with "confluence"
                     if (!grpName.startsWith("confluence") && isPatternMatch) {
@@ -963,6 +953,14 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
     public List findUsers(Group group) {
         return this.getUserManagementService().findUsersForGroup(group);
+    }
+
+    public String getNewGroupPrefix() {
+        return GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
+    }
+
+    public String getNewGroupSuffix() {
+        return GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
     }
 
     public String getActionName(String fullClassName)

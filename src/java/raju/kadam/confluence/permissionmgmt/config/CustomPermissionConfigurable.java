@@ -40,4 +40,10 @@ public interface CustomPermissionConfigurable {
 
     public String getGroupActionsPermitted();
     public void setGroupActionsPermitted(String groupActionsPermitted);
+
+    public String getNewGroupNameCreationPrefixPattern();
+    public void setNewGroupNameCreationPrefixPattern(String newGroupNameCreationPrefixPattern);
+
+    public String getNewGroupNameCreationSuffixPattern();
+    public void setNewGroupNameCreationSuffixPattern(String newGroupNameCreationSuffixPattern);
 }

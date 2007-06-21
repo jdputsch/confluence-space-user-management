@@ -15,7 +15,7 @@ public interface GroupManagementService {
 
     public List findGroups( Space space );
 
-    public void createGroup( Group group, Space space );
+    public Group createGroup( String identifier, Space space );
 
     public void deleteGroup( Group group, Space space );
 }

@@ -22,6 +22,8 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String pluginDown;
     private String downTimeMessage;
     private String groupActionsPermitted;
+    private String newGroupNameCreationPrefixPattern;
+    private String newGroupNameCreationSuffixPattern;
 
 
     public String getUserManagerLocation() {
@@ -110,5 +112,21 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setGroupActionsPermitted(String groupActionsPermitted) {
         this.groupActionsPermitted = groupActionsPermitted;
+    }
+
+    public String getNewGroupNameCreationPrefixPattern() {
+        return newGroupNameCreationPrefixPattern;
+    }
+
+    public void setNewGroupNameCreationPrefixPattern(String newGroupNameCreationPrefixPattern) {
+        this.newGroupNameCreationPrefixPattern = newGroupNameCreationPrefixPattern;
+    }
+
+    public String getNewGroupNameCreationSuffixPattern() {
+        return newGroupNameCreationSuffixPattern;
+    }
+
+    public void setNewGroupNameCreationSuffixPattern(String newGroupNameCreationSuffixPattern) {
+        this.newGroupNameCreationSuffixPattern = newGroupNameCreationSuffixPattern;
     }
 }
