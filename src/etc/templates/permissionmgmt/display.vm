@@ -84,7 +84,7 @@
 		    	var selectedWikiSpaceKey = document.getElementById('allowedWikiSpacesId').value;
 				location.href='$req.contextPath/customspacemgmt/permissions/custompermissionsmanage.action?key=' + selectedWikiSpaceKey;
 		    }
-		</script>
+		</script>               
 				    
 <div class="pagecontent">
 #parse ( "/templates/permissionmgmt/actionmessages.vm" )

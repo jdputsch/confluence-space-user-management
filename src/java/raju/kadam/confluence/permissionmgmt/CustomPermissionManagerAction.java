@@ -99,7 +99,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return super.doDefault();
     }
 
-	public String execute() throws Exception
+    public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction - log - Inside execute...");
 

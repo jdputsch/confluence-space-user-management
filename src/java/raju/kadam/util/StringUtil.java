@@ -40,5 +40,18 @@ public class StringUtil {
             return sb.toString();
         }
 
-
+    public static boolean areBothNullOrAreEqual(String s1, String s2) {
+        boolean result = false;
+        if (s1==s2) {
+            // note this checks for null==null as well as instance ref is same as instance ref
+            result = true;
+        }
+        else if (s1==null || s2==null) {
+            //implied result = false;
+        }
+        else if (s1.equals(s2)) {
+            return true;
+        }
+        return result;
+    }     
 }

@@ -1,23 +1,21 @@
 package raju.kadam.confluence.permissionmgmt.service.impl;
 
-import raju.kadam.confluence.permissionmgmt.service.UserManagementService;
-
-import java.util.List;
-
+import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.user.EntityException;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
-import com.atlassian.user.EntityException;
+import com.atlassian.user.search.SearchResult;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
-import com.atlassian.user.search.query.Query;
-import com.atlassian.user.search.query.UserNameTermQuery;
-import com.atlassian.user.search.query.TermQuery;
-import com.atlassian.user.search.SearchResult;
-import com.atlassian.confluence.user.UserAccessor;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Hits;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.queryParser.QueryParser;
+import com.atlassian.user.search.query.*;
+import raju.kadam.confluence.permissionmgmt.service.UserManagementService;
+import raju.kadam.confluence.permissionmgmt.util.UserUtil;
+import raju.kadam.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * (c) 2007 Duke University
@@ -43,16 +41,75 @@ public class SpaceConfUserManagementService implements UserManagementService {
 
     public List findUsersWhoseNameStartsWith(String partialName) {
 
-        List users = null;
+        List users = new ArrayList();
 
         try {
-            // TODO: consider using TermQuery.SUBSTRING_CONTAINS in diff search
-            UserNameTermQuery query = new UserNameTermQuery( partialName, TermQuery.SUBSTRING_STARTS_WITH );
+            // TODO: add another advanced search that allows partial/startswith/endswith/wildcard on username, fullname, email
+            UserNameTermQuery query = new UserNameTermQuery(partialName, TermQuery.SUBSTRING_STARTS_WITH);
             SearchResult result = userAccessor.findUsers(query);
             users = PagerUtils.toList(result.pager());
         }
         catch (EntityException e) {
             e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    public List findUsers(AdvancedUserQuery advancedUserQuery) {
+        List users = new ArrayList();
+
+        if (advancedUserQuery.getPartialUserName() != null && !"".equals(advancedUserQuery.getPartialUserName()) &&
+                advancedUserQuery.getUserNameSearchType() != null) {
+            try {
+                UserNameTermQuery query = new UserNameTermQuery(advancedUserQuery.getPartialUserName(), advancedUserQuery.getUserNameSearchType());
+                SearchResult result = userAccessor.findUsers(query);
+                users = UserUtil.findIntersectionOfUsers(users,PagerUtils.toList(result.pager()));
+            }
+            catch (EntityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (advancedUserQuery.getPartialFullName() != null && !"".equals(advancedUserQuery.getPartialFullName()) &&
+                advancedUserQuery.getFullNameSearchType() != null) {
+            try {
+                FullNameTermQuery query = new FullNameTermQuery(advancedUserQuery.getPartialFullName(), advancedUserQuery.getFullNameSearchType());
+                SearchResult result = userAccessor.findUsers(query);
+                users = UserUtil.findIntersectionOfUsers(users,PagerUtils.toList(result.pager()));
+            }
+            catch (EntityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (advancedUserQuery.getPartialFullName() != null && !"".equals(advancedUserQuery.getPartialFullName()) &&
+                advancedUserQuery.getFullNameSearchType() != null) {
+            try {
+                EmailTermQuery query = new EmailTermQuery(advancedUserQuery.getPartialEmail(), advancedUserQuery.getEmailSearchType());
+                SearchResult result = userAccessor.findUsers(query);
+                users = UserUtil.findIntersectionOfUsers(users,PagerUtils.toList(result.pager()));
+            }
+            catch (EntityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (advancedUserQuery.getPartialGroupName() != null && !"".equals(advancedUserQuery.getPartialGroupName()) &&
+                advancedUserQuery.getGroupNameSearchType() != null) {
+            try {
+                GroupNameTermQuery query = new GroupNameTermQuery(advancedUserQuery.getPartialGroupName(), advancedUserQuery.getPartialGroupName());
+                SearchResult result = userAccessor.findGroups(query);
+                List groups = PagerUtils.toList(result.pager());
+                List usersOfAllMatchingGroups = new ArrayList();
+                for (int i = 0; i < groups.size(); i++) {
+                    usersOfAllMatchingGroups.addAll(findUsersForGroup((Group) groups.get(i)));
+                }
+                users = UserUtil.findIntersectionOfUsers(users,usersOfAllMatchingGroups); 
+            }
+            catch (EntityException e) {
+                e.printStackTrace();
+            }
         }
 
         return users;
