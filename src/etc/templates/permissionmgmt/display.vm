@@ -40,7 +40,28 @@
             #set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=${key}&" )
 
     <body>
+    <style>
+        form {margin:0; padding:0;}
+        fieldset {border:none; padding:0; margin:0;}
+        input {margin:0; padding:0; font-size:1.5em; width:100%;}
+        label {font-size:1.4em; display:block;}
 
+        div#PageContent {padding:0;}
+
+        div#csumHeader {margin:0;}
+
+        div#csumGroups {padding:0 1em; width:300px; float:left; margin:0; border-right:1px solid orange;}
+        div#csumGroups h3 {margin:0 0 10px 0;}
+        div#csumGroups ul {margin:0; padding:0;}
+        div#csumGroups ul li {padding:0 3px; list-style: none inside url(/confluence/images/icons/group_16.gif);}
+        div#csumGroups ul li a {display:block; line-height:1; padding:.4em .3em; font-size:1.2em; text-decoration:none; border-top:1px dotted #FFF; border-bottom:1px dotted #FFF;}
+        div#csumGroups ul li a:hover {background-color:#EEE; border-top:1px dotted #CCC; border-bottom:1px dotted #CCC;}
+
+        div#csumGroupEditor {padding:0 1em;}
+
+        .submitBttn {width:auto; margin:0 .3em;}
+        #groupToAdd {width:220px;}
+    </style>
 		<script language="javascript">
 			
 			//If user has selected, "confluence-users" button then we want to disable Removebutton.
@@ -62,28 +83,7 @@
 		    	var selectedWikiSpaceKey = document.getElementById('allowedWikiSpacesId').value;
 				location.href='$req.contextPath/customspacemgmt/permissions/custompermissionsmanage.action?key=' + selectedWikiSpaceKey;
 		    }
-		</script>               
-				    
-	    <style>
-			form {margin:0; padding:0;}
-            fieldset {border:none; padding:none; margin:none;}
-            input {margin:0; padding:0; font-size:1.2em; width:100%;}
-            label {font-size:1.1em;}
-
-            div#PageContent {padding:0 0 2em 0;}
-
-            div#csumHeader {margin:0 0 20px 0;}
-
-            div#csumGroups {padding:0 1em;}
-            div#csumGroups ul {margin:0; padding:0;}
-            div#csumGroups ul li {list-style: none inside url(/images/icons/group_16.gif);}
-            div#csumGroups ul li a {display:block; line-height:1.5; padding:.2em .4em; font-size:.9em; text-decoration:none;}
-            div#csumGroups ul li a:hover {background-color:#DDD;}
-
-            div#csumGroupEditor {padding:0 1em;}
-
-            .submitBttn {width:auto;}
-	    </style>
+		</script>
 
 <div class="pagecontent">
 #parse ( "/templates/permissionmgmt/actionmessages.vm" )
@@ -93,7 +93,7 @@
     </div>
 
     #if($isPluginConfigurationDone)
-        <div id="csumGroups" style="width:300px; float:left; margin:0; border-right:1px solid orange;">
+        <div id="csumGroups">
             <h3>$action.space.name ($action.space.key)</h3>
             #set ($groups = $action.groups)
             ## TODO: LINK TO POINT AT
@@ -101,14 +101,12 @@
                 <fieldset>
 					<label>Add Group:</label>
                     ##$action.newGroupPrefix
-                    <input type="text" name="groupToAdd" />
+                    <input type="text" name="groupToAdd" id="groupToAdd" />
+                    <input type="hidden" name="adminAction" value="AddGroups"/>
+                    <input class="submitBttn" type="submit" value="Add"></input>
                     ##$action.newGroupSuffix
                     <span style="display:block; font-size:.8em;">Entering "Duke-Presidents" will create the group "${action.space.key}-Duke-Presidents"</span>
                 </fieldset>
-                <fieldset>
-                    <input type="hidden" name="adminAction" value="AddGroups"/>
-					<input class="submitBttn" type="submit"></input>
-				</fieldset>
             </form>
             <ul>
                 #foreach ($group in $groups)
@@ -120,11 +118,11 @@
         
         #if($action.selectedGroup)  ## What is the best way to test to see if a group has been selected?
         <div id="csumGroupEditor" style="margin:0; width:500px; float:left;">
-		    <h3>Edit GROUP</h3>
+		    <h3>Edit $selectedGroup.name</h3>
             #set ($users = $action.findUsers($selectedGroup))
             <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="ManageUsersForm">
 				<fieldset>
-				    <label>Add User(s) to GROUP:</label>
+				    <label>Add User(s) to $selectedGroup.name:</label>
 				    <input type="text" id="usersToAdd" name="usersToAdd"/>
 				    <span style="font-size:.8em;">eg. rb04, nk93, kb85, ts69</span>
 					<div id="myContainer"></div>
@@ -149,7 +147,7 @@
                 #end
 
                 <fieldset>
-					<input class="submitBttn" type="submit"></input>
+					<input class="submitBttn" type="submit" value="Commit Changes"></input>
 				</fieldset>
             </form>
         </div>
