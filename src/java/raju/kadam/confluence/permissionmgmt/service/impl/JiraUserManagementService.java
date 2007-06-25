@@ -1,6 +1,5 @@
 package raju.kadam.confluence.permissionmgmt.service.impl;
 
-import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.spring.container.ContainerManager;
 import org.apache.commons.logging.Log;
@@ -223,11 +222,11 @@ public class JiraUserManagementService implements UserManagementService {
         throw new FindException(ErrorReason.UNSUPPORTED_FEATURE);
     }
 
-    public void addUsersToGroup(List userNames, String groupName, ServiceContext context) throws AddException {
+    public void addUsersByUsernameToGroup(List userNames, String groupName, ServiceContext context) throws AddException {
         throw new AddException(ErrorReason.UNSUPPORTED_FEATURE);
     }
 
-    public void removeUsersFromGroup(List userNames, String groupName, ServiceContext context) throws RemoveException {
+    public void removeUsersByUsernameFromGroup(List userNames, String groupName, ServiceContext context) throws RemoveException {
         throw new RemoveException(ErrorReason.UNSUPPORTED_FEATURE);
     }
 }

@@ -96,60 +96,80 @@
         <div id="csumGroups">
             <h3>$action.space.name ($action.space.key)</h3>
             #set ($groups = $action.groups)
-            ## TODO: LINK TO POINT AT
+
+            #if($isGroupActionsPermitted)
             <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="AddGroupForm">
+                <input type="hidden" name="adminAction" value="addGroup"/>
                 <fieldset>
-					<label>Add Group:</label>
-                    ##$action.newGroupPrefix
-                    <input type="text" name="groupToAdd" id="groupToAdd" />
-                    <input type="hidden" name="adminAction" value="AddGroups"/>
-                    <input class="submitBttn" type="submit" value="Add"></input>
+					##$action.newGroupPrefix
+                    <input type="text" name="groupToAdd" id="groupToAdd" />                    
+                    <input class="submitBttn" type="submit" value="Add Group"></input>
                     ##$action.newGroupSuffix
                     <span style="display:block; font-size:.8em;">Entering "Duke-Presidents" will create the group "${action.space.key}-Duke-Presidents"</span>
                 </fieldset>
             </form>
-            <ul>
+            #end
+
+            #if($groups && $groups.size() > 0 )
+            <table width="100%">
                 #foreach ($group in $groups)
-                ## TODO: LINK TO POINT AT?
-                <li><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">$group.name</a></li>
+                <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
+                    <td>
+                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name"><img src="/images/icons/group_16.gif" width="16" height="16" border="0" align="absmiddle"></a>
+                        &nbsp;
+                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">$!group.name</a>
+                    </td>
+                    #if($isGroupActionsPermitted)
+                    <td>
+                        <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=$!group.name">
+                            <img border="0" alt="Remove $!group.name" src="/images/icons/trash_16.gif"/>
+                        </a>
+                    </td>
+                    #end
+                </tr>
                 #end
-            <ul>
+            </table>
+                #if($isGroupActionsPermitted)
+            Manage Permissions:
+            <a href="/spaces/spacepermissions.action?key=${key}">Space</a>,
+            <a href="/pages/listpermissionpages.action?key=${key}">Page-Level</a>
+                #end
+            #end
         </div>
         
-        #if(${action.selectedGroup})  ## What is the best way to test to see if a group has been selected?
+        #if(${action.selectedGroup})
         <div id="csumGroupEditor" style="margin:0; width:500px; float:left;">
 		    <h3>Edit ${action.selectedGroup}</h3>
 
 		    #set ($users = $action.findUsers(${action.selectedGroup}))
-            <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="ManageUsersForm">
+            <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="groupManagement" name="ManageUsersForm">
+				<input type="hidden" name="adminAction" value="addUsersToGroup"/>
 				<fieldset>
-				    <label>Add User(s) to ${action.selectedGroup}:</label>
-				    <input type="text" id="usersToAdd" name="usersToAdd"/>
+				    <input type="text" id="usersToAdd" name="usersToAdd"/>&nbsp;<input class="submitBttn" type="submit" value="Add User(s) to ${action.selectedGroup}"/>
 				    <span style="font-size:.8em;">eg. rb04, nk93, kb85, ts69</span>
 					<div id="myContainer"></div>
                 </fieldset>
 
                 #if($users && $users.size() > 0)
-                <fieldset>
+                <fieldset name="users">
 					<table width="100%">
-						<tr><th>Full Name</th><th>NetID</th><th>Email</th><th>Delete user?</th></tr>
+						<tr><th>Full Name</th><th>NetID</th><th>Email</th><th>&nbsp;</th></tr>
                     #foreach ($user in $users)
                         #set ($userFullName = $user.getFullName())
                         #set ($userName = $user.getName())
                         #set ($userEmail = $user.getEmail())                        
-                        <tr>
-                            <td>$!userFullName</td><td>$!userName</td><td>$!userEmail</td><td><input="checkbox" name="$!userName"/></td>
+                        <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
+                            <td><img src="/images/icons/user_16.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;$!userFullName</td><td>$!userName</td><td>$!userEmail</td><td><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img border="0" alt="Remove $!userName from ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
                         </tr>
                     #end                        
                     </table>
-                </fieldset>
+                    Manage Permissions: 
+                    <a href="/spaces/spacepermissions.action?key=${key}">Space</a>,
+                    <a href="/pages/listpermissionpages.action?key=${key}">Page-Level</a>                </fieldset>
                 #else
                     No users found in group ${action.selectedGroup}
                 #end
 
-                <fieldset>
-					<input class="submitBttn" type="submit" value="Commit Changes"></input>
-				</fieldset>
             </form>
         </div>
         #end

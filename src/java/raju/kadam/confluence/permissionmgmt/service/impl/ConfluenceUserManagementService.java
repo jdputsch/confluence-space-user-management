@@ -17,7 +17,6 @@ import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.util.UserUtil;
-import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
 import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
 import raju.kadam.util.ListUtil;
@@ -149,13 +148,12 @@ public class ConfluenceUserManagementService implements UserManagementService {
         return users;
     }
 
-    public void addUsersToGroup(List userNames, String groupName, ServiceContext context) throws AddException {
-        List users = getUsersForUsernames(userNames);
-        List groups = ListUtil.createListOfOneItem(userAccessor.getGroup(groupName));
-        addUsersToGroups(users, groups);
+    public void addUsersByUsernameToGroup(List userNames, String groupName, ServiceContext context) throws AddException {
+        List groupNames = ListUtil.createListOfOneItem(groupName);
+        addUsersByUsernameToGroupsByGroupname(userNames, groupNames);
     }
 
-    private void addUsersToGroups(List users, List groups) throws AddException {
+    private void addUsersByUsernameToGroupsByGroupname(List userNames, List groupNames) throws AddException {
 
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
 
@@ -164,7 +162,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
         boolean isLDAPPresent = config.getLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false;
 
         //Associate selected user-groups to all users.
-        for (Iterator itr = users.iterator(); itr.hasNext();) {
+        for (Iterator itr = userNames.iterator(); itr.hasNext();) {
             //First check if given user is present or not
             String userid = (String) itr.next();
             User currUser = userAccessor.getUser(userid);
@@ -203,7 +201,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
             //If user exists then associate him/her to all selected usergroups
             if (currUser != null) {
                 //Associate this user to all selected user-groups
-                for (Iterator iterator = groups.iterator(); iterator.hasNext();) {
+                for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                     userAccessor.addMembership((String) iterator.next(), userid);
                 }
 
@@ -241,17 +239,16 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
 
-    public void removeUsersFromGroup(List userNames, String groupName, ServiceContext context) throws RemoveException {
-        List users = getUsersForUsernames(userNames);
-        List groups = ListUtil.createListOfOneItem(userAccessor.getGroup(groupName));
-        removeUsersFromGroups(users, groups);
+    public void removeUsersByUsernameFromGroup(List userNames, String groupName, ServiceContext context) throws RemoveException {
+        List groupNames = ListUtil.createListOfOneItem(groupName);
+        removeUsersByUsernamesFromGroupsByGroupname(userNames, groupNames);
     }
 
-    private void removeUsersFromGroups(List users, List groups) {
+    private void removeUsersByUsernamesFromGroupsByGroupname(List userNames, List groupNames) {
 
-        for (Iterator itr = users.iterator(); itr.hasNext();) {
+        for (Iterator itr = userNames.iterator(); itr.hasNext();) {
             String userid = (String) itr.next();
-            for (Iterator iterator = groups.iterator(); iterator.hasNext();) {
+            for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                 userAccessor.removeMembership((String) iterator.next(), userid);
             }
         }

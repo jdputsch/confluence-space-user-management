@@ -132,16 +132,16 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
     }
 
     public void removeGroup( String groupName, ServiceContext context ) throws RemoveException {
-        List groups = ListUtil.createListOfOneItem(userAccessor.getGroup(groupName));
-        removeGroups(groups, context);
+        List groups = ListUtil.createListOfOneItem(groupName);
+        removeGroupsByGroupnames(groups, context);
     }
 
-    public void removeGroups( List groups, ServiceContext context ) throws RemoveException
+    public void removeGroupsByGroupnames( List groupNames, ServiceContext context ) throws RemoveException
     {
         RemoveException ex = null;
 
         //Remove Selected Groups
-        for(Iterator iterator = groups.iterator(); iterator.hasNext();)
+        for(Iterator iterator = groupNames.iterator(); iterator.hasNext();)
         {
             String grpName = (String)iterator.next();
             Pattern pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), context.getSpace().getKey());

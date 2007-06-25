@@ -22,7 +22,7 @@ public interface UserManagementService {
 
     public List findUsersWhoseNameStartsWith( String partialName, ServiceContext context ) throws FindException;
 
-    public void addUsersToGroup( List userNames, String groupName, ServiceContext context ) throws AddException;
+    public void addUsersByUsernameToGroup( List userNames, String groupName, ServiceContext context ) throws AddException;
 
-    public void removeUsersFromGroup( List userNames, String groupName, ServiceContext context ) throws RemoveException;
+    public void removeUsersByUsernameFromGroup( List userNames, String groupName, ServiceContext context ) throws RemoveException;
 }

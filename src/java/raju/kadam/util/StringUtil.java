@@ -18,27 +18,30 @@ public class StringUtil {
     }
 
     public static List convertColonSemicolonOrCommaDelimitedStringToList( String s ) {
-        String[] valueArray = s.split("[:;,]");
-        List result = Arrays.asList(valueArray);
+        List result = null;
+        if ( s != null ) {
+            String[] valueArray = s.split("[:;,]");
+            result = Arrays.asList(valueArray);
+        }
         return result;
     }
 
     public static String convertCollectionToCommaDelimitedString( Collection collection ) {
-            StringBuffer sb = new StringBuffer();
-            if ( collection != null ) {
-                Iterator iter = collection.iterator();
-                int count = 0;
-                while (iter.hasNext()) {
-                    String item = (String)iter.next();
-                    if (count!=0) {
-                        sb.append(", ");
-                    }
-                    sb.append(item);
-                    count++;
+        StringBuffer sb = new StringBuffer();
+        if ( collection != null ) {
+            Iterator iter = collection.iterator();
+            int count = 0;
+            while (iter.hasNext()) {
+                String item = (String)iter.next();
+                if (count!=0) {
+                    sb.append(", ");
                 }
+                sb.append(item);
+                count++;
             }
-            return sb.toString();
         }
+        return sb.toString();
+    }
 
     public static boolean areBothNullOrAreEqual(String s1, String s2) {
         boolean result = false;

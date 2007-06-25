@@ -115,8 +115,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         context.setSelectedGroup(getParameterValue( paramMap, "selectedGroup"));
         context.setGroupToAdd(getParameterValue( paramMap, "groupToAdd"));
         context.setGroupToRemove(getParameterValue( paramMap, "groupToRemove"));
-        context.setUsersToAdd(getParameterValues( paramMap, "usersToAdd"));
-        context.setUsersToRemove(getParameterValues( paramMap, "userToRemove"));
+        context.setUsersToAdd(StringUtil.convertColonSemicolonOrCommaDelimitedStringToList(getParameterValue( paramMap, "usersToAdd")));
+        context.setUsersToRemove(StringUtil.convertColonSemicolonOrCommaDelimitedStringToList(getParameterValue( paramMap, "usersToRemove")));
         context.setLoggedInUser(getRemoteUser().getName());
 		context.setKey(getKey());
     	context.setAdminAction(getParameterValue( paramMap, "adminAction"));        
@@ -244,27 +244,27 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             if(adminAction != null)
             {
 
-                if(adminAction.equals("AddToGroups"))
+                if(adminAction.equals("addUsersToGroup"))
                 {
-                    userManagementService.addUsersToGroup(context.getUsersToAdd(), context.getSelectedGroup(), serviceContext);
+                    userManagementService.addUsersByUsernameToGroup(context.getUsersToAdd(), context.getSelectedGroup(), serviceContext);
 
                     opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToAdd()) + " added to group " + context.getSelectedGroup() + " successfully!</font>";
                 }
-                else if(adminAction.equals("RemoveFromGroups"))
+                else if(adminAction.equals("removeUsersFromGroup"))
                 {
-                    userManagementService.removeUsersFromGroup(context.getUsersToRemove(), context.getSelectedGroup(), serviceContext);
+                    userManagementService.removeUsersByUsernameFromGroup(context.getUsersToRemove(), context.getSelectedGroup(), serviceContext);
 
                     opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToRemove()) + " removed from group " + context.getSelectedGroup() + " successfully!</font>";
                 }
-                else if(adminAction.equals("AddGroups"))
+                else if(adminAction.equals("addGroup"))
                 {
                     groupManagementService.addGroup(context.getGroupToAdd(), serviceContext);
 
                     opMessage = "<font color=\"green\">Group " + context.getGroupToAdd() + " added successfully!</font>";
                 }
-                else if(adminAction.equals("RemoveGroups"))
+                else if(adminAction.equals("removeGroup"))
                 {
-                    groupManagementService.addGroup(context.getGroupToAdd(), serviceContext);
+                    groupManagementService.removeGroup(context.getGroupToRemove(), serviceContext);
 
                     opMessage = "<font color=\"green\">Group " + context.getGroupToRemove() + " removed successfully!</font>";
                 }
@@ -431,9 +431,21 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     //}
 
     public boolean getIsPluginConfigurationDone() {
-        boolean isConfigValid = getCustomPermissionConfiguration().isValid();
+        boolean isConfigValid = this.getCustomPermissionConfiguration().isValid();
         log.debug("isPluginConfigurationDone = " + isConfigValid);
         return isConfigValid;
+    }
+
+    public boolean getIsGroupActionsPermitted() {
+        boolean isGroupActionsPermitted = false;
+        String groupActionsPermitted = getCustomPermissionConfiguration().getGroupActionsPermitted();
+        if (ConfigUtil.isNotNullAndIsYesOrNo(groupActionsPermitted)) {
+            if ("YES".equals(groupActionsPermitted)) {
+                isGroupActionsPermitted = true;
+            }
+        }
+        log.debug("isGroupActionsPermitted = " + isGroupActionsPermitted);
+        return isGroupActionsPermitted;
     }
 
     public GroupManagementService getGroupManagementService() throws ServiceException {

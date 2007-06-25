@@ -9,6 +9,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import raju.kadam.util.ConfigUtil;
 
 /**
  * Convenience methods that get/set persisted config values in BandanaManager.
@@ -78,7 +79,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             }
         }
 
-        if (getMaxUserIDsLimit() == null || !isIntGreaterThanZero(getMaxUserIDsLimit())) {
+        if (getMaxUserIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(getMaxUserIDsLimit())) {
             isValid = false;
         }
 
@@ -101,7 +102,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             isValid = false;
         }
         else {
-            if (isNotNullAndIsYesOrNo(ldapAuthUsed)) {
+            if (ConfigUtil.isNotNullAndIsYesOrNo(ldapAuthUsed)) {
                 if ("YES".equals(ldapAuthUsed)) {
                     if (getCompanyLDAPUrl() == null || getCompanyLDAPBaseDN() == null) {
                         isValid = false;
@@ -114,7 +115,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         }
 
         String pluginInDown = getPluginDown();
-        if (isNotNullAndIsYesOrNo(pluginInDown)) {
+        if (ConfigUtil.isNotNullAndIsYesOrNo(pluginInDown)) {
             if ("YES".equals(pluginInDown)) {
                 if (getDownTimeMessage() == null) {
                     isValid = false;
@@ -126,7 +127,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         }
 
         String groupActionsPermitted = getGroupActionsPermitted();
-        if (isNotNullAndIsYesOrNo(groupActionsPermitted)) {
+        if (ConfigUtil.isNotNullAndIsYesOrNo(groupActionsPermitted)) {
             if ("YES".equals(groupActionsPermitted)) {
                 if (getNewGroupNameCreationPrefixPattern() == null || getNewGroupNameCreationSuffixPattern() == null) {
                     isValid = false;
@@ -138,31 +139,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         }
 
         return isValid;
-    }
-
-    private boolean isNotNullAndIsYesOrNo(String s) {
-        boolean result = false;
-        if ( s != null && ("YES".equals(s) || "NO".equals(s))) {
-            result = true;
-        }
-        return result;
-    }
-
-    private boolean isIntGreaterThanZero(String s) {
-        boolean result = false;
-        if ( s != null ) {
-            int i = 0;
-            try {
-                i = Integer.parseInt(s);
-                if (i>0) {
-                    result = true;
-                }
-            }
-            catch (NumberFormatException nfe) {
-                // invalid
-            }
-        }
-        return result;
     }
 
     public String getUserManagerLocation() {
