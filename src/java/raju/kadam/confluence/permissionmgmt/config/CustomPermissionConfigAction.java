@@ -49,14 +49,14 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     private static final Category log = Category.getInstance(CustomPermissionConfigAction.class);
 
     BandanaManager bandanaManager;
-    BootstrapManager bootStrapManager;
+    BootstrapManager bootstrapManager;
     CustomPermissionConfiguration customPermissionConfiguration;
     
     
     public CustomPermissionConfigAction()
     {
-    	//Get base URL for confluence installation
-        bootStrapManager = (BootstrapManager) ContainerManager.getInstance().getContainerContext().getComponent("bootstrapManager");
+    	log.debug("CustomPermissionConfigAction start constructor");
+        log.debug("CustomPermissionConfigAction end constructor");
     }
     
     public void setBandanaManager(BandanaManager bandanaManager)

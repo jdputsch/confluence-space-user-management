@@ -5,7 +5,8 @@ import com.atlassian.user.User;
 
 import java.util.List;
 
-import raju.kadam.confluence.permissionmgmt.service.impl.AdvancedUserQuery;
+import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
+import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 
 /**
  * (c) 2007 Duke University
@@ -15,15 +16,13 @@ import raju.kadam.confluence.permissionmgmt.service.impl.AdvancedUserQuery;
  */
 public interface UserManagementService {
 
-    public List findUsers(AdvancedUserQuery advancedUserQuery);
+    public List findUsers( AdvancedUserQuery advancedUserQuery, ServiceContext context ) throws FindException;
 
-    public List findUsersForGroup( String groupName );
+    public List findUsersForGroup( String groupName, ServiceContext context ) throws FindException;
 
-    public List findUsersForGroup( Group group );
+    public List findUsersWhoseNameStartsWith( String partialName, ServiceContext context ) throws FindException;
 
-    public List findUsersWhoseNameStartsWith( String partialName );
+    public void addUsersToGroup( List userNames, String groupName, ServiceContext context ) throws AddException;
 
-    public List addUserToGroup( User user, Group group );
-
-    public List removeUserFromGroup( User user, Group group );
+    public void removeUsersFromGroup( List userNames, String groupName, ServiceContext context ) throws RemoveException;
 }

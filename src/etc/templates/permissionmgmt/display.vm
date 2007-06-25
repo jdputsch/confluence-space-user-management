@@ -116,19 +116,20 @@
             <ul>
         </div>
         
-        #if($action.selectedGroup)  ## What is the best way to test to see if a group has been selected?
+        #if(${action.selectedGroup})  ## What is the best way to test to see if a group has been selected?
         <div id="csumGroupEditor" style="margin:0; width:500px; float:left;">
-		    <h3>Edit $selectedGroup.name</h3>
-            #set ($users = $action.findUsers($selectedGroup))
+		    <h3>Edit ${action.selectedGroup}</h3>
+
+		    #set ($users = $action.findUsers(${action.selectedGroup}))
             <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="ManageUsersForm">
 				<fieldset>
-				    <label>Add User(s) to $selectedGroup.name:</label>
+				    <label>Add User(s) to ${action.selectedGroup}:</label>
 				    <input type="text" id="usersToAdd" name="usersToAdd"/>
 				    <span style="font-size:.8em;">eg. rb04, nk93, kb85, ts69</span>
 					<div id="myContainer"></div>
                 </fieldset>
 
-                #if($users)
+                #if($users && $users.size() > 0)
                 <fieldset>
 					<table width="100%">
 						<tr><th>Full Name</th><th>NetID</th><th>Email</th><th>Delete user?</th></tr>
@@ -143,7 +144,7 @@
                     </table>
                 </fieldset>
                 #else
-                    No users found in group $selectedGroup
+                    No users found in group ${action.selectedGroup}
                 #end
 
                 <fieldset>

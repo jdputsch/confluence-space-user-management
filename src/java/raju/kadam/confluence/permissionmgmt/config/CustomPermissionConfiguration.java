@@ -4,9 +4,15 @@ import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.spring.container.ContainerManager;
 
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
- * Convenience methods that get/set persisted config values in BandanaManager. 
- *
+ * Convenience methods that get/set persisted config values in BandanaManager.
+ * <p/>
  * (c) 2007 Duke University
  * User: gary.weaver@duke.edu
  * Date: Jun 18, 2007
@@ -14,11 +20,14 @@ import com.atlassian.spring.container.ContainerManager;
  */
 public class CustomPermissionConfiguration implements CustomPermissionConfigurable {
 
-    BandanaManager bandanaManager;
+    private Log log = LogFactory.getLog(this.getClass());
 
-    public CustomPermissionConfiguration()
-    {
-    	setBandanaManager( (BandanaManager) ContainerManager.getInstance().getContainerContext().getComponent("bandanaManager"));
+    private BandanaManager bandanaManager;
+
+    public CustomPermissionConfiguration() {
+        log.debug("CustomPermissionConfiguration start constructor");
+        setBandanaManager((BandanaManager) ContainerManager.getComponent("bandanaManager"));
+        log.debug("CustomPermissionConfiguration end constructor");
     }
 
     public void copyTo(CustomPermissionConfigurable config) {
@@ -51,6 +60,109 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setGroupActionsPermitted(config.getGroupActionsPermitted());
         setNewGroupNameCreationPrefixPattern(config.getNewGroupNameCreationPrefixPattern());
         setNewGroupNameCreationSuffixPattern(config.getNewGroupNameCreationSuffixPattern());
+    }
+
+    public boolean isValid() {
+        boolean isValid = true;
+
+        String userManagementLocation = getUserManagerLocation();
+        if (userManagementLocation == null) {
+            isValid = false;
+        }
+        else {
+            if (userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE)) {
+                //if user is using JIRA for User Management then we need to Jira Information
+                if ((getJiraUrl() == null) || (getJiraJNDILookupKey() == null)) {
+                    isValid = false;
+                }
+            }
+        }
+
+        if (getMaxUserIDsLimit() == null || !isIntGreaterThanZero(getMaxUserIDsLimit())) {
+            isValid = false;
+        }
+
+        String userGroupsMatchingPattern = getUserGroupsMatchingPattern();
+        if (getUserGroupsMatchingPattern() == null) {
+            isValid = false;
+        }
+        else {
+            try {
+                //validate is valid Pattern
+                Pattern pat = Pattern.compile(userGroupsMatchingPattern);
+            }
+            catch (PatternSyntaxException pse) {
+                isValid = false;
+            }
+        }
+
+        String ldapAuthUsed = getLdapAuthUsed();
+        if (ldapAuthUsed==null) {
+            isValid = false;
+        }
+        else {
+            if (isNotNullAndIsYesOrNo(ldapAuthUsed)) {
+                if ("YES".equals(ldapAuthUsed)) {
+                    if (getCompanyLDAPUrl() == null || getCompanyLDAPBaseDN() == null) {
+                        isValid = false;
+                    }
+                }
+            }
+            else {
+                isValid = false;
+            }
+        }
+
+        String pluginInDown = getPluginDown();
+        if (isNotNullAndIsYesOrNo(pluginInDown)) {
+            if ("YES".equals(pluginInDown)) {
+                if (getDownTimeMessage() == null) {
+                    isValid = false;
+                }
+            }
+        }
+        else {
+            isValid = false;
+        }
+
+        String groupActionsPermitted = getGroupActionsPermitted();
+        if (isNotNullAndIsYesOrNo(groupActionsPermitted)) {
+            if ("YES".equals(groupActionsPermitted)) {
+                if (getNewGroupNameCreationPrefixPattern() == null || getNewGroupNameCreationSuffixPattern() == null) {
+                    isValid = false;
+                }
+            }
+        }
+        else {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private boolean isNotNullAndIsYesOrNo(String s) {
+        boolean result = false;
+        if ( s != null && ("YES".equals(s) || "NO".equals(s))) {
+            result = true;
+        }
+        return result;
+    }
+
+    private boolean isIntGreaterThanZero(String s) {
+        boolean result = false;
+        if ( s != null ) {
+            int i = 0;
+            try {
+                i = Integer.parseInt(s);
+                if (i>0) {
+                    result = true;
+                }
+            }
+            catch (NumberFormatException nfe) {
+                // invalid
+            }
+        }
+        return result;
     }
 
     public String getUserManagerLocation() {

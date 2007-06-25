@@ -1,6 +1,7 @@
 package raju.kadam.util;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * (c) 2007 Duke University
@@ -16,5 +17,12 @@ public class ListUtil {
             result = true;
         }
         return result;
-    }        
+    }
+
+    // TODO: hopefully this goes away when we decide for sure whether we will support multiple users->group actions at once
+    public static List createListOfOneItem( Object item ) {
+        List list = new ArrayList();
+        list.add(item);
+        return list;
+    }
 }

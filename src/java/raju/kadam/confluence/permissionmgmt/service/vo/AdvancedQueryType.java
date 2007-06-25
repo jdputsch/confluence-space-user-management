@@ -1,4 +1,4 @@
-package raju.kadam.confluence.permissionmgmt.service.impl;
+package raju.kadam.confluence.permissionmgmt.service.vo;
 
 import com.atlassian.user.search.query.TermQuery;
 

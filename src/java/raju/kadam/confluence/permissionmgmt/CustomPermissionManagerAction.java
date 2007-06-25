@@ -31,35 +31,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package raju.kadam.confluence.permissionmgmt;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 import raju.kadam.util.*;
-import raju.kadam.util.LDAP.LDAPUser;
-import raju.kadam.util.LDAP.LDAPUtil;
-import raju.kadam.confluence.permissionmgmt.service.GroupManagementService;
-import raju.kadam.confluence.permissionmgmt.service.UserManagementService;
-import raju.kadam.confluence.permissionmgmt.service.impl.AdvancedUserQuery;
-import raju.kadam.confluence.permissionmgmt.service.impl.AdvancedQueryType;
+import raju.kadam.confluence.permissionmgmt.service.*;
+import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedQueryType;
+import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
+import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
-import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
-import raju.kadam.confluence.permissionmgmt.util.RpcResponse;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
-import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.confluence.util.SpaceComparator;
-import com.atlassian.user.Group;
 import com.atlassian.user.User;
-import com.atlassian.user.search.page.PagerUtils;
-import com.atlassian.user.search.query.TermQuery;
-import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
 
 /**
@@ -69,26 +59,17 @@ import com.opensymphony.webwork.ServletActionContext;
  */
 public class CustomPermissionManagerAction extends AbstractSpaceAction implements SpaceAdministrative
 {
-    private BootstrapManager bootstrapManager;
     private BandanaManager bandanaManager;
-    private SpaceDao spDao;
-    
-    //Following variables store user input, to display user input values if any input is incorrect! 
-    private String users = null;
-    private String groupsToAdd = null;
-    private List selectedUserGroupsList = null;
-    private String adminAction = null;
-    private String selectedGroup = null;
-
-    private GroupManagementService groupManagementService;
-    private UserManagementService userManagementService;
+    private SpaceDao spaceDao;
+    private CustomPermissionServiceManager customPermissionServiceManager;
     private CustomPermissionConfiguration customPermissionConfiguration;
+    private String selectedGroup;
 
     public CustomPermissionManagerAction()
 	{
-		bootstrapManager = (BootstrapManager) ContainerManager.getComponent("bootstrapManager");
-        spDao = (SpaceDao) ContainerManager.getComponent("spaceDao");
-	}
+		log.debug("CustomPermissionManagerAction start constructor");
+        log.debug("CustomPermissionManagerAction end constructor");
+    }
     
     public void setBandanaManager(BandanaManager bandanaManager)
     {
@@ -101,20 +82,6 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 		//It will display screen with all user groups as per usergroupsPattern setting in Configuration
 		log.debug("CustomPermissionManagerAction - log - Inside doDefault ..");
         return super.doDefault();
-    }
-
-    public String doAddGroup() throws Exception
-    {
-        try {
-            Map paramMap = ServletActionContext.getRequest().getParameterMap();
-            String identifier = getParameterValue(paramMap, "groupsToAdd");
-            getGroupManagementService().createGroup(identifier, getSpace());
-        }
-        catch (Throwable t) {
-            return ERROR;
-        }
-        
-        return SUCCESS;
     }
 
     private String getParameterValue(Map paramMap, String param) {
@@ -134,28 +101,25 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return new ArrayList();
     }
 
+    public ServiceContext createServiceContext() {
+        ServiceContext context = new ServiceContext();
+        context.setLoggedInUser(getRemoteUser().getName());
+        context.setSpace(this.getSpace());
+        return context;
+    }
+
     public CustomPermissionManagerActionContext createContext() {
-
         CustomPermissionManagerActionContext context = new CustomPermissionManagerActionContext();
-
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        context.setParamMap(paramMap);
-
         // TODO: consider converting selectedGroup from List to single element
-        context.setSelectedGroups(getParameterValues( paramMap, "selectedGroup"));
-        context.setGroupsToAddList(getParameterValues( paramMap, "groupToAdd"));
-        context.setGroupsToRemoveList(getParameterValues( paramMap, "groupToRemove"));
-        context.setUsersToAddList(getParameterValues( paramMap, "usersToAdd"));
-        context.setUsersToRemoveList(getParameterValues( paramMap, "usersToRemove"));
+        context.setSelectedGroup(getParameterValue( paramMap, "selectedGroup"));
+        context.setGroupToAdd(getParameterValue( paramMap, "groupToAdd"));
+        context.setGroupToRemove(getParameterValue( paramMap, "groupToRemove"));
+        context.setUsersToAdd(getParameterValues( paramMap, "usersToAdd"));
+        context.setUsersToRemove(getParameterValues( paramMap, "userToRemove"));
         context.setLoggedInUser(getRemoteUser().getName());
 		context.setKey(getKey());
-    	//String userids = ServletActionContext.getRequest().getParameter("userList");
-    	context.setAdminAction(getParameterValue( paramMap, "adminAction"));
-        //context.setUsersToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getUsers()));
-        //context.setGroupsToAddList(StringUtil.convertDelimitedStringToCleanedLowercaseList(getGroupsToAdd()));
-        context.setBootstrapManager(this.bootstrapManager);
-        context.setSpaceKey(this.getSpace().getKey());    	
-        
+    	context.setAdminAction(getParameterValue( paramMap, "adminAction"));        
         return context;
     }
 
@@ -163,25 +127,9 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     {
 		log.debug("CustomPermissionManagerAction - log - Inside execute...");
 
-        String loggedInUser = getRemoteUser().getName();
-        Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        
         CustomPermissionManagerActionContext context = createContext();
 
-        // TODO: setting on action after getting values from request param and setting on context seems like too much overhead.
-        if (context.getSelectedGroups()!=null && context.getSelectedGroups().size()>0) {
-            setSelectedGroup((String)context.getSelectedGroups().get(0));
-        }
-        if (context.getAdminAction()!=null) {
-            setAdminAction(context.getAdminAction());
-        }
-
-        //if (adminAction==null) {
-        //    throw new RuntimeException("adminAction null inside manageUsersInConfluence()");
-        //}
-        //else if (adminAction!=null) {
-        //   throw new RuntimeException("adminAction=" + adminAction + " and context is " + context);
-        //}
+        setSelectedGroup(context.getSelectedGroup());
 
         // TODO: rewrite validation and include errors in display.vm
         //Validate user input
@@ -192,91 +140,31 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         //    return ERROR;
         //}
 
-        String userGroupsValidationMessage = validateUserGroupWikiSpaceAssociation(context.getSelectedGroups());
-    	if(userGroupsValidationMessage != null)
-    	{
-            log.debug("There are no groups this user can currently administer. message=" + userGroupsValidationMessage);
-            addFieldError("NotPermittedUserGroupsErrorMessage", userGroupsValidationMessage);
-    		return ERROR;
-    	}
-    	
-    	//Process user groups as per type of User Management Service used. It can be from CONFLUENCE or JIRA
-    	String userManagementLocation = getUserManagerLocation();
-    	if(userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
-    	{
-        	//Using Confluence for user management
-            return manageUsersInConfluence(context);
-    	}
-    	//Using Jira for user management
-    	else if(userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
-    	{
-        	//First generate a secret Id that we want to pass with data.
-        	String secretId = JiraUtil.getSecretId(loggedInUser, getCustomPermissionConfiguration().getJiraJNDILookupKey());
-        	context.setSecretId(secretId);
-            if(secretId == null)
-        	{
-        		//Looks like there is some problem in getting id for given user. Is JiraDS configuration wrong ?
-        		addActionError("Error! Couldn't get User details, Please verify Jira JNDI Datasource with Confluence Administrator.");
-        		return ERROR;
-        	}
+        // TODO: rewrite validation and include errors in display.vm
+        //String userGroupsValidationMessage = validateUserGroupWikiSpaceAssociation(context.getSelectedGroups());
+    	//if(userGroupsValidationMessage != null)
+    	//{
+        //    log.debug("There are no groups this user can currently administer. message=" + userGroupsValidationMessage);
+        //    addFieldError("NotPermittedUserGroupsErrorMessage", userGroupsValidationMessage);
+    	//	return ERROR;
+    	//}
 
-            //call Jira RPC service
-            RpcResponse resp = JiraUtil.callJiraRPCService(context, getCustomPermissionConfiguration());
-            //depending upon result of action, display messages.
-            if (resp.isError())
-            {
-                setActionErrors(resp.getMessages());
-            }
-            else
-            {
-               setActionMessages(resp.getMessages());
-               //Since action is carried successfully, clean user input
-               flushUserInputs();
-            }
-        }
-
-       return super.execute();
+        return manage(context);
     }
 
-    //Helps to retrieve usergroups selected by User - removed "groups_" from selected checkbox name
-    public String buildUserGroupsFromCheckboxName(String checkboxName)
-    {
-        String[] splitUpCheckboxName = checkboxName.split("_", 2);
-    	return splitUpCheckboxName[1];
-    }
-
-    //Get the list of user groups that user has selected
-    /*
-    private List retrieveListOfSelectedUserGroups(Map paramMap)
-    {
-    	List selectedUserGroupsList = new ArrayList(4);
-    	
-    	//Get all groups that user has selected.
-        for (Iterator iterator = paramMap.keySet().iterator(); iterator.hasNext();)
-        {
-            String paramKey = (String) iterator.next();
-            if(paramKey != null && paramKey.startsWith("groups_"))
-            {
-            	selectedUserGroupsList.add(buildUserGroupsFromCheckboxName(paramKey));
-            }
-        }
-        
-    	this.selectedUserGroupsList = selectedUserGroupsList;
-    	return selectedUserGroupsList;
-    }
-    */
+    
     
     //If input group name matches with user select group, then return true
     //This function will be useful to remember user selection of checkbox during displaying errors!
-    public boolean isGroupSelected(String groupName)
-    {
-    	if( selectedUserGroupsList!=null && selectedUserGroupsList.contains(groupName))
-    	{
-    		return true;
-    	}
-    	
-      return false;
-    }
+    //public boolean isGroupSelected(String groupName)
+    //{
+    //	if( selectedUserGroupsList!=null && selectedUserGroupsList.contains(groupName))
+    //	{
+    //		return true;
+    //	}
+    //
+    //  return false;
+    //}
 
     /*
      * Action implements SpaceAdministrative interface.
@@ -299,8 +187,9 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
     public boolean isPermitted()
     {
-        if (GeneralUtil.isSuperUser(getRemoteUser()))
+        if (GeneralUtil.isSuperUser(getRemoteUser())) {
             return true;
+        }
 
         return spacePermissionManager.hasPermission(getPermissionTypes(), getSpace(), getRemoteUser());
     }
@@ -318,7 +207,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         if (GeneralUtil.isSuperUser(user))
             return getAllSpaces();
    
-        List permittedSpacesForUser = spDao.getPermittedSpacesForUser(user,permission);
+        List permittedSpacesForUser = spaceDao.getPermittedSpacesForUser(user,permission);
         Collections.sort(permittedSpacesForUser, new SpaceComparator());
 
         return permittedSpacesForUser;
@@ -329,419 +218,83 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
      */
     public List getAllSpaces()
     {
-        return spDao.findAllSorted("name");
+        return spaceDao.findAllSorted("name");
     }
 
-    public String getCollectionAsString(Collection c) {
-        if ( c != null ) {
-            StringBuffer sb = new StringBuffer();
-            boolean needSeparator = false;
-            for (Iterator iterator = c.iterator(); iterator.hasNext();) {
-                if ( needSeparator ) {
-                    sb.append( ", " );
-                }
-                sb.append( '\'' );
-                sb.append( (String) iterator.next() );
-                sb.append( '\'' );
-                needSeparator = true;
-            }
-            return sb.toString();
-        }
-        return null;
+    //reduce unnecessary number of variables going to services
+    public ServiceContext createServiceContext(CustomPermissionManagerActionContext context) {
+        ServiceContext result = new ServiceContext();
+        result.setLoggedInUser(context.getLoggedInUser());
+        result.setSpace(getSpace());
+        return result;
     }
 
-    //Get list of usergroups associated to given wiki space.
-    public String validateUserGroupWikiSpaceAssociation(List selectedUserGroups)
+    public String manage(CustomPermissionManagerActionContext context)
     {
-        String notAllowedGroups = null;
-
-        if ( selectedUserGroups != null )
-        {
-
-            if (log.isDebugEnabled())
-            {
-                log.debug("validateUserGroupWikiSpaceAssociation() called with groups:" +
-                        getCollectionAsString(selectedUserGroups));
-            }
-
-            List notAssociatedUserGroups = new ArrayList();
-
-            //Set currentAssociatedUserGroupsSet = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, getSpace()).keySet();
-            List currentAssociatedUserGroupsSet = getGroupManagementService().findGroups(getSpace());
-            for (Iterator iterator = selectedUserGroups.iterator(); iterator.hasNext();)
-            {
-                String grpName = (String) iterator.next();
-
-                //check if this group name is present in current Associated usergroups for this wiki space or not.
-                if(!currentAssociatedUserGroupsSet.contains(userAccessor.getGroup(grpName)))
-                {
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Group '" + grpName + "' was not found in currentAssociatedUserGroupsSet: " + getCollectionAsString(currentAssociatedUserGroupsSet));
-                    }
-
-                    notAssociatedUserGroups.add(grpName);
-                }
-                else
-                {
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Can manage group '" + grpName + "'");
-                    }
-                }
-            }
-
-           if(notAssociatedUserGroups.size()> 0)
-           {
-               notAllowedGroups = "";
-               for(Iterator itr= notAssociatedUserGroups.iterator(); itr.hasNext();)
-               {
-                   notAllowedGroups += ", " + (String)itr.next() ;
-               }
-
-               notAllowedGroups = "You are not authorized to modify usergroups - " + notAllowedGroups.replaceFirst(", ", "") ;
-           }
-        }
-       
-        return notAllowedGroups;
-    }
-    
-    //This method will be used to create an user when Confluence is used for Managing Wiki Users
-	private User createConfUser(String creationUserName, boolean isLDAPAvailable, String companyLDAPUrl, String companyLDAPBaseDN)
-	{
-		User vUser = null;
-		LDAPUser lUser = null;
-		
-		log.debug("create a confluence user -> " + creationUserName);
-		
-		try {
-			//if LDAP Lookup is available, get information from there.
-			if(isLDAPAvailable)
-			{
-				//log.debug("LDAP Lookup available");
-				//Get user details from LDAP.
-				lUser = LDAPUtil.getLDAPUser(creationUserName,companyLDAPUrl,companyLDAPBaseDN);
-				if(lUser != null)
-				{
-					vUser = userAccessor.addUser(creationUserName,creationUserName, lUser.getEmail(), lUser.getFullName());
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return vUser;
-	}
-
-    //This method will be used to create a group when Confluence is used for Managing Wiki Groups
-	private Group createConfSpaceGroup(String creationGroupName)
-	{
-		Group vGroup = null;
-
-		log.debug("create a confluence group -> " + creationGroupName);
-
-		try {
-			vGroup = userAccessor.addGroup(creationGroupName);
-        } catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return vGroup;
-	}
-
-    public String manageUsersInConfluence(CustomPermissionManagerActionContext context)
-    //public String manageUsersInConfluence(String actionPerformerUser,
-			 //String spaceKey,
-			 //List userIdList,
-			 //List groupList,
-             //List groupIdToAddList,
-             //String adminAction)
-	{
-		//Result List. it Looks like we can't sent status as output object, rpc call doesn't support custom objects! Not sure....
 		List resultList = new ArrayList();
-		String opMessage = null;
-		//Following vector holds all those userids, which are not in system and also we couldn't create them as LDAP doesn't have information about it. 
-		String vNotCreatedUsers = "";
-        String vNotCreatedGroups = "";
-        String vGroupsNotMatched = "";
+        String opMessage = null;
+		String adminAction = context.getAdminAction();
 
-        String adminAction = context.getAdminAction();
+        try
+        {
+            GroupManagementService groupManagementService = getGroupManagementService();
+            UserManagementService userManagementService = getUserManagementService();
+            ServiceContext serviceContext = createServiceContext();
 
-        //if (adminAction==null) {
-        //    throw new RuntimeException("adminAction null inside manageUsersInConfluence()");
-        //}
-        //else if (adminAction!=null) {
-        //    throw new RuntimeException("adminAction=" + adminAction + " and context is " + context);
-        //}
+            if(adminAction != null)
+            {
 
-        if (adminAction==null) {
-            resultList.add("Please select an action.");
+                if(adminAction.equals("AddToGroups"))
+                {
+                    userManagementService.addUsersToGroup(context.getUsersToAdd(), context.getSelectedGroup(), serviceContext);
+
+                    opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToAdd()) + " added to group " + context.getSelectedGroup() + " successfully!</font>";
+                }
+                else if(adminAction.equals("RemoveFromGroups"))
+                {
+                    userManagementService.removeUsersFromGroup(context.getUsersToRemove(), context.getSelectedGroup(), serviceContext);
+
+                    opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToRemove()) + " removed from group " + context.getSelectedGroup() + " successfully!</font>";
+                }
+                else if(adminAction.equals("AddGroups"))
+                {
+                    groupManagementService.addGroup(context.getGroupToAdd(), serviceContext);
+
+                    opMessage = "<font color=\"green\">Group " + context.getGroupToAdd() + " added successfully!</font>";
+                }
+                else if(adminAction.equals("RemoveGroups"))
+                {
+                    groupManagementService.addGroup(context.getGroupToAdd(), serviceContext);
+
+                    opMessage = "<font color=\"green\">Group " + context.getGroupToRemove() + " removed successfully!</font>";
+                }
+                else {
+                    // list users if there is a selected group
+                    String selectedGroup = context.getSelectedGroup();
+                    setSelectedGroup(selectedGroup);
+                }
+                
+            }
+
+            // note: is normal at times not to have an action (selecting group for example)
+        }
+        catch(ServiceException e)
+        {
+            e.printStackTrace();
+            resultList.add("" + e.getMessage());
             setActionErrors(resultList);
             return ERROR;
         }
-        else if(adminAction.equals("AddToGroups"))
-        {
-	        boolean isLDAPPresent = getIsLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false;
-    		try
-    		{
-        		//Associate selected user-groups to all users.
-        		for(Iterator itr = context.getUsersToAddList().iterator(); itr.hasNext();)
-        		{
-        			//First check if given user is present or not
-        			String userid = (String) itr.next();
-        			User currUser = userAccessor.getUser(userid);
-        			if(currUser == null)
-        			{
-        				//create an user
-        				//userid doesn't exists, if LDAP present then we will create User if it exists in LDAP.
-        		        if(isLDAPPresent)
-        		        {
-        		        	//create an user.
-        		        	currUser = createConfUser(userid,isLDAPPresent, getCompanyLDAPUrl(),getCompanyLDAPBaseDN());
-        		        }
 
-        		        //if user details not found in LDAP too, then retun userid in errorids
-        		        if(currUser == null)
-        		        {
-    						//ok for some reasons we are unable to create user.
-    						//Let's add it to our notCreatedUser List.
-        		        	vNotCreatedUsers += ", " + userid;
-    						//let's jump to next userid.
-    						log.debug("User not found ...go to next user id");
-    						continue;
-        		        }
-    					else
-    					{
-    						//Add this user to default group confluence-users
-    						userAccessor.addMembership("confluence-users", userid);
-    					}
-        			}
-
-        			//If user exists then associate him/her to all selected usergroups
-        			if (currUser != null)
-        			{
-        	        	//Associate this user to all selected user-groups
-        	        	for(Iterator iterator = context.getSelectedGroups().iterator(); iterator.hasNext();)
-        	        	{
-        	        		userAccessor.addMembership((String)iterator.next(), userid);
-        	        	}
-        				
-        			}
-        		}
-    		}
-    		catch(Exception e)
-    		{
-    			e.printStackTrace();
-    			resultList.add("Error! - " + e.getMessage());
-            	setActionErrors(resultList);
-    			return ERROR;
-    		}
-
-        	//Set the Message for Add operation appropriately
-			if(vNotCreatedUsers != "")
-			{
-				opMessage ="Some of the Users may not have been added to System." ;
-				
-				String LDAPErrorMessage = "<br>Either following are invalid userids Or there is some issue with LDAP configuration.<br> Please verify with Confluence Administrator.";
-				//If LDAP is used for creating users, then it might be LDAP settings issue. hence display error message accordingly
-				if(isLDAPPresent)
-				{
-					opMessage += LDAPErrorMessage;
-				}
-				
-				opMessage = "<font color=\"red\">" + opMessage + "</font>";
-				
-				vNotCreatedUsers = "<font color=\"red\">List of not added Userids: " + vNotCreatedUsers.replaceFirst(",", "") + "</font>";
-			}
-			else
-			{
-				opMessage = "<font color=\"green\">All users are added successfully!</font>";
-			}
-			
-			resultList.add(opMessage);
-			resultList.add(vNotCreatedUsers);
-			
-        	setActionMessages(resultList);
-        	flushUserInputs();
-        	return SUCCESS;
-        }
-        else if(adminAction.equals("RemoveFromGroups"))
-        {
-        	try{
-	        	//Remove User from all mentioned groups         	
-        		for(Iterator itr = context.getUsersToRemoveList().iterator(); itr.hasNext();)
-	    		{
-        			String userid = (String) itr.next();
-		        	for(Iterator iterator = context.getSelectedGroups().iterator(); iterator.hasNext();)
-		        	{
-		        		userAccessor.removeMembership((String)iterator.next(), userid);
-		        	}
-	    		}
-        	}
-    		catch(Exception e)
-    		{
-    			e.printStackTrace();
-    			resultList.add("Error! - " + e.getMessage());
-    			return ERROR;
-    		}
-    		
-			opMessage = "<font color=\"green\">All users are successfully removed from selected groups!</font>";
-			resultList.add(opMessage);
-        	setActionMessages(resultList);
-        	flushUserInputs();
-        	
-        	return SUCCESS;
-        }
-        else if(adminAction.equals("AddGroups"))
-        {
-	        try
-    		{
-        		//Add groups
-
-                for(Iterator itr = context.getGroupsToAddList().iterator(); itr.hasNext();)
-        		{
-        			//First check if given group is present or not
-        			String groupid = (String) itr.next();
-        			this.getGroupManagementService().createGroup(groupid,space);
-        		}
-    		}
-    		catch(Exception e)
-    		{
-    			e.printStackTrace();
-    			resultList.add("Error! - " + e.getMessage());
-            	setActionErrors(resultList);
-    			return ERROR;
-    		}
-
-        	//Set the Message for Add operation appropriately
-			if(!("".equals(vNotCreatedUsers)) || !("".equals(vGroupsNotMatched)))
-			{
-				opMessage = "Some of the Groups may not have been added to System.";
-                resultList.add("<font color=\"red\">" + opMessage + "</font>");
-
-                if (!("".equals(vNotCreatedUsers))) {
-                    resultList.add("<font color=\"red\">List of not added Groupids: " + vNotCreatedGroups.replaceFirst(",", "") + "</font>");
-                }
-                if (!("".equals(vGroupsNotMatched))) {
-                    resultList.add("<font color=\"red\">List of not added Groupids that weren't added because they didn't match: " + vGroupsNotMatched + "</font>");
-                }
-            }
-			else
-			{
-				opMessage = "All groups are added successfully!";
-                resultList.add("<font color=\"green\">" + opMessage + "</font>");
-			}
-
-
-			setActionMessages(resultList);
-        	flushUserInputs();
-        	return SUCCESS;
-        }
-        else if(adminAction.equals("RemoveGroups"))
-        {
-        	String groupsNotDeleted = "";
-            Pattern pat = null;
-            try{
-	        	//Remove Selected Groups
-        		for(Iterator iterator = context.getGroupsToRemoveList().iterator(); iterator.hasNext();)
-                {
-                    String grpName = (String)iterator.next();
-                    pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), getSpace().getKey());
-                    boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(grpName, pat);
-
-                    // Space admin should not be able to delete any groups whose names begin with "confluence"
-                    if (!grpName.startsWith("confluence") && isPatternMatch) {
-                        Group group = userAccessor.getGroup(grpName);
-                        if (group!=null) {
-                            userAccessor.removeGroup(group);
-                        }
-                    }
-                    else {
-                        log.debug("Not deleting group '" + grpName + "', as either it started with 'confluence' or didn't match pattern " + pat.pattern());
-
-                        if (!("".equals(groupsNotDeleted))) {
-                            groupsNotDeleted += ",";
-                        }
-
-                        groupsNotDeleted += grpName;
-                    }
-                }
-        	}
-    		catch(Exception e)
-    		{
-    			e.printStackTrace();
-    			resultList.add("Error! - " + e.getMessage());
-    			return ERROR;
-    		}
-
-            if ("".equals(groupsNotDeleted)) {
-                opMessage = "The selected groups were successfully removed!";
-                resultList.add("<font color=\"green\">" + opMessage + "</font>");
-            }
-            else {
-                if (pat!=null) {
-                    opMessage = "Some groups were not deleted, either because they started with 'confluence' or didn't match pattern " + pat.pattern();
-                }
-                else {
-                    opMessage = "Some groups were not deleted, because they started with 'confluence' or pattern was bad";
-                }
-                resultList.add("<font color=\"red\">" + opMessage + "</font>");
-            }
-
+        if (opMessage!=null) {
+            resultList.add(opMessage);
             setActionMessages(resultList);
-        	flushUserInputs();
-
-        	return SUCCESS;
+            return SUCCESS;
         }
-		
-        return SUCCESS;
-	}
-	
 
-    //Getter / Setters for users input text box - Helps to remember values during error display
-    public String getUsers()
-    {
-    	return users;
+        return INPUT;
     }
 
-    public void setUsers(String users)
-    {
-    	this.users = users;
-    }
-
-    //Getter / Setters for groupsToAdd input text box - Helps to remember values during error display
-    public String getGroupsToAdd()
-    {
-    	return groupsToAdd;
-    }
-
-    public void setGroupsToAdd(String groupsToAdd)
-    {
-    	this.groupsToAdd = groupsToAdd;
-    }
-
-    //Getter / Setters for adminAction radio button - Helps to remember values during error display
-    public String getAdminAction()
-    {
-    	return adminAction;
-    }
-
-    public void setAdminAction(String adminAction)
-    {
-    	this.adminAction = adminAction;
-    }
-
-	//If admin action has been carried successfully, then clean user input as we don't want to remember it!
-	//This method should be called whenever we return SUCCESS
-    public void flushUserInputs()
-    {
-    	//No need to remember User Input
-    	setUsers(null);
-        setGroupsToAdd(null);
-        setAdminAction(null);
-    	this.selectedUserGroupsList = null;    	
-    }
-    
     public String getUserManagerLocation() {
         return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_USER_MANAGER_LOCATION);
 	}
@@ -777,94 +330,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PLUGIN_STATUS);
 	}
 	
-	//If Any of configuration parameter is not set then display Plugin Configurtion Screen!
-    public boolean getIsPluginConfigurationDone()
-    {
-    	boolean flag = false;
-    	
-    	/*    	
-    	 * 	Following is very long validation which checks if all required variables are set or not.
-    	 *	To make life easier, validation is done on each field and used in following section.
-    	 */
-    	boolean isJiraSettingDone = false; //This validation is needed only if User is using "JIRA" for user management.
-    	boolean isMaxUserLimitSet = false;
-    	boolean isLDAPConfigDone = false;
-    	boolean isPluginOkToRun = false; //This will be true only we need to get plugin offilne by displaying downtime message.
-    	
-    	String userManagementLocation = getUserManagerLocation();
-    	if( (userManagementLocation!= null)&& (userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE)) )
-    	{
-    		//if user is using JIRA for User Management then we need to Jira Information
-        	if( (getJiraUrl()!= null) ||  (getJiraJNDILookupKey()!=null))
-        	{
-        		log.debug("Jira Setting done - Jira URL - " + getJiraUrl() + " Jira JNDI Lookup - " + getJiraJNDILookupKey());
-        		isJiraSettingDone = true;
-        	}
-    	}
-    	else if( (userManagementLocation!= null)&& (userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE)) )
-    	{
-    		//Since we are using Confluence, no need for Jira information. We will set flag as true
-    		isJiraSettingDone = true;
-    	}
- 
-
-    	if( getMaxUserIDsLimit() != null)
-    	{
-    		log.debug("Input User IDs Limit Setting done. value - " + getMaxUserIDsLimit());
-    		isMaxUserLimitSet = true;
-    	}
-
-    	String isLDAPAuthenticationAvailable = getIsLdapAuthUsed();
-    	if( (isLDAPAuthenticationAvailable != null) && (isLDAPAuthenticationAvailable.equalsIgnoreCase("no")) )
-    	{
-    		log.debug("LDAP setting not needed");
-    		isLDAPConfigDone = true;
-    	}
-    	else if ( (isLDAPAuthenticationAvailable != null) && (isLDAPAuthenticationAvailable.equalsIgnoreCase("yes")) )
-    	{
-    		if((getCompanyLDAPUrl() != null) && (getCompanyLDAPBaseDN()!= null))
-    		{
-        		log.debug("LDAP setting done LDAP Url - " + getCompanyLDAPUrl() + "  BaseDN - " + getCompanyLDAPBaseDN());
-    			isLDAPConfigDone = true;
-    		}
-    	}
-    		
-    	//If downtime flag is false, then plugin is ok to use by users!
-    	if(getIsPluginDown() == null || getIsPluginDown().equalsIgnoreCase("no"))
-    	{
-    		log.debug("Plugin is ok to run");
-    		isPluginOkToRun = true;
-    	}
-    	
-    	//if all above flags are true, then set flag as true!
-    	if(	isJiraSettingDone
-    			&& isMaxUserLimitSet 
-    			&& isLDAPConfigDone
-    			&& isPluginOkToRun)
-    	{
-    		flag = true;
-    	}
-    	
-    	return flag;
-    }
-
-	
-
-    private boolean isGroupSelected(Map paramMap) {
-        boolean result = false;
-        for (Iterator iterator = paramMap.keySet().iterator(); iterator.hasNext();)
-        {
-            String paramKey = (String) iterator.next();
-            if(paramKey != null && paramKey.startsWith("groups_"))
-            {
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
-
-    //Validate user input. return false if data invalid.
+	//Validate user input. return false if data invalid.
+    /*
     public boolean validateInput(CustomPermissionManagerActionContext context)
     {
         log.debug("Validating form. " + context);
@@ -955,35 +422,26 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
         return isValid;
     }
+    */
 
     //Get total user count for given user group
-    public int findUserCountForUserGroup(String grpName)
-    {
-    	return PagerUtils.count(userAccessor.getMemberNames(userAccessor.getGroup(grpName)));
+    //public int findUserCountForUserGroup(String grpName)
+    //{
+    //	return PagerUtils.count(userAccessor.getMemberNames(userAccessor.getGroup(grpName)));
+    //}
+
+    public boolean getIsPluginConfigurationDone() {
+        boolean isConfigValid = getCustomPermissionConfiguration().isValid();
+        log.debug("isPluginConfigurationDone = " + isConfigValid);
+        return isConfigValid;
     }
 
-    public GroupManagementService getGroupManagementService() {
-        return groupManagementService;
+    public GroupManagementService getGroupManagementService() throws ServiceException {
+        return getCustomPermissionServiceManager().getGroupManagementService();
     }
 
-    public void setGroupManagementService(GroupManagementService groupManagementService) {
-        this.groupManagementService = groupManagementService;
-    }
-
-    public UserManagementService getUserManagementService() {
-        return userManagementService;
-    }
-
-    public void setUserManagementService(UserManagementService userManagementService) {
-        this.userManagementService = userManagementService;
-    }
-
-    public CustomPermissionConfiguration getCustomPermissionConfiguration() {
-        return customPermissionConfiguration;
-    }
-
-    public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
-        this.customPermissionConfiguration = customPermissionConfiguration;
+    public UserManagementService getUserManagementService() throws ServiceException {
+        return getCustomPermissionServiceManager().getUserManagementService();
     }
 
     public String getSelectedGroup() {
@@ -994,12 +452,50 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         this.selectedGroup = selectedGroup;
     }
 
-    public List getGroups() {
-        return this.getGroupManagementService().findGroups(this.getSpace());
+    public CustomPermissionServiceManager getCustomPermissionServiceManager() {
+        return customPermissionServiceManager;
     }
 
-    public List findUsers(String groupName) {        
-        return this.getUserManagementService().findUsersForGroup(groupName);
+    public void setCustomPermissionServiceManager(CustomPermissionServiceManager customPermissionServiceManager) {
+        this.customPermissionServiceManager = customPermissionServiceManager;
+    }    
+
+    public SpaceDao getSpaceDao() {
+        return spaceDao;
+    }
+
+    public void setSpaceDao(SpaceDao spaceDao) {
+        this.spaceDao = spaceDao;
+    }
+
+    public CustomPermissionConfiguration getCustomPermissionConfiguration() {
+        return customPermissionConfiguration;
+    }
+
+    public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
+        this.customPermissionConfiguration = customPermissionConfiguration;
+    }
+
+    public List getGroups() {
+        try {
+            ServiceContext serviceContext = createServiceContext();
+            return this.getGroupManagementService().findGroups(serviceContext);
+        } catch (ServiceException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return new ArrayList();
+    }
+
+    public List findUsers(String groupName) {
+        try {
+            ServiceContext serviceContext = createServiceContext();
+            return this.getUserManagementService().findUsersForGroup(groupName, serviceContext);
+        } catch (ServiceException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return new ArrayList();
     }
 
     public String getNewGroupPrefix() {
@@ -1011,7 +507,14 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     public List findUsersWhoseNameStartsWith(String partialName) {
-        return this.getUserManagementService().findUsersWhoseNameStartsWith(partialName);
+        try {
+            ServiceContext serviceContext = createServiceContext();
+            return this.getUserManagementService().findUsersWhoseNameStartsWith(partialName, serviceContext);
+        } catch (ServiceException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return new ArrayList();
     }
 
     // TODO: is there a better way of doing this? Velocity doesn't have ability to call constructor
@@ -1040,7 +543,14 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     public List findUsersAdvanced(AdvancedUserQuery query) {
-        return this.getUserManagementService().findUsers(query);
+        try {
+            ServiceContext serviceContext = createServiceContext();
+            return this.getUserManagementService().findUsers(query, serviceContext);
+        } catch (ServiceException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return new ArrayList();
     }
 
     public String getActionName(String fullClassName)

@@ -5,6 +5,8 @@ import com.atlassian.confluence.spaces.Space;
 
 import java.util.List;
 
+import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
+
 /**
  * (c) 2007 Duke University
  * User: gary.weaver@duke.edu
@@ -13,9 +15,9 @@ import java.util.List;
  */
 public interface GroupManagementService {
 
-    public List findGroups( Space space );
+    public List findGroups( ServiceContext context ) throws FindException;
 
-    public Group createGroup( String identifier, Space space );
+    public void addGroup( String identifier, ServiceContext context ) throws AddException;
 
-    public void deleteGroup( Group group, Space space );
+    public void removeGroup( String groupName, ServiceContext context ) throws RemoveException;
 }

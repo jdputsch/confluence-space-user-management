@@ -41,28 +41,38 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <description>Custom Space User Management</description>
         <version>2.0</version>
         <application-version min="1.4" max="1.5"/>
-        <vendor name="Rajendra Kadam" url="raju.kadam@gmail.com"/>
+        <vendor name="Custom Space User Management Team" url="http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin"/>
         <param name="configure.url">/admin/plugins/custompermissionsconfig/config.action</param>
     </plugin-info>
     
-    <spring name="Custom Permission Configuration"
-        key="customPermissionConfiguration"
-        class="raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration" />        
-
     <!-- Modules here -->
 	<resource type="download" name="customusermanagement.css" location="templates/css/customusermanagement.css"/>        
 
     <resource type="i18n" name="i18n" location="raju/kadam/confluence/permissionmgmt/AtlassianPlugin" />
 
-    <!-- Used for autowiring -->
-    <component name="Group Management Service"
-        key="groupManagementService"
-        class="raju.kadam.confluence.permissionmgmt.service.impl.SpaceConfGroupManagementService" />
+    <component name="customPermissionConfiguration"
+        key="customPermissionConfiguration"
+        class="raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration" />
 
-    <!-- Used for autowiring -->
-    <component name="User Management Service"
-        key="userManagementService"
-        class="raju.kadam.confluence.permissionmgmt.service.impl.SpaceConfUserManagementService" />    
+    <component name="confluenceGroupManagementService"
+        key="confluenceGroupManagementService"
+        class="raju.kadam.confluence.permissionmgmt.service.impl.ConfluenceGroupManagementService" />
+
+    <component name="confluenceUserManagementService"
+        key="confluenceUserManagementService"
+        class="raju.kadam.confluence.permissionmgmt.service.impl.ConfluenceUserManagementService" />
+
+    <component name="jiraGroupManagementService"
+        key="jiraGroupManagementService"
+        class="raju.kadam.confluence.permissionmgmt.service.impl.JiraGroupManagementService" />
+
+    <component name="jiraUserManagementService"
+        key="jiraUserManagementService"
+        class="raju.kadam.confluence.permissionmgmt.service.impl.JiraUserManagementService" />
+
+    <component name="customPermissionServiceManager"
+        key="customPermissionServiceManager"
+        class="raju.kadam.confluence.permissionmgmt.service.CustomPermissionServiceManager" />
 
     <xwork name="Configure Custom Space User Management Plugin" key="configure-delegateusermgmt">
         
