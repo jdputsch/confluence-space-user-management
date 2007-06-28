@@ -64,6 +64,9 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     private CustomPermissionServiceManager customPermissionServiceManager;
     private CustomPermissionConfiguration customPermissionConfiguration;
     private String selectedGroup;
+    private String userSearch;
+    private boolean userSearchFormFilled;
+    private AdvancedUserQuery advancedUserQuery;
 
     public CustomPermissionManagerAction()
 	{
@@ -119,8 +122,23 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         context.setUsersToRemove(StringUtil.convertColonSemicolonOrCommaDelimitedStringToList(getParameterValue( paramMap, "usersToRemove")));
         context.setLoggedInUser(getRemoteUser().getName());
 		context.setKey(getKey());
-    	context.setAdminAction(getParameterValue( paramMap, "adminAction"));        
+    	context.setAdminAction(getParameterValue( paramMap, "adminAction"));
+        context.setUserSearch(getParameterValue( paramMap, "userSearch"));
         return context;
+    }
+
+    public AdvancedUserQuery createAdvancedUserQuery() {
+        AdvancedUserQuery userQuery = new AdvancedUserQuery();
+        Map paramMap = ServletActionContext.getRequest().getParameterMap();
+        userQuery.setEmailSearchType(getParameterValue( paramMap, "emailSearchType"));
+        userQuery.setFullNameSearchType(getParameterValue( paramMap, "fullNameSearchType"));
+        userQuery.setGroupNameSearchType(getParameterValue( paramMap, "groupNameSearchType"));
+        userQuery.setUserNameSearchType(getParameterValue( paramMap, "userNameSearchType"));
+        userQuery.setPartialEmail(getParameterValue( paramMap, "partialEmail"));
+        userQuery.setPartialFullName(getParameterValue( paramMap, "partialFullName"));
+        userQuery.setPartialGroupName(getParameterValue( paramMap, "partialGroupName"));
+        userQuery.setPartialUserName(getParameterValue( paramMap, "partialUserName"));
+        return userQuery;
     }
 
     public String execute() throws Exception
@@ -130,6 +148,12 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         CustomPermissionManagerActionContext context = createContext();
 
         setSelectedGroup(context.getSelectedGroup());
+        setUserSearch(context.getUserSearch());
+
+        AdvancedUserQuery advancedUserQuery = createAdvancedUserQuery();
+        setAdvancedUserQuery(advancedUserQuery);
+
+        setUserSearchFormFilled(advancedUserQuery.isValid());
 
         // TODO: rewrite validation and include errors in display.vm
         //Validate user input
@@ -267,13 +291,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
                     groupManagementService.removeGroup(context.getGroupToRemove(), serviceContext);
 
                     opMessage = "<font color=\"green\">Group " + context.getGroupToRemove() + " removed successfully!</font>";
-                }
-                else {
-                    // list users if there is a selected group
-                    String selectedGroup = context.getSelectedGroup();
-                    setSelectedGroup(selectedGroup);
-                }
-                
+                }                
             }
 
             // note: is normal at times not to have an action (selecting group for example)
@@ -529,11 +547,6 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return new ArrayList();
     }
 
-    // TODO: is there a better way of doing this? Velocity doesn't have ability to call constructor
-    public AdvancedUserQuery getAdvancedUserQuery() {
-        return new AdvancedUserQuery();
-    }
-
     //TODO: is there a better way to access this?
     public String getSubstringContains() {
         return AdvancedQueryType.SUBSTRING_CONTAINS;
@@ -554,10 +567,36 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return AdvancedQueryType.WILDCARD;
     }
 
-    public List findUsersAdvanced(AdvancedUserQuery query) {
+    //TODO: is there a better way to access this?
+    public String getUserSearch() {
+        return userSearch;
+    }
+
+    //TODO: is there a better way to access this?
+    public void setUserSearch(String userSearch) {
+        this.userSearch = userSearch;
+    }
+
+    public boolean getUserSearchFormFilled() {
+        return userSearchFormFilled;
+    }
+
+    public void setUserSearchFormFilled(boolean userSearchFormFilled) {
+        this.userSearchFormFilled = userSearchFormFilled;
+    }
+
+    public AdvancedUserQuery getAdvancedUserQuery() {
+        return advancedUserQuery;
+    }
+
+    public void setAdvancedUserQuery(AdvancedUserQuery advancedUserQuery) {
+        this.advancedUserQuery = advancedUserQuery;
+    }
+
+    public List findUsersAdvanced() {
         try {
             ServiceContext serviceContext = createServiceContext();
-            return this.getUserManagementService().findUsers(query, serviceContext);
+            return this.getUserManagementService().findUsers(getAdvancedUserQuery(), serviceContext);
         } catch (ServiceException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

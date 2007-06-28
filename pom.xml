@@ -114,8 +114,9 @@
     </dependencies>
 
     <build>
-
         <sourceDirectory>src/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        
         <!-- This will automatically put POM settings into atlassian-plugin.xml when building.  -->
         <resources>
             <resource>

@@ -1,6 +1,12 @@
 package raju.kadam.confluence.permissionmgmt.service.vo;
 
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedQueryType;
+import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import org.apache.velocity.util.StringUtils;
 
 /**
  * (c) 2007 Duke University
@@ -85,5 +91,36 @@ public class AdvancedUserQuery {
 
     public void setGroupNameSearchType(String groupNameSearchType) {
         this.groupNameSearchType = groupNameSearchType;
+    }
+
+    private boolean isValidSearchType(String type) {
+        boolean result = false;
+        if ( type != null &&
+                (AdvancedQueryType.SUBSTRING_CONTAINS.equals(type) ||
+                        AdvancedQueryType.SUBSTRING_ENDS_WITH.equals(type) ||
+                        AdvancedQueryType.SUBSTRING_STARTS_WITH.equals(type) ||
+                        AdvancedQueryType.WILDCARD.equals(type) )
+                ) {
+            result = true;
+        }
+        return result;
+    }
+
+    public boolean isValid()
+    {
+        boolean isValid = false;
+
+        if ( isValidSearchType( getUserNameSearchType() ) &&
+             isValidSearchType( getEmailSearchType() ) &&
+             isValidSearchType( getFullNameSearchType() ) &&
+             isValidSearchType( getGroupNameSearchType() ) &&
+             getPartialEmail() != null &&
+             getPartialFullName() != null &&
+             getPartialGroupName() != null )
+        {
+            isValid = true;
+        }
+
+        return isValid;
     }
 }

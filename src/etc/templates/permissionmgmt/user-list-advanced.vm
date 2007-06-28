@@ -1,0 +1,70 @@
+## Copyright (c) 2006, Rajendra Kadam
+## All rights reserved.
+##
+## Redistribution and use in source and binary forms, with or without
+## modification, are permitted provided that the following conditions are
+## met:
+##
+## Redistributions of source code must retain the above copyright notice,
+## this list of conditions and the following disclaimer.  Redistributions
+## in binary form must reproduce the above copyright notice, this list of
+## conditions and the following disclaimer in the documentation and/or
+## other materials provided with the distribution.  Neither the name of
+## Cenqua Pty Ltd nor the names of its contributors may be used to
+## endorse or promote products derived from this software without
+## specific prior written permission.
+##
+## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+## OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+            <!-- start user-list -->
+            #if(${action.userSearchFormFilled})
+
+                #set ($users = $action.findUsersAdvanced())
+
+                #if($users && $users.size() > 0)
+                <table width="100%">
+                    <tr>
+                        <th class="permissionSuperTab">Full Name</th>
+                        <th class="permissionSuperTab">Username</th>
+                        <th class="permissionSuperTab">Email</th>
+                        <td align="left" class="permissionSuperTab" valign="top">Is Member</td>
+                        <th class="permissionHeading">&nbsp;</th>
+                    </tr>
+                    #foreach ($user in $users)
+                        #set ($userFullName = $user.getFullName())
+                        #set ($userName = $user.getName())
+                        #set ($userEmail = $user.getEmail())
+                    <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
+                        <td><img src="/images/icons/user_16.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;$!userFullName</td>
+                        <td align="left" class="permissionCell" valign="top">$!userName</td>
+                        <td align="left" class="permissionCell" valign="top">$!userEmail</td>
+                        #if($action.isMemberOfSelectedGroup($!userName)
+                        <td align="left" class="permissionCell" valign="top"><img alt="$!userName is a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/check.gif"/></td>
+                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
+                        #else
+                        <td align="left" class="permissionCell" valign="top"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/error.gif"/></td>
+                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=addUsersToGroup&usersToAdd=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="/images/icons/logo_add_16.gif"/></a></td>
+                        #end
+                    </tr>
+                    #end
+                </table>
+                <p>
+                Manage User Permissions:
+                <a href="/spaces/spacepermissions.action?key=${key}">Space</a>,
+                <a href="/pages/listpermissionpages.action?key=${key}">Page-Level</a>
+                </p>
+                #else
+                No users found in group.
+                #end
+            #end
+            <!-- end user-list -->

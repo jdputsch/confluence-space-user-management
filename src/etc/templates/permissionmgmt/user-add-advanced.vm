@@ -1,0 +1,100 @@
+## Copyright (c) 2006, Rajendra Kadam
+## All rights reserved.
+##
+## Redistribution and use in source and binary forms, with or without
+## modification, are permitted provided that the following conditions are
+## met:
+##
+## Redistributions of source code must retain the above copyright notice,
+## this list of conditions and the following disclaimer.  Redistributions
+## in binary form must reproduce the above copyright notice, this list of
+## conditions and the following disclaimer in the documentation and/or
+## other materials provided with the distribution.  Neither the name of
+## Cenqua Pty Ltd nor the names of its contributors may be used to
+## endorse or promote products derived from this software without
+## specific prior written permission.
+##
+## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+## "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+## LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+## A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+## OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+## SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+## LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+## DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+## THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+            <!-- start user-add-advanced -->
+            <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
+                <table>
+                    <tr>
+                        <td align="right">
+                            <input type="hidden" name="adminAction" value="addUsersToGroup"/>
+                            <input type="text" id="usersToAdd" name="usersToAdd"/>
+                        </td>
+                        <td align="left">
+                            <input type="submit" value="Add User(s) to Group"/>
+                        </td>
+                    </tr>
+                    <tr><td><span class="smalltext">eg. rb04, nk93, kb85, ts69</span></td></tr>
+                </table>
+            </form>
+
+            <div id="advancedUserSearchForm" style="background-color:yellow">
+		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="groupManagement" name="ManageUsersForm">
+                <input type="hidden" name="adminAction" value="advancedFindUsers"/>
+                <fieldset>
+                    <label>Username</label>
+                    <select name="userNameSearchType">
+                        <option value="$action.substringStartsWith" selected="selected">Starts With</option>
+                        <option value="$action.substringContains">Contains</option>
+                        <option value="$action.substringEndsWith">Ends With</option>
+                        <option value="$action.wildcard">is Wildcard</option>
+                    </select>
+                    <input type="text" id="partialUserName" name="partialUserName"/>
+                </fieldset>
+                <br/>
+
+                <fieldset>
+                    <label>Full Name</label>
+                    <select name="fullNameSearchType">
+                        <option value="$action.substringStartsWith" selected="selected">Starts With</option>
+                        <option value="$action.substringContains">Contains</option>
+                        <option value="$action.substringEndsWith">Ends With</option>
+                        <option value="$action.wildcard">is Wildcard</option>
+                    </select>
+                    <input type="text" id="partialFullName" name="partialFullName"/>
+                </fieldset>
+                <br/>
+
+                <fieldset>
+                    <label>Email Address</label>
+                    <select name="emailSearchType">
+                        <option value="$action.substringStartsWith" selected="selected">Starts With</option>
+                        <option value="$action.substringContains">Contains</option>
+                        <option value="$action.substringEndsWith">Ends With</option>
+                        <option value="$action.wildcard">is Wildcard</option>
+                    </select>
+                    <input type="text" id="partialEmail" name="partialEmail"/>
+                </fieldset>
+                <br/>
+
+                <fieldset>
+                    <label>Group Name</label>
+                    <select name="groupNameSearchType">
+                        <option value="$action.substringStartsWith" selected="selected">Starts With</option>
+                        <option value="$action.substringContains">Contains</option>
+                        <option value="$action.substringEndsWith">Ends With</option>
+                        <option value="$action.wildcard">is Wildcard</option>
+                    </select>
+                    <input type="text" id="partialGroupName" name="partialGroupName"/>
+                </fieldset>
+                <br/>
+
+                <input type="submit" value="Find Users"/>
+                <br/>
+            </form>
+        <!-- end user-add-advanced -->
+        

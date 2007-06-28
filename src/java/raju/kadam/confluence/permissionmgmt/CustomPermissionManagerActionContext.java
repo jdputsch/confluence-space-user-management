@@ -23,6 +23,7 @@ public class CustomPermissionManagerActionContext {
     String groupToAdd;
     String groupToRemove;
     String selectedGroup;
+    String userSearch;
 
     public String toString() {
         return "loggedInUser=" + loggedInUser +
@@ -32,7 +33,8 @@ public class CustomPermissionManagerActionContext {
                 ", usersToRemove=" + StringUtil.convertCollectionToCommaDelimitedString(usersToRemove) +
                 ", groupToAdd=" + groupToAdd +
                 ", groupToRemove=" + groupToRemove +
-                ", selectedGroup=" + selectedGroup;
+                ", selectedGroup=" + selectedGroup +
+                ", userSearch=" + userSearch;
     }
 
     public String getLoggedInUser() {
@@ -97,5 +99,13 @@ public class CustomPermissionManagerActionContext {
 
     public void setSelectedGroup(String selectedGroup) {
         this.selectedGroup = selectedGroup;
+    }
+
+    public String getUserSearch() {
+        return userSearch;
+    }
+
+    public void setUserSearch(String userSearch) {
+        this.userSearch = userSearch;
     }
 }

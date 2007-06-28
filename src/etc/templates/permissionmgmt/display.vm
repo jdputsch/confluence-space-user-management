@@ -26,6 +26,7 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+<!-- start display -->
 <html>
     <head>
         <title>$action.getActionName($action.getClass().getName())</title>
@@ -37,7 +38,7 @@
         #decoratorParam("mode" "view-edit-spaceusergroups")
         
             <content tag="spacekey">$action.space.key</content>
-            #set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=${key}&" )
+    #set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=${key}&" )
 
     <body>
     <!--
@@ -87,66 +88,14 @@
 		    }
 		</script>
 
-#parse ( "/templates/permissionmgmt/actionmessages.vm" )
+    #parse ( "/templates/permissionmgmt/action-messages.vm" )
 
     #if($isPluginConfigurationDone)
 
     <table border="0" width="100%" cellpadding="5" cellspacing="0">
     <tr><td width="165" valign="top">
-        <div class="navmenu">
-            <div class="menuheading">Groups in Space '$action.space.key'</div>        
-            ##<h3>$action.space.name ($action.space.key)</h3>
-            #set ($groups = $action.groups)
 
-            #if($isGroupActionsPermitted)
-
-		    <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="AddGroupForm">
-                <input type="hidden" name="adminAction" value="addGroup"/>
-                <input type="text" name="groupToAdd" id="groupToAdd" />
-                <input type="submit" value="Add Group"/>
-                <br/><span class="smalltext">Entering "widget" will create the group "${action.newGroupPrefix}widget${action.newGroupSuffix}"</span>
-            </form>
-            #end
-
-            #if($groups && $groups.size() > 0 )
-            <table width="100%">
-                #foreach ($group in $groups)
-                <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
-                    <td>
-                        &nbsp;
-                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name"><img src="/images/icons/group_16.gif" width="16" height="16" border="0" align="absmiddle"></a>
-                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">$!group.name</a>
-                    </td>
-                    #if($isGroupActionsPermitted)
-                    <td>
-                        <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=$!group.name">
-                            <img border="0" alt="Remove $!group.name" src="/images/icons/trash_16.gif"/>
-                        </a>
-                    </td>
-                    #end
-                </tr>
-                #end
-            </table>
-            <br/>
-                #if($isGroupActionsPermitted)
-
-                <div class="menuheading">Security</div>
-                <div class="menuitems">
-                    <div class="optionPadded">
-                        <a href="/spaces/spacepermissions.action?key=ds"><img src="/images/icons/lock_16.gif" height="16" width="16" border="0" align="absmiddle" title="Permissions"></a>
-                        <a href="/spaces/spacepermissions.action?key=ds">Permissions</a>
-                    </div>
-                    <div class="optionPadded">
-                        <a href="/pages/listpermissionpages.action?key=ds"><img src="/images/icons/locked_pages_16.gif" height="16" width="16" border="0" align="absmiddle" title="Restricted Pages"></a>
-                        <a href="/pages/listpermissionpages.action?key=ds">Restricted Pages</a>
-                    </div>
-                </div>
-
-            <a href="/spaces/spacepermissions.action?key=${key}">Space</a>,
-            <a href="/pages/listpermissionpages.action?key=${key}">Page-Level</a>
-                #end
-            #end
-        </div>
+        #parse( "/templates/permissionmgmt/group-list.vm" )
 
     </td>
     <td valign="top">
@@ -154,52 +103,23 @@
         #if(${action.selectedGroup})
 		    <h3>Users in Group '${action.selectedGroup}'</h3>
 
-		    #set ($users = $action.findUsers(${action.selectedGroup}))
 
-		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="groupManagement" name="ManageUsersForm">
-                <table>
-                    <tr>
-                        <td align="right">
-                            <input type="hidden" name="adminAction" value="addUsersToGroup"/>
-                            <input type="text" id="usersToAdd" name="usersToAdd"/>
-                        </td>
-                        <td align="left">
-                            <input type="submit" value="Add User(s) to Group"/>
-                        </td>
-                    </tr>
-                    <tr><td><span class="smalltext">eg. rb04, nk93, kb85, ts69</span></td></tr>
-                </table>
-            </form>
 
-            #if($users && $users.size() > 0)
-                <table width="100%">
-                    <tr>
-                        <th class="permissionSuperTab">Full Name</th>
-                        <th class="permissionSuperTab">NetID</th>
-                        <th class="permissionSuperTab">Email</th>
-                        <th class="permissionHeading">&nbsp;</th>
-                    </tr>
-                #foreach ($user in $users)
-                    #set ($userFullName = $user.getFullName())
-                    #set ($userName = $user.getName())
-                    #set ($userEmail = $user.getEmail())
-                    <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
-                        <td><img src="/images/icons/user_16.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;$!userFullName</td>
-                        <td align="left" class="permissionCell" valign="top">$!userName</td>
-                        <td align="left" class="permissionCell" valign="top">$!userEmail</td>
-                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img border="0" alt="Remove $!userName from ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
-                    </tr>
-                #end
-                </table>
-                <p>
-                Manage User Permissions:
-                <a href="/spaces/spacepermissions.action?key=${key}">Space</a>,
-                <a href="/pages/listpermissionpages.action?key=${key}">Page-Level</a>
-                </p>
-            #else
-                No users found in group.
-            #end
-        #end
+            #if($action.userSearch)
+
+                Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">Basic Form/List Users</a>
+                                            		        
+		        #parse ( "/templates/permissionmgmt/user-add-advanced.vm" )
+		        #parse ( "/templates/permissionmgmt/user-list-advanced.vm" )
+		    #else
+
+                Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1">Advanced Form/Search and Add</a>
+
+		        #parse ( "/templates/permissionmgmt/user-add-basic.vm" )
+		        #parse ( "/templates/permissionmgmt/user-list-basic.vm" )
+		        
+		    #end
+        #end        
     #else
         #if($customPermissionConfiguration.pluginDown == "yes")
             $customPermissionConfiguration.downTimeMessage
@@ -208,14 +128,13 @@
 		#end
     #end
 
-#parse ( "/admin/admin-breadcrumbs.vm" )
+    #parse ( "/admin/admin-breadcrumbs.vm" )
     </td></tr>
     </table>
 
     <div style="clear:both;"></div>
 
 </body>
-#end
 </html>
 
 #*
@@ -364,4 +283,4 @@
 	#end
 *#
 
-
+<!-- end display -->
