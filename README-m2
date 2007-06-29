@@ -1,11 +1,35 @@
 Directions for compiling using Maven 2
 ======================================
 
-If you haven't already, install maven 2.
+Here are some things I learned that might make it easier for those interested in using the Atlassian Plugin Developer Kit for Maven 2:
 
-Due to strange a problem using the atlassian-pdk in this project, mvn install doesn't always work. For now use this:
+1) If you haven't already, install maven 2. Make sure your MAVEN_HOME and PATH are set as in the maven install documentation on their site.
+
+2) If you haven't already, install maven 2 pdk plugin to your local maven repository. One one to do this is to build it (example below uses 2.1.1 tag which was the latest as of time of writing, but you may want to browse to the http://svn.atlassian.com/svn/public/contrib/maven-plugins/com.atlassian.maven.plugins/atlassian-pdk/tags/ to see what is the latest version available and adjust accordingly):
+
+mkdir tmp
+cd tmp
+svn co http://svn.atlassian.com/svn/public/contrib/maven-plugins/com.atlassian.maven.plugins/atlassian-pdk/tags/2.1.1/
+cd 2.1.1
+mvn install
+
+3) Go back to the trunk dir of the plugin project, so if you started off in that dir, you could just:
+
+cd ../..
+
+4) To build, use the following command. Due to strange a problem using the atlassian-pdk in this project, mvn install doesn't always work, but you can use this as an alternative:
+
 mvn clean compile test jar:jar
 
-After that uninstall the plugin from confluence and reinstall the new one in target/...jar
+5) After that go into confluence into administration -> plugins. Choose this project's plugin. If it  already exists, uninstall the plugin from confluence and (re)install the new one in target/...jar
 
 
+Other helpful hints for those new to maven 2:
+
+To generate idea project:
+mvn idea:idea
+
+To generate eclipse project:
+mvn eclipse:eclipse
+
+To build in netbeans try the netbeans mevenide plugin.
