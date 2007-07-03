@@ -90,7 +90,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 FullNameTermQuery query = new FullNameTermQuery(advancedUserQuery.getPartialFullName(), advancedUserQuery.getFullNameSearchType());
                 SearchResult result = userAccessor.findUsers(query);
                 List returnedUsers = PagerUtils.toList(result.pager());
-                results.setUserNameFieldMessage("" + returnedUsers.size() + " returned");
+                results.setFullNameFieldMessage("" + returnedUsers.size() + " returned");
                 users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
                 ranQueryAtLeastOnce = true;
             }
@@ -111,7 +111,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 EmailTermQuery query = new EmailTermQuery(advancedUserQuery.getPartialEmail(), advancedUserQuery.getEmailSearchType());
                 SearchResult result = userAccessor.findUsers(query);
                 List returnedUsers = PagerUtils.toList(result.pager());
-                results.setUserNameFieldMessage("" + returnedUsers.size() + " returned");
+                results.setEmailFieldMessage("" + returnedUsers.size() + " returned");
                 users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
                 ranQueryAtLeastOnce = true;
             }
@@ -136,7 +136,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 for (int i = 0; i < groups.size(); i++) {
                     returnedUsers.addAll(findUsersForGroup((Group) groups.get(i)));
                 }
-                results.setUserNameFieldMessage("" + returnedUsers.size() + " returned");
+                results.setGroupNameFieldMessage("" + returnedUsers.size() + " returned");
                 users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
                 ranQueryAtLeastOnce = true;
             }
@@ -305,6 +305,19 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 userAccessor.removeMembership((String) iterator.next(), userid);
             }
         }
+    }
+
+    public boolean isMemberOf(String userName, String groupName) {
+        boolean result = false;
+        Group group = userAccessor.getGroup(groupName);
+        if (group!=null) {
+            Pager pager = userAccessor.getMemberNames(group);
+            List memberNames = PagerUtils.toList(pager);
+            if (memberNames!=null) {
+                result = memberNames.contains(userName);
+            }
+        }
+        return result;
     }
 
 

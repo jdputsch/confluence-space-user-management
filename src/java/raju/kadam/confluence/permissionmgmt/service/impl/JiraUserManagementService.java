@@ -210,6 +210,9 @@ public class JiraUserManagementService implements UserManagementService {
         return response;
     }
 
+    public boolean isMemberOf(String userName, String groupName) throws FindException {
+        throw new FindException(ErrorReason.UNSUPPORTED_FEATURE);
+    }
 
     public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
         throw new FindException(ErrorReason.UNSUPPORTED_FEATURE);

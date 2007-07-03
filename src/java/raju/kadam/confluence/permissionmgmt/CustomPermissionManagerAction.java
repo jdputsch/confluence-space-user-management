@@ -616,6 +616,18 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return new ArrayList();
     }
 
+    public boolean isMemberOfSelectedGroup(String userName) {
+        boolean result = false;
+
+        try {
+            result = this.getUserManagementService().isMemberOf(userName, this.getSelectedGroup());
+        } catch (ServiceException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return result;
+    }
+
     public String getActionName(String fullClassName)
     {
     	return "Custom Space Usergroups Manager";

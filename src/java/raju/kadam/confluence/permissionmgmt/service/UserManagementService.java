@@ -26,4 +26,6 @@ public interface UserManagementService {
     public void addUsersByUsernameToGroup( List userNames, String groupName, ServiceContext context ) throws AddException;
 
     public void removeUsersByUsernameFromGroup( List userNames, String groupName, ServiceContext context ) throws RemoveException;
+
+    public boolean isMemberOf(String userName, String groupName) throws FindException ;
 }
