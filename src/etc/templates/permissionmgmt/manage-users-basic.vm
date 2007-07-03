@@ -58,17 +58,17 @@
                     #set ($userName = $user.getName())
                     #set ($userEmail = $user.getEmail())
                     <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
-                        <td><img src="/images/icons/user_16.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;$!userFullName</td>
+                        <td><img src="/confluence/images/icons/user_16.gif">$!userFullName</td>
                         <td align="left" class="permissionCell" valign="top">$!userName</td>
                         <td align="left" class="permissionCell" valign="top">$!userEmail</td>
-                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img border="0" alt="Remove $!userName from  group ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
+                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img alt="Remove $!userName from  group ${action.selectedGroup}" src="/confluence/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
                 </table>
                 <p>
                 Manage User Permissions:
-                <a href="/spaces/spacepermissions.action?key=${key}">Space</a>,
-                <a href="/pages/listpermissionpages.action?key=${key}">Page-Level</a>
+                <a href="/confluence/spaces/spacepermissions.action?key=${key}">Space</a>,
+                <a href="/confluence/pages/listpermissionpages.action?key=${key}">Page-Level</a>
                 </p>
             #else
                 No users found in group.

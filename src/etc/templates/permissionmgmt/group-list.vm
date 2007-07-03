@@ -48,13 +48,13 @@
                 <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
                     <td>
                         &nbsp;
-                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name"><img src="/images/icons/group_16.gif" width="16" height="16" border="0" align="absmiddle"></a>
+                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name"><img src="/confluence/images/icons/group_16.gif"></a>
                         <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">$!group.name</a>
                     </td>
                     #if($isGroupActionsPermitted)
                     <td>
                         <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=$!group.name">
-                            <img border="0" alt="Remove $!group.name" src="/images/icons/trash_16.gif"/>
+                            <img border="0" alt="Remove $!group.name" src="/confluence/images/icons/trash_16.gif"/>
                         </a>
                     </td>
                     #end
@@ -67,12 +67,12 @@
                 <div class="menuheading">Security</div>
                 <div class="menuitems">
                     <div class="optionPadded">
-                        <a href="/spaces/spacepermissions.action?key=ds"><img src="/images/icons/lock_16.gif" height="16" width="16" border="0" align="absmiddle" title="Permissions"></a>
-                        <a href="/spaces/spacepermissions.action?key=ds">Permissions</a>
+                        <a href="/confluence/spaces/spacepermissions.action?key=ds"><img src="/confluence/images/icons/lock_16.gif" title="Permissions"></a>
+                        <a href="/confluence/spaces/spacepermissions.action?key=ds">Permissions</a>
                     </div>
                     <div class="optionPadded">
-                        <a href="/pages/listpermissionpages.action?key=ds"><img src="/images/icons/locked_pages_16.gif" height="16" width="16" border="0" align="absmiddle" title="Restricted Pages"></a>
-                        <a href="/pages/listpermissionpages.action?key=ds">Restricted Pages</a>
+                        <a href="/confluence/pages/listpermissionpages.action?key=ds"><img src="/confluence/images/icons/locked_pages_16.gif" title="Restricted Pages"></a>
+                        <a href="/confluence/pages/listpermissionpages.action?key=ds">Restricted Pages</a>
                     </div>
                 </div>
 
