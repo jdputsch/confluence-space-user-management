@@ -74,7 +74,7 @@
 
 		#parse ( "/template/includes/actionerrors.vm" )
        <!-- Display result of operation if successful -->
-		#parse ( "/templates/permissionmgmt/actionmessages.vm" )
+		#parse ( "/templates/permissionmgmt/action-messages.vm" )
 
         <table class="grid" width="80%">
         <tr>

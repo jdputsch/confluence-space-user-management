@@ -48,7 +48,7 @@
                         <td><img src="/images/icons/user_16.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;$!userFullName</td>
                         <td align="left" class="permissionCell" valign="top">$!userName</td>
                         <td align="left" class="permissionCell" valign="top">$!userEmail</td>
-                        #if($action.isMemberOfSelectedGroup($!userName)
+                        #if($action.isMemberOfSelectedGroup($!userName))
                         <td align="left" class="permissionCell" valign="top"><img alt="$!userName is a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/check.gif"/></td>
                         <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
                         #else

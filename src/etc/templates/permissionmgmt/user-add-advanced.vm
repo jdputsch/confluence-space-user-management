@@ -27,23 +27,8 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
             <!-- start user-add-advanced -->
-            <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
-                <table>
-                    <tr>
-                        <td align="right">
-                            <input type="hidden" name="adminAction" value="addUsersToGroup"/>
-                            <input type="text" id="usersToAdd" name="usersToAdd"/>
-                        </td>
-                        <td align="left">
-                            <input type="submit" value="Add User(s) to Group"/>
-                        </td>
-                    </tr>
-                    <tr><td><span class="smalltext">eg. rb04, nk93, kb85, ts69</span></td></tr>
-                </table>
-            </form>
-
-            <div id="advancedUserSearchForm" style="background-color:yellow">
-		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="groupManagement" name="ManageUsersForm">
+            <div id="advancedUserSearchForm">
+		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>
                     <label>Username</label>
