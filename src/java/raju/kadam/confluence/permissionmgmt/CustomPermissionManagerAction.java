@@ -563,11 +563,6 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     //TODO: is there a better way to access this?
-    public String getWildcard() {
-        return AdvancedQueryType.WILDCARD;
-    }
-
-    //TODO: is there a better way to access this?
     public String getUserSearch() {
         return userSearch;
     }

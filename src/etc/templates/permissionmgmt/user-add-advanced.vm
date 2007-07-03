@@ -28,6 +28,9 @@
 
             <!-- start user-add-advanced -->
             <div id="advancedUserSearchForm">
+		    <font size="1">
+            	Note: Leave field(s) blank if you don&quot;t want to search on them.
+            </font>
 		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>
@@ -36,7 +39,6 @@
                         <option value="$action.substringStartsWith" selected="selected">Starts With</option>
                         <option value="$action.substringContains">Contains</option>
                         <option value="$action.substringEndsWith">Ends With</option>
-                        <option value="$action.wildcard">is Wildcard</option>
                     </select>
                     <input type="text" id="partialUserName" name="partialUserName"/>
                 </fieldset>
@@ -48,7 +50,6 @@
                         <option value="$action.substringStartsWith" selected="selected">Starts With</option>
                         <option value="$action.substringContains">Contains</option>
                         <option value="$action.substringEndsWith">Ends With</option>
-                        <option value="$action.wildcard">is Wildcard</option>
                     </select>
                     <input type="text" id="partialFullName" name="partialFullName"/>
                 </fieldset>
@@ -60,7 +61,6 @@
                         <option value="$action.substringStartsWith" selected="selected">Starts With</option>
                         <option value="$action.substringContains">Contains</option>
                         <option value="$action.substringEndsWith">Ends With</option>
-                        <option value="$action.wildcard">is Wildcard</option>
                     </select>
                     <input type="text" id="partialEmail" name="partialEmail"/>
                 </fieldset>
@@ -72,7 +72,6 @@
                         <option value="$action.substringStartsWith" selected="selected">Starts With</option>
                         <option value="$action.substringContains">Contains</option>
                         <option value="$action.substringEndsWith">Ends With</option>
-                        <option value="$action.wildcard">is Wildcard</option>
                     </select>
                     <input type="text" id="partialGroupName" name="partialGroupName"/>
                 </fieldset>
@@ -81,5 +80,5 @@
                 <input type="submit" value="Find Users"/>
                 <br/>
             </form>
-        <!-- end user-add-advanced -->
+            <!-- end user-add-advanced -->
         

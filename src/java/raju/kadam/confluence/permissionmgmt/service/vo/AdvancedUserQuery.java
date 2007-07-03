@@ -98,8 +98,7 @@ public class AdvancedUserQuery {
         if ( type != null &&
                 (AdvancedQueryType.SUBSTRING_CONTAINS.equals(type) ||
                         AdvancedQueryType.SUBSTRING_ENDS_WITH.equals(type) ||
-                        AdvancedQueryType.SUBSTRING_STARTS_WITH.equals(type) ||
-                        AdvancedQueryType.WILDCARD.equals(type) )
+                        AdvancedQueryType.SUBSTRING_STARTS_WITH.equals(type) )
                 ) {
             result = true;
         }
