@@ -37,6 +37,7 @@ import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedQueryType;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
+import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -588,10 +589,26 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         this.advancedUserQuery = advancedUserQuery;
     }
 
+    private void addFieldErrorIfMessageNotNull(String nameOfField, String error) {
+        if (error!=null) {
+            log.warn("setting fieldError " + error + " on " + nameOfField);
+            addFieldError(nameOfField, error);
+        }
+    }
+
     public List findUsersAdvanced() {
         try {
             ServiceContext serviceContext = createServiceContext();
-            return this.getUserManagementService().findUsers(getAdvancedUserQuery(), serviceContext);
+            AdvancedUserQuery query = getAdvancedUserQuery();
+            query.makeSearchTypesMatchTermQueryConstantInstances();            
+            AdvancedUserQueryResults results = this.getUserManagementService().findUsers(query, serviceContext);
+
+            addFieldErrorIfMessageNotNull("partialEmail",results.getEmailFieldMessage());
+            addFieldErrorIfMessageNotNull("partialFullName",results.getFullNameFieldMessage());
+            addFieldErrorIfMessageNotNull("partialGroupName",results.getGroupNameFieldMessage());
+            addFieldErrorIfMessageNotNull("partialUserName",results.getUserNameFieldMessage());
+
+            return results.getUsers();
         } catch (ServiceException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

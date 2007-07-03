@@ -109,14 +109,12 @@
 
                 Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">Basic Form/List Users</a>
                                             		        
-		        #parse ( "/templates/permissionmgmt/user-add-advanced.vm" )
-		        #parse ( "/templates/permissionmgmt/user-list-advanced.vm" )
+		        #parse ( "/templates/permissionmgmt/manage-users-advanced.vm" )
 		    #else
 
                 Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1">Advanced Form/Search and Add</a>
 
-		        #parse ( "/templates/permissionmgmt/user-add-basic.vm" )
-		        #parse ( "/templates/permissionmgmt/user-list-basic.vm" )
+		        #parse ( "/templates/permissionmgmt/manage-users-basic.vm" )
 		        
 		    #end
         #end        

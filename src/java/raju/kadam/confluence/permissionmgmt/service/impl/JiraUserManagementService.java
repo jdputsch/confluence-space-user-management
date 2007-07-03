@@ -10,6 +10,7 @@ import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration
 import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
+import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.util.RpcResponse;
@@ -210,7 +211,7 @@ public class JiraUserManagementService implements UserManagementService {
     }
 
 
-    public List findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
+    public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
         throw new FindException(ErrorReason.UNSUPPORTED_FEATURE);
     }
 

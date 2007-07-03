@@ -16,6 +16,7 @@ import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration
 import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
+import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 import raju.kadam.confluence.permissionmgmt.util.UserUtil;
 import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
@@ -44,18 +45,42 @@ public class ConfluenceUserManagementService implements UserManagementService {
         log.debug("ConfluenceUserManagementService end constructor");
     }
 
-    public List findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
-        List users = new ArrayList();
+    private List findIntersection( List existingUsersList, List returnedUsers, boolean ranQueryAtLeastOnce) {
+        List users = existingUsersList;
+        if (ranQueryAtLeastOnce) {
+            users = UserUtil.findIntersectionOfUsers(existingUsersList, returnedUsers);
+        }
+        else {
+            users = returnedUsers;
+        }
 
+        return users;
+    }
+
+    public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
+
+        AdvancedUserQueryResults results = new AdvancedUserQueryResults();
+
+        List users = new ArrayList();
+        boolean ranQueryAtLeastOnce = false;
         if (advancedUserQuery.getPartialUserName() != null && !"".equals(advancedUserQuery.getPartialUserName()) &&
                 advancedUserQuery.getUserNameSearchType() != null) {
             try {
                 UserNameTermQuery query = new UserNameTermQuery(advancedUserQuery.getPartialUserName(), advancedUserQuery.getUserNameSearchType());
                 SearchResult result = userAccessor.findUsers(query);
-                users = UserUtil.findIntersectionOfUsers(users, PagerUtils.toList(result.pager()));
+                List returnedUsers = PagerUtils.toList(result.pager());
+                results.setUserNameFieldMessage("" + returnedUsers.size() + " returned");
+                users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
+                ranQueryAtLeastOnce = true;
             }
             catch (EntityException e) {
-                e.printStackTrace();
+                log.warn("query by username failed due to EntityException", e);
+                results.setUserNameFieldMessage("" + e);
+            }
+            catch (IllegalArgumentException e) {
+                // if search type is not allowed
+                log.warn("Bad value '" + advancedUserQuery.getPartialUserName() + "' for search type '" + advancedUserQuery.getUserNameSearchType() + "'", e);
+                results.setUserNameFieldMessage("Bad value '" + advancedUserQuery.getPartialUserName() + "' for search type '" + advancedUserQuery.getUserNameSearchType() + "'");
             }
         }
 
@@ -64,10 +89,19 @@ public class ConfluenceUserManagementService implements UserManagementService {
             try {
                 FullNameTermQuery query = new FullNameTermQuery(advancedUserQuery.getPartialFullName(), advancedUserQuery.getFullNameSearchType());
                 SearchResult result = userAccessor.findUsers(query);
-                users = UserUtil.findIntersectionOfUsers(users, PagerUtils.toList(result.pager()));
+                List returnedUsers = PagerUtils.toList(result.pager());
+                results.setUserNameFieldMessage("" + returnedUsers.size() + " returned");
+                users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
+                ranQueryAtLeastOnce = true;
             }
             catch (EntityException e) {
-                e.printStackTrace();
+                log.warn("query by user fullname failed due to EntityException", e);
+                results.setFullNameFieldMessage("" + e);
+            }
+            catch (IllegalArgumentException e) {
+                // if search type is not allowed
+                log.warn("Bad value '" + advancedUserQuery.getPartialFullName() + "' for search type '" + advancedUserQuery.getFullNameSearchType() + "'", e);
+                results.setFullNameFieldMessage("Bad value '" + advancedUserQuery.getPartialFullName() + "' for search type '" + advancedUserQuery.getFullNameSearchType() + "'");
             }
         }
 
@@ -76,10 +110,19 @@ public class ConfluenceUserManagementService implements UserManagementService {
             try {
                 EmailTermQuery query = new EmailTermQuery(advancedUserQuery.getPartialEmail(), advancedUserQuery.getEmailSearchType());
                 SearchResult result = userAccessor.findUsers(query);
-                users = UserUtil.findIntersectionOfUsers(users, PagerUtils.toList(result.pager()));
+                List returnedUsers = PagerUtils.toList(result.pager());
+                results.setUserNameFieldMessage("" + returnedUsers.size() + " returned");
+                users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
+                ranQueryAtLeastOnce = true;
             }
             catch (EntityException e) {
-                e.printStackTrace();
+                log.warn("query by user email failed due to EntityException", e);
+                results.setEmailFieldMessage("" + e);
+            }
+            catch (IllegalArgumentException e) {
+                // if search type is not allowed
+                log.warn("Bad value '" + advancedUserQuery.getPartialEmail() + "' for search type '" + advancedUserQuery.getEmailSearchType() + "'", e);
+                results.setEmailFieldMessage("Bad value '" + advancedUserQuery.getPartialEmail() + "' for search type '" + advancedUserQuery.getEmailSearchType() + "'");
             }
         }
 
@@ -89,18 +132,28 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 GroupNameTermQuery query = new GroupNameTermQuery(advancedUserQuery.getPartialGroupName(), advancedUserQuery.getGroupNameSearchType());
                 SearchResult result = userAccessor.findGroups(query);
                 List groups = PagerUtils.toList(result.pager());
-                List usersOfAllMatchingGroups = new ArrayList();
+                List returnedUsers = new ArrayList();
                 for (int i = 0; i < groups.size(); i++) {
-                    usersOfAllMatchingGroups.addAll(findUsersForGroup((Group) groups.get(i)));
+                    returnedUsers.addAll(findUsersForGroup((Group) groups.get(i)));
                 }
-                users = UserUtil.findIntersectionOfUsers(users, usersOfAllMatchingGroups);
+                results.setUserNameFieldMessage("" + returnedUsers.size() + " returned");
+                users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
+                ranQueryAtLeastOnce = true;
             }
             catch (EntityException e) {
-                e.printStackTrace();
+                log.warn("query by groupname failed due to EntityException", e);
+                results.setGroupNameFieldMessage("" + e);
+            }
+            catch (IllegalArgumentException e) {
+                // if search type is not allowed
+                log.warn("Bad value '" + advancedUserQuery.getPartialGroupName() + "' for search type '" + advancedUserQuery.getGroupNameSearchType() + "'", e);
+                results.setGroupNameFieldMessage("Bad value '" + advancedUserQuery.getPartialGroupName() + "' for search type '" + advancedUserQuery.getGroupNameSearchType() + "'");
             }
         }
 
-        return users;
+        results.setUsers(users);
+
+        return results;
     }
 
     public List findUsersForGroup(String groupName, ServiceContext context) {

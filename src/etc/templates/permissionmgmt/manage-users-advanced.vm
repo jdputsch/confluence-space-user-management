@@ -26,7 +26,11 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-            <!-- start user-add-advanced -->
+            <!-- start manage-users-advanced -->
+            #if(${action.userSearchFormFilled})
+                #set ($users = $action.findUsersAdvanced())
+            #end
+
             <div id="advancedUserSearchForm">
 		    <font size="1">
             	Note: Leave field(s) blank if you don&quot;t want to search on them.
@@ -34,6 +38,7 @@
 		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>
+                    #fielderror ('partialUserName')
                     <label>Username</label>
                     <select name="userNameSearchType">
                         <option value="$action.substringStartsWith" selected="selected">Starts With</option>
@@ -45,6 +50,7 @@
                 <br/>
 
                 <fieldset>
+                    #fielderror ('partialFullName')
                     <label>Full Name</label>
                     <select name="fullNameSearchType">
                         <option value="$action.substringStartsWith" selected="selected">Starts With</option>
@@ -56,6 +62,7 @@
                 <br/>
 
                 <fieldset>
+                    #fielderror ('partialEmail')
                     <label>Email Address</label>
                     <select name="emailSearchType">
                         <option value="$action.substringStartsWith" selected="selected">Starts With</option>
@@ -67,6 +74,7 @@
                 <br/>
 
                 <fieldset>
+                    #fielderror ('partialGroupName')
                     <label>Group Name</label>
                     <select name="groupNameSearchType">
                         <option value="$action.substringStartsWith" selected="selected">Starts With</option>
@@ -80,5 +88,42 @@
                 <input type="submit" value="Find Users"/>
                 <br/>
             </form>
-            <!-- end user-add-advanced -->
-        
+
+            #if(${action.userSearchFormFilled})
+                #if($users && $users.size() > 0)
+                <table width="100%">
+                    <tr>
+                        <th class="permissionSuperTab">Full Name</th>
+                        <th class="permissionSuperTab">Username</th>
+                        <th class="permissionSuperTab">Email</th>
+                        <td align="left" class="permissionSuperTab" valign="top">Is Member</td>
+                        <th class="permissionHeading">&nbsp;</th>
+                    </tr>
+                    #foreach ($user in $users)
+                        #set ($userFullName = $user.getFullName())
+                        #set ($userName = $user.getName())
+                        #set ($userEmail = $user.getEmail())
+                    <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
+                        <td><img src="/images/icons/user_16.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;$!userFullName</td>
+                        <td align="left" class="permissionCell" valign="top">$!userName</td>
+                        <td align="left" class="permissionCell" valign="top">$!userEmail</td>
+                        #if($action.isMemberOfSelectedGroup($!userName))
+                        <td align="left" class="permissionCell" valign="top"><img alt="$!userName is a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/check.gif"/></td>
+                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
+                        #else
+                        <td align="left" class="permissionCell" valign="top"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/error.gif"/></td>
+                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=addUsersToGroup&usersToAdd=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="/images/icons/logo_add_16.gif"/></a></td>
+                        #end
+                    </tr>
+                    #end
+                </table>
+                <p>
+                Manage User Permissions:
+                <a href="/spaces/spacepermissions.action?key=${key}">Space</a>,
+                <a href="/pages/listpermissionpages.action?key=${key}">Page-Level</a>
+                </p>
+                #else
+                No users found in group.
+                #end
+            #end
+            <!-- end manage-users-advanced -->

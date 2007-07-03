@@ -26,9 +26,25 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-            <!-- start user-list -->
+            <!-- start manage-users-basic -->
+            <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="groupManagement" name="ManageUsersForm">
+                <table>
+                    <tr>
+                        <td align="right">
+                            <input type="hidden" name="adminAction" value="addUsersToGroup"/>
+                            <input type="text" id="usersToAdd" name="usersToAdd"/> ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...
+
+                        </td>
+                        <td align="left">
+                            <input type="submit" value="Add User(s) to Group"/>
+                        </td>
+                    </tr>
+                    <tr><td><span class="smalltext">eg. rb04, nk93, kb85, ts69</span></td></tr>
+                </table>
+            </form>
+
             #set ($users = $action.findUsers(${action.selectedGroup}))
-            		                    
+
             #if($users && $users.size() > 0)
                 <table width="100%">
                     <tr>
@@ -57,5 +73,4 @@
             #else
                 No users found in group.
             #end
-            <!-- end user-list -->
-            
+            <!-- end manage-users-basic -->

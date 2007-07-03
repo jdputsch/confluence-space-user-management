@@ -1,6 +1,7 @@
 package raju.kadam.confluence.permissionmgmt.service.vo;
 
 import com.atlassian.user.search.query.TermQuery;
+import com.atlassian.user.search.query.UserQuery;
 
 /**
  * (c) 2007 Duke University

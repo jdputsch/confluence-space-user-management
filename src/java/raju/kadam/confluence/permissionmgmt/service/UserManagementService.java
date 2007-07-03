@@ -7,6 +7,7 @@ import java.util.List;
 
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
+import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 
 /**
  * (c) 2007 Duke University
@@ -16,7 +17,7 @@ import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
  */
 public interface UserManagementService {
 
-    public List findUsers( AdvancedUserQuery advancedUserQuery, ServiceContext context ) throws FindException;
+    public AdvancedUserQueryResults findUsers( AdvancedUserQuery advancedUserQuery, ServiceContext context ) throws FindException;
 
     public List findUsersForGroup( String groupName, ServiceContext context ) throws FindException;
 

@@ -105,6 +105,31 @@ public class AdvancedUserQuery {
         return result;
     }
 
+    // atlassian-user is really picky about doing == instead of .equals to check the TermQuery constant, so we do this
+    public void makeSearchTypesMatchTermQueryConstantInstances() {
+        this.setUserNameSearchType(getConstantInstance(getUserNameSearchType()));
+        this.setFullNameSearchType(getConstantInstance(getFullNameSearchType()));
+        this.setEmailSearchType(getConstantInstance(getEmailSearchType()));
+        this.setGroupNameSearchType(getConstantInstance(getGroupNameSearchType()));
+    }
+
+    // atlassian-user is really picky about doing == instead of .equals to check the TermQuery constant, so we do this
+    public String getConstantInstance(String s) {
+        String result = null;
+        if (s!=null) {
+            if (AdvancedQueryType.SUBSTRING_CONTAINS.equalsIgnoreCase(s) ) {
+                result = AdvancedQueryType.SUBSTRING_CONTAINS;
+            }
+            if (AdvancedQueryType.SUBSTRING_ENDS_WITH.equalsIgnoreCase(s) ) {
+                result = AdvancedQueryType.SUBSTRING_ENDS_WITH;
+            }
+            if (AdvancedQueryType.SUBSTRING_STARTS_WITH.equalsIgnoreCase(s) ) {
+                result = AdvancedQueryType.SUBSTRING_STARTS_WITH;
+            }
+        }
+        return result;
+    }
+
     public boolean isValid()
     {
         boolean isValid = false;
