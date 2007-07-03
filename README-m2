@@ -19,7 +19,9 @@ cd ../..
 
 4) To build, use the following command. Due to strange a problem using the atlassian-pdk in this project, mvn install doesn't always work, but you can use this as an alternative:
 
-mvn clean compile test jar:jar
+mvn clean compile jar:jar
+
+Note: would include test, but for some reason currently that causes the pdk to include other jars in plugin jar that cause conflicts.
 
 5) After that go into confluence into administration -> plugins. Choose this project's plugin. If it  already exists, uninstall the plugin from confluence and (re)install the new one in target/...jar
 
