@@ -27,18 +27,19 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         <!-- start group-list -->
-        <div class="navmenu">
-            <div class="menuheading">Groups in Space '$action.space.key'</div>
-            ##<h3>$action.space.name ($action.space.key)</h3>
+        <div class="csumGroups">
+            <h3 class="menuheading">Groups belonging to $action.space.name ('$action.space.key')</h3>
             #set ($groups = $action.groups)
 
             #if($isGroupActionsPermitted)
 
 		    <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="AddGroupForm">
+		    <fieldset>
                 <input type="hidden" name="adminAction" value="addGroup"/>
                 <input type="text" name="groupToAdd" id="groupToAdd" />
                 <input type="submit" value="Add Group"/>
                 <br/><span class="smalltext">Entering "widget" will create the group "${action.newGroupPrefix}widget${action.newGroupSuffix}"</span>
+            </fieldset>
             </form>
             #end
 
@@ -54,7 +55,7 @@
                     #if($isGroupActionsPermitted)
                     <td>
                         <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=$!group.name">
-                            <img border="0" alt="Remove $!group.name" src="/confluence/images/icons/trash_16.gif"/>
+                            <img alt="Remove $!group.name" src="/confluence/images/icons/trash_16.gif"/>
                         </a>
                     </td>
                     #end
