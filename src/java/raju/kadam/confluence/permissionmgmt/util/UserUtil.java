@@ -40,7 +40,7 @@ public class UserUtil {
         HashMap resultMap = new HashMap();
         for (int i=0; i<list1.size(); i++) {
             User user1 = (User)list1.get(i);
-            for (int j=0; i<list2.size(); j++) {
+            for (int j=0; j<list2.size(); j++) {
                 User user2 = (User)list2.get(j);
                 if (areBothNullOrAreEqual(user1,user2)) {
                     // doesn't really matter which reference to use as data is same
