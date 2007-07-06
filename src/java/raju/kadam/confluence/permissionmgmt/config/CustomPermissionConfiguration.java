@@ -10,6 +10,7 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import raju.kadam.util.ConfigUtil;
+import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 
 /**
  * Convenience methods that get/set persisted config values in BandanaManager.
@@ -33,7 +34,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void copyTo(CustomPermissionConfigurable config) {
         config.setUserManagerLocation(getUserManagerLocation());
-        config.setJiraUrl(getJiraUrl());
         config.setJiraJNDILookupKey(getJiraJNDILookupKey());
         config.setMaxUserIDsLimit(getMaxUserIDsLimit());
         config.setUserGroupsMatchingPattern(getUserGroupsMatchingPattern());
@@ -49,7 +49,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void updateWith(CustomPermissionConfigurable config) {
         setUserManagerLocation(config.getUserManagerLocation());
-        setJiraUrl(config.getJiraUrl());
         setJiraJNDILookupKey(config.getJiraJNDILookupKey());
         setMaxUserIDsLimit(config.getMaxUserIDsLimit());
         setUserGroupsMatchingPattern(config.getUserGroupsMatchingPattern());
@@ -71,11 +70,16 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             isValid = false;
         }
         else {
-            if (userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE)) {
-                //if user is using JIRA for User Management then we need to Jira Information
-                if ((getJiraUrl() == null) || (getJiraJNDILookupKey() == null)) {
+            try {
+                if (JiraUtil.getJiraSoapUrl() != null &&
+                        JiraUtil.getJiraSoapUsername() != null &&
+                        JiraUtil.getJiraSoapPassword() != null) {
                     isValid = false;
                 }
+            }
+            catch (Throwable t) {
+                log.error("Got error while trying to check values in properties file!", t);
+                isValid = false;
             }
         }
 
@@ -147,14 +151,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setUserManagerLocation(String userManagerLocation) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_USER_MANAGER_LOCATION, userManagerLocation);
-    }
-
-    public String getJiraUrl() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_URL);
-    }
-
-    public void setJiraUrl(String jiraUrl) {
-        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_URL, jiraUrl);
     }
 
     public String getJiraJNDILookupKey() {

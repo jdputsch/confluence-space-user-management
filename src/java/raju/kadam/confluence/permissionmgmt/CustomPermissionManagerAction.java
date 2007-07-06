@@ -39,6 +39,7 @@ import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
+import raju.kadam.confluence.permissionmgmt.util.PropsUtil;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
@@ -283,7 +284,15 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
                 }
                 else if(adminAction.equals("addGroup"))
                 {
-                    groupManagementService.addGroup(context.getGroupToAdd(), serviceContext);
+                    String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
+                    log.debug("group name prefix will be " + prefix);
+
+                    String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
+                    log.debug("group name suffix will be " + suffix);
+
+                    String groupName = prefix + context.getGroupToAdd() + suffix;
+
+                    groupManagementService.addGroup(groupName, serviceContext);
 
                     opMessage = "<font color=\"green\">Group " + context.getGroupToAdd() + " added successfully!</font>";
                 }
@@ -314,36 +323,32 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return INPUT;
     }
 
-    public String getUserManagerLocation() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_USER_MANAGER_LOCATION);
-	}
+    //public String getUserManagerLocation() {
+    //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_USER_MANAGER_LOCATION);
+	//}
     
-	public String getJiraUrl() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_URL);
-	}
-   
-	public String getIsLdapAuthUsed()
-    {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_AUTH_STATUS_KEY);
-    }
+	//public String getIsLdapAuthUsed()
+    //{
+    //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_AUTH_STATUS_KEY);
+    //}
 	
-    public String getJiraJNDILookupKey()
-    {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_JNDI_KEY);
-    }
+    //public String getJiraJNDILookupKey()
+    //{
+    //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_JNDI_KEY);
+    //}
 
-	public String getCompanyLDAPBaseDN() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_COMPANY_LDAP_BASE_DN_KEY);
-	}
+	//public String getCompanyLDAPBaseDN() {
+    //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_COMPANY_LDAP_BASE_DN_KEY);
+	//}
 
-	public String getCompanyLDAPUrl() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_COMPANY_LDAP_URL_KEY);
-	}
+	//public String getCompanyLDAPUrl() {
+    //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_COMPANY_LDAP_URL_KEY);
+	//}
 	
 	//Get the count which indicates total no. of userids that can be processed at a time.
-	public String getMaxUserIDsLimit() {
-        return ((String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT));
-	}
+	//public String getMaxUserIDsLimit() {
+    //    return ((String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT));
+	//}
 
 	public String getIsPluginDown() {
         return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PLUGIN_STATUS);

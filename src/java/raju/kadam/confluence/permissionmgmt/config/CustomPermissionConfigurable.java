@@ -11,9 +11,6 @@ public interface CustomPermissionConfigurable {
     public String getUserManagerLocation();
     public void setUserManagerLocation(String userManagerLocation);
 
-    public String getJiraUrl();
-    public void setJiraUrl(String jiraUrl);
-
     public String getJiraJNDILookupKey();
     public void setJiraJNDILookupKey(String jiraJNDILookupKey);
 

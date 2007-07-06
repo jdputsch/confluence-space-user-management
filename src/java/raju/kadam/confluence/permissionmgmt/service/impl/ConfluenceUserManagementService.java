@@ -46,7 +46,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
     private List findIntersection( List existingUsersList, List returnedUsers, boolean ranQueryAtLeastOnce) {
-        List users = existingUsersList;
+        List users = null;
         if (ranQueryAtLeastOnce) {
             users = UserUtil.findIntersectionOfUsers(existingUsersList, returnedUsers);
         }
@@ -63,8 +63,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
 
         List users = new ArrayList();
         boolean ranQueryAtLeastOnce = false;
-        if (advancedUserQuery.getPartialUserName() != null && !"".equals(advancedUserQuery.getPartialUserName()) &&
-                advancedUserQuery.getUserNameSearchType() != null) {
+        if (advancedUserQuery.isFullnameSearchDefined()) {
             try {
                 UserNameTermQuery query = new UserNameTermQuery(advancedUserQuery.getPartialUserName(), advancedUserQuery.getUserNameSearchType());
                 SearchResult result = userAccessor.findUsers(query);
@@ -84,8 +83,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
             }
         }
 
-        if (advancedUserQuery.getPartialFullName() != null && !"".equals(advancedUserQuery.getPartialFullName()) &&
-                advancedUserQuery.getFullNameSearchType() != null) {
+        if (advancedUserQuery.isFullnameSearchDefined()) {
             try {
                 FullNameTermQuery query = new FullNameTermQuery(advancedUserQuery.getPartialFullName(), advancedUserQuery.getFullNameSearchType());
                 SearchResult result = userAccessor.findUsers(query);
@@ -105,8 +103,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
             }
         }
 
-        if (advancedUserQuery.getPartialEmail() != null && !"".equals(advancedUserQuery.getPartialEmail()) &&
-                advancedUserQuery.getEmailSearchType() != null) {
+        if (advancedUserQuery.isEmailSearchDefined()) {
             try {
                 EmailTermQuery query = new EmailTermQuery(advancedUserQuery.getPartialEmail(), advancedUserQuery.getEmailSearchType());
                 SearchResult result = userAccessor.findUsers(query);
@@ -126,8 +123,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
             }
         }
 
-        if (advancedUserQuery.getPartialGroupName() != null && !"".equals(advancedUserQuery.getPartialGroupName()) &&
-                advancedUserQuery.getGroupNameSearchType() != null) {
+        if (advancedUserQuery.isGroupnameSearchDefined()) {
             try {
                 GroupNameTermQuery query = new GroupNameTermQuery(advancedUserQuery.getPartialGroupName(), advancedUserQuery.getGroupNameSearchType());
                 SearchResult result = userAccessor.findGroups(query);

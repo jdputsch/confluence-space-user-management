@@ -3,10 +3,7 @@ package raju.kadam.confluence.permissionmgmt.service;
 import com.atlassian.spring.container.ContainerManager;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
-import raju.kadam.confluence.permissionmgmt.service.impl.ConfluenceGroupManagementService;
-import raju.kadam.confluence.permissionmgmt.service.impl.ConfluenceUserManagementService;
-import raju.kadam.confluence.permissionmgmt.service.impl.JiraGroupManagementService;
-import raju.kadam.confluence.permissionmgmt.service.impl.JiraUserManagementService;
+import raju.kadam.confluence.permissionmgmt.service.impl.*;
 import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,18 +20,9 @@ public class CustomPermissionServiceManager {
 
     private ConfluenceGroupManagementService confluenceGroupManagementService;
     private ConfluenceUserManagementService confluenceUserManagementService;
-    private JiraGroupManagementService jiraGroupManagementService;
-    private JiraUserManagementService jiraUserManagementService;
+    private JiraSoapGroupManagementService jiraSoapGroupManagementService;
+    private JiraSoapUserManagementService jiraSoapUserManagementService;
     private CustomPermissionConfiguration customPermissionConfiguration;
-
-    public CustomPermissionServiceManager() {
-        //confluenceGroupManagementService = (ConfluenceGroupManagementService) ContainerManager.getComponent("confluenceGroupManagementService");
-        //confluenceUserManagementService = (ConfluenceUserManagementService) ContainerManager.getComponent("confluenceUserManagementService");
-        //jiraGroupManagementService = (JiraGroupManagementService) ContainerManager.getComponent("jiraGroupManagementService");
-        //jiraUserManagementService = (JiraUserManagementService) ContainerManager.getComponent("jiraUserManagementService");
-        //customPermissionConfiguration = (CustomPermissionConfiguration) ConfluenceUtil.loadComponentWithRetry("customPermissionConfiguration");
-        log.debug("CustomPermissionServiceManager created");
-    }
 
     public GroupManagementService getGroupManagementService() throws ServiceException {
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
@@ -50,7 +38,7 @@ public class CustomPermissionServiceManager {
     	}
     	else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
     	{
-            return jiraGroupManagementService;
+            return jiraSoapGroupManagementService;
         }
         else {
             throw new ServiceException(ErrorReason.INVALID_USER_MANAGER_LOCATION);
@@ -71,7 +59,7 @@ public class CustomPermissionServiceManager {
     	}
     	else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
     	{
-            return jiraUserManagementService;
+            return jiraSoapUserManagementService;
         }
         else {
             throw new ServiceException(ErrorReason.INVALID_USER_MANAGER_LOCATION);
@@ -94,20 +82,20 @@ public class CustomPermissionServiceManager {
         this.confluenceUserManagementService = confluenceUserManagementService;
     }
 
-    public JiraGroupManagementService getJiraGroupManagementService() {
-        return jiraGroupManagementService;
+    public JiraSoapGroupManagementService getJiraGroupManagementService() {
+        return jiraSoapGroupManagementService;
     }
 
-    public void setJiraGroupManagementService(JiraGroupManagementService jiraGroupManagementService) {
-        this.jiraGroupManagementService = jiraGroupManagementService;
+    public void setJiraSoapGroupManagementService(JiraSoapGroupManagementService jiraSoapGroupManagementService) {
+        this.jiraSoapGroupManagementService = jiraSoapGroupManagementService;
     }
 
-    public JiraUserManagementService getJiraUserManagementService() {
-        return jiraUserManagementService;
+    public JiraSoapUserManagementService getJiraSoapUserManagementService() {
+        return jiraSoapUserManagementService;
     }
 
-    public void setJiraUserManagementService(JiraUserManagementService jiraUserManagementService) {
-        this.jiraUserManagementService = jiraUserManagementService;
+    public void setJiraSoapUserManagementService(JiraSoapUserManagementService jiraSoapUserManagementService) {
+        this.jiraSoapUserManagementService = jiraSoapUserManagementService;
     }
 
     public CustomPermissionConfiguration getCustomPermissionConfiguration() {

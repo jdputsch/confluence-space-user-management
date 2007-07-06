@@ -37,6 +37,8 @@ import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.spring.container.ContainerManager;
 import org.apache.log4j.Category;
 import raju.kadam.confluence.permissionmgmt.CustomPermissionConstants;
+import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
+import raju.kadam.confluence.permissionmgmt.util.PropsUtil;
 import raju.kadam.util.ConfigUtil;
 
 /**
@@ -106,7 +108,6 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         //Note null values will be passed from input as those two inputs are disabled
         if(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE.equals(getUserManagerLocation()))
         {
-        	setJiraUrl("");
         	setJiraJNDILookupKey("");
         }
 
@@ -120,7 +121,6 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
         // Set presets as config, trimming and using defaults as needed
         setUserManagerLocation(ConfigUtil.getTrimmedStringOrNull(getUserManagerLocation()));
-        setJiraUrl(ConfigUtil.getTrimmedStringOrNull(getJiraUrl()));
         setJiraJNDILookupKey(ConfigUtil.getTrimmedStringOrNull(getJiraJNDILookupKey()));
         setMaxUserIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIdsLimit", getMaxUserIDsLimit(), 20));
         setUserGroupsMatchingPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userGroupsMatchingPattern", getUserGroupsMatchingPattern(), CustomPermissionConstants.SPACEKEY_REGEXP));
@@ -131,6 +131,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         setDownTimeMessage(ConfigUtil.getTrimmedStringOrNull(getDownTimeMessage()));
     }
     
+    //TODO: this validation is here and in Configuration class itself. refactor
     public boolean validateConfiguration()
 	{
 		log.debug("CustomPermissionConfigAction - Inside validate Configuration ...");
@@ -143,7 +144,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 		//If userManagerLocation is not set as CONFLUENCE or JIRA, then it must be set to either value.
 		if( !(userManagerLocationIsConfluence || userManagerLocationIsJira) )
 		{
-            addFieldError("updateUserManagerLocation", "Please indicate which application manages Wiki Users");
+            addFieldError("userManagerLocation", "Please indicate which application manages Wiki Users");
             isUserManagerLocationSet = false;
 		}
 		
@@ -152,17 +153,40 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 		//Following information needs to be check only if Wiki User Management is delegated to Jira
 		if(isUserManagerLocationSet && userManagerLocationIsJira)
 		{
-			//check if user has set Jira URL and Jira JNDI
-			if( getJiraUrl() == null || getJiraUrl().trim().equals(""))
-			{
-	            addFieldError("updateJiraUrl", "Enter Jira URL");
-	            isJiraUrlSet = false;
-			}
-			
-			//check if user has set Jira URL and Jira JNDI
+			try {
+                String jiraSoapUrl = JiraUtil.getJiraSoapUrl();
+                String jiraSoapUsername = JiraUtil.getJiraSoapUsername();
+                String jiraSoapPassword = JiraUtil.getJiraSoapPassword();
+
+                if( jiraSoapUrl == null || jiraSoapUrl.trim().equals(""))
+                {
+                    addFieldError("userManagerLocation", "Missing property " + CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_URL + " in " + PropsUtil.PROPS_FILENAME );
+                    isJiraJNDISet = false;
+                }
+
+                if( jiraSoapUsername == null || jiraSoapUsername.trim().equals(""))
+                {
+                    addFieldError("userManagerLocation", "Missing property " + CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_USERNAME + " in " + PropsUtil.PROPS_FILENAME );
+                    isJiraJNDISet = false;
+                }
+
+                if( jiraSoapPassword == null || jiraSoapPassword.trim().equals(""))
+                {
+                    addFieldError("userManagerLocation", "Missing property " + CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_PASSWORD + " in " + PropsUtil.PROPS_FILENAME );
+                    isJiraJNDISet = false;
+                }
+            }
+            catch (Throwable t) {
+                addFieldError("userManagerLocation", "Error loading properties file " + PropsUtil.PROPS_FILENAME + ": " + t);
+                log.error("Error loading properties file " + PropsUtil.PROPS_FILENAME, t);
+                isJiraJNDISet = false;
+            }
+
+
+            //check if user has set Jira URL and Jira JNDI
 			if( getJiraJNDILookupKey() == null || getJiraJNDILookupKey().trim().equals(""))
 			{
-	            addFieldError("updateJiraJNDILookupKey", "Enter Jira JNDI DataSource");
+	            addFieldError("jiraJNDILookupKey", "Enter Jira JNDI DataSource");
 	            isJiraJNDISet = false;
 			}
 		}
@@ -177,14 +201,14 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 			//check if LDAP URL is set or not
 			if( getCompanyLDAPUrl() == null || getCompanyLDAPUrl().trim().equals(""))
 			{
-	            addFieldError("updateCompanyLDAPUrl", "Enter LDAP URL");
+	            addFieldError("companyLDAPUrl", "Enter LDAP URL");
 	            isCompanyLDAPUrlSet = false;
 			}
 
 			//check if LDAP URL is set or not
 			if( getCompanyLDAPBaseDN() == null || getCompanyLDAPBaseDN().trim().equals(""))
 			{
-	            addFieldError("updateCompanyLDAPBaseDN", "Enter LDAP Base DN");
+	            addFieldError("companyLDAPBaseDN", "Enter LDAP Base DN");
 	            isCompanyLDAPBaseDNSet = false;
 			}
 		}
@@ -215,6 +239,22 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
         this.customPermissionConfiguration = customPermissionConfiguration;
     }
+
+    public String getJiraPropertiesFilename() {
+        return PropsUtil.PROPS_FILENAME;
+    }
+
+    public String getPropertyNameForJiraSoapPassword() {
+        return CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_PASSWORD;
+    }
+
+    public String getPropertyNameForJiraSoapUrl() {
+        return CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_URL;
+    }
+
+    public String getPropertyNameForJiraSoapUsername() {
+        return CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_USERNAME;
+    }        
 
     public String getActionName(String fullClassName)
     {

@@ -143,6 +143,25 @@
                 <artifactId>atlassian-pdk</artifactId>
                 <extensions>true</extensions>
             </plugin>
+
+            <plugin>
+               <groupId>org.codehaus.mojo</groupId>
+               <artifactId>axistools-maven-plugin</artifactId>
+               <configuration>
+                  <sourceDirectory>wsdl</sourceDirectory>
+                  <packageSpace>raju.kadam.confluence.permissionmgmt.soap</packageSpace>
+                  <testCases>false</testCases>
+                  <serverSide>false</serverSide>
+                  <subPackageByFileName>true</subPackageByFileName>
+               </configuration>
+               <executions>
+                 <execution>
+                   <goals>
+                     <goal>wsdl2java</goal>
+                   </goals>
+                 </execution>
+               </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -183,6 +202,18 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+        </pluginRepository>
+
+        <pluginRepository>
+          <id>codehaus.org</id>
+          <name>CodeHaus Plugin Snapshots</name>
+          <url>http://repository.codehaus.org</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
         </pluginRepository>
     </pluginRepositories>
 </project>

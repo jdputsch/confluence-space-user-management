@@ -8,8 +8,8 @@ package raju.kadam.confluence.permissionmgmt.config;
  */
 public interface CustomPermissionConfigConstants {
 
+    // bandana config keys
     public static final String DELEGATE_USER_USER_MANAGER_LOCATION = "ext.delegateusermgmt.jira.user.manager.location.value"; //will indicate if JIRA or CONFLUENCE does User Management for Confluence Wiki.
-    public static final String DELEGATE_USER_MGMT_JIRA_URL = "ext.delegateusermgmt.jira.url.value";
     public static final String DELEGATE_USER_MGMT_JIRA_JNDI_KEY = "ext.delegateusermgmt.jira.jndi.value";
     public static final String DELEGATE_USER_MGMT_LDAP_AUTH_STATUS_KEY = "ext.delegateusermgmt.isldapauthpresent.value";
     public static final String DELEGATE_USER_MGMT_COMPANY_LDAP_URL_KEY = "ext.delegateusermgmt.company.ldap.url.value";
@@ -22,9 +22,15 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_PREFIX_PATTERN = "ext.delegateusermgmt.new.group.name.creation.prefix.pattern";
     public static final String DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_SUFFIX_PATTERN = "ext.delegateusermgmt.new.group.name.creation.suffix.pattern";
 
+    // static values
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";
     public static final String DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE = "JIRA";
 
     public static final String YES = "YES";
     public static final String NO = "NO";
+
+    // properties file property names
+    public static final String PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_URL = "ext.delegateusermgmt.jira.soap.url.value";
+    public static final String PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_USERNAME = "ext.delegateusermgmt.jira.soap.username.value";
+    public static final String PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_PASSWORD = "ext.delegateusermgmt.jira.soap.password.value";
 }

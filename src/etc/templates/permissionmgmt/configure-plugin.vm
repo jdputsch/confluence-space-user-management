@@ -33,40 +33,52 @@
 	<body>
 		<script language="javascript">
 		
-		    function toggleJiraSettingsInput(e)
-		    {
-		    	//If User Management delegated to jira then only ask user for jira URL and Jira JNDI values
-		        if (e.value == 'JIRA')
-		        {
-		            document.getElementById('updateJiraUrl').disabled = false;
-		            document.getElementById('updateJiraJNDILookupKey').disabled = false;
-		        }
-		        else
-		        {
-		            document.getElementById('updateJiraUrl').disabled = true;
-		          	document.getElementById('updateJiraUrl').value = '';
-		          	 
-		            document.getElementById('updateJiraJNDILookupKey').disabled = true;
-		          	document.getElementById('updateJiraJNDILookupKey').value = '';
-		            //document.forms["CustomUserManagementConfigForm"].updateJiraJNDILookupKey.value = '';
-		        }
-		    }
+            function toggleJiraSettingsInput(e)
+            {
+                //If User Management delegated to jira then only ask user for jira URL and Jira JNDI values
+                if (e.value == 'JIRA')
+                {
+                    document.getElementById('jiraJNDILookupKey').disabled = false;
+                }
+                else
+                {
+                    document.getElementById('jiraJNDILookupKey').disabled = true;
+                    document.getElementById('jiraJNDILookupKey').value = '';
+                }
+            }
+            
+            function toggleGroupSettingsInput(e)
+            {
+                //If User Management delegated to jira then only ask user for jira URL and Jira JNDI values
+                if (e.value == 'YES')
+                {
+                    document.getElementById('newGroupNameCreationPrefixPattern').disabled = false;
+                    document.getElementById('newGroupNameCreationSuffixPattern').disabled = false;
+                }
+                else
+                {
+                    document.getElementById('newGroupNameCreationPrefixPattern').disabled = true;
+                    document.getElementById('newGroupNameCreationPrefixPattern').value = '';
+                    document.getElementById('newGroupNameCreationSuffixPattern').disabled = true;
+                    document.getElementById('newGroupNameCreationSuffixPattern').value = '';
+                }
+            }
 
-		    function toggleLDAPSettingsInput(e)
+            function toggleLDAPSettingsInput(e)
 		    {
 		    	//if LDAP is used for Authentication, then get LDAP settings for user creation
 		        if (e.value == 'YES')
 		        {
-		            document.getElementById('updateCompanyLDAPUrl').disabled = false;
-		            document.getElementById('updateCompanyLDAPBaseDN').disabled = false;
+		            document.getElementById('companyLDAPUrl').disabled = false;
+		            document.getElementById('companyLDAPBaseDN').disabled = false;
 		        }
 		        else
 		        {
-		            document.getElementById('updateCompanyLDAPUrl').disabled = true;
-		            document.getElementById('updateCompanyLDAPUrl').value = '';
+		            document.getElementById('companyLDAPUrl').disabled = true;
+		            document.getElementById('companyLDAPUrl').value = '';
 		            		       
-		            document.getElementById('updateCompanyLDAPBaseDN').disabled = true;
-		            document.getElementById('updateCompanyLDAPBaseDN').value = ''
+		            document.getElementById('companyLDAPBaseDN').disabled = true;
+		            document.getElementById('companyLDAPBaseDN').value = ''
 		        }
 		    }
 		
@@ -91,16 +103,6 @@
             </td>
         </tr>
         <tr>
-            <td class="label" width="30%">Jira Url:</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.jiraUrl)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraUrl</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-        <tr>
             <td class="label" width="30%">Jira JNDI Datasource:</td>
             <td nowrap>
                 #if ($action.customPermissionConfiguration.jiraJNDILookupKey)
@@ -109,7 +111,7 @@
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
             </td>
-        </tr>
+        </tr>                        
         <tr>
             <td class="label" width="30%">LDAP Authentication Used?:</td>
             <td nowrap>
@@ -227,21 +229,24 @@
                 <input type="radio" name="userManagerLocation" value="JIRA" #if ($action.userManagerLocation == "JIRA") checked="true" #end onclick="toggleJiraSettingsInput(this)" />JIRA
                 <br>
                 <font size="1">
-            	Note: If you are using LDAP for user management, then please select option <b>CONFLUENCE</b>
+            	Notes:
+            	<ul>
+            	  <li>If you are using LDAP for user management, then please select option <b>CONFLUENCE</b>.</li>
+            	  <li>If you are using <b>JIRA</b> for user management, please define a properties file called
+            	      <b>$action.jiraPropertiesFilename</b> and copy that file somewhere into the classpath of each
+            	      Confluence server using this plugin; the contents of this file should look like the following
+            	      (<b>change values in the file to match your environment</b>):</li>
+                </ul>
                 </font>
+<div class="preformatted"><div class="preformattedContent">
+<pre>${action.propertyNameForJiraSoapUrl}=http://yourhostname/rpc/soap/jirasoapservice-v2
+${action.propertyNameForJiraSoapUsername}=yourjiraadminusername
+${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
+</pre>
+</div></div>
             </td>
         </tr>
 
-        <tr>
-            <td valign="top" class="label" width="30%">Jira Url:</td>
-            <td>
-				#fielderror ('jiraUrl')
-                <input type="text" name="jiraUrl" id="jiraUrl" value="$!action.jiraUrl" #if ($action.userManagerLocation == "CONFLUENCE") disabled="true" #end size="50" />
-                <p>
-                    <font size="1">Example: http://acme.jira.com</font>
-                </p>
-            </td>
-        </tr>
         <tr>
             <td valign="top" class="label" width="30%">Jira JNDI Datasource:</td>
             <td>
@@ -252,7 +257,6 @@
                 </p>
             </td>
         </tr>
-
 
         <tr>
             <td valign="top" class="label" width="30%">Max UserIDs Limit:</td>
@@ -288,8 +292,8 @@
             <td valign="top" class="label" width="30%">Group Actions Permitted:</td>
             <td>
 				#fielderror ('groupActionsPermitted')
-                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end />YES &nbsp;
-                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end />NO
+                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end onclick="toggleGroupSettingsInput(this)" />YES &nbsp;
+                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end onclick="toggleGroupSettingsInput(this)" />NO
                 <p>
                     <font size="1">
                 	This enables the ability to add/remove groups whose name matches the pattern specified above, effectively enabling the ability to have space-specific groups manageable by space administrators.

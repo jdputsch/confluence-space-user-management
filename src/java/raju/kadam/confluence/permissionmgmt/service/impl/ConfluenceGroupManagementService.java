@@ -100,16 +100,8 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
         return result;
     }
 
-    public void addGroup( String identifier, ServiceContext context ) throws AddException {
+    public void addGroup( String groupName, ServiceContext context ) throws AddException {
         Space space = context.getSpace();                            
-
-        String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
-        log.debug("group name prefix will be " + prefix);
-
-        String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
-        log.debug("group name suffix will be " + suffix);
-
-        String groupName = prefix + identifier + suffix;
 
         log.debug("create a confluence group -> " + groupName);
 

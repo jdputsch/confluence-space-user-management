@@ -54,21 +54,21 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         key="customPermissionConfiguration"
         class="raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration" />
 
-    <component name="confluenceGroupManagementService"
-        key="confluenceGroupManagementService"
-        class="raju.kadam.confluence.permissionmgmt.service.impl.ConfluenceGroupManagementService" />
-
     <component name="confluenceUserManagementService"
         key="confluenceUserManagementService"
         class="raju.kadam.confluence.permissionmgmt.service.impl.ConfluenceUserManagementService" />
 
-    <component name="jiraGroupManagementService"
-        key="jiraGroupManagementService"
-        class="raju.kadam.confluence.permissionmgmt.service.impl.JiraGroupManagementService" />
+    <component name="confluenceGroupManagementService"
+        key="confluenceGroupManagementService"
+        class="raju.kadam.confluence.permissionmgmt.service.impl.ConfluenceGroupManagementService" />
 
-    <component name="jiraUserManagementService"
-        key="jiraUserManagementService"
-        class="raju.kadam.confluence.permissionmgmt.service.impl.JiraUserManagementService" />
+    <component name="jiraSoapUserManagementService"
+            key="jiraSoapUserManagementService"
+            class="raju.kadam.confluence.permissionmgmt.service.impl.JiraSoapUserManagementService" />
+
+    <component name="jiraSoapGroupManagementService"
+        key="jiraSoapGroupManagementService"
+        class="raju.kadam.confluence.permissionmgmt.service.impl.JiraSoapGroupManagementService" />
 
     <component name="customPermissionServiceManager"
         key="customPermissionServiceManager"

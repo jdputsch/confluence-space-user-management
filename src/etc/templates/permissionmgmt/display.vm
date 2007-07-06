@@ -109,7 +109,7 @@
         #if($customPermissionConfiguration.pluginDown == "yes")
             <p class="infoMacro">$customPermissionConfiguration.downTimeMessage</p>
 		#else
-		    <p class="noteMacro">An administrator must configure "Custom Space Usergroups Manager" before you start using it.  Plugins can be configured from the Administration &gt; <a href="/confluence/admin/plugins.action" alt="Plugin Manager">Plugin Manager</a> page.</p>
+		    <p class="noteMacro">An administrator must configure "Custom Space Usergroups Manager" before you start using it by going to Administration &gt; Plugins and selecting this plugin.</p>
 		#end
     #end
 

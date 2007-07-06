@@ -105,6 +105,53 @@ public class AdvancedUserQuery {
         return result;
     }
 
+    public boolean isDefined() {
+        boolean result = false;
+        if ( isUsernameSearchDefined() ||
+                isFullnameSearchDefined() ||
+                isEmailSearchDefined() ||
+                isGroupnameSearchDefined() ) {
+            result = true;
+        }
+        return result;
+    }
+
+    public boolean isUsernameSearchDefined() {
+        boolean result = false;
+        if (getPartialUserName() != null && !"".equals(getPartialUserName()) &&
+            isValidSearchType( getUserNameSearchType() )) {
+            result = true;
+        }
+        return result;
+    }
+
+    public boolean isFullnameSearchDefined() {
+        boolean result = false;
+        if (getPartialFullName() != null && !"".equals(getPartialFullName()) &&
+                isValidSearchType( getFullNameSearchType() )) {
+            result = true;
+        }
+        return result;
+    }
+
+    public boolean isEmailSearchDefined() {
+        boolean result = false;
+        if (getPartialEmail() != null && !"".equals(getPartialEmail()) &&
+                isValidSearchType( getEmailSearchType() )) {
+            result = true;
+        }
+        return result;
+    }
+
+    public boolean isGroupnameSearchDefined() {
+        boolean result = false;
+        if (getPartialGroupName() != null && !"".equals(getPartialGroupName()) &&
+                isValidSearchType( getGroupNameSearchType() )) {
+            result = true;
+        }
+        return result;
+    }
+
     // atlassian-user is really picky about doing == instead of .equals to check the TermQuery constant, so we do this
     public void makeSearchTypesMatchTermQueryConstantInstances() {
         this.setUserNameSearchType(getConstantInstance(getUserNameSearchType()));

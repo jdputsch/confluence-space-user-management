@@ -1,6 +1,7 @@
 package raju.kadam.confluence.permissionmgmt.service.vo;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * (c) 2007 Duke University
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class AdvancedUserQueryResults {
 
-    private List users;
+    private List users = new ArrayList();
 
     private String userNameFieldMessage;
     private String fullNameFieldMessage;
