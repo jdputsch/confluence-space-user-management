@@ -28,8 +28,8 @@
 
         <!-- start group-list -->
 
-            <h3>$action.space.name ($action.space.key) Groups:</h3>
-            #set ($groups = $action.groups)
+            <h3>${action.space.name} ($action.space.key) Groups:</h3>
+            #set ($groups = ${action.groups})
 
             #if($groups && $groups.size() > 0 )
             <table cellspacing="0">
@@ -40,7 +40,7 @@
                             <img class="icon" src="/confluence/images/icons/group_16.gif" />$!group.name
                         </a>
                     </td>
-                    #if($isGroupActionsPermitted)
+                    #if(${action.isGroupActionsPermitted})
                     <td align="center">
                         <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=$!group.name">
                             <img alt="Remove $!group.name" src="/confluence/images/icons/trash_16.gif"/>
@@ -50,8 +50,23 @@
                 </tr>
                 #end
             </table>
+            #else
+                There are currently no groups that match both of the following criteria:
+                <ul>
+                  <li>Group has rights to view space '${key}' <b>and</b></li>
+                  <li>Group has name matching the group name pattern defined for this space in the plugin configuration:
+                      '${action.spacePattern}'.</li>
+                </ul>
 
-            #if($isGroupActionsPermitted)
+                If you feel that groups should be displayed here or are not sure what to do, then check with the system
+                administrator to verify that the group name pattern, group name prefix, and group name suffix are
+                correct.
+
+                If you have never used this interface before, you probably have nothing to worry about and can go along
+                your merry way adding groups and managing users in them.
+            #end
+
+            #if(${action.isGroupActionsPermitted})
 		    <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="AddGroupForm">
                 <fieldset>
                 <input type="hidden" name="adminAction" value="addGroup"/>
@@ -87,7 +102,7 @@
                 #end
             *#
             
-            #end
+
 
         <!-- end group-list -->
         

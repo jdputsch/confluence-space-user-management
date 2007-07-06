@@ -52,6 +52,14 @@ public class ConfigUtil {
         return result;
     }
 
+    public static boolean isNullOrEmpty(String s) {
+        boolean result = false;
+        if (s==null || "".equals(s)) {
+            result = true;
+        }
+        return result;
+    }
+
     public static boolean isNotNullAndIsYesOrNo(String s) {
         boolean result = false;
         if ( s != null && ("YES".equals(s) || "NO".equals(s))) {

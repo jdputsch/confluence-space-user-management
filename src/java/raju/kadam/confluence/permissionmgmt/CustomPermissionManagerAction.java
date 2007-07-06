@@ -633,6 +633,10 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return result;
     }
 
+    public String getSpacePattern() {
+        return GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getUserGroupsMatchingPattern(), getSpace().getKey());
+    }
+
     public String getActionName(String fullClassName)
     {
     	return "Custom Space Usergroups Manager";

@@ -39,7 +39,7 @@
         #decoratorParam("context" "space-custom-usermanagement") ##note this should be same as item.key defined in atlassian-plugin.xml
         #decoratorParam("mode" "view-edit-spaceusergroups")
         
-            <content tag="spacekey">$action.space.key</content>
+            <content tag="spacekey">${action.space.key}</content>
     #set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=${key}&" )
 
     <body>
@@ -87,7 +87,7 @@
 <div id="csum">
     #parse ( "/templates/permissionmgmt/action-messages.vm" )
 
-    #if($isPluginConfigurationDone)
+    #if(${action.isPluginConfigurationDone})
         <div id="csumGroups">
             #parse( "/templates/permissionmgmt/group-list.vm" )
         </div>
@@ -106,8 +106,8 @@
         </div>
         #end
     #else
-        #if($customPermissionConfiguration.pluginDown == "yes")
-            <p class="infoMacro">$customPermissionConfiguration.downTimeMessage</p>
+        #if(${action.customPermissionConfiguration.pluginDown} == "yes")
+            <p class="infoMacro">${action.customPermissionConfiguration.downTimeMessage}</p>
 		#else
 		    <p class="noteMacro">An administrator must configure "Custom Space Usergroups Manager" before you start using it by going to Administration &gt; Plugins and selecting this plugin.</p>
 		#end

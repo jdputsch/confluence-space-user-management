@@ -10,6 +10,7 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import raju.kadam.util.ConfigUtil;
+import raju.kadam.util.StringUtil;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 
 /**
@@ -67,78 +68,96 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
         String userManagementLocation = getUserManagerLocation();
         if (userManagementLocation == null) {
+            log.warn("userManagementLocation was null");
             isValid = false;
         }
         else {
-            try {
-                if (JiraUtil.getJiraSoapUrl() != null &&
-                        JiraUtil.getJiraSoapUsername() != null &&
-                        JiraUtil.getJiraSoapPassword() != null) {
+            if ( userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE) ) {
+
+                if ( ConfigUtil.isNullOrEmpty(getJiraJNDILookupKey())) {
+                    log.warn("jiraJNDILookupKey was null/empty");
                     isValid = false;
                 }
-            }
-            catch (Throwable t) {
-                log.error("Got error while trying to check values in properties file!", t);
-                isValid = false;
+                else {
+                    try {
+                        if (ConfigUtil.isNullOrEmpty(JiraUtil.getJiraSoapUrl()) ||
+                            ConfigUtil.isNullOrEmpty(JiraUtil.getJiraSoapUsername()) ||
+                            ConfigUtil.isNullOrEmpty(JiraUtil.getJiraSoapPassword()))
+                        {
+                            log.warn("jira properties were null/empty");
+                            isValid = false;
+                        }
+                    }
+                    catch (Throwable t) {
+                        log.error("Got error while trying to check values in properties file!", t);
+                        isValid = false;
+                    }
+                }
             }
         }
 
         if (getMaxUserIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(getMaxUserIDsLimit())) {
+            log.warn("maxUserIDsLimit was invalid");
             isValid = false;
         }
 
         String userGroupsMatchingPattern = getUserGroupsMatchingPattern();
-        if (getUserGroupsMatchingPattern() == null) {
+        if (ConfigUtil.isNullOrEmpty(getUserGroupsMatchingPattern())) {
+            log.warn("matching pattern was null/empty");
             isValid = false;
         }
         else {
             try {
                 //validate is valid Pattern
-                Pattern pat = Pattern.compile(userGroupsMatchingPattern);
+                Pattern.compile(userGroupsMatchingPattern);
             }
             catch (PatternSyntaxException pse) {
+                log.error("Pattern specified in config failed to compile", pse);
                 isValid = false;
             }
         }
 
         String ldapAuthUsed = getLdapAuthUsed();
-        if (ldapAuthUsed==null) {
-            isValid = false;
-        }
-        else {
-            if (ConfigUtil.isNotNullAndIsYesOrNo(ldapAuthUsed)) {
-                if ("YES".equals(ldapAuthUsed)) {
-                    if (getCompanyLDAPUrl() == null || getCompanyLDAPBaseDN() == null) {
-                        isValid = false;
-                    }
-                }
-            }
-            else {
-                isValid = false;
-            }
-        }
-
-        String pluginInDown = getPluginDown();
-        if (ConfigUtil.isNotNullAndIsYesOrNo(pluginInDown)) {
-            if ("YES".equals(pluginInDown)) {
-                if (getDownTimeMessage() == null) {
+        if (ConfigUtil.isNotNullAndIsYesOrNo(ldapAuthUsed)) {
+            if ("YES".equals(ldapAuthUsed)) {
+                if (ConfigUtil.isNullOrEmpty(getCompanyLDAPUrl()) || getCompanyLDAPBaseDN() == null) {
+                    log.warn("ldap URL was null/empty or LDAP base DN was null");
                     isValid = false;
                 }
             }
         }
         else {
+            log.warn("ldapAuthUsed was not YES or NO");
+            isValid = false;
+        }
+
+        String pluginInDown = getPluginDown();
+        if (ConfigUtil.isNotNullAndIsYesOrNo(pluginInDown)) {
+            if ("YES".equals(pluginInDown)) {
+                // is ok to be empty
+                if (getDownTimeMessage() == null) {
+                    log.warn("plugin was down but no downtime message specified");
+                    isValid = false;
+                }
+            }
+        }
+        else {
+            log.warn("isPluginDown was not YES or NO");
             isValid = false;
         }
 
         String groupActionsPermitted = getGroupActionsPermitted();
         if (ConfigUtil.isNotNullAndIsYesOrNo(groupActionsPermitted)) {
             if ("YES".equals(groupActionsPermitted)) {
+                // these are ok to be empty
                 if (getNewGroupNameCreationPrefixPattern() == null || getNewGroupNameCreationSuffixPattern() == null) {
+                    log.warn("new group name prefix or suffix was null");
                     isValid = false;
                 }
             }
         }
         else {
+            log.warn("group actions permitted was not YES or NO");
             isValid = false;
         }
 
