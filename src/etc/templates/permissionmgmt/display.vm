@@ -30,6 +30,8 @@
 <html>
     <head>
         <title>$action.getActionName($action.getClass().getName())</title>
+
+        ##TODO: Make links relative
     </head>
 
     #applyDecorator("root")
@@ -43,72 +45,79 @@
     <body>
 
     <style>
-        form {margin:0; padding:0;}
-        fieldset {border:none; padding:0; margin:0;}
-        input {margin:0; padding:0; font-size:1.5em; width:100%;}
-        label {font-size:1.4em; display:block;}
+        div#csum {text-align:left; margin:15px 0 0 0; padding:0em; color:#333;}
+        div#csum h3 {color:#333; margin: 0; padding:.3em .5em; border-bottom: 1px solid #CCC;}
+        div#csum a img {border:none;}
 
-        div#csumHeader {margin:0;}
+        div#csum div#topMessages {display:block; clear:both;}
+        div#csum div#topMessages ul {list-style:none;}
+        div#csum div#topMessages ul li {display:block; clear:both; padding.5em; margin:1em .5em;}
+        div#csum div#topMessages ul li.successMessage {background-color:#DDFFDD;}
 
-        div#csumGroups {padding:0 1em; width:300px; float:left; margin:0; border-right:1px solid orange;}
-        div#csumGroups h3 {margin:0 0 10px 0;}
-        div#csumGroups ul {margin:0; padding:0;}
-        div#csumGroups ul li {padding:0 3px; list-style: none inside url(/confluence/images/icons/group_16.gif);}
-        div#csumGroups ul li a {display:block; line-height:1; padding:.4em .3em; font-size:1.2em; text-decoration:none; border-top:1px dotted #FFF; border-bottom:1px dotted #FFF;}
-        div#csumGroups ul li a:hover {background-color:#EEE; border-top:1px dotted #CCC; border-bottom:1px dotted #CCC;}
+        div#csum div#csumHeader {margin:0;}
 
-        div#csumGroupEditor {padding:0 1em;}
+        div#csum form {margin:0; padding:0;}
+		div#csum form fieldset {border:none; padding:none; margin:none;}
+		div#csum form input {margin:.5em 0; padding:0; font-size:1.2em; width:100%;}
+		div#csum form label {font-size:1.1em;}
+		div#csum form .submitBttn {width:auto; margin:0 .3em;}
 
-        .submitBttn {width:auto; margin:0 .3em;}
-        #groupToAdd {width:220px;}
+        div#csum div#csumGroups {margin-left:8px; padding-right:5px; float: left; width:300px;}
+		div#csum div#csumGroups table {border-collapse: separate; border-spacing: 0; width:100%; text-align:left;}
+		div#csum div#csumGroups table tr td {}
+		div#csum div#csumGroups table tr td a {display:block; line-height:1; margin:.4em .4em; font-size:.9em; text-decoration:none;}
+		div#csum div#csumGroups table tr td a img {margin:2px 3px;}
+
+		div#csum div#csumGroupsEditor {padding-left:5px; border-left: 3px solid #DDD; float:left;}
+
+		div#csum div#csumGroupsEditor table {width:100%;}
+		div#csum div#csumGroupsEditor table tr {}
+		div#csum div#csumGroupsEditor table tr th {font-size:1.1em; font-weight:bold; text-align:left; padding:0 .7em;}
+		div#csum div#csumGroupsEditor table tr td {display:block; line-height:1; margin:.4em .4em; font-size:.9em; text-decoration:none; padding:0 .7em;}
+		div#csum div#csumGroupsEditor table tr td a {display:block; line-height:1; margin:.4em .4em; font-size:.9em; text-decoration:none;}
+		div#csum div#csumGroupsEditor table tr td a img {margin:2px 3px;}
+
+        .even {background-color:#F0F0F0;}
+        .icon {margin:0 .5em;}
+
+        .current {border:1px solid red;}
+
     </style>
 
+<div id="csum">
     #parse ( "/templates/permissionmgmt/action-messages.vm" )
 
     #if($isPluginConfigurationDone)
+        <div id="csumGroups">
+            #parse( "/templates/permissionmgmt/group-list.vm" )
+        </div>
 
-    <table border="0" width="100%" cellpadding="5" cellspacing="0">
-    <tr><td width="165" valign="top">
-
-        #parse( "/templates/permissionmgmt/group-list.vm" )
-
-    </td>
-    <td valign="top">
-        
         #if(${action.selectedGroup})
-		    <h3>Users in Group '${action.selectedGroup}'</h3>
-
-
+        <div id="csumGroupsEditor">
+		    <h3>Edit ${action.selectedGroup}:</h3>
 
             #if($action.userSearch)
-
+                #parse ( "/templates/permissionmgmt/manage-users-advanced.vm" )
                 Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">Basic Form/List Users</a>
-                                            		        
-		        #parse ( "/templates/permissionmgmt/manage-users-advanced.vm" )
 		    #else
-
-                Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1">Advanced Form/Search and Add</a>
-
 		        #parse ( "/templates/permissionmgmt/manage-users-basic.vm" )
-		        
+		        Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1">Advanced Form/Search and Add</a>
 		    #end
-        #end        
+        </div>
+        #end
     #else
         #if($customPermissionConfiguration.pluginDown == "yes")
-            $customPermissionConfiguration.downTimeMessage
+            <p class="infoMacro">$customPermissionConfiguration.downTimeMessage</p>
 		#else
-		    <p>An administrator must configure "Custom Space Usergroups Manager" before you start using it.</p>
+		    <p class="noteMacro">An administrator must configure "Custom Space Usergroups Manager" before you start using it.  Plugins can be configured from the Administration &gt; <a href="/confluence/admin/plugins.action" alt="Plugin Manager">Plugin Manager</a> page.</p>
 		#end
     #end
 
     #parse ( "/admin/admin-breadcrumbs.vm" )
-    </td></tr>
-    </table>
 
     <div style="clear:both;"></div>
-
 #end
-
+</div>
 <!-- end display -->
 
 </body>

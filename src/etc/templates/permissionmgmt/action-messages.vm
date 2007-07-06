@@ -29,15 +29,14 @@
 		<!-- start action-messages -->
 		#set ($messages = $stack.findValue("actionMessages"))
 		#if($messages && ($messages.size() > 0) )
-		    <div class="success">
-		    <span class="successMessage">Results of Execution:</span>
+		<div id="topMessages">
 		    <ul>
             #foreach($message in $messages)
                 #if(!($!message == "") ) ## We will display message only if it's not null or empty string.
-                <li>$message</li>
+                <li class="successMessage">$message</li>
                 #end
             #end
 		    </ul>
-		    </div>
+		</div>
 		#end
 		<!-- end action-messages -->

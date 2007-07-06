@@ -27,50 +27,77 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
             <!-- start manage-users-basic -->
-            <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="groupManagement" name="ManageUsersForm">
-                <table>
-                    <tr>
-                        <td align="right">
-                            <input type="hidden" name="adminAction" value="addUsersToGroup"/>
-                            <input type="text" id="usersToAdd" name="usersToAdd"/> ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...
-
-                        </td>
-                        <td align="left">
-                            <input type="submit" value="Add User(s) to Group"/>
-                        </td>
-                    </tr>
-                    <tr><td><span class="smalltext">eg. rb04, nk93, kb85, ts69</span></td></tr>
-                </table>
-            </form>
-
             #set ($users = $action.findUsers(${action.selectedGroup}))
 
             #if($users && $users.size() > 0)
-                <table width="100%">
+                <table cellspacing="0">                
                     <tr>
-                        <th class="permissionSuperTab">Full Name</th>
-                        <th class="permissionSuperTab">Username</th>
-                        <th class="permissionSuperTab">Email</th>
-                        <th class="permissionHeading">&nbsp;</th>
+                        <th>Name</th>
+                        <th>NetID</th>
+                        <th>Email</th>
+                        <th>Delete</th>
                     </tr>
                 #foreach ($user in $users)
                     #set ($userFullName = $user.getFullName())
                     #set ($userName = $user.getName())
                     #set ($userEmail = $user.getEmail())
-                    <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
-                        <td><img src="/confluence/images/icons/user_16.gif">$!userFullName</td>
-                        <td align="left" class="permissionCell" valign="top">$!userName</td>
-                        <td align="left" class="permissionCell" valign="top">$!userEmail</td>
-                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img alt="Remove $!userName from  group ${action.selectedGroup}" src="/confluence/images/icons/trash_16.gif"/></a></td>
+                    <tr #if ($velocityCount % 2 == 0) class="even" #end>
+                        <td><img class="icon" src="/confluence/images/icons/user_16.gif"/>$!userFullName</td>
+                        <td>$!userName</td>
+                        <td><a href="mailto:$!userEmail" alt="Send email to $!userName">$!userEmail</a></td>
+                        <td align="center"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img alt="Remove $!userName from  group ${action.selectedGroup}" src="/confluence/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
                 </table>
-                <p>
-                Manage User Permissions:
-                <a href="/confluence/spaces/spacepermissions.action?key=${key}">Space</a>,
-                <a href="/confluence/pages/listpermissionpages.action?key=${key}">Page-Level</a>
-                </p>
             #else
                 No users found in group.
             #end
+
+#*
+            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/yahoo/yahoo-min.js" ></script>
+            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/event/event-min.js" ></script>
+            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
+            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/connection/connection-min.js"></script>
+            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/animation/animation-min.js"></script>
+            <script type="text/javascript" src="http://www.json.org/json.js"></script>
+            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js"></script>
+*#
+
+            <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="groupManagement" name="ManageUsersForm">
+                <table>
+                    <tr>
+                        <td>
+                            <input type="hidden" name="adminAction" value="addUsersToGroup"/>
+                            <input type="text" id="myInput" name="usersToAdd"/>
+                            ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...
+                        </td>
+                        <td>
+                            <input type="submit" value="Add User(s)"/>
+                        </td>
+                    </tr>
+                    <tr><td><span class="smalltext">eg. rb04, nk93, kb85, ts69</span></td></tr>
+                </table>
+#*
+                <div id="myContainer"></div>
+*#
+            </form>
+#*
+        <script type="text/javascript">
+            var myArray = ["Abbey", "Bob", "Carol", "Deb", "David", "Ed", "Fred", "George", "Heidi", "Ingrid", "Joe", "James", "Jack", "Jordan", "Jackie", "Jim", "John", "Jake", "Jill", "Jess", "Jessica", "June", "Jan", "Jane", "Jason", "Josh", "Jack", "Jessie", "Ken", "Kevin", "Kathy", "Kelly", "Kim", "Lenny", "Larry", "Lars", "Matt", "Meredith", "Meg", "Molly", "Mark", "Martin", "Manny", "Mable", "Marge" ];
+
+            var myDataSource = new YAHOO.widget.DS_JSArray(myArray);
+            var myAutoComp = new YAHOO.widget.AutoComplete("myInput", "myContainer", myDataSource);
+            myAutoComp.maxResultsDisplayed = 8;
+            myAutoComp.minQueryLength = 2;
+            myAutoComp.typeAhead = true;
+            myAutoComp.delimChar = [",",", "];
+        </script>
+*#
+             <p>
+                Manage User Permissions:
+                <a href="/confluence/spaces/spacepermissions.action?key=${key}">Space</a>,
+                <a href="/confluence/pages/listpermissionpages.action?key=${key}">Page-Level</a>
+             </p>
+
             <!-- end manage-users-basic -->

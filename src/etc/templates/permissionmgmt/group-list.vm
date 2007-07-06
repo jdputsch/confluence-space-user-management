@@ -27,33 +27,21 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         <!-- start group-list -->
-        <div class="csumGroups">
-            <h3 class="menuheading">Groups belonging to $action.space.name ('$action.space.key')</h3>
+
+            <h3>$action.space.name ($action.space.key) Groups:</h3>
             #set ($groups = $action.groups)
 
-            #if($isGroupActionsPermitted)
-
-		    <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="AddGroupForm">
-		    <fieldset>
-                <input type="hidden" name="adminAction" value="addGroup"/>
-                <input type="text" name="groupToAdd" id="groupToAdd" />
-                <input type="submit" value="Add Group"/>
-                <br/><span class="smalltext">Entering "widget" will create the group "${action.newGroupPrefix}widget${action.newGroupSuffix}"</span>
-            </fieldset>
-            </form>
-            #end
-
             #if($groups && $groups.size() > 0 )
-            <table width="100%">
+            <table cellspacing="0">
                 #foreach ($group in $groups)
-                <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
+                <tr #if ($velocityCount % 2 == 0) class="even" #end>
                     <td>
-                        &nbsp;
-                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name"><img src="/confluence/images/icons/group_16.gif"></a>
-                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">$!group.name</a>
+                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">
+                            <img class="icon" src="/confluence/images/icons/group_16.gif" />$!group.name
+                        </a>
                     </td>
                     #if($isGroupActionsPermitted)
-                    <td>
+                    <td align="center">
                         <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=$!group.name">
                             <img alt="Remove $!group.name" src="/confluence/images/icons/trash_16.gif"/>
                         </a>
@@ -62,7 +50,26 @@
                 </tr>
                 #end
             </table>
-            <br/>
+
+            #if($isGroupActionsPermitted)
+		    <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="AddGroupForm">
+                <fieldset>
+                <input type="hidden" name="adminAction" value="addGroup"/>
+                    <table>
+                        <tr>
+                            <td><input type="text" name="groupToAdd" id="groupToAdd" /></td>
+                            <td><input type="submit" value="Add Group" class="submitBttn"/></td>
+                        </tr>
+                        <tr>
+                            <td><span class="smalltext">Entering "Duke-Presidents" will create the group "${action.newGroupPrefix}Duke-Presidents${action.newGroupSuffix}"</span></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </form>
+            #end
+
+            #*
                 #if($isGroupActionsPermitted)
 
                 <div class="menuheading">Security</div>
@@ -78,7 +85,9 @@
                 </div>
 
                 #end
+            *#
+            
             #end
-        </div>
+
         <!-- end group-list -->
         
