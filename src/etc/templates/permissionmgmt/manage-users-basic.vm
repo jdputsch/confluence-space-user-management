@@ -42,10 +42,10 @@
                     #set ($userName = $user.getName())
                     #set ($userEmail = $user.getEmail())
                     <tr #if ($velocityCount % 2 == 0) class="even" #end>
-                        <td><img class="icon" src="/confluence/images/icons/user_16.gif"/>$!userFullName</td>
+                        <td><img class="icon" src="${action.confluenceRoot}/images/icons/user_16.gif"/>$!userFullName</td>
                         <td>$!userName</td>
                         <td><a href="mailto:$!userEmail" alt="Send email to $!userName">$!userEmail</a></td>
-                        <td align="center"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img alt="Remove $!userName from  group ${action.selectedGroup}" src="/confluence/images/icons/trash_16.gif"/></a></td>
+                        <td align="center"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img alt="Remove $!userName from  group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
                 </table>
@@ -96,8 +96,8 @@
 *#
              <p>
                 Manage User Permissions:
-                <a href="/confluence/spaces/spacepermissions.action?key=${key}">Space</a>,
-                <a href="/confluence/pages/listpermissionpages.action?key=${key}">Page-Level</a>
+                <a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=${key}">Space</a>,
+                <a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=${key}">Page-Level</a>
              </p>
 
             <!-- end manage-users-basic -->

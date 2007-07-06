@@ -40,12 +40,14 @@ import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 import raju.kadam.confluence.permissionmgmt.util.PropsUtil;
+import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
+import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
@@ -69,6 +71,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     private String userSearch;
     private boolean userSearchFormFilled;
     private AdvancedUserQuery advancedUserQuery;
+    private SettingsManager settingsManager;
 
     public CustomPermissionManagerAction()
 	{
@@ -594,6 +597,14 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         this.advancedUserQuery = advancedUserQuery;
     }
 
+    public SettingsManager getSettingsManager() {
+        return settingsManager;
+    }
+
+    public void setSettingsManager(SettingsManager settingsManager) {
+        this.settingsManager = settingsManager;
+    }
+
     private void addFieldErrorIfMessageNotNull(String nameOfField, String error) {
         if (error!=null) {
             log.warn("setting fieldError " + error + " on " + nameOfField);
@@ -636,6 +647,11 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     public String getSpacePattern() {
         return GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getUserGroupsMatchingPattern(), getSpace().getKey());
     }
+
+    public String getConfluenceRoot() {
+        return ConfluenceUtil.getConfluenceUrl(getSettingsManager());
+    }
+
 
     public String getActionName(String fullClassName)
     {
