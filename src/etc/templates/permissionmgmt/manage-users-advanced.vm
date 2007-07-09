@@ -85,7 +85,7 @@
                 </fieldset>
                 <br/>
 
-                <input type="submit" value="Find Users"/>
+                <input type="submit" value="Find Users" class="submitBttn"/>
                 <br/>
             </form>
 
@@ -104,7 +104,7 @@
                         #set ($userName = $user.getName())
                         #set ($userEmail = $user.getEmail())
                     <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
-                        <td><img src="/images/icons/user_16.gif" width="16" height="16" border="0" align="absmiddle">&nbsp;$!userFullName</td>
+                        <td><img class="icon" src="/confluence/images/icons/user_16.gif">$!userFullName</td>
                         <td align="left" class="permissionCell" valign="top">$!userName</td>
                         <td align="left" class="permissionCell" valign="top">$!userEmail</td>
                         #if($action.isMemberOfSelectedGroup($!userName))

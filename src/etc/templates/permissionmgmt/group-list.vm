@@ -26,36 +26,26 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-        <!-- start group-list -->
+<!-- start group-list -->
 
-            <h3>${action.space.name} ($action.space.key) Groups:</h3>
+            <h2>${action.space.name} ($action.space.key) Groups:</h2>
+
             #set ($groups = ${action.groups})
 
             #if($groups && $groups.size() > 0 )
-            <table cellspacing="0">
+            <ul>
                 #foreach ($group in $groups)
-                <tr #if ($velocityCount % 2 == 0) class="even" #end>
-                    <td>
-                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">
-                            <img class="icon" src="${action.confluenceRoot}/images/icons/group_16.gif" />$!group.name
-                        </a>
-                    </td>
-                    #if(${action.isGroupActionsPermitted})
-                    <td align="center">
-                        <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=$!group.name">
-                            <img alt="Remove $!group.name" src="${action.confluenceRoot}/images/icons/trash_16.gif"/>
-                        </a>
-                    </td>
-                    #end
-                </tr>
+                <li>
+                    <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name" #if($group.name == $action.selectedGroup) class="selected" #end>$!group.name</a>
+                </li>
                 #end
-            </table>
-            #else
-                There are currently no groups that match both of the following criteria:
+            </ul>
+            
+			#else 
+            There are currently no groups that match both of the following criteria:
                 <ul>
                   <li>Group has rights to view space '${key}' <b>and</b></li>
-                  <li>Group has name matching the group name pattern defined for this space in the plugin configuration:
-                      '${action.spacePattern}'.</li>
+                  <li>Group has name matching the group name pattern defined for this space in the plugin configuration: '${action.spacePattern}'.</li>
                 </ul>
 
                 If you feel that groups should be displayed here or are not sure what to do, then check with the system
@@ -70,33 +60,12 @@
 		    <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="AddGroupForm">
                 <fieldset>
                 <input type="hidden" name="adminAction" value="addGroup"/>
-                    <table>
-                        <tr>
-                            <td><input type="text" name="groupToAdd" id="groupToAdd" /></td>
-                            <td><input type="submit" value="Add Group" class="submitBttn"/></td>
-                        </tr>
-                        <tr>
-                            <td><span class="smalltext">Entering "Duke-Presidents" will create the group "${action.newGroupPrefix}Duke-Presidents${action.newGroupSuffix}"</span></td>
-                            <td></td>
-                        </tr>
-                    </table>
+                    <label for="groupToAdd">Add Group:</label><br />
+					<span class="smalltext">Entering "Duke-Presidents" will create the group "${action.newGroupPrefix}Duke-Presidents${action.newGroupSuffix}"</span><br />
+                    <input type="text" name="groupToAdd" id="groupToAdd" /><br />
+                    <input type="submit" value="Add Group" class="submitBttn"/><br />
                 </fieldset>
             </form>
             #end
-
-            #if($groups && $groups.size() > 0 )
-                #if($isGroupActionsPermitted)
-
-                <p>
-                Manage Group Permissions:
-                <a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=${key}">Space</a>,
-                <a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=${key}">Page-Level</a>
-                </p>
-
-                #end
-            #end
-            
-
-
-        <!-- end group-list -->
+ <!-- end group-list -->
         

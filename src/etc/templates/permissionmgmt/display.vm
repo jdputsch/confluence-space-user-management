@@ -30,8 +30,6 @@
 <html>
     <head>
         <title>$action.getActionName($action.getClass().getName())</title>
-
-        ##TODO: Make links relative
     </head>
 
     #applyDecorator("root")
@@ -45,63 +43,70 @@
     <body>
 
     <style>
-        div#csum {text-align:left; margin:15px 0 0 0; padding:0em; color:#333;}
-        div#csum h3 {color:#333; margin: 0; padding:.3em .5em; border-bottom: 1px solid #CCC;}
-        div#csum a img {border:none;}
+        div#csum {width:750px; border:1px solid #CCC; margin:10px;}
+        div#csum a img {border:none; text-decoration:none;}
+		div#csum h2 {margin:0; padding: 8px 4px; border:none; background:none; font-size: 16px; font-weight: bold; color:#036;}
 
-        div#csum div#topMessages {display:block; clear:both;}
-        div#csum div#topMessages ul {list-style:none;}
-        div#csum div#topMessages ul li {display:block; clear:both; padding.5em; margin:1em .5em;}
-        div#csum div#topMessages ul li.successMessage {background-color:#DDFFDD;}
-
-        div#csum div#csumHeader {margin:0;}
 
         div#csum form {margin:0; padding:0;}
-		div#csum form fieldset {border:none; padding:none; margin:none;}
-		div#csum form input {margin:.5em 0; padding:0; font-size:1.2em; width:100%;}
-		div#csum form label {font-size:1.1em;}
-		div#csum form .submitBttn {width:auto; margin:0 .3em;}
+        div#csum fieldset {border:none; padding:none; margin:none;}
+        div#csum label {font-size:1.1em;}
+        
 
-        div#csum div#csumGroups {margin-left:8px; padding-right:5px; float: left; width:300px;}
-		div#csum div#csumGroups table {border-collapse: separate; border-spacing: 0; width:100%; text-align:left;}
-		div#csum div#csumGroups table tr td {}
-		div#csum div#csumGroups table tr td a {display:block; line-height:1; margin:.4em .4em; font-size:.9em; text-decoration:none;}
-		div#csum div#csumGroups table tr td a img {margin:2px 3px;}
+        div#csum div#header {margin:0 0 20px 0;}
 
-		div#csum div#csumGroupsEditor {padding-left:5px; border-left: 3px solid #DDD; float:left;}
+        div#csum div#groups {display:block; float:left; margin:0; padding:0; width:250px; background-color:#EEE; border-bottom:1px solid #CCC;}
+        div#csum div#groups h2 {border-right:1px solid #CCC;}
+        div#csum div#groups ul {margin:0; padding:0;}
+        div#csum div#groups ul li {list-style:none;}
+        div#csum div#groups ul li a {display:block; background:url(${action.confluenceRoot}/images/icons/group_16.gif) no-repeat 3px 3px; clear:both; line-height:1.5; padding:4px 0 4px 25px; color:#036; text-decoration:none; border-right:1px solid #CCC;}
+        div#csum div#groups ul li a.selected {color:black; font-weight:bold; text-decoration:none; border-right:1px solid #FFF; border-top:1px solid #CCC; border-bottom:1px solid #CCC; background-color:#FFF;}
+        div#csum div#groups ul li a:hover {background-color:#FFF;}
+        div#csum div#groups form {border-right:1px solid #CCC; border-top:1px solid #CCC;}
 
-		div#csum div#csumGroupsEditor table {width:100%;}
-		div#csum div#csumGroupsEditor table tr {}
-		div#csum div#csumGroupsEditor table tr th {font-size:1.1em; font-weight:bold; text-align:left; padding:0 .7em;}
-		div#csum div#csumGroupsEditor table tr td {display:block; line-height:1; margin:.4em .4em; font-size:.9em; text-decoration:none; padding:0 .7em;}
-		div#csum div#csumGroupsEditor table tr td a {display:block; line-height:1; margin:.4em .4em; font-size:.9em; text-decoration:none;}
-		div#csum div#csumGroupsEditor table tr td a img {margin:2px 3px;}
 
-        .even {background-color:#F0F0F0;}
-        .icon {margin:0 .5em;}
+        div#mode {}
+        div#mode a {}
+        div#mode a:hover {background-color:green;}
+        div#mode a.selected {background-color:grey;}
 
-        .current {border:1px solid red;}
+        div#csum div#groupEditor {float:right; width:484px; padding:0 6px; background-color:#FFF; border:2px solid #FFF;}
 
+        div#csum div#groupEditor table {width:100%;}
+        div#csum div#groupEditor table tr {}
+        div#csum div#groupEditor table tr.even {background-color:#EEE;}
+        div#csum div#groupEditor table tr th {font-weight:bold; color:#036; text-align:left; border-bottom:2px solid #036;}
+        div#csum div#groupEditor table tr td {border-bottom:1px solid #CCC;}
+
+
+		div#csum div#footer {clear:both; border-top:1px solid #CCC; margin:15px 0 0 0;}
+		div#csum div#footer ul {clear:both; display:block; margin:0; padding:0;}
+		div#csum div#footer ul li {display:inline;}
+		div#csum div#footer ul li a {display:block; color:#036; margin:0; padding:5px 15px; float:left; line-height:1; border-right:1px solid #CCC;}
+		div#csum div#footer ul li a img {padding:0 5px;}
     </style>
 
+#parse ( "/templates/permissionmgmt/action-messages.vm" )
 <div id="csum">
-    #parse ( "/templates/permissionmgmt/action-messages.vm" )
-
     #if(${action.isPluginConfigurationDone})
-        <div id="csumGroups">
-            #parse( "/templates/permissionmgmt/group-list.vm" )
-        </div>
+    <div id="groups">
+        #parse( "/templates/permissionmgmt/group-list.vm" )
+    </div>
 
         #if(${action.selectedGroup})
-        <div id="csumGroupsEditor">
-		    <h3>Edit ${action.selectedGroup}:</h3>
+        <div id="groupEditor">
+		    <h2>Edit ${action.selectedGroup}:</h2>
+
+			#if(${action.isGroupActionsPermitted})
+			    (<a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=${action.selectedGroup}">remove ${action.selectedGroup}</a>)<br />
+			#end
 
             #if($action.userSearch)
                 #parse ( "/templates/permissionmgmt/manage-users-advanced.vm" )
-                Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">Basic Form/List Users</a>
+                Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">Basic Form / List Users</a>
 		    #else
 		        #parse ( "/templates/permissionmgmt/manage-users-basic.vm" )
-		        Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1">Advanced Form/Search and Add</a>
+		        Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1">Advanced Form / Search and Add</a>
 		    #end
         </div>
         #end
@@ -115,7 +120,19 @@
 
     #parse ( "/admin/admin-breadcrumbs.vm" )
 
-    <div style="clear:both;"></div>
+    #if($isGroupActionsPermitted)
+		<div id="footer">
+			<ul>
+				<li><a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=${key}"><img src="${action.confluenceRoot}/images/icons/lock_16.gif"/>Edit ${action.selectedGroup} Permissions</a></li>
+				<li><a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=${key}"><img src="${action.confluenceRoot}/images/icons/locked_pages_16.gif"/>Edit Page Permissions</a></li>
+			</ul>
+			<div style="clear:both"></div>
+		</div>
+	#else
+		<div style="clear:both"></div>
+    #end
+
+
 #end
 </div>
 <!-- end display -->

@@ -31,12 +31,12 @@
 
             #if($users && $users.size() > 0)
                 <table cellspacing="0">                
-                    <tr>
-                        <th>Name</th>
-                        <th>NetID</th>
-                        <th>Email</th>
-                        <th>Delete</th>
-                    </tr>
+                    <thead>
+						<tr>
+							<th>Name</th><th>NetId</th><th>Email</th><th align="center">Delete</th>
+						</tr>
+					</thead>
+					<tbody>
                 #foreach ($user in $users)
                     #set ($userFullName = $user.getFullName())
                     #set ($userName = $user.getName())
@@ -48,56 +48,20 @@
                         <td align="center"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img alt="Remove $!userName from  group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
+</tbody>
                 </table>
             #else
                 No users found in group.
             #end
 
-#*
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/yahoo/yahoo-min.js" ></script>
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/event/event-min.js" ></script>
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/connection/connection-min.js"></script>
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/animation/animation-min.js"></script>
-            <script type="text/javascript" src="http://www.json.org/json.js"></script>
-            <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js"></script>
-*#
-
             <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="groupManagement" name="ManageUsersForm">
-                <table>
-                    <tr>
-                        <td>
-                            <input type="hidden" name="adminAction" value="addUsersToGroup"/>
-                            <input type="text" id="myInput" name="usersToAdd"/>
-                            ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...
-                        </td>
-                        <td>
-                            <input type="submit" value="Add User(s)"/>
-                        </td>
-                    </tr>
-                    <tr><td><span class="smalltext">eg. rb04, nk93, kb85, ts69</span></td></tr>
-                </table>
-#*
-                <div id="myContainer"></div>
-*#
+                <input type="hidden" name="adminAction" value="addUsersToGroup"/>
+				<br />
+				<label for="usersToAdd">Add User(s) to ${action.selectedGroup}:</label><br />
+                <input type="text" style="width:100%;" id="usersToAdd" name="usersToAdd"/><br />
+				<span class="smalltext">eg. rb04, nk93, kb85, ts69</span><br />
+                ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...
+                <input type="submit" value="Add User(s)"/><br />
             </form>
-#*
-        <script type="text/javascript">
-            var myArray = ["Abbey", "Bob", "Carol", "Deb", "David", "Ed", "Fred", "George", "Heidi", "Ingrid", "Joe", "James", "Jack", "Jordan", "Jackie", "Jim", "John", "Jake", "Jill", "Jess", "Jessica", "June", "Jan", "Jane", "Jason", "Josh", "Jack", "Jessie", "Ken", "Kevin", "Kathy", "Kelly", "Kim", "Lenny", "Larry", "Lars", "Matt", "Meredith", "Meg", "Molly", "Mark", "Martin", "Manny", "Mable", "Marge" ];
-
-            var myDataSource = new YAHOO.widget.DS_JSArray(myArray);
-            var myAutoComp = new YAHOO.widget.AutoComplete("myInput", "myContainer", myDataSource);
-            myAutoComp.maxResultsDisplayed = 8;
-            myAutoComp.minQueryLength = 2;
-            myAutoComp.typeAhead = true;
-            myAutoComp.delimChar = [",",", "];
-        </script>
-*#
-             <p>
-                Manage User Permissions:
-                <a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=${key}">Space</a>,
-                <a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=${key}">Page-Level</a>
-             </p>
 
             <!-- end manage-users-basic -->
