@@ -17,21 +17,18 @@ mvn install
 
 cd ../..
 
-4) To build, use the following command. Due to strange a problem using the atlassian-pdk in this project, mvn install doesn't always work, but you can use this as an alternative:
+4) To build, and install to your local repository, use the following command. If problems building, see http://confluence.atlassian.com/display/DISC/Developing+Confluence+Plugins+with+Maven+2 for info on defining your pom.xml.
 
-mvn clean compile jar:jar
+mvn install
 
-Note: would include test, but for some reason currently that causes the pdk to include other jars in plugin jar that cause conflicts.
-
-5) After that go into confluence into administration -> plugins. Choose this project's plugin. If it  already exists, uninstall the plugin from confluence and (re)install the new one in target/...jar
-
+5) After that go into confluence into administration -> plugins. Choose this project's plugin. If it already exists, uninstall the plugin from confluence and (re)install the new one in target/...jar. If the plugin fails to load for any reason, you probably don't have enough or have too many dependencies, so see http://confluence.atlassian.com/display/DISC/Developing+Confluence+Plugins+with+Maven+2 for info on defining your pom.xml.
 
 Other helpful hints for those new to maven 2:
 
-To generate idea project:
+To generate an IDea project:
 mvn idea:idea
 
-To generate eclipse project:
+To generate an Eclipse project:
 mvn eclipse:eclipse
 
-To build in netbeans try the netbeans mevenide plugin.
+To build in Netbeans try Mevenide.
