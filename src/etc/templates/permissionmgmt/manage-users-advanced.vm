@@ -27,9 +27,12 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
             <!-- start manage-users-advanced -->
-            #if(${action.userSearchFormFilled})
-                #set ($users = $action.findUsersAdvanced())
+            ##TODO: fix user caching mechanism
+            #if(${action.userSearchFormFilled} && !$action.pagerAction)
+                $action.findUsersAdvanced()
             #end
+
+            #set ($users = $action.users)
 
             <div id="advancedUserSearchForm">
 		    <font size="1">
@@ -38,50 +41,20 @@
 		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>
-                    #fielderror ('partialUserName')
+                    #fielderror ('advancedSearch')
                     <label>Username</label>
-                    <select name="userNameSearchType">
+                    <select name="lookupType">
+                        <option value="$action.usernameLookupType" selected="selected">Username</option>
+                        <option value="$action.fullNameLookupType">Full name</option>
+                        <option value="$action.emailLookupType">Email</option>
+                        <option value="$action.groupnameLookupType">Groupname</option>
+                    </select>
+                    <select name="substringMatchType">
                         <option value="$action.substringStartsWith" selected="selected">Starts With</option>
                         <option value="$action.substringContains">Contains</option>
                         <option value="$action.substringEndsWith">Ends With</option>
                     </select>
-                    <input type="text" id="partialUserName" name="partialUserName"/>
-                </fieldset>
-                <br/>
-
-                <fieldset>
-                    #fielderror ('partialFullName')
-                    <label>Full Name</label>
-                    <select name="fullNameSearchType">
-                        <option value="$action.substringStartsWith" selected="selected">Starts With</option>
-                        <option value="$action.substringContains">Contains</option>
-                        <option value="$action.substringEndsWith">Ends With</option>
-                    </select>
-                    <input type="text" id="partialFullName" name="partialFullName"/>
-                </fieldset>
-                <br/>
-
-                <fieldset>
-                    #fielderror ('partialEmail')
-                    <label>Email Address</label>
-                    <select name="emailSearchType">
-                        <option value="$action.substringStartsWith" selected="selected">Starts With</option>
-                        <option value="$action.substringContains">Contains</option>
-                        <option value="$action.substringEndsWith">Ends With</option>
-                    </select>
-                    <input type="text" id="partialEmail" name="partialEmail"/>
-                </fieldset>
-                <br/>
-
-                <fieldset>
-                    #fielderror ('partialGroupName')
-                    <label>Group Name</label>
-                    <select name="groupNameSearchType">
-                        <option value="$action.substringStartsWith" selected="selected">Starts With</option>
-                        <option value="$action.substringContains">Contains</option>
-                        <option value="$action.substringEndsWith">Ends With</option>
-                    </select>
-                    <input type="text" id="partialGroupName" name="partialGroupName"/>
+                    <input type="text" id="partialSearchTerm" name="partialSearchTerm"/>
                 </fieldset>
                 <br/>
 
@@ -90,16 +63,16 @@
             </form>
 
             #if(${action.userSearchFormFilled})
-                #if($users && $users.size() > 0)
+                #if($users)
                 <table width="100%">
                     <tr>
                         <th class="permissionSuperTab">Full Name</th>
                         <th class="permissionSuperTab">Username</th>
                         <th class="permissionSuperTab">Email</th>
-                        <td align="left" class="permissionSuperTab" valign="top">Is Member</td>
+                        <th align="left" class="permissionSuperTab" valign="top">Is Member</th>
                         <th class="permissionHeading">&nbsp;</th>
                     </tr>
-                    #foreach ($user in $users)
+                    #foreach ($user in $users.page)
                         #set ($userFullName = $user.getFullName())
                         #set ($userName = $user.getName())
                         #set ($userEmail = $user.getEmail())
@@ -114,6 +87,13 @@
                         <td align="left" class="permissionCell" valign="top"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/error.gif"/></td>
                         <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=addUsersToGroup&usersToAdd=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="/images/icons/logo_add_16.gif"/></a></td>
                         #end
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <div style="text-align: center">
+#parse ( "/templates/permissionmgmt/user-pager-actions.vm" )
+                            </div>
+                        </td>
                     </tr>
                     #end
                 </table>

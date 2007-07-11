@@ -2,6 +2,7 @@ package raju.kadam.confluence.permissionmgmt.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.displaytag.pagination.PaginatedList;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import raju.kadam.confluence.permissionmgmt.service.AddException;
 import raju.kadam.confluence.permissionmgmt.service.FindException;
@@ -13,6 +14,7 @@ import raju.kadam.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLoca
 import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteUser;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
+import raju.kadam.confluence.permissionmgmt.paging.ListPaginatedList;
 
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
@@ -24,6 +26,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
+
+import com.atlassian.user.search.page.Pager;
+import com.atlassian.user.search.page.DefaultPager;
 
 /**
  * (c) 2007 Duke University
@@ -39,10 +44,11 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
     private JiraSoapUserManagementService jiraSoapUserManagementService;
 
     //TODO: request getGroups(String token) as a feature in Jira's soap service
-    public List findGroups(ServiceContext context) throws FindException {
+    public Pager findGroups(ServiceContext context) throws FindException {
         // select groupname from groupbase
 
         List results = new ArrayList();
+        Pager pager = new DefaultPager(results);
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -56,7 +62,7 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
         }
         catch (NamingException e) {
             log.error("Could not get JNDI context.", e);
-            return results;
+            return pager;
         }
 
         try {
@@ -65,7 +71,7 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
         catch (NamingException e) {
             log.error("dataSource: " + jiraJNDI + " not found.", e);
             //not able to connect to jira database.
-            return results;
+            return pager;
         }
 
         try {
@@ -91,38 +97,7 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
             log.error("Failure in statement '" + sql + "' using Jira DB via JNDI lookup using '" + jiraJNDI + "'", e);
         }
 
-        return results;
-    }
-
-    // this is lazy and it sucks
-    private RemoteGroup getRemoteGroup(String groupName, ServiceContext context) throws FindException {
-
-        RemoteGroup result = null;
-
-        JiraSoapService jiraSoapService = null;
-        String token = null;
-
-        try {
-            JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
-            jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
-            result = jiraSoapService.getGroup(token, groupName);
-        }
-        catch (Throwable e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (token != null) {
-                try {
-                    jiraSoapService.logout(token);
-                }
-                catch (Throwable t) {
-                    t.printStackTrace();
-                }
-            }
-        }
-        return result;
+        return pager;
     }
 
     public void addGroup(String groupName, ServiceContext context) throws AddException {

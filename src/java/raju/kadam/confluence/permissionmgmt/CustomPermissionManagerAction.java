@@ -34,12 +34,8 @@ import java.util.*;
 
 import raju.kadam.util.*;
 import raju.kadam.confluence.permissionmgmt.service.*;
-import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedQueryType;
-import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
-import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
-import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
+import raju.kadam.confluence.permissionmgmt.service.vo.*;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
-import raju.kadam.confluence.permissionmgmt.util.PropsUtil;
 import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -51,10 +47,18 @@ import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
+import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.confluence.util.SpaceComparator;
+import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.user.User;
+import com.atlassian.user.search.page.Pager;
+import com.atlassian.user.search.page.PagerUtils;
+import com.atlassian.user.search.page.PagerException;
+import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
+import org.displaytag.pagination.PaginatedList;
+import bucket.core.actions.PagerPaginationSupport;
 
 /**
  * 
@@ -72,6 +76,12 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     private boolean userSearchFormFilled;
     private AdvancedUserQuery advancedUserQuery;
     private SettingsManager settingsManager;
+    private String pagerAction;
+
+    private PagerPaginationSupport groups;
+    private PagerPaginationSupport users;
+
+    public static final int NUMBER_OF_ROWS_PER_PAGE = 20;
 
     public CustomPermissionManagerAction()
 	{
@@ -135,14 +145,9 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     public AdvancedUserQuery createAdvancedUserQuery() {
         AdvancedUserQuery userQuery = new AdvancedUserQuery();
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        userQuery.setEmailSearchType(getParameterValue( paramMap, "emailSearchType"));
-        userQuery.setFullNameSearchType(getParameterValue( paramMap, "fullNameSearchType"));
-        userQuery.setGroupNameSearchType(getParameterValue( paramMap, "groupNameSearchType"));
-        userQuery.setUserNameSearchType(getParameterValue( paramMap, "userNameSearchType"));
-        userQuery.setPartialEmail(getParameterValue( paramMap, "partialEmail"));
-        userQuery.setPartialFullName(getParameterValue( paramMap, "partialFullName"));
-        userQuery.setPartialGroupName(getParameterValue( paramMap, "partialGroupName"));
-        userQuery.setPartialUserName(getParameterValue( paramMap, "partialUserName"));
+        userQuery.setLookupType(getParameterValue( paramMap, "lookupType"));
+        userQuery.setPartialSearchTerm(getParameterValue( paramMap, "partialSearchTerm"));
+        userQuery.setSubstringMatchType(getParameterValue( paramMap, "substringMatchType"));
         return userQuery;
     }
 
@@ -159,6 +164,18 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         setAdvancedUserQuery(advancedUserQuery);
 
         setUserSearchFormFilled(advancedUserQuery.isValid());
+
+        // only relevant for page itself, so not putting into context
+        Map paramMap = ServletActionContext.getRequest().getParameterMap();
+        setPagerAction(getParameterValue( paramMap, "userSearch"));
+
+        //TODO: remove this section before release!
+        // START TEST SECTION
+        if (getParameterValue(paramMap, "createTestUsersAndGroups")!= null) {
+            // go nuts
+            createTestUsersAndGroups();
+        }
+        // END TEST SECTION
 
         // TODO: rewrite validation and include errors in display.vm
         //Validate user input
@@ -181,6 +198,56 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return manage(context);
     }
 
+    private void createTestUsersAndGroups() {
+        try
+        {
+            SpaceDao spaceDao = (SpaceDao)ContainerManager.getComponent("spaceDao");
+            Space space = spaceDao.getSpace(getKey());
+            UserAccessor userAccessor = (UserAccessor) ContainerManager.getComponent("userAccessor");
+            String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), getKey());
+            log.debug("group name prefix will be " + prefix);
+
+            String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), getKey());
+            log.debug("group name suffix will be " + suffix);
+
+            int numGroups = 40;
+            int maxUsersPerGroup = 1000;
+            int useridcount = 1;
+            for (int i=1; i<=numGroups; i++) {
+                String groupname = prefix + "tstgroup" + i + suffix;
+                if (userAccessor.getGroup(groupname)==null) {
+                    log.debug("Creating test group '" + groupname + "'");
+                    userAccessor.createGroup(groupname);
+                }
+                log.debug("Adding permission '" + SpacePermission.VIEWSPACE_PERMISSION + "' to test group '" + groupname + "'");
+                SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION, space, groupname);
+                space.addPermission(perm);
+
+                for (int j=1; j<=(maxUsersPerGroup - (maxUsersPerGroup/i) + 1); j++) {
+                    String username = "tstuser" + useridcount;
+                    if (userAccessor.getUser(username)==null) {
+                        log.debug("Creating test user '" + username + "'");
+                        userAccessor.createUser(username);
+                    }
+
+                    User user = userAccessor.getUser(username);
+                    user.setEmail( username + "@duke.edu");
+                    user.setFullName( "Test User " + useridcount );
+
+                    log.debug("Adding test user '" + username + "' to group 'confluence-users'");
+                    userAccessor.addMembership("confluence-users", username);
+                    log.debug("Adding test user '" + username + "' to test group '" + groupname + "'");
+                    userAccessor.addMembership(groupname, username);
+                    useridcount++;
+                }
+            }
+        }
+        catch(Throwable t)
+        {
+            log.warn("failed creating test groups/users", t);
+        }
+
+    }
     
     
     //If input group name matches with user select group, then return true
@@ -297,7 +364,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
                     groupManagementService.addGroup(groupName, serviceContext);
 
-                    opMessage = "<font color=\"green\">Group " + context.getGroupToAdd() + " added successfully!</font>";
+                    opMessage = "<font color=\"green\">Group " + groupName + " added successfully!</font>";
                 }
                 else if(adminAction.equals("removeGroup"))
                 {
@@ -515,26 +582,56 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         this.customPermissionConfiguration = customPermissionConfiguration;
     }
 
-    public List getGroups() {
+    public void findGroups() {
+        Pager pager = null;
         try {
             ServiceContext serviceContext = createServiceContext();
-            return this.getGroupManagementService().findGroups(serviceContext);
+            pager = this.getGroupManagementService().findGroups(serviceContext);
+
+            if (log.isDebugEnabled()) {
+                debug(pager);
+            }
         } catch (ServiceException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        return new ArrayList();
+        setGroups(createPagerPaginationSupport(pager));
     }
 
-    public List findUsers(String groupName) {
+    public PagerPaginationSupport createPagerPaginationSupport(Pager pager) {
+        if (pager==null) {
+            return null;
+        }
+
+        PagerPaginationSupport pps = new PagerPaginationSupport(NUMBER_OF_ROWS_PER_PAGE);
+        pps.setItems(pager);
+        pps.setStartIndex(0);
+        return pps;
+    }
+
+    private void debug(Pager pager) {
+        if (pager!=null) {
+            log.debug( "PagerUtils.count(pager)=" + PagerUtils.count(pager));
+            log.debug( "pager.getIndex()=" + pager.getIndex());
+            log.debug( "pager.getIndexOfFirstItemInCurrentPage()=" + pager.getIndexOfFirstItemInCurrentPage());
+            log.debug( "pager.isEmpty()=" + pager.isEmpty());
+            log.debug( "pager.onLastPage()=" + pager.onLastPage());
+        }
+        else {
+            log.debug("pager was null");
+        }
+    }
+
+    public void findUsers(String groupName) {
+        Pager pager = null;
         try {
             ServiceContext serviceContext = createServiceContext();
-            return this.getUserManagementService().findUsersForGroup(groupName, serviceContext);
+            pager = this.getUserManagementService().findUsersForGroup(groupName, serviceContext);
         } catch (ServiceException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        return new ArrayList();
+        setUsers(createPagerPaginationSupport(pager));
     }
 
     public String getNewGroupPrefix() {
@@ -545,30 +642,57 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         return GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
     }
 
-    public List findUsersWhoseNameStartsWith(String partialName) {
+    public void findUsersWhoseNameStartsWith(String partialName) {
+        Pager pager = null;
         try {
             ServiceContext serviceContext = createServiceContext();
-            return this.getUserManagementService().findUsersWhoseNameStartsWith(partialName, serviceContext);
+            pager = this.getUserManagementService().findUsersWhoseNameStartsWith(partialName, serviceContext);
         } catch (ServiceException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        return new ArrayList();
+        setUsers(createPagerPaginationSupport(pager));
+    }
+    /*
+    <option value="$action.usernameLookupType" selected="selected">Username</option>
+                        <option value="$action.fullNameLookupType">Full name</option>
+                        <option value="$action.emailLookupType">Email</option>
+                        <option value="$action.groupnameLookupType">Groupname</option>
+    */
+
+    //TODO: is there a better way to access this?
+    public String getUsernameLookupType() {
+        return AdvancedUserQueryLookupType.USERNAME;
+    }
+
+    //TODO: is there a better way to access this?
+    public String getFullNameLookupType() {
+        return AdvancedUserQueryLookupType.USER_FULL_NAME;
+    }
+
+    //TODO: is there a better way to access this?
+    public String getEmailLookupType() {
+        return AdvancedUserQueryLookupType.USER_EMAIL;
+    }
+
+    //TODO: is there a better way to access this?
+    public String getGroupnameLookupType() {
+        return AdvancedUserQueryLookupType.GROUPNAME;
     }
 
     //TODO: is there a better way to access this?
     public String getSubstringContains() {
-        return AdvancedQueryType.SUBSTRING_CONTAINS;
+        return AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS;
     }
 
     //TODO: is there a better way to access this?
     public String getSubstringEndsWith() {
-        return AdvancedQueryType.SUBSTRING_ENDS_WITH;
+        return AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH;
     }
 
     //TODO: is there a better way to access this?
     public String getSubstringStartsWith() {
-        return AdvancedQueryType.SUBSTRING_STARTS_WITH;
+        return AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH;
     }
 
     //TODO: is there a better way to access this?
@@ -612,24 +736,21 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         }
     }
 
-    public List findUsersAdvanced() {
+    public void findUsersAdvanced() {
+        Pager pager = null;
         try {
             ServiceContext serviceContext = createServiceContext();
             AdvancedUserQuery query = getAdvancedUserQuery();
-            query.makeSearchTypesMatchTermQueryConstantInstances();            
             AdvancedUserQueryResults results = this.getUserManagementService().findUsers(query, serviceContext);
 
-            addFieldErrorIfMessageNotNull("partialEmail",results.getEmailFieldMessage());
-            addFieldErrorIfMessageNotNull("partialFullName",results.getFullNameFieldMessage());
-            addFieldErrorIfMessageNotNull("partialGroupName",results.getGroupNameFieldMessage());
-            addFieldErrorIfMessageNotNull("partialUserName",results.getUserNameFieldMessage());
+            addFieldErrorIfMessageNotNull("advancedSearch",results.getMessage());
 
-            return results.getUsers();
+            pager = results.getUsers();
         } catch (ServiceException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        return new ArrayList();
+        setUsers(createPagerPaginationSupport(pager));
     }
 
     public boolean isMemberOfSelectedGroup(String userName) {
@@ -650,11 +771,60 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
     public String getConfluenceRoot() {
         return ConfluenceUtil.getConfluenceUrl(getSettingsManager());
-    }
-
+    }    
 
     public String getActionName(String fullClassName)
     {
     	return "Custom Space Usergroups Manager";
+    }
+
+    public PagerPaginationSupport getGroups() {
+        return groups;
+    }
+
+    public void setGroups(PagerPaginationSupport groups) {
+        this.groups = groups;
+    }
+
+    public PagerPaginationSupport getUsers() {
+        return users;
+    }
+
+    public void setUsers(PagerPaginationSupport users) {
+        this.users = users;
+    }
+
+    public String getPagerAction() {
+        return pagerAction;
+    }
+
+    public void setPagerAction(String pagerAction) {
+        this.pagerAction = pagerAction;
+    }
+
+    public boolean hasNext(PagerPaginationSupport pps) {
+        if (pps.getItems().getIndex() + pps.getCountOnEachPage() > pps.getTotal()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void next( PagerPaginationSupport pps ) {
+        log.debug("next() called. previous index=" + pps.getItems().getIndex() + " next index=" + pps.getNextIndex());
+        pps.skipTo(pps.getNextIndex());
+    }
+
+    public boolean hasPrev(PagerPaginationSupport pps) {
+        if (pps.getItems().getIndex() - pps.getCountOnEachPage() < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void prev( PagerPaginationSupport pps ) {
+        log.debug("prev() called. previous index=" + pps.getItems().getIndex() + " prev index=" + pps.getPreviousIndex());
+        pps.skipTo(pps.getPreviousIndex());
     }
   }

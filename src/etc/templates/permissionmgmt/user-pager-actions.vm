@@ -1,0 +1,8 @@
+                ## Provide pagerAction links for users
+
+                #if($action.hasPrev($users))
+                    <a href="docustompermissionsmanage.action?key=${key}&pagerAction=prevPageUsers">&lt;</a>
+                #end
+                #if($action.hasNext($users))
+                    <a href="docustompermissionsmanage.action?key=${key}&pagerAction=nextPageUsers">&gt;</a>
+                #end

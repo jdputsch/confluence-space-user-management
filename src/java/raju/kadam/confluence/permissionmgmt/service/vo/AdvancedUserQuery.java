@@ -1,12 +1,9 @@
 package raju.kadam.confluence.permissionmgmt.service.vo;
 
-import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedQueryType;
-import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
+import raju.kadam.util.ConfigUtil;
 
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import org.apache.velocity.util.StringUtils;
+import com.atlassian.user.search.query.TermQuery;
 
 /**
  * (c) 2007 Duke University
@@ -16,110 +13,85 @@ import org.apache.velocity.util.StringUtils;
  */
 public class AdvancedUserQuery {
 
-    private String partialUserName;
-    private String userNameSearchType = AdvancedQueryType.SUBSTRING_STARTS_WITH;
-
-    private String partialFullName;
-    private String fullNameSearchType = AdvancedQueryType.SUBSTRING_STARTS_WITH;
-
-    private String partialEmail;
-    private String emailSearchType = AdvancedQueryType.SUBSTRING_STARTS_WITH;
-
-    private String partialGroupName;
-    private String groupNameSearchType = AdvancedQueryType.SUBSTRING_STARTS_WITH;
+    private String lookupType = AdvancedUserQueryLookupType.USERNAME;
+    private String partialSearchTerm;
+    private String substringMatchType = AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH;
 
 
-    public String getPartialUserName() {
-        return partialUserName;
+    public String getLookupType() {
+        return lookupType;
     }
 
-    public void setPartialUserName(String partialUserName) {
-        this.partialUserName = partialUserName;
+    public void setLookupType(String lookupType) {
+        this.lookupType = lookupTypeInstance(lookupType);
     }
 
-    public String getUserNameSearchType() {
-        return userNameSearchType;
+    public String getPartialSearchTerm() {
+        return partialSearchTerm;
     }
 
-    public void setUserNameSearchType(String userNameSearchType) {
-        this.userNameSearchType = userNameSearchType;
+    public void setPartialSearchTerm(String partialSearchTerm) {
+        this.partialSearchTerm = partialSearchTerm;
     }
 
-    public String getPartialFullName() {
-        return partialFullName;
+    public String getSubstringMatchType() {
+        return substringMatchType;
     }
 
-    public void setPartialFullName(String partialFullName) {
-        this.partialFullName = partialFullName;
+    public void setSubstringMatchType(String substringMatchType) {
+        this.substringMatchType = substringMatchTypeInstance(substringMatchType);
     }
 
-    public String getFullNameSearchType() {
-        return fullNameSearchType;
-    }
-
-    public void setFullNameSearchType(String fullNameSearchType) {
-        this.fullNameSearchType = fullNameSearchType;
-    }
-
-    public String getPartialEmail() {
-        return partialEmail;
-    }
-
-    public void setPartialEmail(String partialEmail) {
-        this.partialEmail = partialEmail;
-    }
-
-    public String getEmailSearchType() {
-        return emailSearchType;
-    }
-
-    public void setEmailSearchType(String emailSearchType) {
-        this.emailSearchType = emailSearchType;
-    }
-
-    public String getPartialGroupName() {
-        return partialGroupName;
-    }
-
-    public void setPartialGroupName(String partialGroupName) {
-        this.partialGroupName = partialGroupName;
-    }
-
-    public String getGroupNameSearchType() {
-        return groupNameSearchType;
-    }
-
-    public void setGroupNameSearchType(String groupNameSearchType) {
-        this.groupNameSearchType = groupNameSearchType;
-    }
-
-    private boolean isValidSearchType(String type) {
+    public boolean isDefined() {
         boolean result = false;
-        if ( type != null &&
-                (AdvancedQueryType.SUBSTRING_CONTAINS.equals(type) ||
-                        AdvancedQueryType.SUBSTRING_ENDS_WITH.equals(type) ||
-                        AdvancedQueryType.SUBSTRING_STARTS_WITH.equals(type) )
-                ) {
+        if ( this.getLookupType() != null ||
+                this.getSubstringMatchType() != null ||
+                !ConfigUtil.isNullOrEmpty(this.getPartialSearchTerm())) {
             result = true;
         }
         return result;
     }
 
-    public boolean isDefined() {
-        boolean result = false;
-        if ( isUsernameSearchDefined() ||
-                isFullnameSearchDefined() ||
-                isEmailSearchDefined() ||
-                isGroupnameSearchDefined() ) {
-            result = true;
+    // TODO: consider using enumeration instance instead
+    public String lookupTypeInstance(String s) {
+        String result = null;
+        if (s!=null) {
+            if (AdvancedUserQueryLookupType.USERNAME.equalsIgnoreCase(s) ) {
+                result = AdvancedUserQueryLookupType.USERNAME;
+            }
+            else if (AdvancedUserQueryLookupType.USER_FULL_NAME.equalsIgnoreCase(s) ) {
+                result = AdvancedUserQueryLookupType.USER_FULL_NAME;
+            }
+            else if (AdvancedUserQueryLookupType.USER_EMAIL.equalsIgnoreCase(s) ) {
+                result = AdvancedUserQueryLookupType.USER_EMAIL;
+            }
+            else if (AdvancedUserQueryLookupType.GROUPNAME.equalsIgnoreCase(s) ) {
+                result = AdvancedUserQueryLookupType.GROUPNAME;
+            }
+        }
+        return result;
+    }
+
+    // note: atlassian-user is really picky about doing == instead of .equals to check the TermQuery constant, so we do this
+    public String substringMatchTypeInstance(String s) {
+        String result = null;
+        if (s!=null) {
+            if (AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS.equalsIgnoreCase(s) ) {
+                result = AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS;
+            }
+            else if (AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH.equalsIgnoreCase(s) ) {
+                result = AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH;
+            }
+            else if (AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH.equalsIgnoreCase(s) ) {
+                result = AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH;
+            }
         }
         return result;
     }
 
     public boolean isUsernameSearchDefined() {
         boolean result = false;
-        if (getPartialUserName() != null && !"".equals(getPartialUserName()) &&
-            isValidSearchType( getUserNameSearchType() )) {
+        if (this.getLookupType()==AdvancedUserQueryLookupType.USERNAME) {
             result = true;
         }
         return result;
@@ -127,8 +99,7 @@ public class AdvancedUserQuery {
 
     public boolean isFullnameSearchDefined() {
         boolean result = false;
-        if (getPartialFullName() != null && !"".equals(getPartialFullName()) &&
-                isValidSearchType( getFullNameSearchType() )) {
+        if (this.getLookupType()==AdvancedUserQueryLookupType.USER_FULL_NAME) {
             result = true;
         }
         return result;
@@ -136,8 +107,7 @@ public class AdvancedUserQuery {
 
     public boolean isEmailSearchDefined() {
         boolean result = false;
-        if (getPartialEmail() != null && !"".equals(getPartialEmail()) &&
-                isValidSearchType( getEmailSearchType() )) {
+        if (this.getLookupType()==AdvancedUserQueryLookupType.USER_EMAIL) {
             result = true;
         }
         return result;
@@ -145,53 +115,14 @@ public class AdvancedUserQuery {
 
     public boolean isGroupnameSearchDefined() {
         boolean result = false;
-        if (getPartialGroupName() != null && !"".equals(getPartialGroupName()) &&
-                isValidSearchType( getGroupNameSearchType() )) {
+        if (this.getLookupType()==AdvancedUserQueryLookupType.GROUPNAME) {
             result = true;
-        }
-        return result;
-    }
-
-    // atlassian-user is really picky about doing == instead of .equals to check the TermQuery constant, so we do this
-    public void makeSearchTypesMatchTermQueryConstantInstances() {
-        this.setUserNameSearchType(getConstantInstance(getUserNameSearchType()));
-        this.setFullNameSearchType(getConstantInstance(getFullNameSearchType()));
-        this.setEmailSearchType(getConstantInstance(getEmailSearchType()));
-        this.setGroupNameSearchType(getConstantInstance(getGroupNameSearchType()));
-    }
-
-    // atlassian-user is really picky about doing == instead of .equals to check the TermQuery constant, so we do this
-    public String getConstantInstance(String s) {
-        String result = null;
-        if (s!=null) {
-            if (AdvancedQueryType.SUBSTRING_CONTAINS.equalsIgnoreCase(s) ) {
-                result = AdvancedQueryType.SUBSTRING_CONTAINS;
-            }
-            if (AdvancedQueryType.SUBSTRING_ENDS_WITH.equalsIgnoreCase(s) ) {
-                result = AdvancedQueryType.SUBSTRING_ENDS_WITH;
-            }
-            if (AdvancedQueryType.SUBSTRING_STARTS_WITH.equalsIgnoreCase(s) ) {
-                result = AdvancedQueryType.SUBSTRING_STARTS_WITH;
-            }
         }
         return result;
     }
 
     public boolean isValid()
     {
-        boolean isValid = false;
-
-        if ( isValidSearchType( getUserNameSearchType() ) &&
-             isValidSearchType( getEmailSearchType() ) &&
-             isValidSearchType( getFullNameSearchType() ) &&
-             isValidSearchType( getGroupNameSearchType() ) &&
-             getPartialEmail() != null &&
-             getPartialFullName() != null &&
-             getPartialGroupName() != null )
-        {
-            isValid = true;
-        }
-
-        return isValid;
+        return isDefined();
     }
 }

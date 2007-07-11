@@ -30,17 +30,26 @@
 
             <h2>${action.space.name} ($action.space.key) Groups:</h2>
 
+            ##TODO: work on groups caching mechanism (need way to refresh)
+            #if(!${action.groups})
+                $action.findGroups()
+            #end
+
             #set ($groups = ${action.groups})
 
-            #if($groups && $groups.size() > 0 )
+            #if($groups)
             <ul>
-                #foreach ($group in $groups)
+                ## List groups using Pager
+                #foreach ($group in $groups.page)
                 <li>
                     <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name" #if($group.name == $action.selectedGroup) class="selected" #end>$!group.name</a>
                 </li>
                 #end
             </ul>
-            
+<div style="text-align: center">
+#parse ( "/templates/permissionmgmt/group-pager-actions.vm" )
+</div>
+
 			#else 
             There are currently no groups that match both of the following criteria:
                 <ul>
@@ -67,5 +76,11 @@
                 </fieldset>
             </form>
             #end
+
+            ##START TEST ONLY!
+            ##TODO: Remove this test section and supporting method in action before release
+              <a href="docustompermissionsmanage.action?key=${key}&createTestUsersAndGroups=1">create test users and groups</a>
+            ##END TEST ONLY!
+
  <!-- end group-list -->
         

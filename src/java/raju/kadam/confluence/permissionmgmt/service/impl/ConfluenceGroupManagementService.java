@@ -9,13 +9,20 @@ import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.Group;
+import com.atlassian.user.search.page.Pager;
+import com.atlassian.user.search.page.DefaultPager;
+import com.atlassian.user.search.page.PagerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.displaytag.pagination.PaginatedList;
+import org.displaytag.properties.SortOrderEnum;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
+import raju.kadam.confluence.permissionmgmt.paging.PagerPaginatedList;
+import raju.kadam.confluence.permissionmgmt.paging.ListPaginatedList;
 import raju.kadam.util.ListUtil;
 import raju.kadam.util.StringUtil;
 
@@ -51,26 +58,26 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
         log.debug("ConfluenceGroupManagementService end cosntructor");
     }
 
-    public List findGroups( ServiceContext context ) throws FindException {
+    public Pager findGroups( ServiceContext context ) throws FindException {
 
-        List result = new ArrayList();
-        Space space = context.getSpace();                            
+        Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
+        List groups = getGroupsThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
+        sortGroupsByGroupnameAscending(groups);
+        Pager pager = new DefaultPager(groups);
+        return pager;
+    }
+
+    private List getGroupsThatMatchNamePatternExcludingConfluenceAdministrators( Map mapWithGroupnamesAsKeys, ServiceContext context ) {
+
+        List groups = new ArrayList();
+        Space space = context.getSpace();
 
         ArrayList notAllowedUserGroups = new ArrayList();
     	notAllowedUserGroups.add("confluence-administrators");
 
     	Pattern pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), space.getKey());
 
-        //VIEWSPACE_PERMISSION is basic permission that every user group can have.
-        Map map = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, space);
-        if ( map==null || map.size()==0 ) {
-            log.debug("No groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION");
-        }
-        else {
-            log.debug("Got the following groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION: " + StringUtil.convertCollectionToCommaDelimitedString(map.keySet()));
-        }
-
-        for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();)
+        for (Iterator iterator = mapWithGroupnamesAsKeys.keySet().iterator(); iterator.hasNext();)
         {
         	String grpName = (String) iterator.next();
             //If notAllowedUserGroups doesn't contain this group name
@@ -80,7 +87,7 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
             if( (!notAllowedUserGroups.contains(grpName)) && isPatternMatch)
         	{
         		log.debug("Group '" + grpName + "' allowed and matched pattern " + pat.pattern() );
-        		result.add(userAccessor.getGroup(grpName));
+        		groups.add(userAccessor.getGroup(grpName));
             }
             else {
                 log.debug("Group '" + grpName + "' not allowed or didn't match pattern. notAllowedUserGroups=" + StringUtil.convertCollectionToCommaDelimitedString(notAllowedUserGroups) + " isPatternMatch=" + isPatternMatch + " pattern=" + pat.pattern());
@@ -88,16 +95,31 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
             //log.debug("-------End of Groups---------");
 
         }
+        return groups;
+    }
 
-        Collections.sort(result, new Comparator()
+    private Map getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(ServiceContext context) {
+        Space space = context.getSpace();
+        //VIEWSPACE_PERMISSION is basic permission that every user group can have.
+        Map map = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, space);
+        if ( map==null || map.size()==0 ) {
+            log.debug("No groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION");
+        }
+        else {
+            log.debug("Got the following groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION: " + StringUtil.convertCollectionToCommaDelimitedString(map.keySet()));
+        }
+        return map;
+    }
+
+    // should do this in query instead
+    private void sortGroupsByGroupnameAscending(List groups) {
+        Collections.sort(groups, new Comparator()
         {
             public int compare(Object o, Object o1)
             {
                 return ((Group) o).getName().compareToIgnoreCase(((Group) o1).getName());
             }
         });
-
-        return result;
     }
 
     public void addGroup( String groupName, ServiceContext context ) throws AddException {

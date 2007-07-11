@@ -1,10 +1,7 @@
 package raju.kadam.confluence.permissionmgmt.service.impl;
 
 import raju.kadam.confluence.permissionmgmt.service.*;
-import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
-import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
-import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
-import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedQueryType;
+import raju.kadam.confluence.permissionmgmt.service.vo.*;
 import raju.kadam.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import raju.kadam.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteGroup;
@@ -12,23 +9,19 @@ import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteUser;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.util.UserUtil;
+import raju.kadam.confluence.permissionmgmt.paging.PagerPaginatedList;
+import raju.kadam.confluence.permissionmgmt.paging.ListPaginatedList;
 
 import java.util.List;
 import java.util.ArrayList;
 
-import com.atlassian.user.User;
-import com.atlassian.user.EntityException;
-import com.atlassian.user.Group;
-import com.atlassian.user.search.query.UserNameTermQuery;
-import com.atlassian.user.search.query.FullNameTermQuery;
-import com.atlassian.user.search.query.EmailTermQuery;
-import com.atlassian.user.search.query.GroupNameTermQuery;
-import com.atlassian.user.search.SearchResult;
-import com.atlassian.user.search.page.PagerUtils;
 import com.atlassian.user.impl.DefaultUser;
-import com.atlassian.user.impl.osuser.OSUUser;
+import com.atlassian.user.search.page.Pager;
+import com.atlassian.user.search.page.DefaultPager;
+import com.atlassian.user.search.page.PagerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.displaytag.pagination.PaginatedList;
 
 /**
  * (c) 2007 Duke University
@@ -45,13 +38,13 @@ public class JiraSoapUserManagementService implements UserManagementService {
     private boolean matches( String value, String searchValue, String type ) {
         boolean result = false;
         if (value != null && searchValue != null && type != null) {
-            if (type == AdvancedQueryType.SUBSTRING_STARTS_WITH && value.startsWith(searchValue)) {
+            if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH && value.startsWith(searchValue)) {
                 result = true;
             }
-            else if (type == AdvancedQueryType.SUBSTRING_CONTAINS && value.indexOf(searchValue) != -1) {
+            else if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS && value.indexOf(searchValue) != -1) {
                 result = true;
             }
-            else if (type == AdvancedQueryType.SUBSTRING_ENDS_WITH && value.endsWith(searchValue)) {
+            else if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH && value.endsWith(searchValue)) {
                 result = true;
             }
         }
@@ -72,7 +65,8 @@ public class JiraSoapUserManagementService implements UserManagementService {
     }
 
     protected List getAllJiraUsers(ServiceContext context) throws FindException {
-        return findUsersForGroup("jira-users", context);
+        // TODO: refactor. converting from pager to list to pager is just plain stupid
+        return PagerUtils.toList(findUsersForGroup("jira-users", context));
     }
 
     public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
@@ -84,57 +78,45 @@ public class JiraSoapUserManagementService implements UserManagementService {
             return results;
         }
 
-        List users = getAllJiraUsers(context);
-
-        boolean ranQueryAtLeastOnce = false;
+        List allJiraUsers = getAllJiraUsers(context);
+        List users = new ArrayList();
         if (advancedUserQuery.isUsernameSearchDefined()) {
-            ArrayList returnedUsers = new ArrayList();
-            for (int i=0; i<users.size(); i++) {
-                DefaultUser user = (DefaultUser)users.get(0);
-                if (matches(user.getName(), advancedUserQuery.getPartialUserName(), advancedUserQuery.getUserNameSearchType())) {
-                    returnedUsers.add(user);
+            for (int i=0; i<allJiraUsers.size(); i++) {
+                DefaultUser jiraUser = (DefaultUser)allJiraUsers.get(0);
+                if (matches(jiraUser.getName(), advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType())) {
+                    users.add(jiraUser);
                 }
             }
-            users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
-            ranQueryAtLeastOnce = true;
         }
-
-        if (advancedUserQuery.isFullnameSearchDefined()) {
-            ArrayList returnedUsers = new ArrayList();
-            for (int i=0; i<users.size(); i++) {
-                DefaultUser user = (DefaultUser)users.get(0);
-                if (matches(user.getName(), advancedUserQuery.getPartialFullName(), advancedUserQuery.getFullNameSearchType())) {
-                    returnedUsers.add(user);
+        else if (advancedUserQuery.isFullnameSearchDefined()) {
+            for (int i=0; i<allJiraUsers.size(); i++) {
+                DefaultUser jiraUser = (DefaultUser)allJiraUsers.get(0);
+                if (matches(jiraUser.getFullName(), advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType())) {
+                    users.add(jiraUser);
                 }
             }
-            users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
-            ranQueryAtLeastOnce = true;
         }
-
-        if (advancedUserQuery.isEmailSearchDefined()) {
-            ArrayList returnedUsers = new ArrayList();
-            for (int i=0; i<users.size(); i++) {
-                DefaultUser user = (DefaultUser)users.get(0);
-                if (matches(user.getName(), advancedUserQuery.getPartialEmail(), advancedUserQuery.getEmailSearchType())) {
-                    returnedUsers.add(user);
+        else if (advancedUserQuery.isEmailSearchDefined()) {
+            for (int i=0; i<allJiraUsers.size(); i++) {
+                DefaultUser jiraUser = (DefaultUser)allJiraUsers.get(0);
+                if (matches(jiraUser.getEmail(), advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType())) {
+                    users.add(jiraUser);
                 }
             }
-            users = findIntersection(users, returnedUsers, ranQueryAtLeastOnce);
-            ranQueryAtLeastOnce = true;
+        }
+        else if (advancedUserQuery.isGroupnameSearchDefined()) {
+            //TODO: this needs to be disabled in the UI but with fields still populated with valid values as hidden post param
+            results.setMessage("This feature is currently unsupported for systems using Jira for user and group management.");
         }
 
-        //TODO: this needs to be disabled in the UI but with fields still populated with valid values as hidden post param
-        if (advancedUserQuery.isGroupnameSearchDefined()) {
-            results.setGroupNameFieldMessage("This feature is currently unsupported for systems using Jira for user and group management.");
-        }
-
-        results.setUsers(users);
+        Pager pager = new DefaultPager(users);
+        results.setUsers(pager);
 
         return results;
     }
 
-    public List findUsersForGroup(String groupName, ServiceContext context) throws FindException {
-        List results = new ArrayList();
+    public Pager findUsersForGroup(String groupName, ServiceContext context) throws FindException {
+        List users = new ArrayList();
 
         JiraSoapService jiraSoapService = null;
         String token = null;
@@ -147,20 +129,20 @@ public class JiraSoapUserManagementService implements UserManagementService {
             token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
             RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
             if (remoteGroup != null) {
-                RemoteUser[] users = remoteGroup.getUsers();
+                RemoteUser[] jiraUsers = remoteGroup.getUsers();
 
-                if (users!=null)
+                if (jiraUsers!=null)
                 {
-                    for (int i=0; i<users.length; i++)
+                    for (int i=0; i<jiraUsers.length; i++)
                     {
-                        RemoteUser thisUser = users[i];
-                        if (thisUser != null)
+                        RemoteUser jiraUser = jiraUsers[i];
+                        if (jiraUser != null)
                         {
                             DefaultUser user = new DefaultUser();
-                            user.setEmail(thisUser.getEmail());
-                            user.setFullName(thisUser.getFullname());
-                            user.setName(thisUser.getName());
-                            results.add(user);
+                            user.setEmail(jiraUser.getEmail());
+                            user.setFullName(jiraUser.getFullname());
+                            user.setName(jiraUser.getName());
+                            users.add(user);
                         }
                     }
                 }
@@ -185,11 +167,17 @@ public class JiraSoapUserManagementService implements UserManagementService {
             }
         }
 
-        return results;
+        Pager pager = new DefaultPager(users);
+
+        return pager;
     }
 
-    public List findUsersWhoseNameStartsWith(String partialName, ServiceContext context) throws FindException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Pager findUsersWhoseNameStartsWith(String partialName, ServiceContext context) throws FindException {
+        AdvancedUserQuery advancedUserQuery = new AdvancedUserQuery();
+        advancedUserQuery.setLookupType(AdvancedUserQueryLookupType.USERNAME);
+        advancedUserQuery.setPartialSearchTerm(partialName);
+        advancedUserQuery.setSubstringMatchType(AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH);
+        return findUsers(advancedUserQuery, context).getUsers();
     }
 
     public void addUsersByUsernameToGroup(List userNames, String groupName, ServiceContext context) throws AddException

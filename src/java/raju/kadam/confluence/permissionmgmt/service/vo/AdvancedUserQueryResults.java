@@ -1,7 +1,7 @@
 package raju.kadam.confluence.permissionmgmt.service.vo;
 
-import java.util.List;
-import java.util.ArrayList;
+import org.displaytag.pagination.PaginatedList;
+import com.atlassian.user.search.page.Pager;
 
 /**
  * (c) 2007 Duke University
@@ -11,51 +11,23 @@ import java.util.ArrayList;
  */
 public class AdvancedUserQueryResults {
 
-    private List users = new ArrayList();
-
-    private String userNameFieldMessage;
-    private String fullNameFieldMessage;
-    private String emailFieldMessage;
-    private String groupNameFieldMessage;
+    private Pager users;
+    private String message;
 
 
-    public List getUsers() {
+    public Pager getUsers() {
         return users;
     }
 
-    public void setUsers(List users) {
+    public void setUsers(Pager users) {
         this.users = users;
     }
 
-    public String getUserNameFieldMessage() {
-        return userNameFieldMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setUserNameFieldMessage(String userNameFieldMessage) {
-        this.userNameFieldMessage = userNameFieldMessage;
-    }
-
-    public String getFullNameFieldMessage() {
-        return fullNameFieldMessage;
-    }
-
-    public void setFullNameFieldMessage(String fullNameFieldMessage) {
-        this.fullNameFieldMessage = fullNameFieldMessage;
-    }
-
-    public String getEmailFieldMessage() {
-        return emailFieldMessage;
-    }
-
-    public void setEmailFieldMessage(String emailFieldMessage) {
-        this.emailFieldMessage = emailFieldMessage;
-    }
-
-    public String getGroupNameFieldMessage() {
-        return groupNameFieldMessage;
-    }
-
-    public void setGroupNameFieldMessage(String groupNameFieldMessage) {
-        this.groupNameFieldMessage = groupNameFieldMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

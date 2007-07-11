@@ -1,0 +1,13 @@
+
+
+                ## Provide pagerAction links for groups
+
+                #if($action.hasPrev($groups))
+                    <a href="docustompermissionsmanage.action?key=${key}&pagerAction=prevPageGroups">&lt;</a>
+                #end
+                #if($action.hasNext($groups))
+                    <a href="docustompermissionsmanage.action?key=${key}&pagerAction=nextPageGroups">&gt;</a>
+                #end
+
+
+

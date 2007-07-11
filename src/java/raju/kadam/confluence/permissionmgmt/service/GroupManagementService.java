@@ -1,11 +1,8 @@
 package raju.kadam.confluence.permissionmgmt.service;
 
-import com.atlassian.user.Group;
-import com.atlassian.confluence.spaces.Space;
-
-import java.util.List;
-
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
+import org.displaytag.pagination.PaginatedList;
+import com.atlassian.user.search.page.Pager;
 
 /**
  * (c) 2007 Duke University
@@ -15,7 +12,7 @@ import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
  */
 public interface GroupManagementService {
 
-    public List findGroups( ServiceContext context ) throws FindException;
+    public Pager findGroups( ServiceContext context ) throws FindException;
 
     public void addGroup( String identifier, ServiceContext context ) throws AddException;
 

@@ -9,7 +9,7 @@ import com.atlassian.user.search.query.UserQuery;
  * Date: Jun 21, 2007
  * Time: 11:42:42 AM
  */
-public interface AdvancedQueryType {
+public interface AdvancedUserQuerySubstringMatchType {
 
     public static final String SUBSTRING_CONTAINS = TermQuery.SUBSTRING_CONTAINS;
     public static final String SUBSTRING_ENDS_WITH = TermQuery.SUBSTRING_ENDS_WITH;

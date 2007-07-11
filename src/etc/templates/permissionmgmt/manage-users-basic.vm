@@ -27,17 +27,25 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
             <!-- start manage-users-basic -->
-            #set ($users = $action.findUsers(${action.selectedGroup}))
+            ##TODO: fix user caching mechanism
+            #if (!$action.pagerAction)
+                $action.findUsers(${action.selectedGroup})
+            #end
+            
+            #set ($users = $action.users)
 
-            #if($users && $users.size() > 0)
+            #if($users)
                 <table cellspacing="0">                
                     <thead>
 						<tr>
-							<th>Name</th><th>NetId</th><th>Email</th><th align="center">Delete</th>
+							<th>Name</th>
+							<th>Username</th>
+							<th>Email</th>
+							<th align="center">Delete</th>
 						</tr>
 					</thead>
 					<tbody>
-                #foreach ($user in $users)
+                #foreach ($user in $users.page)
                     #set ($userFullName = $user.getFullName())
                     #set ($userName = $user.getName())
                     #set ($userEmail = $user.getEmail())
@@ -48,6 +56,11 @@
                         <td align="center"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img alt="Remove $!userName from  group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
+                    <tr>
+                        <td colspan="4">
+#parse ( "/templates/permissionmgmt/user-pager-actions.vm" )
+                        </td>
+                    </tr>
 </tbody>
                 </table>
             #else
