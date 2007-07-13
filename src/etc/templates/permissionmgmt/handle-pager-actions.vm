@@ -1,6 +1,16 @@
 
                 ## Handle pagerAction link actions for groups Pager and users Pager
 
+                <i>
+                <br/><b>Debug:</b>
+                <br/>pagerAction=$action.pagerAction
+                <br/>action.hasNext(groups)=$action.hasNext($groups)
+                <br/>action.hasNext(groups)=$action.hasPrev($groups)
+                <br/>action.hasNext(users)=$action.hasNext($users)
+                <br/>action.hasNext(users)=$action.hasPrev($users)
+                <br/>
+                </i>
+
                 #if($action.pagerAction=="nextPageGroups" && $action.hasNext($groups))
                     $action.next($groups)
                 #end

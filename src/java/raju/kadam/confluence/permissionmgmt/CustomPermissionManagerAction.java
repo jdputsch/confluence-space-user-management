@@ -65,7 +65,7 @@ import bucket.core.actions.PagerPaginationSupport;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class CustomPermissionManagerAction extends AbstractSpaceAction implements SpaceAdministrative
+public class CustomPermissionManagerAction extends AbstractPagerPaginationSupportCachingSpaceAction implements SpaceAdministrative
 {
     private BandanaManager bandanaManager;
     private SpaceDao spaceDao;
@@ -77,11 +77,6 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     private AdvancedUserQuery advancedUserQuery;
     private SettingsManager settingsManager;
     private String pagerAction;
-
-    private PagerPaginationSupport groups;
-    private PagerPaginationSupport users;
-
-    public static final int NUMBER_OF_ROWS_PER_PAGE = 20;
 
     public CustomPermissionManagerAction()
 	{
@@ -100,6 +95,10 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 		//It will display screen with all user groups as per usergroupsPattern setting in Configuration
 		log.debug("CustomPermissionManagerAction - log - Inside doDefault ..");
         return super.doDefault();
+    }
+
+    private int getRowsPerPage() {
+        return PagerPaginationSupport.DEFAULT_COUNT_ON_EACH_PAGE;
     }
 
     private String getParameterValue(Map paramMap, String param) {
@@ -244,7 +243,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         }
         catch(Throwable t)
         {
-            log.warn("failed creating test groups/users", t);
+            log.warn("Failed creating test groups/users", t);
         }
 
     }
@@ -343,43 +342,37 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
                 if(adminAction.equals("addUsersToGroup"))
                 {
                     userManagementService.addUsersByUsernameToGroup(context.getUsersToAdd(), context.getSelectedGroup(), serviceContext);
-
                     opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToAdd()) + " added to group " + context.getSelectedGroup() + " successfully!</font>";
                 }
                 else if(adminAction.equals("removeUsersFromGroup"))
                 {
                     userManagementService.removeUsersByUsernameFromGroup(context.getUsersToRemove(), context.getSelectedGroup(), serviceContext);
-
                     opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToRemove()) + " removed from group " + context.getSelectedGroup() + " successfully!</font>";
                 }
                 else if(adminAction.equals("addGroup"))
                 {
                     String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
                     log.debug("group name prefix will be " + prefix);
-
                     String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
                     log.debug("group name suffix will be " + suffix);
-
                     String groupName = prefix + context.getGroupToAdd() + suffix;
-
                     groupManagementService.addGroup(groupName, serviceContext);
-
                     opMessage = "<font color=\"green\">Group " + groupName + " added successfully!</font>";
                 }
                 else if(adminAction.equals("removeGroup"))
                 {
                     groupManagementService.removeGroup(context.getGroupToRemove(), serviceContext);
-
                     opMessage = "<font color=\"green\">Group " + context.getGroupToRemove() + " removed successfully!</font>";
                 }                
             }
 
             // note: is normal at times not to have an action (selecting group for example)
         }
-        catch(ServiceException e)
+        catch(Throwable t)
         {
-            e.printStackTrace();
-            resultList.add("" + e.getMessage());
+            log.error("Failed action", t);
+            clearGroupAndUserCache();
+            resultList.add("" + t.getMessage());
             setActionErrors(resultList);
             return ERROR;
         }
@@ -591,11 +584,14 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             if (log.isDebugEnabled()) {
                 debug(pager);
             }
-        } catch (ServiceException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Throwable t) {
+            log.error("Failed attempting to find groups", t);
         }
 
-        setGroups(createPagerPaginationSupport(pager));
+        //TODO: need to fix get and set groups. there're a little too magical.
+        if (getGroups()==null) {
+            setGroups(createPagerPaginationSupport(pager));
+        }
     }
 
     public PagerPaginationSupport createPagerPaginationSupport(Pager pager) {
@@ -603,7 +599,7 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             return null;
         }
 
-        PagerPaginationSupport pps = new PagerPaginationSupport(NUMBER_OF_ROWS_PER_PAGE);
+        PagerPaginationSupport pps = new PagerPaginationSupport(getRowsPerPage());
         pps.setItems(pager);
         pps.setStartIndex(0);
         return pps;
@@ -623,15 +619,23 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     public void findUsers(String groupName) {
-        Pager pager = null;
-        try {
-            ServiceContext serviceContext = createServiceContext();
-            pager = this.getUserManagementService().findUsersForGroup(groupName, serviceContext);
-        } catch (ServiceException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        if ( groupName != null ) {
+            Pager pager = null;
+            try {
+                ServiceContext serviceContext = createServiceContext();
+                pager = this.getUserManagementService().findUsersForGroup(groupName, serviceContext);
+            } catch (Throwable t) {
+                log.error("Failed finding users", t);
+            }
 
-        setUsers(createPagerPaginationSupport(pager));
+            //TODO: need to fix get and set groups. there're a little too magical.
+            if (getUsers()==null) {
+                setUsers(createPagerPaginationSupport(pager));
+            }
+        }
+        else {
+            log.debug("findUsers shouldn't be called with null groupName. programming error");
+        }
     }
 
     public String getNewGroupPrefix() {
@@ -647,8 +651,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
         try {
             ServiceContext serviceContext = createServiceContext();
             pager = this.getUserManagementService().findUsersWhoseNameStartsWith(partialName, serviceContext);
-        } catch (ServiceException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Throwable t) {
+            log.error("Failed finding users that start with " + partialName, t);
         }
 
         setUsers(createPagerPaginationSupport(pager));
@@ -746,8 +750,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
             addFieldErrorIfMessageNotNull("advancedSearch",results.getMessage());
 
             pager = results.getUsers();
-        } catch (ServiceException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Throwable t) {
+            log.warn("Failed creating test groups/users", t);
         }
 
         setUsers(createPagerPaginationSupport(pager));
@@ -758,8 +762,8 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
 
         try {
             result = this.getUserManagementService().isMemberOf(userName, this.getSelectedGroup());
-        } catch (ServiceException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Throwable t) {
+            log.warn("Failed checking to see if user was member of group", t);
         }
 
         return result;
@@ -779,19 +783,25 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     public PagerPaginationSupport getGroups() {
-        return groups;
+        String spaceKey = getKey();
+        return getGroupsPps(spaceKey);
     }
 
     public void setGroups(PagerPaginationSupport groups) {
-        this.groups = groups;
+        String spaceKey = getKey();
+        setGroupsPps(spaceKey, groups);
     }
 
     public PagerPaginationSupport getUsers() {
-        return users;
+        String spaceKey = getKey();
+        String selectedGroup = getSelectedGroup();
+        return getUsersPps(spaceKey, selectedGroup);
     }
 
     public void setUsers(PagerPaginationSupport users) {
-        this.users = users;
+        String spaceKey = getKey();
+        String selectedGroup = getSelectedGroup();
+        setUsersPps(spaceKey, selectedGroup, users);
     }
 
     public String getPagerAction() {
@@ -803,6 +813,11 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     public boolean hasNext(PagerPaginationSupport pps) {
+        if (pps==null) {
+            log.debug("hasNext() shouldn't really be called with null. programming error");
+            return false;
+        }
+
         if (pps.getItems().getIndex() + pps.getCountOnEachPage() > pps.getTotal()) {
             return false;
         }
@@ -811,11 +826,21 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     public void next( PagerPaginationSupport pps ) {
-        log.debug("next() called. previous index=" + pps.getItems().getIndex() + " next index=" + pps.getNextIndex());
-        pps.skipTo(pps.getNextIndex());
+        if (pps!=null) {
+            log.debug("next() called. previous index=" + pps.getItems().getIndex() + " next index=" + pps.getNextIndex());
+            pps.skipTo(pps.getNextIndex());
+        }
+        else {
+            log.debug("next() shouldn't really be called with null. programming error");
+        }
     }
 
     public boolean hasPrev(PagerPaginationSupport pps) {
+        if (pps==null) {
+            log.debug("hasNext() shouldn't really be called with null. programming error");
+            return false;
+        }
+
         if (pps.getItems().getIndex() - pps.getCountOnEachPage() < 0) {
             return false;
         }
@@ -824,7 +849,12 @@ public class CustomPermissionManagerAction extends AbstractSpaceAction implement
     }
 
     public void prev( PagerPaginationSupport pps ) {
-        log.debug("prev() called. previous index=" + pps.getItems().getIndex() + " prev index=" + pps.getPreviousIndex());
-        pps.skipTo(pps.getPreviousIndex());
+        if (pps!=null) {
+            log.debug("prev() called. previous index=" + pps.getItems().getIndex() + " prev index=" + pps.getPreviousIndex());
+            pps.skipTo(pps.getPreviousIndex());
+        }
+        else {
+            log.debug("prev() shouldn't really be called with null. programming error");
+        }
     }
   }
