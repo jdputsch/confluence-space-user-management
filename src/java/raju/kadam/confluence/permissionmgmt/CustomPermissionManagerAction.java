@@ -595,11 +595,15 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public PagerPaginationSupport createPagerPaginationSupport(Pager pager) {
+        return createPagerPaginationSupport(pager, getRowsPerPage());
+    }
+
+    public PagerPaginationSupport createPagerPaginationSupport(Pager pager, int rowsPerPage) {
         if (pager==null) {
             return null;
         }
 
-        PagerPaginationSupport pps = new PagerPaginationSupport(getRowsPerPage());
+        PagerPaginationSupport pps = new PagerPaginationSupport(rowsPerPage);
         pps.setItems(pager);
         pps.setStartIndex(0);
         return pps;
@@ -646,16 +650,34 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
     }
 
-    public void findUsersWhoseNameStartsWith(String partialName) {
-        Pager pager = null;
+    public String findUsersWhoseNameStartsWith(String partialName, int numResults) {
+        StringBuffer sb = new StringBuffer();
         try {
             ServiceContext serviceContext = createServiceContext();
-            pager = this.getUserManagementService().findUsersWhoseNameStartsWith(partialName, serviceContext);
+            Pager pager = this.getUserManagementService().findUsersWhoseNameStartsWith(partialName, serviceContext);
+            //this assumes you want the same number back as what would be displayed in a page, which could be really wrong...
+            //may
+            PagerPaginationSupport pps = this.createPagerPaginationSupport(pager, numResults);
+            List users = pps.getPage();
+            boolean gotAtLeastOne = false;
+            if (users!=null) {
+                for (int i=0; i<users.size(); i++) {
+                    User user = (User)users.get(i);
+                    String username = user.getName();
+                    if (gotAtLeastOne) {
+                        sb.append(", ");
+                    }
+
+                    sb.append( "\"" + username + "\"");
+                    gotAtLeastOne = true;
+                }
+            }
+
         } catch (Throwable t) {
             log.error("Failed finding users that start with " + partialName, t);
         }
 
-        setUsers(createPagerPaginationSupport(pager));
+        return sb.toString();
     }
     /*
     <option value="$action.usernameLookupType" selected="selected">Username</option>
