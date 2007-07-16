@@ -217,6 +217,19 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
+
+        // handle refresh
+        if (getParameterValue(paramMap, "refresh")!=null) {
+            int oldGroupsIndex = getGroups().getStartIndex();
+            int oldUsersIndex = getUsers().getStartIndex();
+            this.clearCache();
+            this.populateDataUnlessCached();
+            // Note: is important that these are calling getGroups() and getUsers() again to get latest instances.
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+        }
+
+        // handle paging
         setPagerAction(getParameterValue( paramMap, "pagerAction"));
         handlePaging();
 

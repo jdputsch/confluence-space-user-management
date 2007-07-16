@@ -56,17 +56,31 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
         setSessionProperty( PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + groupName + "-" + USERS_SESSION_KEY_SUFFIX, usersPps);
     }
 
+    public void clearCache() {
+        log.debug("Clearing all cache (removing all session data with keys that start with '" + PLUGIN_SESSION_KEY_PREFIX + "-')");
+        Map session = (Map) ActionContext.getContext().get("session");
+        Iterator iter = session.keySet().iterator();
+        while (iter.hasNext()) {
+            String key = (String)iter.next();
+            if (key.startsWith(PLUGIN_SESSION_KEY_PREFIX)) {
+                session.remove(key);
+            }
+        }
+    }
+
     public void clearGroupCache(String spaceKey) {
-        log.debug("Clearing all groups cache for spacekey '" + spaceKey + "' (removing all session data starting with " + PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + " and ending in " + GROUPS_SESSION_KEY_SUFFIX + ")");
+        String sessionKey = PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + GROUPS_SESSION_KEY_SUFFIX;
+        log.debug("Clearing all groups cache for spacekey '" + spaceKey + "' (removing session data for '" + sessionKey + ")");
 
         Map session = (Map) ActionContext.getContext().get("session");
-        session.remove(PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + GROUPS_SESSION_KEY_SUFFIX);
+        session.remove(sessionKey);
     }
 
     public void clearUserCache(String spaceKey, String groupName) {
-        log.debug("Clearing all users cache for spacekey '" + spaceKey + "' and groupName '" + groupName + "' (removing all session data starting with " + PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + groupName + " and ending in " + USERS_SESSION_KEY_SUFFIX + ")");
+        String sessionKey = PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + groupName + "-" + USERS_SESSION_KEY_SUFFIX;
+        log.debug("Clearing all users cache for spacekey '" + spaceKey + "' and groupName '" + groupName + "' (removing all session data for key '" + sessionKey + "')");
 
         Map session = (Map) ActionContext.getContext().get("session");
-        session.remove(PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + groupName + "-" + USERS_SESSION_KEY_SUFFIX);
+        session.remove(sessionKey);
     }
 }

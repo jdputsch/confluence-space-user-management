@@ -118,6 +118,12 @@
 
     #if(${action.isPluginConfigurationDone})
 
+    #if(${action.selectedGroup})
+        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&refresh=1">Refresh</a>
+    #else
+        <a href="docustompermissionsmanage.action?key=${key}&refresh=1">Refresh</a>
+    #end
+
     <div id="groups">
         #parse( "/templates/permissionmgmt/group-list.vm" )
     </div>
