@@ -1,0 +1,35 @@
+			<div class="sectionHeader">
+				<div id="mode"><a href="docustompermissionsmanage.action?key=${key}">&laquo; Return to normal view</a></div>
+				<h2>Bulk Change Tool</h2>
+			</div>
+
+            ##TODO NEED ACTION
+			<form id="bulkChange" action="">
+				<fieldset>
+					<label>1. Select Action:</label>
+					<input type="radio" value="addUsers" name="bulkActionType"></input> Add Users<br />
+					<input type="radio" value="removeUsers" name="bulkActionType"></input> Remove Users
+					<br />
+
+					<label>2. Enter Users:</label>
+					<input type="text" style="width:100%;"></input>
+					<br />
+
+					<label>3. From Group(s):</label>
+
+					#set ($groups = ${action.groups})
+
+                    #if($groups)
+                    <ul>
+                        #foreach ($group in $groups)
+                        <li>
+                            <input type="checkbox"> $!group.name</input> (<a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">Edit $!group.name</a>)
+                        </li>
+                        #end
+                    </ul>
+
+					<label>4. Commit Changes</label>
+					<input type="submit"></input>
+				</fieldset>
+			</form>
+
