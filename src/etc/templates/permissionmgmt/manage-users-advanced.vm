@@ -26,18 +26,35 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-            <!-- start manage-users-advanced -->
+            <!-- start manage-users-advanced -->s
+
             #set ($users = $action.users)
 
+
+            <div class="sectionHeader">
+                #*
+				#if(${action.isGroupActionsPermitted})
+				<div class="mode">
+			        <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=${action.selectedGroup}"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> Delete Group ${action.selectedGroup}</a>
+			    </div>
+			    #end
+			    *#
+				<h2>DukeWiki User Search #* ${action.selectedGroup} *#</h2>
+			</div>
+
             <div id="advancedUserSearchForm">
+#*
 		    <font size="1">
             	Note: Leave field(s) blank if you don&quot;t want to search on them.
             </font>
+*#
+            <a id="hideAdvS" href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">&laquo; Return to editing ${action.selectedGroup}</a>
+
 		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>
                     #fielderror ('advancedSearch')
-                    <label>Username</label>
+                    <label>Find user where: </label>
                     <select name="lookupType">
                         <option value="$action.usernameLookupType" selected="selected">Username</option>
                         <option value="$action.fullNameLookupType">Full name</option>
@@ -51,10 +68,9 @@
                     </select>
                     <input type="text" id="partialSearchTerm" name="partialSearchTerm"/>
                 </fieldset>
-                <br/>
-
-                <input type="submit" value="Find Users" class="submitBttn"/>
-                <br/>
+                <fieldset>
+                    <input type="submit" value="Find Users" class="submitBttn"/>
+                </fieldset>
             </form>
 
             #if(${action.userSearchFormFilled})

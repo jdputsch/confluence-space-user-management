@@ -28,7 +28,10 @@
 
 <!-- start group-list -->
 
+        <div class="sectionHeader">
+            <div class="mode">&raquo; <a href="#">Bulk Change Tool</a></div>
             <h2>${action.space.name} ($action.space.key) Groups:</h2>
+        </div>
 
             #set ($groups = ${action.groups})
 
@@ -41,41 +44,53 @@
                 </li>
                 #end
             </ul>
-<div style="text-align: center">
-#parse ( "/templates/permissionmgmt/group-pager-actions.vm" )
-</div>
+
+            #if(${action.isGroupActionsPermitted})
+            <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="addGroupForm" name="AddGroupForm">
+                <fieldset>
+                    <input type="hidden" name="adminAction" value="addGroup"/>
+                    <label for="addGroup">Add Group:</label>
+                    <input type="text" name="groupToAdd" id="groupToAdd" ></input>
+
+                    <ul class="formHelp">
+                        <li>eg. entering Duke-Presidents will create the group "${action.newGroupPrefix}Duke-Presidents${action.newGroupSuffix}"</li>
+                    </ul>
+
+                    <label class="scndryInpt" for="addGroup">With Users:</label>
+                    <input name="addGroupUsers" type="text" /></input>
+
+                    <ul class="formHelp">
+                        <li>(optional)</li>
+                    </ul>
+
+                    <input type="submit" class="submitBttn"></input>
+                </fieldset>
+            </form>
+            #end
+
+            <div style="text-align: center">
+                #parse ( "/templates/permissionmgmt/group-pager-actions.vm" )
+            </div>
 
 			#else 
-            There are currently no groups that match both of the following criteria:
+                <p>There are currently no groups that match both of the following criteria:</p>
                 <ul>
                   <li>Group has rights to view space '${key}' <b>and</b></li>
                   <li>Group has name matching the group name pattern defined for this space in the plugin configuration: '${action.spacePattern}'.</li>
                 </ul>
 
-                If you feel that groups should be displayed here or are not sure what to do, then check with the system
+                <p>If you feel that groups should be displayed here or are not sure what to do, then check with the system
                 administrator to verify that the group name pattern, group name prefix, and group name suffix are
-                correct.
+                correct.</p>
 
-                If you have never used this interface before, you probably have nothing to worry about and can go along
-                your merry way adding groups and managing users in them.
+                <p>If you have never used this interface before, you probably have nothing to worry about and can go along
+                your merry way adding groups and managing users in them.</p>
             #end
 
-            #if(${action.isGroupActionsPermitted})
-		    <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="groupManagement" name="AddGroupForm">
-                <fieldset>
-                <input type="hidden" name="adminAction" value="addGroup"/>
-                    <label for="groupToAdd">Add Group:</label><br />
-					<span class="smalltext">Entering "Duke-Presidents" will create the group "${action.newGroupPrefix}Duke-Presidents${action.newGroupSuffix}"</span><br />
-                    <input type="text" name="groupToAdd" id="groupToAdd" /><br />
-                    <input type="submit" value="Add Group" class="submitBttn"/><br />
-                </fieldset>
-            </form>
-            #end
-
-            ##START TEST ONLY!
-            ##TODO: Remove this test section and supporting method in action before release
-              <a href="docustompermissionsmanage.action?key=${key}&createTestUsersAndGroups=1">create test users and groups</a>
-            ##END TEST ONLY!
+##START TEST ONLY!
+##TODO: Remove this test section and supporting method in action before release
+<a href="docustompermissionsmanage.action?key=${key}&createTestUsersAndGroups=1">create test users and groups</a>
+##END TEST ONLY!
 
  <!-- end group-list -->
         

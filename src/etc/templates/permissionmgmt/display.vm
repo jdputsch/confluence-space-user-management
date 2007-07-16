@@ -43,70 +43,95 @@
     <body>
 
     <style>
-        div#csum {width:750px; border:1px solid #CCC; margin:10px;}
-        div#csum a img {border:none; text-decoration:none;}
-		div#csum h2 {margin:0; padding: 8px 4px; border:none; background:none; font-size: 16px; font-weight: bold; color:#036;}
+        div#csum {width:750px; margin:0 10px;}
+        div#csum h2 {background:none; font-size: 1.1em; font-weight: bold; color:#036; border-bottom:1px solid #036;}
+        div#csum a img {border:none;}
 
+        div#csum div.messages {}
+        div#csum div.messages ul {margin:0; padding:0; list-style:none;}
+        div#csum div.messages ul li {padding:.5em; border:1px solid #3C78B5; background-color: #D8E4F1;}
 
-        div#csum form {margin:0; padding:0;}
+        div#csum form {clear:both; margin:1em .1em; padding:0; background-color:#F0F0F0; border:1px solid #CCC;}
         div#csum fieldset {border:none; padding:none; margin:none;}
-        div#csum label {font-size:1.1em;}
-        
+        div#csum legend {padding:10px 0 5px 0; margin:0; display:block; font-weight: bold; color: #036; font-size: 1.1em;}
+        div#csum input {width:100%;}
+        div#csum label {font-size:1em;}
+        div#csum .submitBttn {width:auto;}
+        div#csum ul.formHelp {display:block; clear:both; list-style: none; font-size:.9em; padding:1px 2px; margin: 2px 2px 10px 2px;}
+        div#csum ul.formHelp li {display:block; color:#444;}
 
         div#csum div#header {margin:0 0 20px 0;}
 
-        div#csum div#groups {display:block; float:left; margin:0; padding:0; width:250px; background-color:#EEE; border-bottom:1px solid #CCC;}
-        div#csum div#groups h2 {border-right:1px solid #CCC;}
+        div#csum div#groups {display:block; float:left; margin:0; padding:0; width:250px;}
         div#csum div#groups ul {margin:0; padding:0;}
         div#csum div#groups ul li {list-style:none;}
-        div#csum div#groups ul li a {display:block; background:url(${action.confluenceRoot}/images/icons/group_16.gif) no-repeat 3px 3px; clear:both; line-height:1.5; padding:4px 0 4px 25px; color:#036; text-decoration:none; border-right:1px solid #CCC;}
-        div#csum div#groups ul li a.selected {color:black; font-weight:bold; text-decoration:none; border-right:1px solid #FFF; border-top:1px solid #CCC; border-bottom:1px solid #CCC; background-color:#FFF;}
-        div#csum div#groups ul li a:hover {background-color:#FFF;}
-        div#csum div#groups form {border-right:1px solid #CCC; border-top:1px solid #CCC;}
+        div#csum div#groups ul li a {display:block; background:url(${action.confluenceRoot}/images/icons/group_16.gif) no-repeat 3px 3px; clear:both; line-height:1.5; padding:4px 0 4px 25px; color:#036; text-decoration:underline;}
+        div#csum div#groups ul li a.selected {color:black; font-weight:bold; text-decoration:none; border:1px solid #CCC; background-color:#FFC;}
+        div#csum div#groups ul li a.selected:hover {background-color: #FFC;}
+        div#csum div#groups ul li a:hover {background-color:#F0F0F0;}
+        div#csum div#groups ul li a:active {background-color:#DDD;}
+        div#csum div#groups form {}
 
+        div.mode {float:right; padding:3px 3px 0 0;}
+        div.mode a {text-decoration:none;}
+        div.mode a img {height:11px;}
+        div.mode a:hover {color:#333;}
+        div.mode a.selected {font-weight:bold;}
 
-        div#mode {}
-        div#mode a {}
-        div#mode a:hover {background-color:green;}
-        div#mode a.selected {background-color:grey;}
+        div#csum div#groupEditor {float:right; width:476px; padding:0 10px;}
 
-        div#csum div#groupEditor {float:right; width:484px; padding:0 6px; background-color:#FFF; border:2px solid #FFF;}
+        div#csum div.groupOpts {text-align:right;}
+        div#csum div.groupOpts a {text-decoration:none;}
+        div#csum div.groupOpts a img {height:12px;}
 
-        div#csum div#groupEditor table {width:100%;}
-        div#csum div#groupEditor table tr {}
-        div#csum div#groupEditor table tr.even {background-color:#EEE;}
-        div#csum div#groupEditor table tr th {font-weight:bold; color:#036; text-align:left; border-bottom:2px solid #036;}
-        div#csum div#groupEditor table tr td {border-bottom:1px solid #CCC;}
+        div#csum table {width:100%; border-bottom:2px solid #036;}
+        div#csum table tr {}
+        div#csum table tr.even {background-color:#EEE;}
+        div#csum table tr th {font-weight:bold; color:#036; text-align:left; border-bottom:2px solid #036;}
+        div#csum table tr td {padding:1px 2px;}
+        div#csum table tr td.delete {width:4em; text-align:center;}
 
+        div#csum div#bulkEdit {}
+        div#csum form#bulkChange fieldset label {display: block; margin: 1em 0 0 0;}
+        div#csum form#bulkChange fieldset input {width:auto;}
 
-		div#csum div#footer {clear:both; border-top:1px solid #CCC; margin:15px 0 0 0;}
-		div#csum div#footer ul {clear:both; display:block; margin:0; padding:0;}
-		div#csum div#footer ul li {display:inline;}
-		div#csum div#footer ul li a {display:block; color:#036; margin:0; padding:5px 15px; float:left; line-height:1; border-right:1px solid #CCC;}
-		div#csum div#footer ul li a img {padding:0 5px;}
+        div#csum div#footer {clear:both; border-top:1px solid #CCC;}
+        div#csum div#footer ul {clear:both; display:block; margin:0; padding:0;}
+        div#csum div#footer ul li {display:inline;}
+        div#csum div#footer ul li a {display:block; color:#036; margin:0; padding:5px 10px; float:left; line-height:1; border-right:1px solid #CCC;}
+        div#csum div#footer ul li a img {padding:0 5px;}
+
+        div#csum a#showAdvS {margin:6px 0 0 0; display: block; float:right; clear: both; text-decoration:none;}
+        div#csum a#hideAdvS {display:block; margin:3px 3px 1px 0; float:right; text-decoration: none;}
+
+        div#csum div#addUserOpts {background-color: #FFF; border:1px solid #CCC; padding:0;}
+        div#csum div#addUserOpts ul {list-style: none; margin:0; padding:0;}
+        div#csum div#addUserOpts ul li {display:block; margin:0; padding:.2em .4em;}
+        div#csum div#addUserOpts ul li.myCustomHighlightClass {margin:0; padding:.2em .4em; background:#FFFFCC; font-weight: bold;}
+        div#csum div#addUserOpts ul li.myCustomPrehighlightClass {margin:0; padding:.2em .4em; background:#D8E4F1;}
     </style>
 
-#parse ( "/templates/permissionmgmt/action-messages.vm" )
 <div id="csum">
+    <div class="messages">
+		#parse ( "/templates/permissionmgmt/action-messages.vm" )
+	</div>
+
     #if(${action.isPluginConfigurationDone})
+
     <div id="groups">
         #parse( "/templates/permissionmgmt/group-list.vm" )
     </div>
 
         #if(${action.selectedGroup})
         <div id="groupEditor">
-		    <h2>Edit ${action.selectedGroup}:</h2>
-
-			#if(${action.isGroupActionsPermitted})
-			    (<a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=${action.selectedGroup}">remove ${action.selectedGroup}</a>)<br />
-			#end
-
             #if($action.userSearch)
                 #parse ( "/templates/permissionmgmt/manage-users-advanced.vm" )
-                Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">Basic Form / List Users</a>
+		    #*
+		    #elseif($action.bulkEdit)
+		        #parse ( "/templates/permissionmgmt/bulk-edit.vm" )
+		    *#
 		    #else
 		        #parse ( "/templates/permissionmgmt/manage-users-basic.vm" )
-		        Other options: <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1">Advanced Form / Search and Add</a>
 		    #end
         </div>
         #end
@@ -120,6 +145,7 @@
 
     #parse ( "/admin/admin-breadcrumbs.vm" )
 
+#*
     #if($isGroupActionsPermitted)
 		<div id="footer">
 			<ul>
@@ -131,7 +157,9 @@
 	#else
 		<div style="clear:both"></div>
     #end
+*#
 
+<div style="clear:both"></div>
 
 #end
 </div>
