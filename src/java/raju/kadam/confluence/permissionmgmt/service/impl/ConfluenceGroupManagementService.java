@@ -124,35 +124,32 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
         });
     }
 
-    public void addGroup( String groupName, ServiceContext context ) throws AddException {
-        log.debug("addGroup() called. groupName='" + groupName + "'");
+    public void addGroups( List groupNames, ServiceContext context ) throws AddException {
+        log.debug("addGroups() called. groupName='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");
         Space space = context.getSpace();
 
-		if (userAccessor.getGroup(groupName) == null) {
+        for (int i=0; i<groupNames.size(); i++) {
+            String groupName = (String)groupNames.get(i);
+            if (userAccessor.getGroup(groupName) == null) {
 
-            Group vGroup = userAccessor.addGroup(groupName);
-            log.debug("created " + groupName);
+                Group vGroup = userAccessor.addGroup(groupName);
+                log.debug("created " + groupName);
 
-            //If group exists then set all required permissions
-            if (vGroup != null)
-            {
-                SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION, space, vGroup.getName());
-                space.addPermission(perm);
-                log.debug("added viewspace perm to " + groupName);
+                //If group exists then set all required permissions
+                if (vGroup != null)
+                {
+                    SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION, space, vGroup.getName());
+                    space.addPermission(perm);
+                    log.debug("added viewspace perm to " + groupName);
+                }
+            }
+            else {
+                log.debug("group was already there, so didn't do anything.");
             }
         }
-        else {
-            log.debug("group was already there, so didn't do anything.");
-        }
     }
 
-    public void removeGroup( String groupName, ServiceContext context ) throws RemoveException {
-        log.debug("removeGroup() called. groupName='" + groupName + "'");
-        List groups = ListUtil.createListOfOneItem(groupName);
-        removeGroupsByGroupnames(groups, context);
-    }
-
-    public void removeGroupsByGroupnames( List groupNames, ServiceContext context ) throws RemoveException
+    public void removeGroups( List groupNames, ServiceContext context ) throws RemoveException
     {
         log.debug("removeGroupsByGroupnames() called.");
         RemoveException ex = null;

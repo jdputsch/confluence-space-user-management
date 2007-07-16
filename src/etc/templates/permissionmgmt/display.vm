@@ -127,18 +127,18 @@
     <div id="groups">
         #parse( "/templates/permissionmgmt/group-list.vm" )
     </div>
-
-        #if(${action.selectedGroup})
+        
         <div id="groupEditor">
-            #if($action.userSearch)
-                #parse ( "/templates/permissionmgmt/manage-users-advanced.vm" )
-		    #elseif($action.bulkEdit)
-		        #parse ( "/templates/permissionmgmt/bulk-edit.vm" )
-		    #else
-		        #parse ( "/templates/permissionmgmt/manage-users-basic.vm" )
-		    #end
-        </div>
+        #if($action.userSearch)
+            #parse ( "/templates/permissionmgmt/manage-users-advanced.vm" )
+        #elseif($action.bulkEdit)
+            #parse ( "/templates/permissionmgmt/bulk-edit.vm" )
+        #else
+            #if(${action.selectedGroup})
+                #parse ( "/templates/permissionmgmt/manage-users-basic.vm" )
+            #end
         #end
+        </div>
     #else
         #if(${action.customPermissionConfiguration.pluginDown} == "yes")
             <p class="infoMacro">${action.customPermissionConfiguration.downTimeMessage}</p>

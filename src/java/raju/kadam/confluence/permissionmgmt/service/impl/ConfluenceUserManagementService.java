@@ -189,13 +189,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
         return pager;
     }
 
-    public void addUsersByUsernameToGroup(List userNames, String groupName, ServiceContext context) throws AddException {
-        log.debug("addUsersByUsernameToGroup() called.");
-        List groupNames = ListUtil.createListOfOneItem(groupName);
-        addUsersByUsernameToGroupsByGroupname(userNames, groupNames);
-    }
-
-    private void addUsersByUsernameToGroupsByGroupname(List userNames, List groupNames) throws AddException {
+    public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws AddException {
         log.debug("addUsersByUsernameToGroupsByGroupname() called.");
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
 
@@ -282,13 +276,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
 
-    public void removeUsersByUsernameFromGroup(List userNames, String groupName, ServiceContext context) throws RemoveException {
-        log.debug("removeUsersByUsernameFromGroup() called.");
-        List groupNames = ListUtil.createListOfOneItem(groupName);
-        removeUsersByUsernamesFromGroupsByGroupname(userNames, groupNames);
-    }
-
-    private void removeUsersByUsernamesFromGroupsByGroupname(List userNames, List groupNames) {
+    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) {
         log.debug("removeUsersByUsernamesFromGroupsByGroupname() called.");
         for (Iterator itr = userNames.iterator(); itr.hasNext();) {
             String userid = (String) itr.next();

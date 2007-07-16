@@ -15,6 +15,7 @@ import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteUser;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.paging.ListPaginatedList;
+import raju.kadam.util.StringUtil;
 
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
@@ -101,8 +102,8 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
         return pager;
     }
 
-    public void addGroup(String groupName, ServiceContext context) throws AddException {
-        log.debug("addGroup() called. groupName='" + groupName + "'");
+    public void addGroups(List groupNames, ServiceContext context) throws AddException {
+        log.debug("addGroup() called. groupNames='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");
         JiraSoapService jiraSoapService = null;
         String token = null;
 
@@ -112,7 +113,10 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
             jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
             token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
             RemoteUser remoteUser = null;
-            jiraSoapService.createGroup(token, groupName, remoteUser);
+            for (int i=0; i<groupNames.size(); i++) {
+                String groupName = (String)groupNames.get(i);
+                jiraSoapService.createGroup(token, groupName, remoteUser);
+            }
         }
         catch (Throwable e) {
             e.printStackTrace();
@@ -130,8 +134,8 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
     }
 
 
-    public void removeGroup(String groupName, ServiceContext context) throws RemoveException {
-        log.debug("removeGroup() called. groupName='" + groupName + "'");
+    public void removeGroups(List groupNames, ServiceContext context) throws RemoveException {
+        log.debug("removeGroup() called. groupName='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");
         JiraSoapService jiraSoapService = null;
         String token = null;
 
@@ -141,7 +145,10 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
             jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
             token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
             String swapGroupName = null;
-            jiraSoapService.deleteGroup(token, groupName, swapGroupName);
+            for (int i=0; i<groupNames.size(); i++) {
+                String groupName = (String)groupNames.get(i);
+                jiraSoapService.deleteGroup(token, groupName, swapGroupName);
+            }
         }
         catch (Throwable e) {
             e.printStackTrace();

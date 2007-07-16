@@ -76,6 +76,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private String userSearch;
     private boolean userSearchFormFilled;
     private AdvancedUserQuery advancedUserQuery;
+    private String bulkEdit;
     private SettingsManager settingsManager;
     private String pagerAction;
 
@@ -127,12 +128,16 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public CustomPermissionManagerActionContext createContext() {
         CustomPermissionManagerActionContext context = new CustomPermissionManagerActionContext();
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        // TODO: consider converting selectedGroup from List to single element
-        context.setSelectedGroup(getParameterValue( paramMap, "selectedGroup"));
-        context.setGroupToAdd(getParameterValue( paramMap, "groupToAdd"));
-        context.setGroupToRemove(getParameterValue( paramMap, "groupToRemove"));
-        context.setUsersToAdd(StringUtil.convertColonSemicolonOrCommaDelimitedStringToList(getParameterValue( paramMap, "usersToAdd")));
-        context.setUsersToRemove(StringUtil.convertColonSemicolonOrCommaDelimitedStringToList(getParameterValue( paramMap, "usersToRemove")));
+        String groups = getParameterValue( paramMap, "groups");
+        if ( groups != null ) {
+            // groups specified as single comma-delimited string. used by everything else.
+            context.setSpecifiedGroups(StringUtil.convertColonSemicolonOrCommaDelimitedStringToList(groups));
+        }
+        else {
+            // groups specified by group of checkboxes. used by bulk-edit.
+            context.setSpecifiedGroups(HtmlFormUtil.retrieveListOfSelectedUserGroups(paramMap));
+        }
+        context.setSpecifiedUsers(StringUtil.convertColonSemicolonOrCommaDelimitedStringToList(getParameterValue( paramMap, "users")));
         context.setLoggedInUser(getRemoteUser().getName());
 		context.setKey(getKey());
     	context.setAdminAction(getParameterValue( paramMap, "adminAction"));
@@ -207,7 +212,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         CustomPermissionManagerActionContext context = createContext();
 
-        setSelectedGroup(context.getSelectedGroup());
         setUserSearch(context.getUserSearch());
 
         AdvancedUserQuery advancedUserQuery = createAdvancedUserQuery();
@@ -217,6 +221,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
+
+        setBulkEdit(getParameterValue(paramMap, "bulkEdit"));
+
+        String selectedGroup = getParameterValue(paramMap, "selectedGroup");
+        setSelectedGroup(selectedGroup);                
 
         // handle refresh
         if (getParameterValue(paramMap, "refresh")!=null) {
@@ -406,19 +415,19 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             if(adminAction != null)
             {
 
-                if(adminAction.equals("addUsersToGroup") || adminAction.equals("removeUsersFromGroup")) {
+                if(adminAction.equals("addUsersToGroups") || adminAction.equals("removeUsersFromGroups")) {
                     // get the old instance's paging index
                     int oldUsersIndex = getUsers().getStartIndex();
                     try {
-                        if(adminAction.equals("addUsersToGroup"))
+                        if(adminAction.equals("addUsersToGroups"))
                         {
-                            userManagementService.addUsersByUsernameToGroup(context.getUsersToAdd(), context.getSelectedGroup(), serviceContext);
-                            opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToAdd()) + " added to group " + context.getSelectedGroup() + " successfully!</font>";
+                            userManagementService.addUsersByUsernameToGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
+                            opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " added to group(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " successfully!</font>";
                         }
-                        else if(adminAction.equals("removeUsersFromGroup"))
+                        else if(adminAction.equals("removeUsersFromGroups"))
                         {
-                            userManagementService.removeUsersByUsernameFromGroup(context.getUsersToRemove(), context.getSelectedGroup(), serviceContext);
-                            opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToRemove()) + " removed from group " + context.getSelectedGroup() + " successfully!</font>";
+                            userManagementService.removeUsersByUsernameFromGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
+                            opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " removed from group(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " successfully!</font>";
                         }
                     }
                     catch (Throwable t) {
@@ -429,34 +438,53 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     }
                     finally {
                         // clear user cache and repopulate
-                        this.clearUserCache(context.getKey(), getSelectedGroup());
+                        this.clearUserCache(context.getKey(), context.getSpecifiedGroups());
                         this.populateDataUnlessCached();
 
                         // NOTE: intentionally calling getUsers() again because it is a new instance!
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
                     }
                 }
-                else if(adminAction.equals("addGroup") || adminAction.equals("removeGroup")) {
+                else if(adminAction.equals("addGroups") || adminAction.equals("removeGroups")) {
                     // get the old instance's paging index
                     int oldGroupsIndex = getGroups().getStartIndex();
+                    int oldUsersIndex = getUsers().getStartIndex();
 
                     String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
                     log.debug("group name prefix will be " + prefix);
                     String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
                     log.debug("group name suffix will be " + suffix);
-                    String groupName = prefix + context.getGroupToAdd() + suffix;
+
+                    boolean usersAdded = false;
                     try {
                         if(adminAction.equals("addGroup"))
                         {
-                            groupManagementService.addGroup(groupName, serviceContext);
-                            opMessage = "<font color=\"green\">Group " + groupName + " added successfully!</font>";
+                            List fixedGroupNames = new ArrayList();
+                            List oldGroupNames = context.getSpecifiedGroups();
+                            for (int i=0; i<oldGroupNames.size(); i++) {
+                                String oldGroupName = (String)oldGroupNames.get(i);
+                                String newGroupName = prefix + oldGroupName + suffix;
+                                fixedGroupNames.add(newGroupName);
+                            }
+
+                            groupManagementService.addGroups(fixedGroupNames, serviceContext);
+                            opMessage = "<font color=\"green\">Group(s) " + StringUtil.convertCollectionToCommaDelimitedString(fixedGroupNames) + " added successfully!</font>";
+
+                            List specifiedUsers = context.getSpecifiedUsers();
+                            if (specifiedUsers!=null && specifiedUsers.size()>0) {
+                                // get the old instance's paging index
+                                usersAdded = true;
+                                userManagementService.addUsersByUsernameToGroups(specifiedUsers, fixedGroupNames, serviceContext);
+                            }
                         }
                         else if(adminAction.equals("removeGroup"))
                         {
-                            groupManagementService.removeGroup(context.getGroupToRemove(), serviceContext);
-                            opMessage = "<font color=\"green\">Group " + context.getGroupToRemove() + " removed successfully!</font>";
-                            // group no longer exists. remove cached group memberships if any.
-                            this.clearUserCache(context.getKey(), context.getGroupToRemove());
+                            List specifiedGroups = context.getSpecifiedGroups();
+
+                            groupManagementService.removeGroups(specifiedGroups, serviceContext);
+                            opMessage = "<font color=\"green\">Group(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " removed successfully!</font>";
+                            // groups no longer exist. remove cached group memberships if any.
+                            this.clearUserCache(context.getKey(), specifiedGroups);
                         }
                     }
                     catch (Throwable t) {
@@ -468,10 +496,17 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     finally {
                         // clear group cache and repopulate
                         this.clearGroupCache(context.getKey());
+                        if (usersAdded) {
+                            this.clearUserCache(context.getKey(), context.getSpecifiedGroups());
+                        }
+
                         this.populateDataUnlessCached();
 
-                        // NOTE: intentionally calling getGroups() because it is a new instance!
+                        // NOTE: intentionally calling getGroups() and getUsers() because they are new instances!
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
+                        if (usersAdded) {
+                            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+                        }
                     }
                 }
             }
@@ -860,6 +895,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     public void setAdvancedUserQuery(AdvancedUserQuery advancedUserQuery) {
         this.advancedUserQuery = advancedUserQuery;
+    }
+
+    public String getBulkEdit() {
+        return bulkEdit;
+    }
+
+    public void setBulkEdit(String bulkEdit) {
+        this.bulkEdit = bulkEdit;
     }
 
     public SettingsManager getSettingsManager() {

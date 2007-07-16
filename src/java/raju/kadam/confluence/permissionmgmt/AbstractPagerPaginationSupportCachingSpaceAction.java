@@ -7,6 +7,7 @@ import com.opensymphony.xwork.ActionContext;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import bucket.core.actions.PagerPaginationSupport;
 import org.apache.commons.logging.Log;
@@ -76,11 +77,13 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
         session.remove(sessionKey);
     }
 
-    public void clearUserCache(String spaceKey, String groupName) {
-        String sessionKey = PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + groupName + "-" + USERS_SESSION_KEY_SUFFIX;
-        log.debug("Clearing all users cache for spacekey '" + spaceKey + "' and groupName '" + groupName + "' (removing all session data for key '" + sessionKey + "')");
-
+    public void clearUserCache(String spaceKey, List groupNames) {        
         Map session = (Map) ActionContext.getContext().get("session");
-        session.remove(sessionKey);
+        for (int i=0; i<groupNames.size(); i++) {
+            String groupName = (String)groupNames.get(i);
+            String sessionKey = PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + groupName + "-" + USERS_SESSION_KEY_SUFFIX;
+            log.debug("Clearing all users cache for spacekey '" + spaceKey + "' and groupName '" + groupName + "' (removing all session data for key '" + sessionKey + "')");
+            session.remove(sessionKey);
+        }
     }
 }

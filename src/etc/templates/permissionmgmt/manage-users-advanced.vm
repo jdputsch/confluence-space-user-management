@@ -93,10 +93,10 @@
                         <td align="left" class="permissionCell" valign="top">$!userEmail</td>
                         #if($action.isMemberOfSelectedGroup($!userName))
                         <td align="left" class="permissionCell" valign="top"><img alt="$!userName is a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/check.gif"/></td>
-                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
+                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
                         #else
                         <td align="left" class="permissionCell" valign="top"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/error.gif"/></td>
-                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=addUsersToGroup&usersToAdd=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="/images/icons/logo_add_16.gif"/></a></td>
+                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="/images/icons/logo_add_16.gif"/></a></td>
                         #end
                     </tr>
                     <tr>

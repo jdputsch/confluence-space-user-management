@@ -29,7 +29,10 @@
 <!-- start group-list -->
 
         <div class="sectionHeader">
-            <div class="mode">&raquo; <a href="#">Bulk Change Tool</a></div>
+            <div class="mode">
+            &raquo; <a href="docustompermissionsmanage.action?key=${key}&bulkEdit=1">Bulk Change Tool</a><br/>
+            &raquo; <a href="docustompermissionsmanage.action?key=${key}&userSearch=1">Search Users</a><br/>
+            </div>
             <h2>${action.space.name} ($action.space.key) Groups:</h2>
         </div>
 
@@ -48,16 +51,16 @@
             #if(${action.isGroupActionsPermitted})
             <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="addGroupForm" name="AddGroupForm">
                 <fieldset>
-                    <input type="hidden" name="adminAction" value="addGroup"/>
-                    <label for="addGroup">Add Group:</label>
-                    <input type="text" name="groupToAdd" id="groupToAdd" ></input>
+                    <input type="hidden" name="adminAction" value="addGroups"/>
+                    <label for="addGroups">Add Group:</label>
+                    <input type="text" name="groups" id="groups" ></input>
 
                     <ul class="formHelp">
                         <li>eg. entering Duke-Presidents will create the group "${action.newGroupPrefix}Duke-Presidents${action.newGroupSuffix}"</li>
                     </ul>
 
                     <label class="scndryInpt" for="addGroup">With Users:</label>
-                    <input name="addGroupUsers" type="text" /></input>
+                    <input id ="users" name="users" type="text" /></input>
 
                     <ul class="formHelp">
                         <li>(optional)</li>

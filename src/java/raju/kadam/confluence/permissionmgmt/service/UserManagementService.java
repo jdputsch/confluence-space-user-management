@@ -22,9 +22,9 @@ public interface UserManagementService {
 
     public Pager findUsersWhoseNameStartsWith( String partialName, ServiceContext context ) throws FindException;
 
-    public void addUsersByUsernameToGroup( List userNames, String groupName, ServiceContext context ) throws AddException;
+    public void addUsersByUsernameToGroups( List userNames, List groupNames, ServiceContext context ) throws AddException;
 
-    public void removeUsersByUsernameFromGroup( List userNames, String groupName, ServiceContext context ) throws RemoveException;
+    public void removeUsersByUsernameFromGroups( List userNames, List groupNames, ServiceContext context ) throws RemoveException;
 
     public boolean isMemberOf(String userName, String groupName) throws FindException;
 }

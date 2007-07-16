@@ -31,7 +31,7 @@
             <div class="sectionHeader">
 				#if(${action.isGroupActionsPermitted})
 				<div class="mode">
-			        <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=${action.selectedGroup}"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> Delete Group ${action.selectedGroup}</a>
+			        <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroups&groups=${action.selectedGroup}"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> Delete Group ${action.selectedGroup}</a>
 			    </div>
 			    #end
 				<h2>Edit Group ${action.selectedGroup}</h2>
@@ -41,9 +41,9 @@
 
             <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="addUsersForm" name="ManageUsersForm">
                 <fieldset>
-                    <input type="hidden" name="adminAction" value="addUsersToGroup"/>
-                    <label for="usersToAdd">Add User(s) to ${action.selectedGroup}:</label>
-                    <input type="text" style="width:100%;" id="usersToAdd" name="usersToAdd"/>
+                    <input type="hidden" name="adminAction" value="addUsersToGroups"/>
+                    <label for="users">Add User(s) to ${action.selectedGroup}:</label>
+                    <input type="text" style="width:100%;" id="users" name="users"/>
                     ##<div id="addUserOpts"></div>
 					<ul class="formHelp">
 						<li>Please enter a comma separated list of NetIds</li>

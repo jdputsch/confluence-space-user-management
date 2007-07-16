@@ -18,22 +18,16 @@ public class CustomPermissionManagerActionContext {
     String loggedInUser;
     String key;
     String adminAction;
-    List usersToAdd;
-    List usersToRemove;
-    String groupToAdd;
-    String groupToRemove;
-    String selectedGroup;
+    List specifiedUsers;
+    List specifiedGroups;
     String userSearch;
 
     public String toString() {
         return "loggedInUser=" + loggedInUser +
                 ", key=" + key +
                 ", adminAction=" + adminAction +
-                ", usersToAdd=" + StringUtil.convertCollectionToCommaDelimitedString(usersToAdd) +
-                ", usersToRemove=" + StringUtil.convertCollectionToCommaDelimitedString(usersToRemove) +
-                ", groupToAdd=" + groupToAdd +
-                ", groupToRemove=" + groupToRemove +
-                ", selectedGroup=" + selectedGroup +
+                ", specifiedUsers=" + StringUtil.convertCollectionToCommaDelimitedString(specifiedUsers) +
+                ", specifiedGroups=" + StringUtil.convertCollectionToCommaDelimitedString(specifiedGroups) +
                 ", userSearch=" + userSearch;
     }
 
@@ -61,44 +55,20 @@ public class CustomPermissionManagerActionContext {
         this.adminAction = adminAction;
     }
 
-    public List getUsersToAdd() {
-        return usersToAdd;
+    public List getSpecifiedUsers() {
+        return specifiedUsers;
     }
 
-    public void setUsersToAdd(List usersToAdd) {
-        this.usersToAdd = usersToAdd;
+    public void setSpecifiedUsers(List specifiedUsers) {
+        this.specifiedUsers = specifiedUsers;
     }
 
-    public List getUsersToRemove() {
-        return usersToRemove;
+    public List getSpecifiedGroups() {
+        return specifiedGroups;
     }
 
-    public void setUsersToRemove(List usersToRemove) {
-        this.usersToRemove = usersToRemove;
-    }
-
-    public String getGroupToAdd() {
-        return groupToAdd;
-    }
-
-    public void setGroupToAdd(String groupToAdd) {
-        this.groupToAdd = groupToAdd;
-    }
-
-    public String getGroupToRemove() {
-        return groupToRemove;
-    }
-
-    public void setGroupToRemove(String groupToRemove) {
-        this.groupToRemove = groupToRemove;
-    }
-
-    public String getSelectedGroup() {
-        return selectedGroup;
-    }
-
-    public void setSelectedGroup(String selectedGroup) {
-        this.selectedGroup = selectedGroup;
+    public void setSpecifiedGroups(List specifiedGroups) {
+        this.specifiedGroups = specifiedGroups;
     }
 
     public String getUserSearch() {

@@ -184,7 +184,7 @@ public class JiraSoapUserManagementService implements UserManagementService {
         return findUsers(advancedUserQuery, context).getUsers();
     }
 
-    public void addUsersByUsernameToGroup(List userNames, String groupName, ServiceContext context) throws AddException
+    public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws AddException
     {
         log.debug("addUsersByUsernameToGroup() called.");
         JiraSoapService jiraSoapService = null;
@@ -196,13 +196,17 @@ public class JiraSoapUserManagementService implements UserManagementService {
             jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
             jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
             token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
-            RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
 
-            for (int j=0; j<userNames.size(); j++) {
-                String userName = (String)userNames.get(j);
-                RemoteUser remoteUser = jiraSoapService.getUser(token, userName);
+            for (int i=0; i<groupNames.size(); i++) {
+                String groupName = (String)groupNames.get(i);
+                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
 
-                jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                for (int j=0; j<userNames.size(); j++) {
+                    String userName = (String)userNames.get(j);
+                    RemoteUser remoteUser = jiraSoapService.getUser(token, userName);
+
+                    jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                }
             }
         }
         catch (Throwable e)
@@ -225,7 +229,7 @@ public class JiraSoapUserManagementService implements UserManagementService {
         }
     }
 
-    public void removeUsersByUsernameFromGroup(List userNames, String groupName, ServiceContext context) throws RemoveException
+    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws RemoveException
     {
         log.debug("removeUsersByUsernameFromGroup() called.");
         JiraSoapService jiraSoapService = null;
@@ -237,13 +241,17 @@ public class JiraSoapUserManagementService implements UserManagementService {
             jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
             jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
             token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
-            RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
 
-            for (int j=0; j<userNames.size(); j++) {
-                String userName = (String)userNames.get(j);
-                RemoteUser remoteUser = jiraSoapService.getUser(token, userName);
+            for (int i=0; i<groupNames.size(); i++) {
+                String groupName = (String)groupNames.get(i);
+                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
 
-                jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
+                for (int j=0; j<userNames.size(); j++) {
+                    String userName = (String)userNames.get(j);
+                    RemoteUser remoteUser = jiraSoapService.getUser(token, userName);
+
+                    jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
+                }
             }
         }
         catch (Throwable e)
