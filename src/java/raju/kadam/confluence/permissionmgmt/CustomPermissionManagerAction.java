@@ -393,31 +393,74 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             if(adminAction != null)
             {
 
-                if(adminAction.equals("addUsersToGroup"))
-                {
-                    userManagementService.addUsersByUsernameToGroup(context.getUsersToAdd(), context.getSelectedGroup(), serviceContext);
-                    opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToAdd()) + " added to group " + context.getSelectedGroup() + " successfully!</font>";
+                if(adminAction.equals("addUsersToGroup") || adminAction.equals("removeUsersFromGroup")) {
+                    // get the old instance's paging index
+                    int oldUsersIndex = getUsers().getStartIndex();
+                    try {
+                        if(adminAction.equals("addUsersToGroup"))
+                        {
+                            userManagementService.addUsersByUsernameToGroup(context.getUsersToAdd(), context.getSelectedGroup(), serviceContext);
+                            opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToAdd()) + " added to group " + context.getSelectedGroup() + " successfully!</font>";
+                        }
+                        else if(adminAction.equals("removeUsersFromGroup"))
+                        {
+                            userManagementService.removeUsersByUsernameFromGroup(context.getUsersToRemove(), context.getSelectedGroup(), serviceContext);
+                            opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToRemove()) + " removed from group " + context.getSelectedGroup() + " successfully!</font>";
+                        }
+                    }
+                    catch (Throwable t) {
+                        log.error("Failed action", t);
+                        resultList.add("" + t.getMessage());
+                        setActionErrors(resultList);
+                        return ERROR;
+                    }
+                    finally {
+                        // clear user cache and repopulate
+                        this.clearUserCache(context.getKey(), getSelectedGroup());
+                        this.populateDataUnlessCached();
+
+                        // NOTE: intentionally calling getUsers() again because it is a new instance!
+                        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+                    }
                 }
-                else if(adminAction.equals("removeUsersFromGroup"))
-                {
-                    userManagementService.removeUsersByUsernameFromGroup(context.getUsersToRemove(), context.getSelectedGroup(), serviceContext);
-                    opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getUsersToRemove()) + " removed from group " + context.getSelectedGroup() + " successfully!</font>";
-                }
-                else if(adminAction.equals("addGroup"))
-                {
+                else if(adminAction.equals("addGroup") || adminAction.equals("removeGroup")) {
+                    // get the old instance's paging index
+                    int oldGroupsIndex = getGroups().getStartIndex();
+
                     String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
                     log.debug("group name prefix will be " + prefix);
                     String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
                     log.debug("group name suffix will be " + suffix);
                     String groupName = prefix + context.getGroupToAdd() + suffix;
-                    groupManagementService.addGroup(groupName, serviceContext);
-                    opMessage = "<font color=\"green\">Group " + groupName + " added successfully!</font>";
+                    try {
+                        if(adminAction.equals("addGroup"))
+                        {
+                            groupManagementService.addGroup(groupName, serviceContext);
+                            opMessage = "<font color=\"green\">Group " + groupName + " added successfully!</font>";
+                        }
+                        else if(adminAction.equals("removeGroup"))
+                        {
+                            groupManagementService.removeGroup(context.getGroupToRemove(), serviceContext);
+                            opMessage = "<font color=\"green\">Group " + context.getGroupToRemove() + " removed successfully!</font>";
+                            // group no longer exists. remove cached group memberships if any.
+                            this.clearUserCache(context.getKey(), context.getGroupToRemove());
+                        }
+                    }
+                    catch (Throwable t) {
+                        log.error("Failed action", t);
+                        resultList.add("" + t.getMessage());
+                        setActionErrors(resultList);
+                        return ERROR;
+                    }
+                    finally {
+                        // clear group cache and repopulate
+                        this.clearGroupCache(context.getKey());
+                        this.populateDataUnlessCached();
+
+                        // NOTE: intentionally calling getGroups() because it is a new instance!
+                        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
+                    }
                 }
-                else if(adminAction.equals("removeGroup"))
-                {
-                    groupManagementService.removeGroup(context.getGroupToRemove(), serviceContext);
-                    opMessage = "<font color=\"green\">Group " + context.getGroupToRemove() + " removed successfully!</font>";
-                }                
             }
 
             // note: is normal at times not to have an action (selecting group for example)
@@ -425,7 +468,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         catch(Throwable t)
         {
             log.error("Failed action", t);
-            clearGroupAndUserCache();
             resultList.add("" + t.getMessage());
             setActionErrors(resultList);
             return ERROR;

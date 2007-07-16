@@ -14,6 +14,43 @@ public class PagerPaginationSupportUtil {
 
     public static final Log log = LogFactory.getLog(PagerPaginationSupportUtil.class);
 
+    /**
+     * If you get pps.getStartIndex() and remove a lot of records, this will ensure you can get back to the location
+     * as close to the original index as possible to avoid disorientation.
+     */
+    public static void safelyMoveToOldStartIndex(int startIndex, PagerPaginationSupport pps) {
+        log.debug("safelyMoveToOldStartIndex() called. startIndex=" + startIndex);
+        if (pps!=null) {
+            int[] startIndexes = pps.getNextStartIndexes();
+            if (startIndexes!=null && startIndexes.length > 0) {
+                int closestStartIndex = -1;
+                for (int i=0; i<startIndexes.length; i++) {
+                    int nextStartIndex = startIndexes[i];
+                    int oldAbsoluteDifference = Math.abs(startIndex - closestStartIndex);
+                    int absoluteDifference = Math.abs(startIndex - nextStartIndex);
+
+                    log.debug("is startIndex=" + startIndex + " closer to " + closestStartIndex + " or " + nextStartIndex + " ?");
+
+                    if ( absoluteDifference < oldAbsoluteDifference ) {
+                        log.debug("now using " + nextStartIndex + " as closest index");
+                        closestStartIndex = nextStartIndex;
+                    }
+                }
+
+                if (closestStartIndex>-1) {
+                    log.debug("index " + closestStartIndex + " was closest index to old index " + startIndex);
+                    pps.setStartIndex(closestStartIndex);
+                }
+            }
+            else {
+                log.debug("nextStartIndexes was null");
+            }
+        }
+        else {
+            log.debug("safelyMoveToOldStartIndex() shouldn't really be called with null. programming error");
+        }
+    }
+
     public static boolean hasNext(PagerPaginationSupport pps) {
         boolean result = false;
 
