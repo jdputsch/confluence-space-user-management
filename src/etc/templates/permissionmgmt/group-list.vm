@@ -30,11 +30,6 @@
 
             <h2>${action.space.name} ($action.space.key) Groups:</h2>
 
-            ##TODO: work on groups caching mechanism (need way to refresh)
-            #if(!${action.groups})
-                $action.findGroups()
-            #end
-
             #set ($groups = ${action.groups})
 
             #if($groups)

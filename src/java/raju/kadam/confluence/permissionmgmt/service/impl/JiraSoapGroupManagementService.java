@@ -45,6 +45,7 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
 
     //TODO: request getGroups(String token) as a feature in Jira's soap service
     public Pager findGroups(ServiceContext context) throws FindException {
+        log.debug("findGroups() called.");
         // select groupname from groupbase
 
         List results = new ArrayList();
@@ -101,7 +102,7 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
     }
 
     public void addGroup(String groupName, ServiceContext context) throws AddException {
-
+        log.debug("addGroup() called. groupName='" + groupName + "'");
         JiraSoapService jiraSoapService = null;
         String token = null;
 
@@ -130,6 +131,7 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
 
 
     public void removeGroup(String groupName, ServiceContext context) throws RemoveException {
+        log.debug("removeGroup() called. groupName='" + groupName + "'");
         JiraSoapService jiraSoapService = null;
         String token = null;
 

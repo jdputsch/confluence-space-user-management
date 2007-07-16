@@ -27,11 +27,6 @@
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
             <!-- start manage-users-advanced -->
-            ##TODO: fix user caching mechanism
-            #if(${action.userSearchFormFilled} && !$action.pagerAction)
-                $action.findUsersAdvanced()
-            #end
-
             #set ($users = $action.users)
 
             <div id="advancedUserSearchForm">

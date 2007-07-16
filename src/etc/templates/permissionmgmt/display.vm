@@ -86,8 +86,6 @@
 		div#csum div#footer ul li a img {padding:0 5px;}
     </style>
 
-#parse ( "/templates/permissionmgmt/handle-pager-actions.vm" )
-
 #parse ( "/templates/permissionmgmt/action-messages.vm" )
 <div id="csum">
     #if(${action.isPluginConfigurationDone})

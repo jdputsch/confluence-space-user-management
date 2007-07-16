@@ -57,8 +57,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     
     public CustomPermissionConfigAction()
     {
-    	log.debug("CustomPermissionConfigAction start constructor");
-        log.debug("CustomPermissionConfigAction end constructor");
+    	log.debug("CustomPermissionConfigAction instance created");
     }
     
     public void setBandanaManager(BandanaManager bandanaManager)

@@ -36,6 +36,7 @@ public class JiraSoapUserManagementService implements UserManagementService {
     private CustomPermissionConfiguration customPermissionConfiguration;
 
     private boolean matches( String value, String searchValue, String type ) {
+        log.debug("matches() called.");
         boolean result = false;
         if (value != null && searchValue != null && type != null) {
             if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH && value.startsWith(searchValue)) {
@@ -65,12 +66,13 @@ public class JiraSoapUserManagementService implements UserManagementService {
     }
 
     protected List getAllJiraUsers(ServiceContext context) throws FindException {
+        log.debug("getAllJiraUsers() called.");
         // TODO: refactor. converting from pager to list to pager is just plain stupid
         return PagerUtils.toList(findUsersForGroup("jira-users", context));
     }
 
     public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
-
+        log.debug("findUsers() called.");
         AdvancedUserQueryResults results = new AdvancedUserQueryResults();
 
         if (!advancedUserQuery.isDefined()) {
@@ -116,6 +118,7 @@ public class JiraSoapUserManagementService implements UserManagementService {
     }
 
     public Pager findUsersForGroup(String groupName, ServiceContext context) throws FindException {
+        log.debug("findUsersForGroup() called.");
         List users = new ArrayList();
 
         JiraSoapService jiraSoapService = null;
@@ -173,6 +176,7 @@ public class JiraSoapUserManagementService implements UserManagementService {
     }
 
     public Pager findUsersWhoseNameStartsWith(String partialName, ServiceContext context) throws FindException {
+        log.debug("findUsersWhoseNameStartsWith() called.");
         AdvancedUserQuery advancedUserQuery = new AdvancedUserQuery();
         advancedUserQuery.setLookupType(AdvancedUserQueryLookupType.USERNAME);
         advancedUserQuery.setPartialSearchTerm(partialName);
@@ -182,6 +186,7 @@ public class JiraSoapUserManagementService implements UserManagementService {
 
     public void addUsersByUsernameToGroup(List userNames, String groupName, ServiceContext context) throws AddException
     {
+        log.debug("addUsersByUsernameToGroup() called.");
         JiraSoapService jiraSoapService = null;
         String token = null;
 
@@ -222,6 +227,7 @@ public class JiraSoapUserManagementService implements UserManagementService {
 
     public void removeUsersByUsernameFromGroup(List userNames, String groupName, ServiceContext context) throws RemoveException
     {
+        log.debug("removeUsersByUsernameFromGroup() called.");
         JiraSoapService jiraSoapService = null;
         String token = null;
 
@@ -262,6 +268,7 @@ public class JiraSoapUserManagementService implements UserManagementService {
 
     public boolean isMemberOf(String userName, String groupName) throws FindException
     {
+        log.debug("isMemberOf() called.");
         boolean result = false;
 
         JiraSoapService jiraSoapService = null;

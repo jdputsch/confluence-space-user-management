@@ -20,6 +20,7 @@ public class GroupNameUtil {
 
 
     public static String replaceSpaceKey(String groupPattern, String spaceKey) {
+        log.debug("replaceSpaceKey() called.");
         //If spacekey is present in groupPattern then before compiling it replace it with current space key
         if (groupPattern.indexOf(CustomPermissionConstants.SPACEKEY) != -1) {
             //Replace String "SPACEKEY" with input Space Key.
@@ -31,6 +32,7 @@ public class GroupNameUtil {
 
     public static Pattern createGroupMatchingPattern(CustomPermissionConfiguration config, String spaceKey)
     {
+        log.debug("createGroupMatchingPattern() called.");
         String groupPattern = config.getUserGroupsMatchingPattern();
         if (groupPattern == null || (groupPattern.trim().equals(""))) {
             //This will only happen if we don't validate matching pattern during configuration.
@@ -47,6 +49,7 @@ public class GroupNameUtil {
     }
 
     public static boolean doesGroupMatchPattern(String grpName, Pattern pat) {
+        log.debug("doesGroupMatchPattern() called.");
         Matcher matcher = pat.matcher(grpName);
         boolean isMatch = matcher.matches();
 

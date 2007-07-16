@@ -37,6 +37,7 @@ import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.vo.*;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
+import raju.kadam.confluence.permissionmgmt.util.PagerPaginationSupportUtil;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
@@ -80,8 +81,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     public CustomPermissionManagerAction()
 	{
-		log.debug("CustomPermissionManagerAction start constructor");
-        log.debug("CustomPermissionManagerAction end constructor");
+		log.debug("CustomPermissionManagerAction instance created");
     }
     
     public void setBandanaManager(BandanaManager bandanaManager)
@@ -91,10 +91,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     
 	public String doDefault() throws Exception
     {
-		//This method will be called very first time when user access .../custompermissionsmanage.action?key=<SPACEKEY>
-		//It will display screen with all user groups as per usergroupsPattern setting in Configuration
+		//This method will be called very first time when user accesses .../custompermissionsmanage.action?key=<SPACEKEY>
 		log.debug("CustomPermissionManagerAction - log - Inside doDefault ..");
-        return super.doDefault();
+        return execute();
     }
 
     private int getRowsPerPage() {
@@ -150,9 +149,61 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return userQuery;
     }
 
+    private void populateDataUnlessCached() {
+        if (getGroups()==null) {
+            log.debug("getGroups() returned null so calling findAndSetGroups()");
+            findAndSetGroups();
+        }
+        else {
+            log.debug("returned cached groups.");
+        }
+
+        String selectedGroup = getSelectedGroup();
+        if (!ConfigUtil.isNullOrEmpty(selectedGroup)) {
+            if (getUsers()==null) {
+                log.debug("getUsers() returned null so calling findAndSetGroups()");
+                findAndSetUsers(selectedGroup);
+            }
+            else {
+                log.debug("returned cached users. selectedGroup='" + selectedGroup + "'");
+            }
+        }
+    }
+
+    private void handlePaging() {
+        String pagerAction = getPagerAction();
+        if ("nextPageGroups".equals(pagerAction)) {
+            PagerPaginationSupport groups = getGroups();
+            if (hasNext(groups)) {
+                next(groups);
+            }
+        }
+        else if ("prevPageGroups".equals(pagerAction)) {
+            PagerPaginationSupport groups = getGroups();
+            if (hasPrev(groups)) {
+                prev(groups);
+            }
+        }
+
+        if ("nextPageUsers".equals(pagerAction)) {
+            PagerPaginationSupport users = getUsers();
+            if (hasNext(users)) {
+                next(users);
+            }
+        }
+        else if ("prevPageUsers".equals(pagerAction)) {
+            PagerPaginationSupport users = getUsers();
+            if (hasPrev(users)) {
+                prev(users);
+            }
+        }
+    }
+
     public String execute() throws Exception
     {
-		log.debug("CustomPermissionManagerAction - log - Inside execute...");
+		log.debug("CustomPermissionManagerAction.execute() called");
+
+        populateDataUnlessCached();
 
         CustomPermissionManagerActionContext context = createContext();
 
@@ -166,7 +217,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        setPagerAction(getParameterValue( paramMap, "userSearch"));
+        setPagerAction(getParameterValue( paramMap, "pagerAction"));
+        handlePaging();
 
         //TODO: remove this section before release!
         // START TEST SECTION
@@ -326,7 +378,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     public String manage(CustomPermissionManagerActionContext context)
     {
-		List resultList = new ArrayList();
+		log.debug("manage() called");
+
+        List resultList = new ArrayList();
         String opMessage = null;
 		String adminAction = context.getAdminAction();
 
@@ -518,12 +572,16 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     //}
 
     public boolean getIsPluginConfigurationDone() {
+        log.debug("getIsPluginConfigurationDone() called");
+
         boolean isConfigValid = this.getCustomPermissionConfiguration().isValid();
         log.debug("isPluginConfigurationDone = " + isConfigValid);
         return isConfigValid;
     }
 
     public boolean getIsGroupActionsPermitted() {
+        log.debug("getIsGroupActionsPermitted() called");
+
         boolean isGroupActionsPermitted = false;
         String groupActionsPermitted = getCustomPermissionConfiguration().getGroupActionsPermitted();
         if (ConfigUtil.isNotNullAndIsYesOrNo(groupActionsPermitted)) {
@@ -575,7 +633,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         this.customPermissionConfiguration = customPermissionConfiguration;
     }
 
-    public void findGroups() {
+    public void findAndSetGroups() {
+
+        log.debug("findAndSetGroups() called");
+
         Pager pager = null;
         try {
             ServiceContext serviceContext = createServiceContext();
@@ -588,10 +649,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             log.error("Failed attempting to find groups", t);
         }
 
-        //TODO: need to fix get and set groups. there're a little too magical.
-        if (getGroups()==null) {
-            setGroups(createPagerPaginationSupport(pager));
-        }
+        setGroups(createPagerPaginationSupport(pager));
     }
 
     public PagerPaginationSupport createPagerPaginationSupport(Pager pager) {
@@ -622,7 +680,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
     }
 
-    public void findUsers(String groupName) {
+    public void findAndSetUsers(String groupName) {
+        log.debug("findAndSetUsers() called. groupName='" + groupName + "'");
+
         if ( groupName != null ) {
             Pager pager = null;
             try {
@@ -632,13 +692,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 log.error("Failed finding users", t);
             }
 
-            //TODO: need to fix get and set groups. there're a little too magical.
-            if (getUsers()==null) {
-                setUsers(createPagerPaginationSupport(pager));
-            }
+            setUsers(createPagerPaginationSupport(pager));
         }
         else {
-            log.debug("findUsers shouldn't be called with null groupName. programming error");
+            log.debug("findAndSetUsers shouldn't be called with null groupName. programming error");
         }
     }
 
@@ -651,6 +708,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public String findUsersWhoseNameStartsWith(String partialName, int numResults) {
+
+        log.debug("findUsersWhoseNameStartsWith(" + partialName + "," + numResults + ") called");
+
         StringBuffer sb = new StringBuffer();
         try {
             ServiceContext serviceContext = createServiceContext();
@@ -763,6 +823,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public void findUsersAdvanced() {
+
+        log.debug("findUsersAdvanced() called");
+
         Pager pager = null;
         try {
             ServiceContext serviceContext = createServiceContext();
@@ -780,6 +843,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public boolean isMemberOfSelectedGroup(String userName) {
+
+        log.debug("isMemberOfSelectedGroup(" + userName + ") called");
+
         boolean result = false;
 
         try {
@@ -835,48 +901,18 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public boolean hasNext(PagerPaginationSupport pps) {
-        if (pps==null) {
-            log.debug("hasNext() shouldn't really be called with null. programming error");
-            return false;
-        }
-
-        if (pps.getItems().getIndex() + pps.getCountOnEachPage() > pps.getTotal()) {
-            return false;
-        }
-
-        return true;
+        return PagerPaginationSupportUtil.hasNext(pps);
     }
 
     public void next( PagerPaginationSupport pps ) {
-        if (pps!=null) {
-            log.debug("next() called. previous index=" + pps.getItems().getIndex() + " next index=" + pps.getNextIndex());
-            pps.skipTo(pps.getNextIndex());
-        }
-        else {
-            log.debug("next() shouldn't really be called with null. programming error");
-        }
+        PagerPaginationSupportUtil.next(pps);
     }
 
     public boolean hasPrev(PagerPaginationSupport pps) {
-        if (pps==null) {
-            log.debug("hasNext() shouldn't really be called with null. programming error");
-            return false;
-        }
-
-        if (pps.getItems().getIndex() - pps.getCountOnEachPage() < 0) {
-            return false;
-        }
-
-        return true;
+        return PagerPaginationSupportUtil.hasPrev(pps);
     }
 
     public void prev( PagerPaginationSupport pps ) {
-        if (pps!=null) {
-            log.debug("prev() called. previous index=" + pps.getItems().getIndex() + " prev index=" + pps.getPreviousIndex());
-            pps.skipTo(pps.getPreviousIndex());
-        }
-        else {
-            log.debug("prev() shouldn't really be called with null. programming error");
-        }
+        PagerPaginationSupportUtil.prev(pps);
     }
   }

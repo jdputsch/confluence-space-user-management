@@ -21,6 +21,7 @@ public class PropsUtil {
 
 
     public static String getProperty(String propertyName) throws IOException {
+        log.debug("getProperty() called. propertyName='" + propertyName + "'");
         String value = null;
         InputStream in = null;
         try

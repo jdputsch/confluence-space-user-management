@@ -59,7 +59,7 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
     }
 
     public Pager findGroups( ServiceContext context ) throws FindException {
-
+        log.debug("findGroups() called");
         Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
         List groups = getGroupsThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
         sortGroupsByGroupnameAscending(groups);
@@ -68,7 +68,7 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
     }
 
     private List getGroupsThatMatchNamePatternExcludingConfluenceAdministrators( Map mapWithGroupnamesAsKeys, ServiceContext context ) {
-
+        log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
         List groups = new ArrayList();
         Space space = context.getSpace();
 
@@ -99,6 +99,7 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
     }
 
     private Map getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(ServiceContext context) {
+        log.debug("getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys() called");
         Space space = context.getSpace();
         //VIEWSPACE_PERMISSION is basic permission that every user group can have.
         Map map = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, space);
@@ -113,6 +114,7 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
 
     // should do this in query instead
     private void sortGroupsByGroupnameAscending(List groups) {
+        log.debug("sortGroupsByGroupnameAscending() called");
         Collections.sort(groups, new Comparator()
         {
             public int compare(Object o, Object o1)
@@ -123,9 +125,8 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
     }
 
     public void addGroup( String groupName, ServiceContext context ) throws AddException {
-        Space space = context.getSpace();                            
-
-        log.debug("create a confluence group -> " + groupName);
+        log.debug("addGroup() called. groupName='" + groupName + "'");
+        Space space = context.getSpace();
 
 		if (userAccessor.getGroup(groupName) == null) {
 
@@ -146,12 +147,14 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
     }
 
     public void removeGroup( String groupName, ServiceContext context ) throws RemoveException {
+        log.debug("removeGroup() called. groupName='" + groupName + "'");
         List groups = ListUtil.createListOfOneItem(groupName);
         removeGroupsByGroupnames(groups, context);
     }
 
     public void removeGroupsByGroupnames( List groupNames, ServiceContext context ) throws RemoveException
     {
+        log.debug("removeGroupsByGroupnames() called.");
         RemoveException ex = null;
 
         //Remove Selected Groups

@@ -64,7 +64,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
     public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
-
+        log.debug("findUsers() called.");
         AdvancedUserQueryResults results = new AdvancedUserQueryResults();
 
         Pager pager = new DefaultPager(new ArrayList());
@@ -159,11 +159,13 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
     public Pager findUsersForGroup(String groupName, ServiceContext context) {
+        log.debug("findUsersForGroup(groupName) called. groupName='" + groupName + "'");
         Group group = userAccessor.getGroup(groupName);
         return findUsersForGroup(group);
     }
 
     private Pager findUsersForGroup(Group group) {
+        log.debug("findUsersForGroup(Group) called.");
         Pager usernamePager = userAccessor.getMemberNames(group);
         LazyLoadingUserByUsernamePager userPager = new LazyLoadingUserByUsernamePager();
         userPager.setUsernamePager(usernamePager);
@@ -172,7 +174,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
     public Pager findUsersWhoseNameStartsWith(String partialName, ServiceContext context) {
-
+        log.debug("findUsersWhoseNameStartsWith() called. partialName='" + partialName + "'");
         Pager pager = null;
 
         try {
@@ -188,12 +190,13 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
     public void addUsersByUsernameToGroup(List userNames, String groupName, ServiceContext context) throws AddException {
+        log.debug("addUsersByUsernameToGroup() called.");
         List groupNames = ListUtil.createListOfOneItem(groupName);
         addUsersByUsernameToGroupsByGroupname(userNames, groupNames);
     }
 
     private void addUsersByUsernameToGroupsByGroupname(List userNames, List groupNames) throws AddException {
-
+        log.debug("addUsersByUsernameToGroupsByGroupname() called.");
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
 
         AddException ex = null;
@@ -255,6 +258,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
 
     //This method will be used to create an user when Confluence is used for Managing Wiki Users
     private User createConfUser(String creationUserName, boolean isLDAPAvailable, String companyLDAPUrl, String companyLDAPBaseDN) {
+        log.debug("createConfUser() called.");
         User vUser = null;
         LDAPUser lUser = null;
 
@@ -279,12 +283,13 @@ public class ConfluenceUserManagementService implements UserManagementService {
 
 
     public void removeUsersByUsernameFromGroup(List userNames, String groupName, ServiceContext context) throws RemoveException {
+        log.debug("removeUsersByUsernameFromGroup() called.");
         List groupNames = ListUtil.createListOfOneItem(groupName);
         removeUsersByUsernamesFromGroupsByGroupname(userNames, groupNames);
     }
 
     private void removeUsersByUsernamesFromGroupsByGroupname(List userNames, List groupNames) {
-
+        log.debug("removeUsersByUsernamesFromGroupsByGroupname() called.");
         for (Iterator itr = userNames.iterator(); itr.hasNext();) {
             String userid = (String) itr.next();
             for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
@@ -294,6 +299,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
     public boolean isMemberOf(String userName, String groupName) {
+        log.debug("isMemberOf() called.");
         boolean result = false;
         Group group = userAccessor.getGroup(groupName);
         if (group!=null) {
