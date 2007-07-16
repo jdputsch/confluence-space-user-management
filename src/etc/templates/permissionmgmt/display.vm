@@ -132,10 +132,8 @@
         <div id="groupEditor">
             #if($action.userSearch)
                 #parse ( "/templates/permissionmgmt/manage-users-advanced.vm" )
-		    #*
 		    #elseif($action.bulkEdit)
 		        #parse ( "/templates/permissionmgmt/bulk-edit.vm" )
-		    *#
 		    #else
 		        #parse ( "/templates/permissionmgmt/manage-users-basic.vm" )
 		    #end
