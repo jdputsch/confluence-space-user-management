@@ -1,3 +1,7 @@
+* {border:1px solid red; background-color:red;}
+
+body {border:1px solid red; background-color:red;}
+body div#csum {border:1px solid red; background-color:red;}
 
 	.pageheader {
 		padding: 5px 5px 5px 0px;

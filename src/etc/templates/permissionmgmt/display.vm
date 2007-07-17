@@ -109,6 +109,11 @@
         div#csum div#addUserOpts ul li {display:block; margin:0; padding:.2em .4em;}
         div#csum div#addUserOpts ul li.myCustomHighlightClass {margin:0; padding:.2em .4em; background:#FFFFCC; font-weight: bold;}
         div#csum div#addUserOpts ul li.myCustomPrehighlightClass {margin:0; padding:.2em .4em; background:#D8E4F1;}
+		
+		div#csum div.paging {border-top:1px solid #DDD; color:#666;}
+		div#csum div.paging span.prev  {display:block; float:left;}
+		div#csum div.paging span.next  {display:block; float:right;}
+		div#csum div.paging span.count {display:block;}
     </style>
 
 <div id="csum">
