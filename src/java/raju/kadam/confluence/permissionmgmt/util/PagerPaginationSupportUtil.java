@@ -23,7 +23,8 @@ public class PagerPaginationSupportUtil {
         if (pps!=null) {
             int[] startIndexes = pps.getNextStartIndexes();
             if (startIndexes!=null && startIndexes.length > 0) {
-                int closestStartIndex = -1;
+                // 0 is a valid start index not included in nextStartIndexes
+                int closestStartIndex = 0;
                 for (int i=0; i<startIndexes.length; i++) {
                     int nextStartIndex = startIndexes[i];
                     int oldAbsoluteDifference = Math.abs(startIndex - closestStartIndex);
@@ -37,10 +38,7 @@ public class PagerPaginationSupportUtil {
                     }
                 }
 
-                if (closestStartIndex>-1) {
-                    log.debug("index " + closestStartIndex + " was closest index to old index " + startIndex);
-                    pps.setStartIndex(closestStartIndex);
-                }
+                pps.setStartIndex(closestStartIndex);
             }
             else {
                 log.debug("nextStartIndexes was null");
@@ -113,19 +111,9 @@ public class PagerPaginationSupportUtil {
         log.debug("hasPrev() called");
         debug(pps);
         if (pps!=null) {
-            int[] startIndexes = pps.getNextStartIndexes();
-            if (startIndexes!=null) {
-                for (int i=(startIndexes.length-1); !result && i>=0; i--) {
-                    int nextStartIndex = startIndexes[i];
-                    log.debug("previous start index " + nextStartIndex + "< start index " + pps.getStartIndex() + " ?");
-                    if (nextStartIndex < pps.getStartIndex()) {
-                        log.debug("setStartIndex to " + startIndexes[i]);
-                        result = true;
-                    }
-                }
-            }
-            else {
-                log.debug("previousStartIndexes was null");
+            // 0 is the lowest valid start index
+            if (pps.getStartIndex() > 0) {
+                result = true;
             }
         }
         else {
@@ -153,6 +141,11 @@ public class PagerPaginationSupportUtil {
                         done=true;
                     }
                 }
+
+                // 0 is the first valid start index (not included in nextStartIndexes)
+                if (!done && pps.getStartIndex() > 0) {
+                    pps.setStartIndex(0);
+                }
             }
             else {
                 log.debug("previousStartIndexes was null");
@@ -161,6 +154,14 @@ public class PagerPaginationSupportUtil {
         else {
             log.debug("prev() shouldn't really be called with null. programming error");
         }
+    }
+
+    public static int getPageEndIndex( PagerPaginationSupport pps ) {
+        int i = pps.getStartIndex() + pps.getCountOnEachPage();
+        if ( pps.getTotal() < i ) {
+            i = pps.getTotal();
+        }
+        return i;
     }
 
     private static void debug( PagerPaginationSupport pps ) {

@@ -48,8 +48,10 @@
             	Note: Leave field(s) blank if you don&quot;t want to search on them.
             </font>
 *#
+            #if(${action.selectedGroup})
             <a id="hideAdvS" href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">&laquo; Return to editing ${action.selectedGroup}</a>
-
+            #end
+            
 		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>

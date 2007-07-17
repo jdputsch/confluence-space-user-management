@@ -17,12 +17,8 @@
 					<br />
 
 					<label>3. From Group(s):</label>
-
-
-
-
                     <ul>
-                    #foreach ($group in $groups)
+                    #foreach ($group in $action.allGroups)
                         <li>
                             <input type="checkbox" id="groups" name="groups"> $!group.name</input> (<a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name">Edit $!group.name</a>)
                         </li>

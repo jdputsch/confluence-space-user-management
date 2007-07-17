@@ -4,19 +4,34 @@
 
                 #if ($action.selectedGroup)
                     #if($action.hasPrev($groups))
+                    <div style="{float:left; text-align:left; width:2em}">
                         <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&pagerAction=prevPageGroups">&lt;</a>
+                    </div>
                     #end
                     #if($action.hasNext($groups))
+                    <div style="{float:right; text-align:right; width:2em}">
                         <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&pagerAction=nextPageGroups">&gt;</a>
+                    </div>
+                    #end
+                    #if(${action.groups})
+                    <div style="{float:center; text-align:center; width:18em}">
+                        groups $!{groups.startIndex}-$!{action.pageEndIndex($groups)} of $!{groups.total}
+                    </div>
                     #end
                 #else
                     #if($action.hasPrev($groups))
+                    <div style="{float:left; text-align:left; width:2em}">
                         <a href="docustompermissionsmanage.action?key=${key}&pagerAction=prevPageGroups">&lt;</a>
+                    </div>
                     #end
                     #if($action.hasNext($groups))
+                    <div style="{float:right; text-align:right; width:2em}">
                         <a href="docustompermissionsmanage.action?key=${key}&pagerAction=nextPageGroups">&gt;</a>
+                    </div>
+                    #end
+                    #if(${action.groups})
+                    <div style="{float:center; text-align:center; width:18em}">
+                        groups $!{groups.startIndex}-$!{action.pageEndIndex($groups)} of $!{groups.total}
+                    </div>
                     #end
                 #end
-
-
-

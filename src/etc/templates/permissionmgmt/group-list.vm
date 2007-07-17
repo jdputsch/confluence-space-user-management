@@ -47,6 +47,9 @@
                 </li>
                 #end
             </ul>
+            <div style="text-align: center">
+                #parse ( "/templates/permissionmgmt/group-pager-actions.vm" )
+            </div>
 
             #if(${action.isGroupActionsPermitted})
             <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="addGroupForm" name="AddGroupForm">
@@ -70,10 +73,6 @@
                 </fieldset>
             </form>
             #end
-
-            <div style="text-align: center">
-                #parse ( "/templates/permissionmgmt/group-pager-actions.vm" )
-            </div>
 
 			#else 
                 <p>There are currently no groups that match both of the following criteria:</p>

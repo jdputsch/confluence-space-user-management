@@ -2,9 +2,18 @@
 
                 #if ($action.selectedGroup)
                     #if($action.hasPrev($users))
+                    <div style="{float:left; text-align:left; width:3em}">
                         <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&pagerAction=prevPageUsers">&lt;</a>
+                    </div>
                     #end
                     #if($action.hasNext($users))
+                    <div style="{float:right; text-align:right; width:3em}">
                         <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&pagerAction=nextPageUsers">&gt;</a>
+                    </div>
+                    #end
+                    #if(${action.groups})
+                    <div style="{float:center; text-align:center; width:23em}">
+                        users $!{users.startIndex}-$!{action.pageEndIndex($users)} of $!{users.total}
+                    </div>
                     #end
                 #end

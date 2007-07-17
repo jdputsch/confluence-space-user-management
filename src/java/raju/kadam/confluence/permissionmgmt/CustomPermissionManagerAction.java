@@ -450,15 +450,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int oldGroupsIndex = getGroups().getStartIndex();
                     int oldUsersIndex = getUsers().getStartIndex();
 
-                    String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
-                    log.debug("group name prefix will be " + prefix);
-                    String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
-                    log.debug("group name suffix will be " + suffix);
-
                     boolean usersAdded = false;
                     try {
                         if(adminAction.equals("addGroup"))
                         {
+                            String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
+                            log.debug("group name prefix will be " + prefix);
+                            String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
+                            log.debug("group name suffix will be " + suffix);
                             List fixedGroupNames = new ArrayList();
                             List oldGroupNames = context.getSpecifiedGroups();
                             for (int i=0; i<oldGroupNames.size(); i++) {
@@ -1012,5 +1011,17 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     public void prev( PagerPaginationSupport pps ) {
         PagerPaginationSupportUtil.prev(pps);
+    }
+
+    public String pageEndIndex( PagerPaginationSupport pps ) {
+        String result = null;
+        if (pps!=null) {
+            result = "" + PagerPaginationSupportUtil.getPageEndIndex(pps);
+        }
+        return result;
+    }
+
+    public List getAllGroups() {
+        return PagerUtils.toList(getGroups().getItems());
     }
   }
