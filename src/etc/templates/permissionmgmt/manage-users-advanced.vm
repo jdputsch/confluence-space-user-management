@@ -76,7 +76,8 @@
             </form>
 
             #if(${action.userSearchFormFilled})
-                #if($users)
+                #if($users || $users.total > 0)
+                $users.total users found
                 <table width="100%">
                     <tr>
                         <th class="permissionSuperTab">Full Name</th>
@@ -116,7 +117,7 @@
                 <a href="/pages/listpermissionpages.action?key=${key}">Page-Level</a>
                 </p>
                 #else
-                No users found in group.
+                No users found meeting search criteria.
                 #end
             #end
             <!-- end manage-users-advanced -->

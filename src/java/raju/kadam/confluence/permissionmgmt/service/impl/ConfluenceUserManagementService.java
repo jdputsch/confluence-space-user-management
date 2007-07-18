@@ -67,8 +67,10 @@ public class ConfluenceUserManagementService implements UserManagementService {
         log.debug("findUsers() called.");
         AdvancedUserQueryResults results = new AdvancedUserQueryResults();
 
+        //TODO: this is really slow with osuser search. must use http://confluence.atlassian.com/display/DOC/How+to+Improve+User+Search+Performance
+
         Pager pager = new DefaultPager(new ArrayList());
-        if (advancedUserQuery.isFullnameSearchDefined()) {
+        if (advancedUserQuery.isUsernameSearchDefined()) {
             try {
                 UserNameTermQuery query = new UserNameTermQuery(advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType());
                 SearchResult result = userAccessor.findUsers(query);

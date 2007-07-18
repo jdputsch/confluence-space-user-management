@@ -151,6 +151,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         userQuery.setLookupType(getParameterValue( paramMap, "lookupType"));
         userQuery.setPartialSearchTerm(getParameterValue( paramMap, "partialSearchTerm"));
         userQuery.setSubstringMatchType(getParameterValue( paramMap, "substringMatchType"));
+        log.debug("Created advanced user query: " + userQuery.toString());
         return userQuery;
     }
 
@@ -175,7 +176,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
     }
 
-    private void handlePaging() {
+    private void handlePaging(Map paramMap) {
+        setPagerAction(getParameterValue( paramMap, "pagerAction"));
         String pagerAction = getPagerAction();
         if ("nextPageGroups".equals(pagerAction)) {
             PagerPaginationSupport groups = getGroups();
@@ -204,6 +206,29 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
     }
 
+    private void handleUserSearch() {
+        if (getUserSearch()!=null) {
+            AdvancedUserQuery advancedUserQuery = createAdvancedUserQuery();
+            setAdvancedUserQuery(advancedUserQuery);
+            setUserSearchFormFilled(advancedUserQuery.isValid());
+            if (getUserSearchFormFilled()) {
+                this.findUsersAdvanced();
+            }
+        }
+    }
+
+    private void handleRefreshData(Map paramMap) {
+        if (getParameterValue(paramMap, "refresh")!=null) {
+            int oldGroupsIndex = getGroups().getStartIndex();
+            int oldUsersIndex = getUsers().getStartIndex();
+            this.clearCache();
+            this.populateDataUnlessCached();
+            // Note: is important that these are calling getGroups() and getUsers() again to get latest instances.
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+        }
+    }
+
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction.execute() called");
@@ -212,12 +237,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         CustomPermissionManagerActionContext context = createContext();
 
+        //TODO: maybe this should be another adminAction.
         setUserSearch(context.getUserSearch());
-
-        AdvancedUserQuery advancedUserQuery = createAdvancedUserQuery();
-        setAdvancedUserQuery(advancedUserQuery);
-
-        setUserSearchFormFilled(advancedUserQuery.isValid());
+        handleUserSearch();
 
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
@@ -228,19 +250,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         setSelectedGroup(selectedGroup);                
 
         // handle refresh
-        if (getParameterValue(paramMap, "refresh")!=null) {
-            int oldGroupsIndex = getGroups().getStartIndex();
-            int oldUsersIndex = getUsers().getStartIndex();
-            this.clearCache();
-            this.populateDataUnlessCached();
-            // Note: is important that these are calling getGroups() and getUsers() again to get latest instances.
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
-        }
+        handleRefreshData(paramMap);
 
         // handle paging
-        setPagerAction(getParameterValue( paramMap, "pagerAction"));
-        handlePaging();
+        handlePaging(paramMap);
 
         //TODO: remove this section before release!
         // START TEST SECTION

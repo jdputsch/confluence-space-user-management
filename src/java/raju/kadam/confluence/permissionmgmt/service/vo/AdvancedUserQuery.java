@@ -17,6 +17,9 @@ public class AdvancedUserQuery {
     private String partialSearchTerm;
     private String substringMatchType = AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH;
 
+    public String toString() {
+        return "lookupType=" + lookupType + " partialSearchTerm=" + partialSearchTerm + " substringMatchType=" + substringMatchType;
+    }
 
     public String getLookupType() {
         return lookupType;
