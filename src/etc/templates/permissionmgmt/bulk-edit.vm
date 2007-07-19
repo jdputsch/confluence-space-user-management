@@ -59,7 +59,6 @@
 				</fieldset>
 			</form>
             #else
-            Currently there are no groups in the domain of this space that you can manage users within. Please add
-            some groups.
+            <p>No groups available with rights to space that match configured pattern. Try adding some groups.</p>
             #end
             <!-- end bulk-edit -->

@@ -26,19 +26,20 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ## OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-<!-- start group-list -->
-
-        <div class="sectionHeader">
-            <div class="mode">
-            &raquo; <a href="docustompermissionsmanage.action?key=${key}&bulkEdit=1">Bulk Change Tool</a><br/>
-            &raquo; <a href="docustompermissionsmanage.action?key=${key}&userSearch=1">Search Users</a><br/>
-            </div>
-            <h2>${action.space.name} ($action.space.key) Groups:</h2>
-        </div>
+            <!-- start group-list -->
 
             #set ($groups = ${action.groups})
+            <div class="sectionHeader">
+                <div class="mode">
+            #if($groups && $groups.total>0)
+                &raquo; <a href="docustompermissionsmanage.action?key=${key}&bulkEdit=1">Bulk Change Tool</a><br/>
+                &raquo; <a href="docustompermissionsmanage.action?key=${key}&userSearch=1">Search Users</a><br/>
+            #end
+                </div>
+                <h2>${action.space.name} ($action.space.key) Groups:</h2>
+            </div>
 
-            #if($groups)
+            #if($groups && $groups.total>0)
             <ul>
                 ## List groups using Pager
                 #foreach ($group in $groups.page)
@@ -50,6 +51,10 @@
             <div style="text-align: center">
                 #parse ( "/templates/permissionmgmt/group-pager-actions.vm" )
             </div>
+            #else
+                <p>There are currently no groups with rights to view space '${key}' and matching the group name pattern '${action.spacePattern}' defined for this space in the plugin configuration.</p>
+                <p>Please try adding some groups.</p>
+            #end
 
             #if(${action.isGroupActionsPermitted})
             <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="addGroupForm" name="AddGroupForm">
@@ -74,22 +79,7 @@
             </form>
             #end
 
-			#else 
-                <p>There are currently no groups that match both of the following criteria:</p>
-                <ul>
-                  <li>Group has rights to view space '${key}' <b>and</b></li>
-                  <li>Group has name matching the group name pattern defined for this space in the plugin configuration: '${action.spacePattern}'.</li>
-                </ul>
-
-                <p>If you feel that groups should be displayed here or are not sure what to do, then check with the system
-                administrator to verify that the group name pattern, group name prefix, and group name suffix are
-                correct.</p>
-
-                <p>If you have never used this interface before, you probably have nothing to worry about and can go along
-                your merry way adding groups and managing users in them.</p>
-            #end
-
-            #set($availableSpaces = $action.spacesAsSpaceAdminForUser)
+			#set($availableSpaces = $action.spacesAsSpaceAdminForUser)
             #if($availableSpaces && $availableSpaces.size()>1)
             <form method="GET" action="docustompermissionsmanage.action" id="changeSpace" name="changeSpace">
                 <fieldset>
@@ -111,5 +101,5 @@
 <a href="docustompermissionsmanage.action?key=${key}&createTestUsersAndGroups=1">create test users and groups</a>
 ##END TEST ONLY!
 
- <!-- end group-list -->
+            <!-- end group-list -->
         
