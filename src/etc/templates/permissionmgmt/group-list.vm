@@ -69,7 +69,7 @@
                         <li>(optional)</li>
                     </ul>
 
-                    <input type="submit" class="submitBttn"></input>
+                    <input type="submit" class="submitBttn" value="Add Group(s)"></input>
                 </fieldset>
             </form>
             #end
@@ -87,6 +87,23 @@
 
                 <p>If you have never used this interface before, you probably have nothing to worry about and can go along
                 your merry way adding groups and managing users in them.</p>
+            #end
+
+            #set($availableSpaces = $action.spacesAsSpaceAdminForUser)
+            #if($availableSpaces && $availableSpaces.size()>1)
+            <form method="GET" action="docustompermissionsmanage.action" id="changeSpace" name="changeSpace">
+                <fieldset>
+                    <label>Change space: </label>
+                    <select name="key">
+                        #foreach ($availableSpace in $availableSpaces)
+                        <option value="$availableSpace.key" #if($availableSpace.key==$action.space.key)selected="true"#end>$availableSpace.name ($availableSpace.key)</option>
+                        #end
+                    </select>
+                </fieldset>
+                <fieldset>
+                    <input type="submit" value="Change Space" class="submitBttn"/>
+                </fieldset>
+            </form>
             #end
 
 ##START TEST ONLY!

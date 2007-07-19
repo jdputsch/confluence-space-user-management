@@ -51,6 +51,8 @@
             #if(${action.selectedGroup})
             <a id="hideAdvS" href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">&laquo; Return to editing ${action.selectedGroup}</a>
             #end
+
+            <em>Note: Unless wiki is <a href="http://confluence.atlassian.com/display/DOC/How+to+Improve+User+Search+Performance">configured properly</a>, user search can be unusably slow with lots of users.</em>  
             
 		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>

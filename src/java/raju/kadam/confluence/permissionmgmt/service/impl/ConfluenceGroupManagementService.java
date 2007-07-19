@@ -11,19 +11,14 @@ import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.Group;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.DefaultPager;
-import com.atlassian.user.search.page.PagerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.displaytag.pagination.PaginatedList;
-import org.displaytag.properties.SortOrderEnum;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
-import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
-import raju.kadam.confluence.permissionmgmt.paging.PagerPaginatedList;
-import raju.kadam.confluence.permissionmgmt.paging.ListPaginatedList;
-import raju.kadam.util.ListUtil;
+import raju.kadam.confluence.permissionmgmt.util.GroupComparator;
+import raju.kadam.confluence.permissionmgmt.util.GroupUtil;
 import raju.kadam.util.StringUtil;
 
 import java.util.*;
@@ -62,7 +57,7 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
         log.debug("findGroups() called");
         Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
         List groups = getGroupsThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
-        sortGroupsByGroupnameAscending(groups);
+        GroupUtil.sortGroupsByGroupnameAscending(groups);
         Pager pager = new DefaultPager(groups);
         return pager;
     }
@@ -112,17 +107,7 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
         return map;
     }
 
-    // should do this in query instead
-    private void sortGroupsByGroupnameAscending(List groups) {
-        log.debug("sortGroupsByGroupnameAscending() called");
-        Collections.sort(groups, new Comparator()
-        {
-            public int compare(Object o, Object o1)
-            {
-                return ((Group) o).getName().compareToIgnoreCase(((Group) o1).getName());
-            }
-        });
-    }
+
 
     public void addGroups( List groupNames, ServiceContext context ) throws AddException {
         log.debug("addGroups() called. groupName='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");

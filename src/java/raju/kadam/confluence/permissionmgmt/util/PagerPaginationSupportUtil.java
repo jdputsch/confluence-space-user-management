@@ -4,6 +4,8 @@ import bucket.core.actions.PagerPaginationSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.*;
+
 /**
  * (c) 2007 Duke University
  * User: gary.weaver@duke.edu
@@ -13,6 +15,64 @@ import org.apache.commons.logging.LogFactory;
 public class PagerPaginationSupportUtil {
 
     public static final Log log = LogFactory.getLog(PagerPaginationSupportUtil.class);
+
+    /**
+     * Notes: this returns an unsorted list (index of items gets messed up due to use of HashMap to ensure same object
+     * is not added to List more than once). It is awful than PagerUtils.toList(pps.getItems()) doesn't work. Need to
+     * submit a bug. This does way too many queries by having to query for each page.
+     *
+     * @param pps
+     * @return
+     */
+    public static List toList(PagerPaginationSupport pps) {
+        //TODO: it is awful than PagerUtils.toList(pps.getItems()) doesn't work. submit a bug. this does way too many queries            
+
+        log.debug("toList() called");
+        List result = null;
+        if (pps!=null) {
+            //TODO: may be being paranoid by using Map here. consider not using if not needed
+            // using map hopefully to avoid any chance of adding the same items more than once
+            Map itemsAsKeysMap = new HashMap();
+            int originalPageStartIndex = pps.getStartIndex();
+
+            // start with first page
+            pps.setStartIndex(0);
+            log.debug("converting PagerPaginationSupport to List. at index=0");
+            addAllAsKeys(pps.getPage(), itemsAsKeysMap);
+
+            // get other pages
+            int[] startIndexes = pps.getNextStartIndexes();
+            if (startIndexes!=null && startIndexes.length > 0) {
+                for (int i=0; i<startIndexes.length; i++) {
+                    int nextStartIndex = startIndexes[i];
+                    log.debug("converting PagerPaginationSupport to List. at index=" + nextStartIndex);
+                    pps.setStartIndex(nextStartIndex);
+                    addAllAsKeys(pps.getPage(), itemsAsKeysMap);
+                }
+            }
+
+            result = new ArrayList(itemsAsKeysMap.keySet());;
+            if ( result.size() != pps.getTotal()) {
+                log.warn("Got incorrect number of items in toList()! Expected " + pps.getTotal() + " but got " + result.size());
+            }
+            else {
+                log.debug("Got " + result.size() + " items from pps. This was same as pps.getTotal() so hopefully all is ok.");                            
+            }
+        }
+        return result;
+    }
+
+    private static void addAllAsKeys(List list, Map map) {
+        if (list!= null && map != null) {
+            for (int i=0; i<list.size(); i++) {
+                map.put(list.get(i), "");
+            }
+        }
+    }
+
+    private static List getKeysAsList(Map map) {
+        return new ArrayList(map.keySet());
+    }
 
     /**
      * If you get pps.getStartIndex() and remove a lot of records, this will ensure you can get back to the location

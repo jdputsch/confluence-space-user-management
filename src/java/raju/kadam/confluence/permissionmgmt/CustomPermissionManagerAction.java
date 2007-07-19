@@ -38,6 +38,7 @@ import raju.kadam.confluence.permissionmgmt.service.vo.*;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
 import raju.kadam.confluence.permissionmgmt.util.PagerPaginationSupportUtil;
+import raju.kadam.confluence.permissionmgmt.util.GroupUtil;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
@@ -156,6 +157,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void populateDataUnlessCached() {
+        populateGroupsUnlessCached();
+        populateUsersForSelectedGroupUnlessCached();
+    }
+
+    private void populateGroupsUnlessCached() {
         if (getGroups()==null) {
             log.debug("getGroups() returned null so calling findAndSetGroups()");
             findAndSetGroups();
@@ -163,7 +169,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         else {
             log.debug("returned cached groups.");
         }
+    }
 
+    private void populateUsersForSelectedGroupUnlessCached() {
         String selectedGroup = getSelectedGroup();
         if (!ConfigUtil.isNullOrEmpty(selectedGroup)) {
             if (getUsers()==null) {
@@ -1035,6 +1043,25 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public List getAllGroups() {
-        return PagerUtils.toList(getGroups().getItems());
+        log.debug("getAllGroups() called");
+        populateGroupsUnlessCached();
+        List result = null;
+        if (getGroups()!=null) {
+            if (getGroups().getTotal() > 0) {
+                result = PagerPaginationSupportUtil.toList(getGroups());
+                GroupUtil.sortGroupsByGroupnameAscending(result);
+                log.debug("returning " + result.size() + " groups");                
+            }
+            else {
+                log.debug("getGroups().getTotal() was 0");
+            }
+        }
+        else {
+            log.debug("no groups found");
+        }
+
+        return result;
     }
+
+    
   }
