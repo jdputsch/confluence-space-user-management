@@ -227,13 +227,28 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private void handleRefreshData(Map paramMap) {
         if (getParameterValue(paramMap, "refresh")!=null) {
-            int oldGroupsIndex = getGroups().getStartIndex();
-            int oldUsersIndex = getUsers().getStartIndex();
+
+            int oldGroupsIndex = -1;
+            if (getGroups()!=null) {
+                oldGroupsIndex = getGroups().getStartIndex();
+            }
+
+            int oldUsersIndex = -1;
+            if (getUsers()!=null) {
+                oldUsersIndex = getUsers().getStartIndex();
+            }
+
             this.clearCache();
             this.populateDataUnlessCached();
+
             // Note: is important that these are calling getGroups() and getUsers() again to get latest instances.
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+            if (oldGroupsIndex != -1) {
+                PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
+            }
+            
+            if (oldUsersIndex != -1) {
+                PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+            }
         }
     }
 
