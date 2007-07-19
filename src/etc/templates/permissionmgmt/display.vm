@@ -38,7 +38,7 @@
         #decoratorParam("mode" "view-edit-spaceusergroups")
         
             <content tag="spacekey">${action.space.key}</content>
-    #set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=${key}&" )
+    #set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&" )
 
     <body>
 
@@ -113,7 +113,7 @@
 		div#csum div.paging {border-top:1px solid #DDD; color:#666;}
 		div#csum div.paging span.prev  {display:block; float:left;}
 		div#csum div.paging span.next  {display:block; float:right;}
-		div#csum div.paging span.count {display:block;}
+		div#csum div.paging span.count {display:block; text-align:center}
     </style>
 
 <div id="csum">
@@ -121,15 +121,12 @@
 		#parse ( "/templates/permissionmgmt/action-messages.vm" )
 	</div>
 
-	## tools are used by some templates
-	#set($esc=$action.velocityTools)
-
-    #if(${action.isPluginConfigurationDone})
+	#if(${action.isPluginConfigurationDone})
 
     #if(${action.selectedGroup})
-        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&refresh=1">Refresh</a>
+        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&refresh=1">Refresh</a>
     #else
-        <a href="docustompermissionsmanage.action?key=${key}&refresh=1">Refresh</a>
+        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">Refresh</a>
     #end
 
     <div id="groups">
@@ -161,8 +158,8 @@
     #if($isGroupActionsPermitted)
 		<div id="footer">
 			<ul>
-				<li><a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=${key}"><img src="${action.confluenceRoot}/images/icons/lock_16.gif"/>Edit ${action.selectedGroup} Permissions</a></li>
-				<li><a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=${key}"><img src="${action.confluenceRoot}/images/icons/locked_pages_16.gif"/>Edit Page Permissions</a></li>
+				<li><a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)"><img src="${action.confluenceRoot}/images/icons/lock_16.gif"/>Edit ${action.selectedGroup} Permissions</a></li>
+				<li><a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)"><img src="${action.confluenceRoot}/images/icons/locked_pages_16.gif"/>Edit Page Permissions</a></li>
 			</ul>
 			<div style="clear:both"></div>
 		</div>

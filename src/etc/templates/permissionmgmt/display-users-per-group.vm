@@ -58,7 +58,7 @@
 				        #foreach($user in $users)
 						 <tr>
 						     <td>
-						         <a href="$req.contextPath/display/~$generalUtil.doubleUrlEncode($user.name)">$generalUtil.htmlEncode($user.fullName)</a> <span class="smalltext">($user.name)</span><br>
+						         <a href="$req.contextPath/display/~$generalUtil.doubleUrlEncode($user.name)">$generalUtil.htmlEncode($user.fullName)</a> <span class="smalltext">($generalUtil.htmlEncode($user.name))</span><br>
 						         <span class="smalltext">$generalUtil.maskEmail($user.email)</span>
 						     </td>
 						 </tr>

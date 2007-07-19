@@ -30,40 +30,41 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package raju.kadam.confluence.permissionmgmt;
 
-import java.util.*;
-import java.net.URLEncoder;
-import java.net.URLDecoder;
-import java.io.UnsupportedEncodingException;
-
-import raju.kadam.util.*;
-import raju.kadam.confluence.permissionmgmt.service.*;
-import raju.kadam.confluence.permissionmgmt.service.vo.*;
-import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
-import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
-import raju.kadam.confluence.permissionmgmt.util.PagerPaginationSupportUtil;
-import raju.kadam.confluence.permissionmgmt.util.GroupUtil;
-import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
-import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
-
+import bucket.core.actions.PagerPaginationSupport;
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.confluence.setup.settings.SettingsManager;
-import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
+import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
-import com.atlassian.confluence.spaces.Space;
+import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.confluence.util.SpaceComparator;
-import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
-import com.atlassian.user.search.page.PagerException;
-import com.atlassian.spring.container.ContainerManager;
 import com.opensymphony.webwork.ServletActionContext;
-import org.displaytag.pagination.PaginatedList;
-import bucket.core.actions.PagerPaginationSupport;
+import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import raju.kadam.confluence.permissionmgmt.service.*;
+import raju.kadam.confluence.permissionmgmt.service.vo.*;
+import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
+import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
+import raju.kadam.confluence.permissionmgmt.util.GroupUtil;
+import raju.kadam.confluence.permissionmgmt.util.PagerPaginationSupportUtil;
+import raju.kadam.util.ConfigUtil;
+import raju.kadam.util.HtmlFormUtil;
+import raju.kadam.util.ListUtil;
+import raju.kadam.util.StringUtil;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -162,7 +163,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
         else {
             // groups specified by group of checkboxes with name "groups". used by bulk-edit.
-            context.setSpecifiedGroups(HtmlFormUtil.retrieveListOfValuesForCheckboxGroupName(paramMap, "groups"));
+            context.setSpecifiedGroups(HtmlFormUtil.retrieveListOfCheckedCheckboxValues(paramMap, "groups"));
         }
         context.setSpecifiedUsers(getUrlDecodedCleanedTrimmedParameterValueList( paramMap, "users"));
         context.setLoggedInUser(getRemoteUser().getName());
@@ -1117,9 +1118,5 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
 
         return result;
-    }
-
-    public VelocityTools getVelocityTools() {
-        return new VelocityTools();
     }
   }

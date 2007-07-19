@@ -4,13 +4,13 @@
                 #if ($action.selectedGroup)
 	                    #if($action.hasPrev($groups))
 	                    <span class="prev">
-	                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&pagerAction=prevPageGroups">&laquo; Prev</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageGroups">&laquo; Prev</a>
 	                    </span>
 	                    #end
 
 	                    #if($action.hasNext($groups))
 	                    <span class="next">
-	                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&pagerAction=nextPageGroups">Next &raquo;</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageGroups">Next &raquo;</a>
 	                    </span>
 	                    #end
 
@@ -23,13 +23,13 @@
 
 	                    #if($action.hasPrev($groups))
 	                    <span class="prev">
-	                        <a href="docustompermissionsmanage.action?key=${key}&pagerAction=prevPageGroups">&laquo; Prev</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=prevPageGroups">&laquo; Prev</a>
 	                    </span>
 	                    #end
 
 	                    #if($action.hasNext($groups))
 	                    <span class="next">
-	                        <a href="docustompermissionsmanage.action?key=${key}&pagerAction=nextPageGroups">Next &raquo;</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=nextPageGroups">Next &raquo;</a>
 	                    </span>
 	                    #end
 

@@ -37,7 +37,7 @@
                 #*
 				#if(${action.isGroupActionsPermitted})
 				<div class="mode">
-			        <a href="docustompermissionsmanage.action?key=${key}&adminAction=removeGroup&groupToRemove=${action.selectedGroup}"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> Delete Group ${action.selectedGroup}</a>
+			        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroup&groupToRemove=$generalUtil.doubleUrlEncode($action.selectedGroup)"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> Delete Group ${action.selectedGroup}</a>
 			    </div>
 			    #end
 			    *#
@@ -51,12 +51,12 @@
             </font>
 *#
             #if(${action.selectedGroup})
-            <a id="hideAdvS" href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}">&laquo; Return to editing ${action.selectedGroup}</a>
+            <a id="hideAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)">&laquo; Return to editing ${action.selectedGroup}</a>
             #end
 
             <em>Note: Unless wiki is <a href="http://confluence.atlassian.com/display/DOC/How+to+Improve+User+Search+Performance">configured properly</a>, user search can be unusably slow with lots of users.</em>  
             
-		    <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&userSearch=1" id="groupManagement" name="ManageUsersForm">
+		    <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>
                     #fielderror ('advancedSearch')
@@ -91,19 +91,19 @@
                         <th class="permissionHeading">&nbsp;</th>
                     </tr>
                     #foreach ($user in $users.page)
-                        #set ($userFullName = $user.getFullName())
-                        #set ($userName = $user.getName())
-                        #set ($userEmail = $user.getEmail())
+                        #set ($userFullName = $generalUtil.htmlEncode($user.getFullName()))
+                        #set ($userName = $generalUtil.htmlEncode($user.getName()))
+                        #set ($userEmail = $generalUtil.maskEmail($user.getEmail()))
                     <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
                         <td><img class="icon" src="/confluence/images/icons/user_16.gif">$!userFullName</td>
                         <td align="left" class="permissionCell" valign="top">$!userName</td>
                         <td align="left" class="permissionCell" valign="top">$!userEmail</td>
                         #if($action.isMemberOfSelectedGroup($!userName))
                         <td align="left" class="permissionCell" valign="top"><img alt="$!userName is a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/check.gif"/></td>
-                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
+                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="/images/icons/trash_16.gif"/></a></td>
                         #else
                         <td align="left" class="permissionCell" valign="top"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="/images/icons/emoticons/error.gif"/></td>
-                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="/images/icons/logo_add_16.gif"/></a></td>
+                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="/images/icons/logo_add_16.gif"/></a></td>
                         #end
                     </tr>
                     <tr>
@@ -117,8 +117,8 @@
                 </table>
                 <p>
                 Manage User Permissions:
-                <a href="/spaces/spacepermissions.action?key=${key}">Space</a>,
-                <a href="/pages/listpermissionpages.action?key=${key}">Page-Level</a>
+                <a href="/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">Space</a>,
+                <a href="/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">Page-Level</a>
                 </p>
                 #else
                 No users found meeting search criteria.

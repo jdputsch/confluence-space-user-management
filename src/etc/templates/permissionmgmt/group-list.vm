@@ -32,11 +32,11 @@
             <div class="sectionHeader">
                 <div class="mode">
             #if($groups && $groups.total>0)
-                &raquo; <a href="docustompermissionsmanage.action?key=${key}&bulkEdit=1">Bulk Change Tool</a><br/>
-                &raquo; <a href="docustompermissionsmanage.action?key=${key}&userSearch=1">Search Users</a><br/>
+                &raquo; <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">Bulk Change Tool</a><br/>
+                &raquo; <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">Search Users</a><br/>
             #end
                 </div>
-                <h2>${action.space.name} ($action.space.key) Groups:</h2>
+                <h2>$generalUtil.htmlEncode(${action.space.name}) ($generalUtil.htmlEncode($action.space.key)) Groups:</h2>
             </div>
 
             #if($groups && $groups.total>0)
@@ -44,7 +44,7 @@
                 ## List groups using Pager
                 #foreach ($group in $groups.page)
                 <li>
-                    <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=$group.name" #if($group.name == $action.selectedGroup) class="selected" #end>$!group.name</a>
+                    <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($group.name)" #if($group.name == $action.selectedGroup) class="selected" #end>$generalUtil.htmlEncode($!group.name)</a>
                 </li>
                 #end
             </ul>
@@ -52,19 +52,19 @@
                 #parse ( "/templates/permissionmgmt/group-pager-actions.vm" )
             </div>
             #else
-                <p>There are currently no groups with rights to view space '${key}' and matching the group name pattern '${action.spacePattern}' defined for this space in the plugin configuration.</p>
+                <p>There are currently no groups with rights to view space '$generalUtil.htmlEncode($key)' and matching the group name pattern '$generalUtil.htmlEncode($action.spacePattern)' defined for this space in the plugin configuration.</p>
                 <p>Please try adding some groups.</p>
             #end
 
             #if(${action.isGroupActionsPermitted})
-            <form method="POST" action="docustompermissionsmanage.action?key=${key}" id="addGroupForm" name="AddGroupForm">
+            <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)" id="addGroupForm" name="AddGroupForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addGroups"/>
                     <label for="addGroups">Add Group:</label>
                     <input type="text" name="groups" id="groups" ></input>
 
                     <ul class="formHelp">
-                        <li>eg. entering Duke-Presidents will create the group "${action.newGroupPrefix}Duke-Presidents${action.newGroupSuffix}"</li>
+                        <li>eg. entering Duke-Presidents will create the group "$generalUtil.htmlEncode($action.newGroupPrefix)Duke-Presidents$generalUtil.htmlEncode($action.newGroupSuffix)"</li>
                     </ul>
 
                     <label class="scndryInpt" for="addGroup">With Users:</label>
@@ -86,7 +86,7 @@
                     <label>Change space: </label>
                     <select name="key">
                         #foreach ($availableSpace in $availableSpaces)
-                        <option value="$availableSpace.key" #if($availableSpace.key==$action.space.key)selected="true"#end>$availableSpace.name ($availableSpace.key)</option>
+                        <option value="$availableSpace.key" #if($availableSpace.key==$action.space.key)selected="true"#end>$generalUtil.htmlEncode($availableSpace.name) ($generalUtil.htmlEncode($availableSpace.key))</option>
                         #end
                     </select>
                 </fieldset>
@@ -98,7 +98,7 @@
 
 ##START TEST ONLY!
 ##TODO: Remove this test section and supporting method in action before release
-<a href="docustompermissionsmanage.action?key=${key}&createTestUsersAndGroups=1">create test users and groups</a>
+<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&createTestUsersAndGroups=1">create test users and groups</a>
 ##END TEST ONLY!
 
             <!-- end group-list -->

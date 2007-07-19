@@ -32,7 +32,7 @@ public class HtmlFormUtil {
     }
 
     //Get the list of user groups that user has selected
-    public static List retrieveListOfValuesForCheckboxGroupName(Map paramMap, String checkboxGroupName) {
+    public static List retrieveListOfCheckedCheckboxValues(Map paramMap, String checkboxGroupName) {
         List selectedUserGroupsList = new ArrayList(4);
 
         //Get all groups that user has selected.

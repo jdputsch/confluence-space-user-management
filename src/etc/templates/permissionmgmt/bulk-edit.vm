@@ -28,14 +28,16 @@
 
 			<!-- start bulk-edit -->
 			<div class="sectionHeader">
-				<div id="mode"><a href="docustompermissionsmanage.action?key=$esc.url($key)">&laquo; Return to normal view</a></div>
+				<div id="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">&laquo; Return to normal view</a></div>
 				<h2>Bulk Change Tool</h2>
 			</div>
 
-            #set ($allGroups = ${action.allGroups})
+            #set ($allGroups = $action.allGroups)
             #if($allGroups && $allGroups.size() > 0)
-			<form id="bulkChange" action="docustompermissionsmanage.action?key=$esc.url($key)">
+			<form id="bulkChange" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">
 				<fieldset>
+
+				    <input type="hidden" name="key" value="$key"/>
 					<label>1. Select Action:</label>
 					<input type="radio" value="addUsersToGroups" name="adminAction"></input> Add Users<br />
 					<input type="radio" value="removeUsersFromGroups" name="adminAction"></input> Remove Users
@@ -49,7 +51,7 @@
                     <ul>
                     #foreach ($group in $allGroups)
                         <li>
-                            <input type="checkbox" id="groups" name="groups"> $!group.name</input> (<a href="docustompermissionsmanage.action?key=$esc.url($key)&selectedGroup=$esc.url($group.name)">Edit $!group.name</a>)
+                            <input type="checkbox" id="groups" name="groups" value="$!group.name"> $generalUtil.htmlEncode($!group.name)</input> (<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($group.name)">Edit $generalUtil.htmlEncode($!group.name)</a>)
                         </li>
                     #end
                     </ul>

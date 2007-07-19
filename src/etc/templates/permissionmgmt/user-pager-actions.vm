@@ -4,12 +4,12 @@
 <div class="paging">
                     #if($action.hasPrev($users))
                     <span class="prev">
-                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&pagerAction=prevPageUsers">&laquo; Prev</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageUsers">&laquo; Prev</a>
                     </span>
                     #end
                     #if($action.hasNext($users))
                     <span class="next">
-                        <a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&pagerAction=nextPageUsers">Next &raquo;</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageUsers">Next &raquo;</a>
                     </span>
                     #end
                     #if(${action.groups})
