@@ -121,6 +121,9 @@
 		#parse ( "/templates/permissionmgmt/action-messages.vm" )
 	</div>
 
+	## tools are used by some templates
+	#set($esc=$action.velocityTools)
+
     #if(${action.isPluginConfigurationDone})
 
     #if(${action.selectedGroup})

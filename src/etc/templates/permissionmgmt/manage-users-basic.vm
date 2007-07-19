@@ -28,6 +28,8 @@
 
             <!-- start manage-users-basic -->
 
+        #if($action.selectedGroup)
+
             <div class="sectionHeader">
 				#if(${action.isGroupActionsPermitted})
 				<div class="mode">
@@ -42,6 +44,7 @@
             <form method="POST" action="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}" id="addUsersForm" name="ManageUsersForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addUsersToGroups"/>
+                    <input type="hidden" name="groups" value="$action.selectedGroup"/>
                     <label for="users">Add User(s) to ${action.selectedGroup}:</label>
                     <input type="text" style="width:100%;" id="users" name="users"/>
                     ##<div id="addUserOpts"></div>
@@ -78,7 +81,7 @@
                         <td><img class="icon" src="${action.confluenceRoot}/images/icons/user_16.gif"/>$!userFullName</td>
                         <td>$!userName</td>
                         <td><a href="mailto:$!userEmail" alt="Send email to $!userName">$!userEmail</a></td>
-                        <td class="delete"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroup&usersToRemove=$!userName"><img alt="Remove $!userName from  group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
+                        <td class="delete"><a href="docustompermissionsmanage.action?key=${key}&selectedGroup=${action.selectedGroup}&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$!userName"><img alt="Remove $!userName from group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
                     </tbody>
@@ -87,6 +90,7 @@
                 #parse ( "/templates/permissionmgmt/user-pager-actions.vm" )
             #else
                 No users found in group.
-            #end
-
+            #end            
+        #end
+        
             <!-- end manage-users-basic -->

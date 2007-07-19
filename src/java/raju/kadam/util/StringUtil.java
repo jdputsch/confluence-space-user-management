@@ -1,5 +1,8 @@
 package raju.kadam.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.util.*;
 /**
  *
@@ -7,21 +10,38 @@ import java.util.*;
  */
 public class StringUtil {
 
-    public static List convertDelimitedStringToCleanedLowercaseList( String s ) {
-        List result = null;
-        if ( s != null ) {
-            s = s.toLowerCase().trim();
-            s = s.replaceAll("[<>/]", "");
-            result = convertColonSemicolonOrCommaDelimitedStringToList(s);
-        }
-        return result;
+    private static final Log log = LogFactory.getLog(StringUtil.class);
+
+    public static final String CHARACTERS_TO_CLEAN = "[<>/]";
+    public static final String DELIMITING_CHARACTERS = "[:;,]";
+
+    public static String clean( String s ) {
+        return s.replaceAll(CHARACTERS_TO_CLEAN, "");
     }
 
-    public static List convertColonSemicolonOrCommaDelimitedStringToList( String s ) {
+    public static boolean isNullOrEmpty(String s) {
+        if (s == null || "".equals(s)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static List getCleanedListFromDelimitedValueString( String s ) {
         List result = null;
         if ( s != null ) {
-            String[] valueArray = s.split("[:;,]");
-            result = Arrays.asList(valueArray);
+            result = new ArrayList();
+            s = s.replaceAll(CHARACTERS_TO_CLEAN, "");
+            String[] valueArray = s.split(DELIMITING_CHARACTERS);
+            for (int i=0; i<valueArray.length; i++) {
+                String value = valueArray[i];
+                if (value!=null) {
+                    value = value.trim();
+                    value = value.toLowerCase();
+                    if (!"".equals(value)) {
+                        result.add(value);
+                    }
+                }
+            }
         }
         return result;
     }

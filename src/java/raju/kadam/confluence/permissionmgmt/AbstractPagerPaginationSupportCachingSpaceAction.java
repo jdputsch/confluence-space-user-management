@@ -41,20 +41,27 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     public PagerPaginationSupport getGroupsPps(String spaceKey) {
-
-        return (PagerPaginationSupport)getSessionProperty( PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + GROUPS_SESSION_KEY_SUFFIX );
+        return (PagerPaginationSupport)getSessionProperty( getGroupsPpsKey(spaceKey) );
     }
 
     public void setGroupsPps(String spaceKey, PagerPaginationSupport groupsPps) {
-        setSessionProperty( PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + GROUPS_SESSION_KEY_SUFFIX, groupsPps);
+        setSessionProperty( getGroupsPpsKey(spaceKey), groupsPps);
+    }
+
+    private String getGroupsPpsKey(String spaceKey) {
+        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + GROUPS_SESSION_KEY_SUFFIX;
     }
 
     public PagerPaginationSupport getUsersPps(String spaceKey, String groupName) {
-        return (PagerPaginationSupport)getSessionProperty( PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + groupName + "-" + USERS_SESSION_KEY_SUFFIX );
+        return (PagerPaginationSupport)getSessionProperty( getUsersPpsKey(spaceKey, groupName) );
     }
 
     public void setUsersPps(String spaceKey, String groupName, PagerPaginationSupport usersPps) {
-        setSessionProperty( PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + groupName + "-" + USERS_SESSION_KEY_SUFFIX, usersPps);
+        setSessionProperty( getUsersPpsKey(spaceKey, groupName), usersPps);
+    }
+
+    private String getUsersPpsKey(String spaceKey, String groupName) {
+        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + groupName + ":" + USERS_SESSION_KEY_SUFFIX;
     }
 
     public void clearCache() {

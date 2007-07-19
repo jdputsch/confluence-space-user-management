@@ -1,5 +1,8 @@
 package raju.kadam.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -10,6 +13,8 @@ import java.util.ArrayList;
  * Time: 2:11:23 PM
  */
 public class ListUtil {
+
+    private static final Log log = LogFactory.getLog(ListUtil.class);
 
     public static boolean isListSizeOverMaxNum( List list, int max ) {
         boolean result = false;
@@ -24,5 +29,12 @@ public class ListUtil {
         List list = new ArrayList();
         list.add(item);
         return list;
+    }
+
+    public static boolean isNullOrEmpty(List list) {
+        if (list==null || list.size()==0) {
+            return true;
+        }
+        return false;
     }
 }

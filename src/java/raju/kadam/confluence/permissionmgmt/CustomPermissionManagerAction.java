@@ -31,6 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package raju.kadam.confluence.permissionmgmt;
 
 import java.util.*;
+import java.net.URLEncoder;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 import raju.kadam.util.*;
 import raju.kadam.confluence.permissionmgmt.service.*;
@@ -81,6 +84,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private SettingsManager settingsManager;
     private String pagerAction;
 
+    public static final String ACTION_ADD_GROUPS = "addGroups";
+    public static final String ACTION_REMOVE_GROUPS = "removeGroups";
+    public static final String ACTION_ADD_USERS_TO_GROUPS = "addUsersToGroups";
+    public static final String ACTION_REMOVE_USERS_FROM_GROUPS = "removeUsersFromGroups";
+
     public CustomPermissionManagerAction()
 	{
 		log.debug("CustomPermissionManagerAction instance created");
@@ -102,7 +110,24 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return PagerPaginationSupport.DEFAULT_COUNT_ON_EACH_PAGE;
     }
 
-    private String getParameterValue(Map paramMap, String param) {
+    private String getUrlDecodedCleanedTrimmedParameterValue(Map paramMap, String param) {
+        String result = null;
+        String value = getRawParameterValue(paramMap, param);
+        if (value!=null) {
+            value = StringUtil.clean(value.trim());
+            if (!StringUtil.isNullOrEmpty(value)) {
+                try {
+                    result = URLDecoder.decode(value, "UTF-8");
+                }
+                catch (UnsupportedEncodingException e) {
+                    log.error("request parameter '" + param + "' had cleaned up value '" + value + "' which could not be URL decoded", e);
+                }
+            }
+        }
+        return result;
+    }
+
+    private String getRawParameterValue(Map paramMap, String param) {
         String[] values = (String[])paramMap.get(param);
         if ( values != null && values.length > 0 ) {
             return values[0];
@@ -110,13 +135,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return null;
     }
 
-    private List getParameterValues(Map paramMap, String param) {
-        String[] values = (String[])paramMap.get(param);
-        if ( values != null && values.length > 0 ) {
-            return Arrays.asList(values);
+    private List getUrlDecodedCleanedTrimmedParameterValueList(Map paramMap, String param) {
+        List result = null;
+        String decodedValue = getUrlDecodedCleanedTrimmedParameterValue(paramMap, param);
+        if (decodedValue!=null) {
+            result = StringUtil.getCleanedListFromDelimitedValueString(decodedValue);
         }
 
-        return new ArrayList();
+        return result;
     }
 
     public ServiceContext createServiceContext() {
@@ -129,29 +155,29 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public CustomPermissionManagerActionContext createContext() {
         CustomPermissionManagerActionContext context = new CustomPermissionManagerActionContext();
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        String groups = getParameterValue( paramMap, "groups");
+        List groups = getUrlDecodedCleanedTrimmedParameterValueList( paramMap, "groups");
         if ( groups != null ) {
             // groups specified as single comma-delimited string. used by everything else.
-            context.setSpecifiedGroups(StringUtil.convertColonSemicolonOrCommaDelimitedStringToList(groups));
+            context.setSpecifiedGroups(groups);
         }
         else {
-            // groups specified by group of checkboxes. used by bulk-edit.
-            context.setSpecifiedGroups(HtmlFormUtil.retrieveListOfSelectedUserGroups(paramMap));
+            // groups specified by group of checkboxes with name "groups". used by bulk-edit.
+            context.setSpecifiedGroups(HtmlFormUtil.retrieveListOfValuesForCheckboxGroupName(paramMap, "groups"));
         }
-        context.setSpecifiedUsers(StringUtil.convertColonSemicolonOrCommaDelimitedStringToList(getParameterValue( paramMap, "users")));
+        context.setSpecifiedUsers(getUrlDecodedCleanedTrimmedParameterValueList( paramMap, "users"));
         context.setLoggedInUser(getRemoteUser().getName());
 		context.setKey(getKey());
-    	context.setAdminAction(getParameterValue( paramMap, "adminAction"));
-        context.setUserSearch(getParameterValue( paramMap, "userSearch"));
+    	context.setAdminAction(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "adminAction"));
+        context.setUserSearch(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "userSearch"));
         return context;
     }
 
     public AdvancedUserQuery createAdvancedUserQuery() {
         AdvancedUserQuery userQuery = new AdvancedUserQuery();
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        userQuery.setLookupType(getParameterValue( paramMap, "lookupType"));
-        userQuery.setPartialSearchTerm(getParameterValue( paramMap, "partialSearchTerm"));
-        userQuery.setSubstringMatchType(getParameterValue( paramMap, "substringMatchType"));
+        userQuery.setLookupType(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "lookupType"));
+        userQuery.setPartialSearchTerm(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "partialSearchTerm"));
+        userQuery.setSubstringMatchType(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "substringMatchType"));
         log.debug("Created advanced user query: " + userQuery.toString());
         return userQuery;
     }
@@ -185,7 +211,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void handlePaging(Map paramMap) {
-        setPagerAction(getParameterValue( paramMap, "pagerAction"));
+        setPagerAction(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "pagerAction"));
         String pagerAction = getPagerAction();
         if ("nextPageGroups".equals(pagerAction)) {
             PagerPaginationSupport groups = getGroups();
@@ -226,29 +252,17 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void handleRefreshData(Map paramMap) {
-        if (getParameterValue(paramMap, "refresh")!=null) {
+        if (getUrlDecodedCleanedTrimmedParameterValue(paramMap, "refresh")!=null) {
 
-            int oldGroupsIndex = -1;
-            if (getGroups()!=null) {
-                oldGroupsIndex = getGroups().getStartIndex();
-            }
-
-            int oldUsersIndex = -1;
-            if (getUsers()!=null) {
-                oldUsersIndex = getUsers().getStartIndex();
-            }
+            Integer oldGroupsIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getGroups());
+            Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
 
             this.clearCache();
             this.populateDataUnlessCached();
 
             // Note: is important that these are calling getGroups() and getUsers() again to get latest instances.
-            if (oldGroupsIndex != -1) {
-                PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
-            }
-            
-            if (oldUsersIndex != -1) {
-                PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
-            }
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
         }
     }
 
@@ -267,9 +281,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
 
-        setBulkEdit(getParameterValue(paramMap, "bulkEdit"));
+        setBulkEdit(getUrlDecodedCleanedTrimmedParameterValue(paramMap, "bulkEdit"));
 
-        String selectedGroup = getParameterValue(paramMap, "selectedGroup");
+        String selectedGroup = getUrlDecodedCleanedTrimmedParameterValue(paramMap, "selectedGroup");
         setSelectedGroup(selectedGroup);                
 
         // handle refresh
@@ -280,7 +294,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         //TODO: remove this section before release!
         // START TEST SECTION
-        if (getParameterValue(paramMap, "createTestUsersAndGroups")!= null) {
+        if (getUrlDecodedCleanedTrimmedParameterValue(paramMap, "createTestUsersAndGroups")!= null) {
             // go nuts
             createTestUsersAndGroups();
         }
@@ -448,29 +462,41 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             UserManagementService userManagementService = getUserManagementService();
             ServiceContext serviceContext = createServiceContext();
 
-            if(adminAction != null)
+            log.debug("adminAction=" + adminAction);
+
+            if(adminAction != null && !"".equals(adminAction))
             {
 
-                if(adminAction.equals("addUsersToGroups") || adminAction.equals("removeUsersFromGroups")) {
+                if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS) || adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS)) {
+
+                    //validate
+                    if (ListUtil.isNullOrEmpty(context.getSpecifiedUsers())) {
+                        log.warn("Failed action " + adminAction + ". users were null");
+                        resultList.add("users cannot be null");
+                        setActionErrors(resultList);
+                        return ERROR;
+                    }
+
+                    if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
+                        log.warn("Failed action " + adminAction + ". users were null");
+                        resultList.add("groups cannot be null");
+                        setActionErrors(resultList);
+                        return ERROR;
+                    }
+
                     // get the old instance's paging index
-                    int oldUsersIndex = getUsers().getStartIndex();
+                    Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
                     try {
-                        if(adminAction.equals("addUsersToGroups"))
+                        if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS))
                         {
                             userManagementService.addUsersByUsernameToGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
                             opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " added to group(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " successfully!</font>";
                         }
-                        else if(adminAction.equals("removeUsersFromGroups"))
+                        else if(adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS))
                         {
                             userManagementService.removeUsersByUsernameFromGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
                             opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " removed from group(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " successfully!</font>";
                         }
-                    }
-                    catch (Throwable t) {
-                        log.error("Failed action", t);
-                        resultList.add("" + t.getMessage());
-                        setActionErrors(resultList);
-                        return ERROR;
                     }
                     finally {
                         // clear user cache and repopulate
@@ -481,14 +507,23 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
                     }
                 }
-                else if(adminAction.equals("addGroups") || adminAction.equals("removeGroups")) {
+                else if(adminAction.equals(ACTION_ADD_GROUPS) || adminAction.equals(ACTION_REMOVE_GROUPS)) {
+
+                    //validate
+                    if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
+                        log.warn("Failed action " + adminAction + ". users were null");
+                        resultList.add("groups cannot be null");
+                        setActionErrors(resultList);
+                        return ERROR;
+                    }
+
                     // get the old instance's paging index
-                    int oldGroupsIndex = getGroups().getStartIndex();
-                    int oldUsersIndex = getUsers().getStartIndex();
+                    Integer oldGroupsIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getGroups());
+                    Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
 
                     boolean usersAdded = false;
                     try {
-                        if(adminAction.equals("addGroup"))
+                        if(adminAction.equals(ACTION_ADD_GROUPS))
                         {
                             String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
                             log.debug("group name prefix will be " + prefix);
@@ -512,7 +547,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                                 userManagementService.addUsersByUsernameToGroups(specifiedUsers, fixedGroupNames, serviceContext);
                             }
                         }
-                        else if(adminAction.equals("removeGroup"))
+                        else if(adminAction.equals(ACTION_REMOVE_GROUPS))
                         {
                             List specifiedGroups = context.getSpecifiedGroups();
 
@@ -521,12 +556,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             // groups no longer exist. remove cached group memberships if any.
                             this.clearUserCache(context.getKey(), specifiedGroups);
                         }
-                    }
-                    catch (Throwable t) {
-                        log.error("Failed action", t);
-                        resultList.add("" + t.getMessage());
-                        setActionErrors(resultList);
-                        return ERROR;
                     }
                     finally {
                         // clear group cache and repopulate
@@ -537,16 +566,28 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                         this.populateDataUnlessCached();
 
-                        // NOTE: intentionally calling getGroups() and getUsers() because they are new instances!
+                        // NOTE: intentionally calling getGroups() because it is a new instance
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
+
                         if (usersAdded) {
+                            // NOTE: intentionally calling getUsers() because it is a new instance
                             PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
                         }
                     }
                 }
+                else {
+                    log.warn("Unrecognized adminAction='" + adminAction + "'");
+                }
             }
 
             // note: is normal at times not to have an action (selecting group for example)
+        }
+        catch (IdListException e) {
+            String msg = e.getMessage() + ": " + e.getIdsAsCommaDelimitedString();
+            log.error(msg, e);
+            resultList.add( msg );
+            setActionErrors(resultList);
+            return ERROR;
         }
         catch(Throwable t)
         {
@@ -568,12 +609,12 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     //public String getUserManagerLocation() {
     //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_USER_MANAGER_LOCATION);
 	//}
-    
+
 	//public String getIsLdapAuthUsed()
     //{
     //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_AUTH_STATUS_KEY);
     //}
-	
+
     //public String getJiraJNDILookupKey()
     //{
     //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_JNDI_KEY);
@@ -586,7 +627,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 	//public String getCompanyLDAPUrl() {
     //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_COMPANY_LDAP_URL_KEY);
 	//}
-	
+
 	//Get the count which indicates total no. of userids that can be processed at a time.
 	//public String getMaxUserIDsLimit() {
     //    return ((String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT));
@@ -1078,5 +1119,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
 
-    
+    public VelocityTools getVelocityTools() {
+        return new VelocityTools();
+    }
   }

@@ -16,6 +16,14 @@ public class PagerPaginationSupportUtil {
 
     public static final Log log = LogFactory.getLog(PagerPaginationSupportUtil.class);
 
+
+    public static Integer getStartIndexAsIntegerOrNull(PagerPaginationSupport pps) {
+        Integer result = null;
+        if (pps!=null) {
+            result = new Integer(pps.getStartIndex());
+        }
+        return result;
+    }
     /**
      * Notes: this returns an unsorted list (index of items gets messed up due to use of HashMap to ensure same object
      * is not added to List more than once). It is awful than PagerUtils.toList(pps.getItems()) doesn't work. Need to
@@ -72,6 +80,12 @@ public class PagerPaginationSupportUtil {
 
     private static List getKeysAsList(Map map) {
         return new ArrayList(map.keySet());
+    }
+
+    public static void safelyMoveToOldStartIndex(Integer startIndex, PagerPaginationSupport pps) {
+        if (startIndex!=null) {
+            safelyMoveToOldStartIndex(startIndex.intValue(), pps);
+        }
     }
 
     /**

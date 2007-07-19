@@ -27,6 +27,7 @@ import raju.kadam.confluence.permissionmgmt.paging.LazyLoadingUserByUsernamePage
 import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
 import raju.kadam.util.ListUtil;
+import raju.kadam.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -192,7 +193,9 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
     public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws AddException {
-        log.debug("addUsersByUsernameToGroupsByGroupname() called.");
+        log.debug("addUsersByUsernameToGroupsByGroupname() called. " +
+                "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
+                ", groupnames=" + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
 
         AddException ex = null;
