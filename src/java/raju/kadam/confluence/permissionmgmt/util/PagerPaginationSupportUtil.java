@@ -125,7 +125,7 @@ public class PagerPaginationSupportUtil {
 
     public static boolean hasNext(PagerPaginationSupport pps) {
         boolean result = false;
-
+        
         log.debug("hasNext() called");
         debug(pps);
         if (pps!=null) {

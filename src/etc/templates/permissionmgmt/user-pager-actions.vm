@@ -1,6 +1,6 @@
                 ## Provide pagerAction links for users
 
-                #if ($action.selectedGroup)
+                #if ($action.selectedGroup && $users)
 <div class="paging">
                     #if($action.hasPrev($users))
                     <span class="prev">
@@ -14,7 +14,18 @@
                     #end
                     #if(${action.groups})
                     <span class="count">
-                        Users $!{users.startIndex}-$!{action.pageEndIndex($users)} of $!{users.total}
+                        Users $!{users.startIndex}-$!{action.pageEndIndex($users)} of $!{users.total}<br/>
+
+                        #if($users.total > $users.countOnEachPage)
+                        <form action="docustompermissionsmanage.action">
+	                    <fieldset>
+	                    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
+	                    <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
+                        <input type="hidden" name="pagerAction" value="skipToUser"/>
+                        <input type="submit" class="submitBttn" id="skipToUserBtn" name="skipToUserBtn" value="Skip to"/><input type="text" name="recordNum"/>
+                        </fieldset>
+                        </form>
+                        #end
                     </span>
                     #end
 </div>

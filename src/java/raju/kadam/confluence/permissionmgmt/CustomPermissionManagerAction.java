@@ -48,6 +48,7 @@ import com.atlassian.user.search.page.PagerUtils;
 import com.opensymphony.webwork.ServletActionContext;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import raju.kadam.confluence.permissionmgmt.config.ConfigValidationResponse;
 import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.vo.*;
 import raju.kadam.confluence.permissionmgmt.util.ConfluenceUtil;
@@ -226,6 +227,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 prev(groups);
             }
         }
+        else if ("skipToGroup".equals(pagerAction)) {
+            Integer recordNum = getRecordNum(paramMap);
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(recordNum, getGroups());
+        }
 
         if ("nextPageUsers".equals(pagerAction)) {
             PagerPaginationSupport users = getUsers();
@@ -239,6 +244,24 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 prev(users);
             }
         }
+        else if ("skipToUser".equals(pagerAction)) {
+            Integer recordNum = getRecordNum(paramMap);
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(recordNum, getUsers());
+        }
+    }
+
+    private Integer getRecordNum(Map paramMap) {
+        Integer result = null;
+        String val = getUrlDecodedCleanedTrimmedParameterValue( paramMap, "recordNum");
+        if (val!=null) {
+            try {
+                result = new Integer(val);
+            }
+            catch (NumberFormatException nfe) {
+                log.warn("bad recordNum '" + val + "'", nfe);
+            }
+        }
+        return result;
     }
 
     private void handleUserSearch() {
@@ -738,12 +761,12 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     //	return PagerUtils.count(userAccessor.getMemberNames(userAccessor.getGroup(grpName)));
     //}
 
-    public boolean getIsPluginConfigurationDone() {
-        log.debug("getIsPluginConfigurationDone() called");
+    public ConfigValidationResponse getConfigValidationResponse() {
+        log.debug("getConfigValidationResponse() called");
 
-        boolean isConfigValid = this.getCustomPermissionConfiguration().isValid();
-        log.debug("isPluginConfigurationDone = " + isConfigValid);
-        return isConfigValid;
+        ConfigValidationResponse resp = this.getCustomPermissionConfiguration().validate();
+        log.debug("getConfigValidationResponse.isValid = " + resp.isValid());
+        return resp;
     }
 
     public boolean getIsGroupActionsPermitted() {

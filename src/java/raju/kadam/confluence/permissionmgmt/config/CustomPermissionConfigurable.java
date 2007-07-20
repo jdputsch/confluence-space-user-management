@@ -26,6 +26,9 @@ public interface CustomPermissionConfigurable {
     public String getMaxUserIDsLimit();
     public void setMaxUserIDsLimit(String maxUserIDsLimit);
 
+    public String getMaxGroupIDsLimit();
+    public void setMaxGroupIDsLimit(String maxGroupIDsLimit);
+
     public String getUserGroupsMatchingPattern();
     public void setUserGroupsMatchingPattern(String userGroupsMatchingPattern);
 
@@ -43,4 +46,7 @@ public interface CustomPermissionConfigurable {
 
     public String getNewGroupNameCreationSuffixPattern();
     public void setNewGroupNameCreationSuffixPattern(String newGroupNameCreationSuffixPattern);
+
+    public String getUserSearchEnabled();
+    public void setUserSearchEnabled(String userSearchEnabled);
 }

@@ -1,5 +1,6 @@
 
              	## Provide pagerAction links for groups
+            #if ($groups)
 			<div class="paging">
                 #if ($action.selectedGroup)
 	                    #if($action.hasPrev($groups))
@@ -16,7 +17,18 @@
 
 	                    #if(${action.groups})
 	                    <span class="count">
-	                        Groups $!{groups.startIndex}-$!{action.pageEndIndex($groups)} of $!{groups.total}
+	                        Groups $!{groups.startIndex}-$!{action.pageEndIndex($groups)} of $!{groups.total}<br/>
+
+	                        #if($groups.total > $groups.countOnEachPage)
+	                        <form action="docustompermissionsmanage.action">
+	                        <fieldset>
+	                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
+	                        <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
+	                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
+	                        <input type="submit" class="submitBttn" id="skipToGrpBtn" name="skipToGrpBtn" value="Skip to"/><input type="text" name="recordNum"/>
+	                        </fieldset>
+	                        </form>
+	                        #end
 	                    </span>
 	                    #end
                 #else
@@ -36,7 +48,19 @@
 	                    #if(${action.groups})
 	                    <span class="count">
 	                        Groups $!{groups.startIndex}-$!{action.pageEndIndex($groups)} of $!{groups.total}
+
+	                        #if($groups.total > $groups.countOnEachPage)
+	                        <form action="docustompermissionsmanage.action">
+	                        <fieldset>
+	                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
+	                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
+	                        <input type="submit" class="submitBttn" id="skipToGrpBtn" name="skipToGrpBtn" value="Skip to"/><input type="text" name="recordNum"/>
+	                        </fieldset>
+	                        </form>
+	                        #end
 	                    </span>
 	                    #end
                 #end
 			</div>
+			#end
+			

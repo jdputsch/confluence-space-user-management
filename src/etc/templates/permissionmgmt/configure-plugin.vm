@@ -181,10 +181,32 @@
         </tr>
 
         <tr>
-            <td class="label" width="30%">Max UserId/GroupId Limit:</td>
+            <td class="label" width="30%">Max Number of UserIds to Act On at One Time:</td>
             <td nowrap>
                 #if ($action.customPermissionConfiguration.maxUserIDsLimit)
                     <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.maxUserIDsLimit</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label" width="30%">Max Number of GroupIds to Act On at One Time:</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.maxGroupIDsLimit)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.maxGroupIDsLimit</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label" width="30%">User Search Enabled:</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.userSearchEnabled)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.userSearchEnabled</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -259,11 +281,37 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">Max UserIDs Limit:</td>
+            <td valign="top" class="label" width="30%">Max Number of UserIDs to Act On at One Time:</td>
             <td>
+                #fielderror ('maxUserIDsLimit')
                 <input type="text" name="maxUserIDsLimit" value="$!action.maxUserIDsLimit" size="2" />
                 <p>
-                    <font size="1">If this value is not defined, then default max UserIDs limit is 20.</font>
+                    <font size="1">Must be an integer greater than 0.</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">Max Number of GroupIDs to Act On at One Time:</td>
+            <td>
+                #fielderror ('maxGroupIDsLimit')
+                <input type="text" name="maxGroupIDsLimit" value="$!action.maxGroupIDsLimit" size="2" />
+                <p>
+                    <font size="1">Must be an integer greater than 0.</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">User Search Enabled:</td>
+            <td>
+                #fielderror ('userSearchEnabled')
+                <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />YES &nbsp;
+                <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />NO
+                <p>
+                    <font size="1">
+                    If you have a large number of users and search is slow you may either want to disable user search or <a href="http://confluence.atlassian.com/display/DOC/How+to+Improve+User+Search+Performance">migrate users to the new user/group data structures</a>.
+                    </font>
                 </p>
             </td>
         </tr>
@@ -271,6 +319,7 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
         <tr>
             <td valign="top" class="label" width="30%">Usergroups Matching Pattern:</td>
             <td>
+                #fielderror ('userGroupsMatchingPattern')
                 <input type="text" name="userGroupsMatchingPattern" value="$!action.userGroupsMatchingPattern" size="30" />
                 <p>
                     <font size="1">
@@ -310,22 +359,13 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
 				    <tr style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				            #fielderror ('newGroupNameCreationPrefixPattern')
-				        </td>
-				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				            &nbsp;
-				        </td>
-				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				            #fielderror ('newGroupNameCreationSuffixPattern')
-				        </td>
-				    </tr>
-				    <tr style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				            <input type="text" name="newGroupNameCreationPrefixPattern" id="newGroupNameCreationPrefixPattern" value="$!action.newGroupNameCreationPrefixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
 				        </td>
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				            &nbsp;(group identifier)&nbsp;
 				        </td>
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            #fielderror ('newGroupNameCreationSuffixPattern')
 				            <input type="text" name="newGroupNameCreationSuffixPattern" id="newGroupNameCreationSuffixPattern" value="$!action.newGroupNameCreationSuffixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
 				        </td>
 				    </tr>
@@ -380,6 +420,7 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
         <tr>     
             <td valign="top" class="label" width="30%">Plugin Deactivated:</td>
             <td>
+                #fielderror ('pluginDown')
                 <input type="radio" name="pluginDown" value="YES" #if ($!action.pluginDown == "YES") checked="true" #end />YES &nbsp;
                 <input type="radio" name="pluginDown" value="NO" #if ($!action.pluginDown == "NO") checked="true" #end />NO
             </td>
@@ -388,6 +429,7 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
         <tr>
             <td valign="top" class="label" width="30%">Plugin Downtime Message:</td>
             <td>
+   	         #fielderror ('downTimeMessage')
    	         <textarea name="downTimeMessage" cols="60" rows="6" class="monospaceInput">$!action.downTimeMessage</textarea>
             </td>
         </tr>

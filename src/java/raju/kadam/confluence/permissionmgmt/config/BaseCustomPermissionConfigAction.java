@@ -17,13 +17,14 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String companyLDAPUrl;
     private String companyLDAPBaseDN;
     private String maxUserIDsLimit;
+    private String maxGroupIDsLimit;
     private String userGroupsMatchingPattern;
     private String pluginDown;
     private String downTimeMessage;
     private String groupActionsPermitted;
     private String newGroupNameCreationPrefixPattern;
     private String newGroupNameCreationSuffixPattern;
-
+    private String userSearchEnabled;
 
     public String getUserManagerLocation() {
         return userManagerLocation;
@@ -73,6 +74,14 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
         this.maxUserIDsLimit = maxUserIDsLimit;
     }
 
+    public String getMaxGroupIDsLimit() {
+        return maxGroupIDsLimit;
+    }
+
+    public void setMaxGroupIDsLimit(String maxGroupIDsLimit) {
+        this.maxGroupIDsLimit = maxGroupIDsLimit;
+    }
+
     public String getUserGroupsMatchingPattern() {
         return userGroupsMatchingPattern;
     }
@@ -119,5 +128,13 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setNewGroupNameCreationSuffixPattern(String newGroupNameCreationSuffixPattern) {
         this.newGroupNameCreationSuffixPattern = newGroupNameCreationSuffixPattern;
+    }
+
+    public String getUserSearchEnabled() {
+        return userSearchEnabled;
+    }
+
+    public void setUserSearchEnabled(String userSearchEnabled) {
+        this.userSearchEnabled = userSearchEnabled;
     }
 }

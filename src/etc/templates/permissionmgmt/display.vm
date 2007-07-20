@@ -121,7 +121,8 @@
 		#parse ( "/templates/permissionmgmt/action-messages.vm" )
 	</div>
 
-	#if(${action.isPluginConfigurationDone})
+    #set($configValidationResponse=$action.configValidationResponse)
+	#if($configValidationResponse.isValid())
 
     #if(${action.selectedGroup})
         <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&refresh=1">Refresh</a>
@@ -148,7 +149,21 @@
         #if(${action.customPermissionConfiguration.pluginDown} == "yes")
             <p class="infoMacro">${action.customPermissionConfiguration.downTimeMessage}</p>
 		#else
-		    <p class="noteMacro">An administrator must configure "Custom Space Usergroups Manager" before you start using it by going to Administration &gt; Plugins and selecting this plugin.</p>
+		    <p class="noteMacro">
+		    <p>
+		    An administrator must <a href="$action.confluenceRoot/admin/plugins/custompermissionsconfig/config.action">reconfigure</a> "Custom Space Usergroups Manager" before you start using it.
+		    </p>
+		    <p>
+		    The following need to be configured before this plugin can be used:
+		    #set($fieldNameToErrorMessage=$configValidationResponse.fieldNameToErrorMessage)
+		    <ul>
+            #foreach($configFieldName in $fieldNameToErrorMessage.keySet())
+                <li>$configFieldName: $fieldNameToErrorMessage.get($configFieldName)</li>
+            #end
+		    </ul>
+		    </p>
+		    </p>
+
 		#end
     #end
 

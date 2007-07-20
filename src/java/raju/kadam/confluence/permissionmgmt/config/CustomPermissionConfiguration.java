@@ -6,12 +6,14 @@ import com.atlassian.spring.container.ContainerManager;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import raju.kadam.util.ConfigUtil;
 import raju.kadam.util.StringUtil;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
+import raju.kadam.confluence.permissionmgmt.util.PropsUtil;
 
 /**
  * Convenience methods that get/set persisted config values in BandanaManager.
@@ -23,7 +25,8 @@ import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
  */
 public class CustomPermissionConfiguration implements CustomPermissionConfigurable {
 
-    private Log log = LogFactory.getLog(this.getClass());
+    // has a static method, so need to use static log
+    private static final Log log = LogFactory.getLog(CustomPermissionConfiguration.class);
 
     private BandanaManager bandanaManager;
 
@@ -37,6 +40,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setUserManagerLocation(getUserManagerLocation());
         config.setJiraJNDILookupKey(getJiraJNDILookupKey());
         config.setMaxUserIDsLimit(getMaxUserIDsLimit());
+        config.setMaxGroupIDsLimit(getMaxGroupIDsLimit());
         config.setUserGroupsMatchingPattern(getUserGroupsMatchingPattern());
         config.setLdapAuthUsed(getLdapAuthUsed());
         config.setCompanyLDAPUrl(getCompanyLDAPUrl());
@@ -46,12 +50,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setGroupActionsPermitted(getGroupActionsPermitted());
         config.setNewGroupNameCreationPrefixPattern(getNewGroupNameCreationPrefixPattern());
         config.setNewGroupNameCreationSuffixPattern(getNewGroupNameCreationSuffixPattern());
+        config.setUserSearchEnabled(getUserSearchEnabled());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
         setUserManagerLocation(config.getUserManagerLocation());
         setJiraJNDILookupKey(config.getJiraJNDILookupKey());
         setMaxUserIDsLimit(config.getMaxUserIDsLimit());
+        setMaxGroupIDsLimit(config.getMaxGroupIDsLimit());
         setUserGroupsMatchingPattern(config.getUserGroupsMatchingPattern());
         setLdapAuthUsed(config.getLdapAuthUsed());
         setCompanyLDAPUrl(config.getCompanyLDAPUrl());
@@ -61,50 +67,103 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setGroupActionsPermitted(config.getGroupActionsPermitted());
         setNewGroupNameCreationPrefixPattern(config.getNewGroupNameCreationPrefixPattern());
         setNewGroupNameCreationSuffixPattern(config.getNewGroupNameCreationSuffixPattern());
+        setUserSearchEnabled(config.getUserSearchEnabled());
     }
 
-    public boolean isValid() {
-        boolean isValid = true;
+    public ConfigValidationResponse validate() {
+        return validate(this);
+    }
 
-        String userManagementLocation = getUserManagerLocation();
-        if (userManagementLocation == null) {
-            log.warn("userManagementLocation was null");
-            isValid = false;
-        }
-        else {
-            if ( userManagementLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE) ) {
+    public static ConfigValidationResponse validate(CustomPermissionConfigurable config) {
 
-                if ( ConfigUtil.isNullOrEmpty(getJiraJNDILookupKey())) {
-                    log.warn("jiraJNDILookupKey was null/empty");
-                    isValid = false;
+        ConfigValidationResponse result = new ConfigValidationResponse();
+        result.setValid(true);
+
+        boolean isUserManagerLocationSet = true;
+		String userMgrLocation = config.getUserManagerLocation();
+		boolean userManagerLocationIsConfluence = (userMgrLocation != null) && (userMgrLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE));
+		boolean userManagerLocationIsJira = (userMgrLocation != null) && (userMgrLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE));
+
+		//If userManagerLocation is not set as CONFLUENCE or JIRA, then it must be set to either value.
+		if( !(userManagerLocationIsConfluence || userManagerLocationIsJira) )
+		{
+            result.addFieldError("userManagerLocation", "Please indicate which application manages Wiki Users");
+            result.setValid(false);
+		}
+
+		//Following information needs to be check only if Wiki User Management is delegated to Jira
+		if(isUserManagerLocationSet && userManagerLocationIsJira)
+		{
+			try {
+                String jiraSoapUrl = JiraUtil.getJiraSoapUrl();
+                String jiraSoapUsername = JiraUtil.getJiraSoapUsername();
+                String jiraSoapPassword = JiraUtil.getJiraSoapPassword();
+
+                if( jiraSoapUrl == null || jiraSoapUrl.trim().equals(""))
+                {
+                    result.addFieldError("userManagerLocation", "Missing property " + CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_URL + " in " + PropsUtil.PROPS_FILENAME );
+                    result.setValid(false);
                 }
-                else {
-                    try {
-                        if (ConfigUtil.isNullOrEmpty(JiraUtil.getJiraSoapUrl()) ||
-                            ConfigUtil.isNullOrEmpty(JiraUtil.getJiraSoapUsername()) ||
-                            ConfigUtil.isNullOrEmpty(JiraUtil.getJiraSoapPassword()))
-                        {
-                            log.warn("jira properties were null/empty");
-                            isValid = false;
-                        }
-                    }
-                    catch (Throwable t) {
-                        log.error("Got error while trying to check values in properties file!", t);
-                        isValid = false;
-                    }
+
+                if( jiraSoapUsername == null || jiraSoapUsername.trim().equals(""))
+                {
+                    result.addFieldError("userManagerLocation", "Missing property " + CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_USERNAME + " in " + PropsUtil.PROPS_FILENAME );
+                    result.setValid(false);
+                }
+
+                if( jiraSoapPassword == null || jiraSoapPassword.trim().equals(""))
+                {
+                    result.addFieldError("userManagerLocation", "Missing property " + CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_PASSWORD + " in " + PropsUtil.PROPS_FILENAME );
+                    result.setValid(false);
                 }
             }
+            catch (Throwable t) {
+                result.addFieldError("userManagerLocation", "Error loading properties file " + PropsUtil.PROPS_FILENAME + ": " + t);
+                log.error("Error loading properties file " + PropsUtil.PROPS_FILENAME, t);
+                result.setValid(false);
+            }
+
+
+            //check if user has set Jira URL and Jira JNDI
+			if( config.getJiraJNDILookupKey() == null || config.getJiraJNDILookupKey().trim().equals(""))
+			{
+	            result.addFieldError("jiraJNDILookupKey", "Enter Jira JNDI DataSource");
+	            result.setValid(false);
+			}
+		}
+
+		boolean isLDAPAvailable = (config.getLdapAuthUsed() != null) && (config.getLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false);
+		if(isLDAPAvailable)
+		{
+            //check if LDAP URL is set or not
+			if( config.getCompanyLDAPUrl() == null || config.getCompanyLDAPUrl().trim().equals(""))
+			{
+	            result.addFieldError("companyLDAPUrl", "Enter LDAP URL");
+	            result.setValid(false);
+			}
+
+			//check if LDAP URL is set or not
+			if( config.getCompanyLDAPBaseDN() == null || config.getCompanyLDAPBaseDN().trim().equals(""))
+			{
+	            result.addFieldError("companyLDAPBaseDN", "Enter LDAP Base DN");
+	            result.setValid(false);
+			}
+		}
+
+        if (config.getMaxUserIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(config.getMaxUserIDsLimit())) {
+            result.addFieldError("maxUserIDsLimit", "Can only be empty or an integer greater than zero");
+            result.setValid(false);
         }
 
-        if (getMaxUserIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(getMaxUserIDsLimit())) {
-            log.warn("maxUserIDsLimit was invalid");
-            isValid = false;
+        if (config.getMaxGroupIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(config.getMaxGroupIDsLimit())) {
+            result.addFieldError("maxGroupIDsLimit", "Can only be empty or an integer greater than zero");
+            result.setValid(false);
         }
 
-        String userGroupsMatchingPattern = getUserGroupsMatchingPattern();
-        if (ConfigUtil.isNullOrEmpty(getUserGroupsMatchingPattern())) {
-            log.warn("matching pattern was null/empty");
-            isValid = false;
+        String userGroupsMatchingPattern = config.getUserGroupsMatchingPattern();
+        if (ConfigUtil.isNullOrEmpty(userGroupsMatchingPattern)) {
+            result.addFieldError("userGroupsMatchingPattern", "Group matching pattern cannot be null or empty");
+            result.setValid(false);
         }
         else {
             try {
@@ -112,56 +171,57 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 Pattern.compile(userGroupsMatchingPattern);
             }
             catch (PatternSyntaxException pse) {
-                log.error("Pattern specified in config failed to compile", pse);
-                isValid = false;
+                result.addFieldError("userGroupsMatchingPattern", "Group matching pattern was invalid: " + pse.getMessage());
+                result.setValid(false);
             }
         }
 
-        String ldapAuthUsed = getLdapAuthUsed();
+        String ldapAuthUsed = config.getLdapAuthUsed();
         if (ConfigUtil.isNotNullAndIsYesOrNo(ldapAuthUsed)) {
             if ("YES".equals(ldapAuthUsed)) {
-                if (ConfigUtil.isNullOrEmpty(getCompanyLDAPUrl()) || getCompanyLDAPBaseDN() == null) {
-                    log.warn("ldap URL was null/empty or LDAP base DN was null");
-                    isValid = false;
+                if (ConfigUtil.isNullOrEmpty(config.getCompanyLDAPUrl()) || config.getCompanyLDAPBaseDN() == null) {
+                    result.addFieldError("ldapAuthUsed", "If LDAP auth used, must specify company LDAP URL and company LDAP base DN");
+                    result.setValid(false);
                 }
             }
         }
         else {
-            log.warn("ldapAuthUsed was not YES or NO");
-            isValid = false;
+            result.addFieldError("ldapAuthUsed", "Should be YES or NO");
+            result.setValid(false);
         }
 
-        String pluginInDown = getPluginDown();
+        String pluginInDown = config.getPluginDown();
         if (ConfigUtil.isNotNullAndIsYesOrNo(pluginInDown)) {
             if ("YES".equals(pluginInDown)) {
                 // is ok to be empty
-                if (getDownTimeMessage() == null) {
-                    log.warn("plugin was down but no downtime message specified");
-                    isValid = false;
+                if (config.getDownTimeMessage() == null) {
+                    result.addFieldError("pluginInDown", "Downtime message must be specified if plugin is down");
+                    result.setValid(false);
                 }
             }
         }
         else {
-            log.warn("isPluginDown was not YES or NO");
-            isValid = false;
+            result.addFieldError("pluginInDown", "Should be YES or NO");
+            result.setValid(false);
         }
 
-        String groupActionsPermitted = getGroupActionsPermitted();
+        String groupActionsPermitted = config.getGroupActionsPermitted();
         if (ConfigUtil.isNotNullAndIsYesOrNo(groupActionsPermitted)) {
             if ("YES".equals(groupActionsPermitted)) {
                 // these are ok to be empty
-                if (getNewGroupNameCreationPrefixPattern() == null || getNewGroupNameCreationSuffixPattern() == null) {
-                    log.warn("new group name prefix or suffix was null");
-                    isValid = false;
+                if (config.getNewGroupNameCreationPrefixPattern() == null || config.getNewGroupNameCreationSuffixPattern() == null) {
+                    result.addFieldError("groupActionsPermitted", "If group actions permitted, must specify prefix and suffix (even if they are just empty). They should fit with the group name pattern specified.");
+                    result.setValid(false);
                 }
             }
         }
         else {
-            log.warn("group actions permitted was not YES or NO");
-            isValid = false;
+            result.addFieldError("groupActionsPermitted", "Should be YES or NO");
+            result.setValid(false);
         }
 
-        return isValid;
+        log.debug("CustomPermissionConfigAction - isValid=" + result + " fieldErrors=" + result.getFieldNameToErrorMessage());
+        return result;
     }
 
     public String getUserManagerLocation() {
@@ -212,6 +272,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT, maxUserIDsLimit);
     }
 
+    public String getMaxGroupIDsLimit() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXGROUPIDS_LIMIT);
+    }
+
+    public void setMaxGroupIDsLimit(String maxGroupIDsLimit) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXGROUPIDS_LIMIT, maxGroupIDsLimit);
+    }
+
     public String getUserGroupsMatchingPattern() {
         return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_USERGROUPS_MATCHING_PATTERN);
     }
@@ -258,6 +326,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setNewGroupNameCreationSuffixPattern(String newGroupNameCreationSuffixPattern) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_SUFFIX_PATTERN, newGroupNameCreationSuffixPattern);
+    }
+
+    public String getUserSearchEnabled() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_USER_SEARCH_ENABLED);
+    }
+
+    public void setUserSearchEnabled(String userSearchEnabled) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_USER_SEARCH_ENABLED, userSearchEnabled);
     }
 
     public BandanaManager getBandanaManager() {
