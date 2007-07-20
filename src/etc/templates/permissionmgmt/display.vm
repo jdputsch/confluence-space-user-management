@@ -51,8 +51,8 @@
         div#csum div.messages ul {margin:0; padding:0; list-style:none;}
         div#csum div.messages ul li {padding:.5em; border:1px solid #3C78B5; background-color: #D8E4F1;}
 
-        div#csum form {clear:both; margin:1em .1em; padding:0; background-color:#F0F0F0; border:1px solid #CCC;}
-        div#csum fieldset {border:none; padding:none; margin:none;}
+        div#csum form {clear:both; margin:1em .1em; padding:7px; background-color:#F0F0F0; border:1px solid #CCC;}
+        div#csum fieldset {border:none; padding:0; margin:0;}
         div#csum legend {padding:10px 0 5px 0; margin:0; display:block; font-weight: bold; color: #036; font-size: 1.1em;}
         div#csum input {width:100%;}
         div#csum label {font-size:1em;}
@@ -60,7 +60,11 @@
         div#csum ul.formHelp {display:block; clear:both; list-style: none; font-size:.9em; padding:1px 2px; margin: 2px 2px 10px 2px;}
         div#csum ul.formHelp li {display:block; color:#444;}
 
-        div#csum div#header {margin:0 0 20px 0;}
+        div#csum div.sectionHeader {}
+		div#csum div.sectionHeader a {text-decoration:none;}
+		div#csum div.sectionHeader a img {text-decoration:none; border:none; height:11px;}
+
+		div#csum div#header {margin:0 0 20px 0;}
 
         div#csum div#groups {display:block; float:left; margin:0; padding:0; width:250px;}
         div#csum div#groups ul {margin:0; padding:0;}
@@ -70,11 +74,9 @@
         div#csum div#groups ul li a.selected:hover {background-color: #FFC;}
         div#csum div#groups ul li a:hover {background-color:#F0F0F0;}
         div#csum div#groups ul li a:active {background-color:#DDD;}
-        div#csum div#groups form {}
 
         div.mode {float:right; padding:3px 3px 0 0;}
         div.mode a {text-decoration:none;}
-        div.mode a img {height:11px;}
         div.mode a:hover {color:#333;}
         div.mode a.selected {font-weight:bold;}
 
@@ -84,7 +86,7 @@
         div#csum div.groupOpts a {text-decoration:none;}
         div#csum div.groupOpts a img {height:12px;}
 
-        div#csum table {width:100%; border-bottom:2px solid #036;}
+        div#csum table {width:100%; border-bottom:2px solid #FFF;}
         div#csum table tr {}
         div#csum table tr.even {background-color:#EEE;}
         div#csum table tr th {font-weight:bold; color:#036; text-align:left; border-bottom:2px solid #036;}
@@ -95,12 +97,15 @@
         div#csum form#bulkChange fieldset label {display: block; margin: 1em 0 0 0;}
         div#csum form#bulkChange fieldset input {width:auto;}
 
-        div#csum div#footer {clear:both; border-top:1px solid #CCC;}
-        div#csum div#footer ul {clear:both; display:block; margin:0; padding:0;}
-        div#csum div#footer ul li {display:inline;}
-        div#csum div#footer ul li a {display:block; color:#036; margin:0; padding:5px 10px; float:left; line-height:1; border-right:1px solid #CCC;}
-        div#csum div#footer ul li a img {padding:0 5px;}
-
+        div#csum div#footer {clear:both; border-top:1px solid #CCC; margin:5px 0 0 0;}
+        div#csum div#footer ul {clear:both; display:block; margin:7px 0 0 1px; padding:0;}
+        div#csum div#footer ul li {display:inline; color:#036;}
+        div#csum div#footer ul li a {color:#036; line-height:1;}
+        div#csum div#footer ul li a img {padding:2px;}
+		div#csum div#footer form {padding:3px;}
+		div#csum div#footer form fieldset {}
+		div#csum div#footer form label {display:inline;}
+		
         div#csum a#showAdvS {margin:6px 0 0 0; display: block; float:right; clear: both; text-decoration:none;}
         div#csum a#hideAdvS {display:block; margin:3px 3px 1px 0; float:right; text-decoration: none;}
 
@@ -113,7 +118,12 @@
 		div#csum div.paging {border-top:1px solid #DDD; color:#666;}
 		div#csum div.paging span.prev  {display:block; float:left;}
 		div#csum div.paging span.next  {display:block; float:right;}
-		div#csum div.paging span.count {display:block; text-align:center}
+		div#csum div.paging span.count {display:block; text-align:center;}
+		div#csum form.pageSkip {border:none; margin:0; background-color:#FFF;}
+		div#csum form.pageSkip fieldset {}
+		div#csum form.pageSkip label {font-weight:normal; font-size:inherit; color:inherit; display:inline;}
+		div#csum form.pageSkip input {width:3em; display:inline;}
+		div#csum form.pageSkip input.submitBttn {width:auto; display:inline;}
     </style>
 
 <div id="csum">
@@ -123,12 +133,6 @@
 
     #set($configValidationResponse=$action.configValidationResponse)
 	#if($configValidationResponse.isValid())
-
-    #if(${action.selectedGroup})
-        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&refresh=1">Refresh</a>
-    #else
-        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">Refresh</a>
-    #end
 
     <div id="groups">
         #parse( "/templates/permissionmgmt/group-list.vm" )
@@ -145,43 +149,60 @@
             #end
         #end
         </div>
+
+		<div id="footer">
+				<ul>
+				#if($groups && $groups.total>0)
+			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">Bulk Change Tool</a> </li>
+			        #if($action.isUserSearchEnabled)
+					<li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">Search Users</a> </li>
+					#end
+			    #end
+
+			    #if($isGroupActionsPermitted)
+					<li>| <a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">
+						#*<img src="${action.confluenceRoot}/images/icons/lock_16.gif"/>*#
+						Edit Space Permissions</a> </li>
+					#*<li>| <a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">
+						<img src="${action.confluenceRoot}/images/icons/locked_pages_16.gif"/>
+						Edit Page Permissions</a> </li>*#
+			    #end
+				</ul>
+				#set($availableSpaces = $action.spacesAsSpaceAdminForUser)
+	            #if($availableSpaces && $availableSpaces.size()>1)
+	            <form method="GET" action="docustompermissionsmanage.action" id="changeSpace" name="changeSpace">
+	                <fieldset>
+	                    <label>Change space: </label>
+	                    <select name="key">
+	                        #foreach ($availableSpace in $availableSpaces)
+	                        <option value="$availableSpace.key" #if($availableSpace.key==$action.space.key)selected="true"#end>$generalUtil.htmlEncode($availableSpace.name) ($generalUtil.htmlEncode($availableSpace.key))</option>
+	                        #end
+	                    </select>
+	                	<input type="submit" value="Change Space" class="submitBttn"/>
+	                </fieldset>
+	            </form>
+	            #end
+		</div>
+
     #else
         #if(${action.customPermissionConfiguration.pluginDown} == "yes")
             <p class="infoMacro">${action.customPermissionConfiguration.downTimeMessage}</p>
 		#else
 		    <p class="noteMacro">
-		    <p>
-		    An administrator must <a href="$action.confluenceRoot/admin/plugins/custompermissionsconfig/config.action">reconfigure</a> "Custom Space Usergroups Manager" before you start using it.
-		    </p>
-		    <p>
-		    The following need to be configured before this plugin can be used:
-		    #set($fieldNameToErrorMessage=$configValidationResponse.fieldNameToErrorMessage)
-		    <ul>
-            #foreach($configFieldName in $fieldNameToErrorMessage.keySet())
-                <li>$configFieldName: $fieldNameToErrorMessage.get($configFieldName)</li>
-            #end
-		    </ul>
-		    </p>
+		    <p>An administrator must <a href="$action.confluenceRoot/admin/plugins/custompermissionsconfig/config.action">reconfigure</a> "Custom Space Usergroups Manager" before you start using it.</p>
+		    <p>The following need to be configured before this plugin can be used:</p>
+			    #set($fieldNameToErrorMessage=$configValidationResponse.fieldNameToErrorMessage)
+				<ul>
+	            #foreach($configFieldName in $fieldNameToErrorMessage.keySet())
+	                <li>$configFieldName: $fieldNameToErrorMessage.get($configFieldName)</li>
+	            #end
+			    </ul>
 		    </p>
 
 		#end
     #end
 
     #parse ( "/admin/admin-breadcrumbs.vm" )
-
-#*
-    #if($isGroupActionsPermitted)
-		<div id="footer">
-			<ul>
-				<li><a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)"><img src="${action.confluenceRoot}/images/icons/lock_16.gif"/>Edit ${action.selectedGroup} Permissions</a></li>
-				<li><a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)"><img src="${action.confluenceRoot}/images/icons/locked_pages_16.gif"/>Edit Page Permissions</a></li>
-			</ul>
-			<div style="clear:both"></div>
-		</div>
-	#else
-		<div style="clear:both"></div>
-    #end
-*#
 
 <div style="clear:both"></div>
 

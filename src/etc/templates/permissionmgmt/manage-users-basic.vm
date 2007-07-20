@@ -30,13 +30,14 @@
 
         #if($action.selectedGroup)
 
-            <div class="sectionHeader">
-				#if(${action.isGroupActionsPermitted})
+            <div class="sectionHeader">				
 				<div class="mode">
-			        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> Delete Group ${action.selectedGroup}</a>
+					<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&refresh=1">Refresh</a>
 			    </div>
-			    #end
 				<h2>Edit Group $generalUtil.htmlEncode(${action.selectedGroup})</h2>
+				#if(${action.isGroupActionsPermitted})
+				<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> Delete Group ${action.selectedGroup}</a>
+				#end
 			</div>
 
             #if($action.isUserSearchEnabled)

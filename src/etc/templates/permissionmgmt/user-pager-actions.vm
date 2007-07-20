@@ -16,16 +16,20 @@
                     <span class="count">
                         Users $!{action.firstRecordNum($users)}-$!{action.lastRecordNum($users)} of $!{users.total}<br/>
 
+
                         #if($users.total > $users.countOnEachPage)
-                        <form action="docustompermissionsmanage.action">
-	                    <fieldset>
-	                    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
-	                    <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
-                        <input type="hidden" name="pagerAction" value="skipToUser"/>
-                        <input type="submit" class="submitBttn" id="skipToUserBtn" name="skipToUserBtn" value="Skip to"/><input type="text" name="recordNum"/>
-                        </fieldset>
+                        <form action="docustompermissionsmanage.action" class="pageSkip">
+		                    <fieldset>
+			                    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
+			                    <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
+		                        <input type="hidden" name="pagerAction" value="skipToUser"/>
+								<label>Skip to User Number:</label>
+		                        <input type="submit" class="submitBttn" id="skipToUserBtn" name="skipToUserBtn" value="Skip To"/>
+								<input type="text" name="recordNum"/>
+	                        </fieldset>
                         </form>
                         #end
+
                     </span>
                     #end
 </div>
