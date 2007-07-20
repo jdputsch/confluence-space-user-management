@@ -2,7 +2,6 @@ package raju.kadam.confluence.permissionmgmt.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.displaytag.pagination.PaginatedList;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import raju.kadam.confluence.permissionmgmt.service.AddException;
 import raju.kadam.confluence.permissionmgmt.service.FindException;
@@ -11,14 +10,11 @@ import raju.kadam.confluence.permissionmgmt.service.RemoveException;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import raju.kadam.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
-import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteUser;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
-import raju.kadam.confluence.permissionmgmt.paging.ListPaginatedList;
 import raju.kadam.util.StringUtil;
 
 import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;

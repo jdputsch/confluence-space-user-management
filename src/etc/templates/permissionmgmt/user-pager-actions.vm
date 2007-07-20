@@ -14,7 +14,7 @@
                     #end
                     #if(${action.groups})
                     <span class="count">
-                        Users $!{users.startIndex}-$!{action.pageEndIndex($users)} of $!{users.total}<br/>
+                        Users $!{action.firstRecordNum($users)}-$!{action.lastRecordNum($users)} of $!{users.total}<br/>
 
                         #if($users.total > $users.countOnEachPage)
                         <form action="docustompermissionsmanage.action">

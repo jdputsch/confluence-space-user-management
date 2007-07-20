@@ -1,7 +1,6 @@
 package raju.kadam.confluence.permissionmgmt.service;
 
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
-import org.displaytag.pagination.PaginatedList;
 import com.atlassian.user.search.page.Pager;
 
 import java.util.List;

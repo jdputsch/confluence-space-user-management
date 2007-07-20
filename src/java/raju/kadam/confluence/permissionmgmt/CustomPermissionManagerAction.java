@@ -229,7 +229,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
         else if ("skipToGroup".equals(pagerAction)) {
             Integer recordNum = getRecordNum(paramMap);
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(recordNum, getGroups());
+            // record num is one-based, not zero-based
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getGroups());
         }
 
         if ("nextPageUsers".equals(pagerAction)) {
@@ -246,7 +247,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
         else if ("skipToUser".equals(pagerAction)) {
             Integer recordNum = getRecordNum(paramMap);
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(recordNum, getUsers());
+            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getUsers());
         }
     }
 
@@ -502,8 +503,26 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     }
 
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
-                        log.warn("Failed action " + adminAction + ". users were null");
+                        log.warn("Failed action " + adminAction + ". groups were null");
                         resultList.add("groups cannot be null");
+                        setActionErrors(resultList);
+                        return ERROR;
+                    }
+
+                    int usersSize = context.getSpecifiedGroups().size();
+                    int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
+                    if (usersSize > maxUserIDsLimit) {
+                        log.warn("Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
+                        resultList.add("cannot act on more than " + maxUserIDsLimit + " users. you tried to act on " + usersSize + " users, which is more than the amount allowed. the maximum value is set in the plugin's configuration");
+                        setActionErrors(resultList);
+                        return ERROR;
+                    }
+
+                    int groupsSize = context.getSpecifiedGroups().size();
+                    int maxGroupIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxGroupIDsLimit()).intValue();
+                    if (groupsSize > maxGroupIDsLimit) {
+                        log.warn("Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
+                        resultList.add("cannot act on more than " + maxGroupIDsLimit + " groups. you tried to act on " + groupsSize + " groups, which is more than the amount allowed. the maximum value is set in the plugin's configuration");
                         setActionErrors(resultList);
                         return ERROR;
                     }
@@ -541,6 +560,15 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         return ERROR;
                     }
 
+                    int groupsSize = context.getSpecifiedGroups().size();
+                    int maxGroupIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxGroupIDsLimit()).intValue();
+                    if (groupsSize > maxGroupIDsLimit) {
+                        log.warn("Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
+                        resultList.add("cannot act on more than " + maxGroupIDsLimit + " groups. you tried to act on " + groupsSize + " groups, which is more than the amount allowed. the maximum value is set in the plugin's configuration");
+                        setActionErrors(resultList);
+                        return ERROR;
+                    }
+
                     // get the old instance's paging index
                     Integer oldGroupsIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getGroups());
                     Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
@@ -566,6 +594,16 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                             List specifiedUsers = context.getSpecifiedUsers();
                             if (specifiedUsers!=null && specifiedUsers.size()>0) {
+
+                                int usersSize = context.getSpecifiedGroups().size();
+                                int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
+                                if (usersSize > maxUserIDsLimit) {
+                                    log.warn("Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
+                                    resultList.add("cannot act on more than " + maxUserIDsLimit + " users. you tried to act on " + usersSize + " users, which is more than the amount allowed. the maximum value is set in the plugin's configuration");
+                                    setActionErrors(resultList);
+                                    return ERROR;
+                                }
+
                                 // get the old instance's paging index
                                 usersAdded = true;
                                 userManagementService.addUsersByUsernameToGroups(specifiedUsers, fixedGroupNames, serviceContext);
@@ -1114,10 +1152,18 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         PagerPaginationSupportUtil.prev(pps);
     }
 
-    public String pageEndIndex( PagerPaginationSupport pps ) {
+    public String firstRecordNum( PagerPaginationSupport pps ) {
         String result = null;
         if (pps!=null) {
-            result = "" + PagerPaginationSupportUtil.getPageEndIndex(pps);
+            result = "" + (pps.getStartIndex() + 1);
+        }
+        return result;
+    }
+
+    public String lastRecordNum( PagerPaginationSupport pps ) {
+        String result = null;
+        if (pps!=null) {
+            result = "" + (PagerPaginationSupportUtil.getPageEndIndex(pps) + 1);
         }
         return result;
     }

@@ -155,19 +155,8 @@ public class PagerPaginationSupportUtil {
         log.debug("hasNext() called");
         debug(pps);
         if (pps!=null) {
-            int[] startIndexes = pps.getNextStartIndexes();
-            if (startIndexes!=null) {
-                for (int i=(startIndexes.length-1); !result && i>=0; i--) {
-                    int nextStartIndex = startIndexes[i];
-                    log.debug("next start index " + nextStartIndex + "> start index " + pps.getStartIndex() + " ?");
-                    if (nextStartIndex > pps.getStartIndex()) {
-                        log.debug("setStartIndex to " + startIndexes[i]);
-                        result = true;
-                    }
-                }
-            }
-            else {
-                log.debug("nextStartIndexes was null");
+            if (pps.getStartIndex() < ((pps.getTotal() - 1) - pps.getCountOnEachPage())) {
+                result = true;
             }
         }
         else {
@@ -183,21 +172,8 @@ public class PagerPaginationSupportUtil {
         log.debug("next() called");
         debug(pps);
         if (pps!=null) {
-            int[] startIndexes = pps.getNextStartIndexes();
-            if (startIndexes!=null) {
-                boolean done = false;
-                for (int i=0; !done && i<startIndexes.length; i++) {
-                    int nextStartIndex = startIndexes[i];
-                    log.debug("next start index " + nextStartIndex + "> start index " + pps.getStartIndex() + " ?");
-                    if (nextStartIndex > pps.getStartIndex()) {
-                        log.debug("setStartIndex to " + startIndexes[i]);
-                        pps.setStartIndex(startIndexes[i]);
-                        done = true;
-                    }
-                }
-            }
-            else {
-                log.debug("nextStartIndexes was null");
+            if (pps.getStartIndex() < ((pps.getTotal() - 1) - pps.getCountOnEachPage())) {
+                pps.setStartIndex(pps.getStartIndex() + pps.getCountOnEachPage());
             }
         }
         else {
@@ -229,26 +205,12 @@ public class PagerPaginationSupportUtil {
         log.debug("prev() called");
         debug(pps);
         if (pps!=null) {
-            int[] startIndexes = pps.getNextStartIndexes();
-            if (startIndexes!=null) {
-                boolean done = false;
-                for (int i=(startIndexes.length-1); !done && i>=0; i--) {
-                    int nextStartIndex = startIndexes[i];
-                    log.debug("previous start index " + nextStartIndex + "< start index " + pps.getStartIndex() + " ?");
-                    if (nextStartIndex < pps.getStartIndex()) {
-                        log.debug("setStartIndex to " + startIndexes[i]);
-                        pps.setStartIndex(startIndexes[i]);
-                        done=true;
-                    }
+            if (pps.getStartIndex() > 0) {
+                int newStartIndex = pps.getStartIndex() - pps.getCountOnEachPage();
+                if (newStartIndex < 0) {
+                    newStartIndex = 0;
                 }
-
-                // 0 is the first valid start index (not included in nextStartIndexes)
-                if (!done && pps.getStartIndex() > 0) {
-                    pps.setStartIndex(0);
-                }
-            }
-            else {
-                log.debug("previousStartIndexes was null");
+                pps.setStartIndex(newStartIndex);
             }
         }
         else {
@@ -257,9 +219,9 @@ public class PagerPaginationSupportUtil {
     }
 
     public static int getPageEndIndex( PagerPaginationSupport pps ) {
-        int i = pps.getStartIndex() + pps.getCountOnEachPage();
+        int i = pps.getStartIndex() + pps.getCountOnEachPage() - 1;
         if ( pps.getTotal() < i ) {
-            i = pps.getTotal();
+            i = pps.getTotal() - 1;
         }
         return i;
     }

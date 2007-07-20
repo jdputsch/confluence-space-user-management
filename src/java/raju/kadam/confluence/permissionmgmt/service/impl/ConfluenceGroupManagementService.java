@@ -17,7 +17,6 @@ import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration
 import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
-import raju.kadam.confluence.permissionmgmt.util.GroupComparator;
 import raju.kadam.confluence.permissionmgmt.util.GroupUtil;
 import raju.kadam.util.StringUtil;
 

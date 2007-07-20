@@ -9,8 +9,6 @@ import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteUser;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.util.UserUtil;
-import raju.kadam.confluence.permissionmgmt.paging.PagerPaginatedList;
-import raju.kadam.confluence.permissionmgmt.paging.ListPaginatedList;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -21,7 +19,6 @@ import com.atlassian.user.search.page.DefaultPager;
 import com.atlassian.user.search.page.PagerUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.displaytag.pagination.PaginatedList;
 
 /**
  * (c) 2007 Duke University
