@@ -95,6 +95,32 @@ public class PagerPaginationSupportUtil {
     public static void safelyMoveToOldStartIndex(int startIndex, PagerPaginationSupport pps) {
         log.debug("safelyMoveToOldStartIndex() called. startIndex=" + startIndex);
         if (pps!=null) {
+            int closestStartIndex = startIndex;
+            if (closestStartIndex > (pps.getTotal() - 1)) {
+                int[] startIndexes = pps.getNextStartIndexes();
+                if (startIndexes!=null && startIndexes.length > 0) {
+                    // use last page start index
+                    closestStartIndex = startIndexes[startIndexes.length - 1];
+                }
+            }
+            else if (closestStartIndex < 0) {
+                closestStartIndex = 0;
+            }
+
+            pps.setStartIndex(closestStartIndex);
+        }
+        else {
+            log.debug("safelyMoveToOldStartIndex() shouldn't really be called with null. programming error");
+        }
+    }
+
+    /**
+     * If you get pps.getStartIndex() and remove a lot of records, this will ensure you can get back to the location
+     * as close to the original index as possible to avoid disorientation.
+     */
+    public static void safelyMoveToPageStartIndexClosestToIndex(int startIndex, PagerPaginationSupport pps) {
+        log.debug("safelyMoveToPageStartIndexClosestToIndex() called. startIndex=" + startIndex);
+        if (pps!=null) {
             int[] startIndexes = pps.getNextStartIndexes();
             if (startIndexes!=null && startIndexes.length > 0) {
                 // 0 is a valid start index not included in nextStartIndexes
@@ -119,7 +145,7 @@ public class PagerPaginationSupportUtil {
             }
         }
         else {
-            log.debug("safelyMoveToOldStartIndex() shouldn't really be called with null. programming error");
+            log.debug("safelyMoveToPageStartIndexClosestToIndex() shouldn't really be called with null. programming error");
         }
     }
 
