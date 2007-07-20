@@ -74,6 +74,13 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
 		configureFormValuesWithPersistedConfig();
 
+        // NOTE: the main reason for doing this and showing errors even though it might be your first time to the page
+        // is that people that have already configured the plugin once before will expect errors to show up on the page
+        // when they visit it, even if they didn't post to it yet.
+        if(!validateConfiguration()) {
+            return ERROR;
+        }
+
         fixFormValues();
 
         return super.doDefault();

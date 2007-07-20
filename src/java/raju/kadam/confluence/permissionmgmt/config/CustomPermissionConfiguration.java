@@ -150,6 +150,11 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 			}
 		}
 
+        if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getUserSearchEnabled())) {
+            result.addFieldError("userSearchEnabled", "Must be YES or NO");
+            result.setValid(false);
+        }
+
         if (config.getMaxUserIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(config.getMaxUserIDsLimit())) {
             result.addFieldError("maxUserIDsLimit", "Can only be empty or an integer greater than zero");
             result.setValid(false);
@@ -186,7 +191,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             }
         }
         else {
-            result.addFieldError("ldapAuthUsed", "Should be YES or NO");
+            result.addFieldError("ldapAuthUsed", "Must be YES or NO");
             result.setValid(false);
         }
 
@@ -201,7 +206,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             }
         }
         else {
-            result.addFieldError("pluginInDown", "Should be YES or NO");
+            result.addFieldError("pluginInDown", "Must be YES or NO");
             result.setValid(false);
         }
 
@@ -216,7 +221,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             }
         }
         else {
-            result.addFieldError("groupActionsPermitted", "Should be YES or NO");
+            result.addFieldError("groupActionsPermitted", "Must be YES or NO");
             result.setValid(false);
         }
 

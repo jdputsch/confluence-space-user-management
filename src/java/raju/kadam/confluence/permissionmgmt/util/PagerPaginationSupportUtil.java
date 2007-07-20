@@ -78,10 +78,6 @@ public class PagerPaginationSupportUtil {
         }
     }
 
-    private static List getKeysAsList(Map map) {
-        return new ArrayList(map.keySet());
-    }
-
     public static void safelyMoveToOldStartIndex(Integer startIndex, PagerPaginationSupport pps) {
         if (startIndex!=null) {
             safelyMoveToOldStartIndex(startIndex.intValue(), pps);
@@ -130,10 +126,10 @@ public class PagerPaginationSupportUtil {
                     int oldAbsoluteDifference = Math.abs(startIndex - closestStartIndex);
                     int absoluteDifference = Math.abs(startIndex - nextStartIndex);
 
-                    log.debug("is startIndex=" + startIndex + " closer to " + closestStartIndex + " or " + nextStartIndex + " ?");
+                    //log.debug("is startIndex=" + startIndex + " closer to " + closestStartIndex + " or " + nextStartIndex + " ?");
 
                     if ( absoluteDifference < oldAbsoluteDifference ) {
-                        log.debug("now using " + nextStartIndex + " as closest index");
+                        //log.debug("now using " + nextStartIndex + " as closest index");
                         closestStartIndex = nextStartIndex;
                     }
                 }
@@ -152,7 +148,7 @@ public class PagerPaginationSupportUtil {
     public static boolean hasNext(PagerPaginationSupport pps) {
         boolean result = false;
         
-        log.debug("hasNext() called");
+        //log.debug("hasNext() called");
         debug(pps);
         if (pps!=null) {
             if (pps.getStartIndex() < ((pps.getTotal() - 1) - pps.getCountOnEachPage())) {
@@ -184,7 +180,7 @@ public class PagerPaginationSupportUtil {
     public static boolean hasPrev(PagerPaginationSupport pps) {
         boolean result = false;
 
-        log.debug("hasPrev() called");
+        //log.debug("hasPrev() called");
         debug(pps);
         if (pps!=null) {
             // 0 is the lowest valid start index
@@ -227,6 +223,8 @@ public class PagerPaginationSupportUtil {
     }
 
     private static void debug( PagerPaginationSupport pps ) {
+
+        /*
         StringBuffer sb = new StringBuffer();
         sb.append("PagerPaginationSupport debug:");
         if (pps!=null) {
@@ -253,6 +251,7 @@ public class PagerPaginationSupportUtil {
             sb.append(" PPS was null");
         }
         log.debug(sb.toString());
+        */
     }
 
     private static String intArrayToString(int[] ints) {

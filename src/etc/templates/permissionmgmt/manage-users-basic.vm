@@ -39,7 +39,9 @@
 				<h2>Edit Group $generalUtil.htmlEncode(${action.selectedGroup})</h2>
 			</div>
 
+            #if($action.isUserSearchEnabled)
             <a id="showAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1">&raquo; Duke Wiki Directory Search</a>
+            #end
 
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)" id="addUsersForm" name="ManageUsersForm">
                 <fieldset>
@@ -73,6 +75,9 @@
 						</tr>
 					</thead>
 					<tbody>
+
+					$action.logPps($users);
+
                 #foreach ($user in $users.page)
                     #set ($userFullName = $generalUtil.htmlEncode($user.getFullName()))
                     #set ($userName = $generalUtil.htmlEncode($user.getName()))

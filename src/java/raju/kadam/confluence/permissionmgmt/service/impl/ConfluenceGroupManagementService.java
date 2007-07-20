@@ -80,11 +80,11 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
             boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(grpName, pat);
             if( (!notAllowedUserGroups.contains(grpName)) && isPatternMatch)
         	{
-        		log.debug("Group '" + grpName + "' allowed and matched pattern " + pat.pattern() );
+        		//log.debug("Group '" + grpName + "' allowed and matched pattern " + pat.pattern() );
         		groups.add(userAccessor.getGroup(grpName));
             }
             else {
-                log.debug("Group '" + grpName + "' not allowed or didn't match pattern. notAllowedUserGroups=" + StringUtil.convertCollectionToCommaDelimitedString(notAllowedUserGroups) + " isPatternMatch=" + isPatternMatch + " pattern=" + pat.pattern());
+                //log.debug("Group '" + grpName + "' not allowed or didn't match pattern. notAllowedUserGroups=" + StringUtil.convertCollectionToCommaDelimitedString(notAllowedUserGroups) + " isPatternMatch=" + isPatternMatch + " pattern=" + pat.pattern());
             }
             //log.debug("-------End of Groups---------");
 

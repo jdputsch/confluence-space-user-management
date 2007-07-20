@@ -33,7 +33,9 @@
                 <div class="mode">
             #if($groups && $groups.total>0)
                 &raquo; <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">Bulk Change Tool</a><br/>
+                #if($action.isUserSearchEnabled)
                 &raquo; <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">Search Users</a><br/>
+                #end
             #end
                 </div>
                 <h2>$generalUtil.htmlEncode(${action.space.name}) ($generalUtil.htmlEncode($action.space.key)) Groups:</h2>

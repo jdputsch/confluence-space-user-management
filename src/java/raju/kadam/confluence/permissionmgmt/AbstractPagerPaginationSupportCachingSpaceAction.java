@@ -40,12 +40,23 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
         }
     }
 
+    private String id(PagerPaginationSupport pps) {
+        if (pps!=null) {
+            return "" + pps.hashCode();
+        }
+
+        return "null";
+    }
+
     public PagerPaginationSupport getGroupsPps(String spaceKey) {
-        return (PagerPaginationSupport)getSessionProperty( getGroupsPpsKey(spaceKey) );
+        PagerPaginationSupport result = (PagerPaginationSupport)getSessionProperty( getGroupsPpsKey(spaceKey) );
+        log.debug("Got groups instance " + id(result) + " for spaceKey '" + spaceKey + "'");
+        return result;
     }
 
     public void setGroupsPps(String spaceKey, PagerPaginationSupport groupsPps) {
         setSessionProperty( getGroupsPpsKey(spaceKey), groupsPps);
+        log.debug("Set groups instance " + id(groupsPps) + " for spaceKey '" + spaceKey + "'");
     }
 
     private String getGroupsPpsKey(String spaceKey) {
@@ -53,11 +64,14 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     public PagerPaginationSupport getUsersPps(String spaceKey, String groupName) {
-        return (PagerPaginationSupport)getSessionProperty( getUsersPpsKey(spaceKey, groupName) );
+        PagerPaginationSupport result = (PagerPaginationSupport)getSessionProperty( getUsersPpsKey(spaceKey, groupName) );
+        log.debug("Got users instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        return result;
     }
 
     public void setUsersPps(String spaceKey, String groupName, PagerPaginationSupport usersPps) {
         setSessionProperty( getUsersPpsKey(spaceKey, groupName), usersPps);
+        log.debug("Set users instance " + id(usersPps) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
     }
 
     private String getUsersPpsKey(String spaceKey, String groupName) {

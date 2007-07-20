@@ -49,19 +49,19 @@ public class GroupNameUtil {
     }
 
     public static boolean doesGroupMatchPattern(String grpName, Pattern pat) {
-        log.debug("doesGroupMatchPattern() called.");
+        //log.debug("doesGroupMatchPattern() called.");
         Matcher matcher = pat.matcher(grpName);
         boolean isMatch = matcher.matches();
 
-        if (log.isDebugEnabled()) {
-            String pattern = pat.pattern();
-            if (isMatch) {
-                log.debug("group '" + grpName + "' matches pattern " + pattern);
-            }
-            else {
-                log.debug("group '" + grpName + "' did not match pattern " + pattern);
-            }
-        }
+        //if (log.isDebugEnabled()) {
+        //    String pattern = pat.pattern();
+        //    if (isMatch) {
+        //        log.debug("group '" + grpName + "' matches pattern " + pattern);
+        //    }
+        //    else {
+        //        log.debug("group '" + grpName + "' did not match pattern " + pattern);
+        //    }
+        //}
 
         return isMatch;
     }

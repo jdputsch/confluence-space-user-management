@@ -189,6 +189,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         populateUsersForSelectedGroupUnlessCached();
     }
 
+    private void populateData() {
+        findAndSetGroups();
+        String selectedGroup = getSelectedGroup();
+        if (!ConfigUtil.isNullOrEmpty(selectedGroup)) {
+            findAndSetUsers(selectedGroup);
+        }
+    }
+
     private void populateGroupsUnlessCached() {
         if (getGroups()==null) {
             log.debug("getGroups() returned null so calling findAndSetGroups()");
@@ -203,7 +211,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         String selectedGroup = getSelectedGroup();
         if (!ConfigUtil.isNullOrEmpty(selectedGroup)) {
             if (getUsers()==null) {
-                log.debug("getUsers() returned null so calling findAndSetGroups()");
+                log.debug("getUsers() returned null so calling findAndSetUsers()");
                 findAndSetUsers(selectedGroup);
             }
             else {
@@ -229,8 +237,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
         else if ("skipToGroup".equals(pagerAction)) {
             Integer recordNum = getRecordNum(paramMap);
-            // record num is one-based, not zero-based
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getGroups());
+            if (recordNum!=null) {
+                // record num is one-based, not zero-based
+                PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getGroups());
+            }
         }
 
         if ("nextPageUsers".equals(pagerAction)) {
@@ -247,7 +257,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
         else if ("skipToUser".equals(pagerAction)) {
             Integer recordNum = getRecordNum(paramMap);
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getUsers());
+            if (recordNum!=null) {
+                // record num is one-based, not zero-based
+                PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getUsers());
+            }
         }
     }
 
@@ -278,22 +291,28 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private void handleRefreshData(Map paramMap) {
         if (getUrlDecodedCleanedTrimmedParameterValue(paramMap, "refresh")!=null) {
-
-            Integer oldGroupsIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getGroups());
-            Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
-
-            this.clearCache();
-            this.populateDataUnlessCached();
-
-            // Note: is important that these are calling getGroups() and getUsers() again to get latest instances.
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
-            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+            refreshData();            
         }
+    }
+
+    private void refreshData() {
+        Integer oldGroupsIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getGroups());
+        Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
+
+        this.clearCache();
+        this.populateData();
+
+        // Note: is important that these are calling getGroups() and getUsers() again to get latest instances.
+        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
+        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
     }
 
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction.execute() called");
+
+        log.debug("Starting execute() users");
+        debug(getUsers());
 
         populateDataUnlessCached();
 
@@ -343,7 +362,12 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     	//	return ERROR;
     	//}
 
-        return manage(context);
+        String result = this.manage(context);
+
+        log.debug("Ending execute() users");
+        debug(getUsers());
+
+        return result;
     }
 
     private void createTestUsersAndGroups() {
@@ -542,9 +566,13 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         }
                     }
                     finally {
+
+                        // MAGIC! db work happens in another thread
+                        Thread.currentThread().sleep(5000);
+
                         // clear user cache and repopulate
                         this.clearUserCache(context.getKey(), context.getSpecifiedGroups());
-                        this.populateDataUnlessCached();
+                        this.populateData();
 
                         // NOTE: intentionally calling getUsers() again because it is a new instance!
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
@@ -620,13 +648,17 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         }
                     }
                     finally {
+
+                        // MAGIC! db work happens in another thread
+                        Thread.currentThread().sleep(5000);
+
                         // clear group cache and repopulate
                         this.clearGroupCache(context.getKey());
                         if (usersAdded) {
                             this.clearUserCache(context.getKey(), context.getSpecifiedGroups());
                         }
 
-                        this.populateDataUnlessCached();
+                        this.populateData();
 
                         // NOTE: intentionally calling getGroups() because it is a new instance
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
@@ -895,13 +927,23 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return pps;
     }
 
+    private void debug(PagerPaginationSupport pps) {
+        if (pps!=null) {
+            log.debug( "pps hashCode=" + pps.hashCode());
+            log.debug( "pps.getTotal()=" + pps.getTotal() );
+            //log.debug( "pps.getItems() (following lines)" );
+            debug(pps.getItems());
+        }
+    }
+
     private void debug(Pager pager) {
         if (pager!=null) {
+            log.debug( "pager hashCode=" + pager.hashCode());
             log.debug( "PagerUtils.count(pager)=" + PagerUtils.count(pager));
-            log.debug( "pager.getIndex()=" + pager.getIndex());
-            log.debug( "pager.getIndexOfFirstItemInCurrentPage()=" + pager.getIndexOfFirstItemInCurrentPage());
-            log.debug( "pager.isEmpty()=" + pager.isEmpty());
-            log.debug( "pager.onLastPage()=" + pager.onLastPage());
+            //log.debug( "pager.getIndex()=" + pager.getIndex());
+            //log.debug( "pager.getIndexOfFirstItemInCurrentPage()=" + pager.getIndexOfFirstItemInCurrentPage());
+            //log.debug( "pager.isEmpty()=" + pager.isEmpty());
+            //log.debug( "pager.onLastPage()=" + pager.onLastPage());
         }
         else {
             log.debug("pager was null");
@@ -1187,5 +1229,30 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
 
         return result;
+    }
+
+    // TODO: need to refactor the meat of this and put it into CustomPermissionConfiguration class
+    public boolean getIsUserSearchEnabled() {
+        log.debug("getIsUserSearchEnabled() called");
+
+        boolean isUserSearchEnabled = false;
+        String userSearchEnabled = getCustomPermissionConfiguration().getUserSearchEnabled();
+        if (ConfigUtil.isNotNullAndIsYesOrNo(userSearchEnabled)) {
+            if ("YES".equals(userSearchEnabled)) {
+                isUserSearchEnabled = true;
+            }
+        }
+        log.debug("isUserSearchEnabled = " + isUserSearchEnabled);
+        return isUserSearchEnabled;
+    }
+
+    public void logPps(PagerPaginationSupport pps) {
+        if (pps!=null) {
+            log.debug("VELOCITY SHOWING USERS " + pps.hashCode());
+            debug(pps);
+        }
+        else {
+            log.debug("VELOCITY SHOWING NULL USERS");
+        }
     }
   }
