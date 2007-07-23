@@ -62,7 +62,6 @@
                 </fieldset>
             </form>
 
-
             #set ($users = $action.users)
 
             #if($users)
@@ -77,7 +76,7 @@
 					</thead>
 					<tbody>
 
-					$action.logPps($users);
+					$action.logPps($users)
 
                 #foreach ($user in $users.page)
                     #set ($userFullName = $generalUtil.htmlEncode($user.getFullName()))
