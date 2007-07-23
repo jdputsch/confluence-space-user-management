@@ -19,16 +19,20 @@
 	                    <span class="count">
 	                        Groups $!{action.firstRecordNum($groups)}-$!{action.lastRecordNum($groups)} of $!{groups.total}<br/>
 
+#*
 	                        #if($groups.total > $groups.countOnEachPage)
-	                        <form action="docustompermissionsmanage.action">
-	                        <fieldset>
-	                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
-	                        <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
-	                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
-	                        <input type="submit" class="submitBttn" id="skipToGrpBtn" name="skipToGrpBtn" value="Skip to"/><input type="text" name="recordNum"/>
-	                        </fieldset>
+	                        <form action="docustompermissionsmanage.action" class="pageSkip">
+		                        <fieldset>
+		                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
+		                        <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
+		                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
+								<label>Skip to Group by number:</label>
+								<input type="text" name="recordNum"/>
+		                        <input type="submit" class="submitBttn" id="skipToGrpBtn" name="skipToGrpBtn" value="Go"/>
+		                        </fieldset>
 	                        </form>
 	                        #end
+*#
 	                    </span>
 	                    #end
                 #else

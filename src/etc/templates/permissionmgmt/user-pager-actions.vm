@@ -18,14 +18,14 @@
 
 
                         #if($users.total > $users.countOnEachPage)
-                        <form action="docustompermissionsmanage.action" class="pageSkip">
+                        <form class="pageSkip" action="docustompermissionsmanage.action">
 		                    <fieldset>
 			                    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
 			                    <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
 		                        <input type="hidden" name="pagerAction" value="skipToUser"/>
-								<label>Skip to User Number:</label>
-		                        <input type="submit" class="submitBttn" id="skipToUserBtn" name="skipToUserBtn" value="Skip To"/>
+								<label>Skip to User by number: </label>
 								<input type="text" name="recordNum"/>
+		                        <input type="submit" class="submitBttn" id="skipToUserBtn" name="skipToUserBtn" value="Go"/>
 	                        </fieldset>
                         </form>
                         #end
