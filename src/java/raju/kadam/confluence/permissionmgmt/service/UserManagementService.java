@@ -5,7 +5,6 @@ import java.util.List;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
-import org.displaytag.pagination.PaginatedList;
 import com.atlassian.user.search.page.Pager;
 
 /**

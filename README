@@ -18,7 +18,7 @@ mkdir tmp
 cd tmp
 svn co http://svn.atlassian.com/svn/public/contrib/maven-plugins/com.atlassian.maven.plugins/atlassian-pdk/tags/2.1.1/
 cd 2.1.1
-mvn install
+mvn clean install
 
 3) Go back to the trunk dir of the plugin project, so if you started off in that dir, you could just:
 
@@ -26,7 +26,7 @@ cd ../..
 
 4) To build, and install to your local repository, use the following command. If problems building, see http://confluence.atlassian.com/display/DISC/Developing+Confluence+Plugins+with+Maven+2 for info on defining your pom.xml.
 
-mvn install
+mvn clean install
 
 5) After that go into confluence into administration -> plugins. Choose this project's plugin. If it already exists, uninstall the plugin from confluence and (re)install the new one in target/...jar. If the plugin fails to load for any reason, you probably don't have enough or have too many dependencies, so see http://confluence.atlassian.com/display/DISC/Developing+Confluence+Plugins+with+Maven+2 for info on defining your pom.xml.
 

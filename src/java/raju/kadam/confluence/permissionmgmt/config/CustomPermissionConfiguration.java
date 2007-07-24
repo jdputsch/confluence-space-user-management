@@ -175,10 +175,18 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             try {
                 //validate some patterns
                 //note: Space keys may only consist of ASCII letters or numbers (A-Z, a-z, 0-9) up to 255 chars
-                validatePattern(result, config, "DS", "FooBar");
-                validatePattern(result, config, "tst", "spongebob");
-                validatePattern(result, config, "Demo10", "Best-Group-Name-In-The-World");
-                validatePattern(result, config, "ILoveBass", "realbasslovers");
+                validatePattern(result, config, "tst", getValidationGroupName(config, "tst", "spongebob"));
+                validatePattern(result, config, "tst", getValidationGroupName(config, "tst", "spongebob").toUpperCase());
+                validatePattern(result, config, "tst", getValidationGroupName(config, "tst", "spongebob").toLowerCase());
+                validatePattern(result, config, "Demo10", getValidationGroupName(config, "Demo10", "Best-Group-Name-In-The-World"));
+                validatePattern(result, config, "Demo10", getValidationGroupName(config, "Demo10", "Best-Group-Name-In-The-World").toUpperCase());
+                validatePattern(result, config, "Demo10", getValidationGroupName(config, "Demo10", "Best-Group-Name-In-The-World").toLowerCase());
+                validatePattern(result, config, "ILoveBass", getValidationGroupName(config, "ILoveBass", "realbasslovers"));
+                validatePattern(result, config, "ILoveBass", getValidationGroupName(config, "ILoveBass", "realbasslovers").toUpperCase());
+                validatePattern(result, config, "ILoveBass", getValidationGroupName(config, "ILoveBass", "realbasslovers").toLowerCase());
+                validatePattern(result, config, "DS", getValidationGroupName(config, "DS", "FooBar"));
+                validatePattern(result, config, "DS", getValidationGroupName(config, "DS", "FooBar").toUpperCase());
+                validatePattern(result, config, "DS", getValidationGroupName(config, "DS", "FooBar").toLowerCase());                
             }
             catch (PatternSyntaxException pse) {
                 result.addFieldError("userGroupsMatchingPattern", "Group matching pattern was invalid: " + pse.getMessage());
@@ -234,15 +242,22 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         return result;
     }
 
+    private static String getValidationGroupName(CustomPermissionConfigurable config, String aSpaceKey, String aGroupMiddle) {
+        String replacedPrefix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationPrefixPattern(), aSpaceKey);
+        String replacedSuffix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationSuffixPattern(), aSpaceKey);
+        String aGroupname = replacedPrefix + aGroupMiddle + replacedSuffix;
+        return aGroupname;
+    }
+
     private static void validatePattern(ConfigValidationResponse result, CustomPermissionConfigurable config,
-                                        String aSpaceKey, String aGroupMiddle) {
+                                        String aSpaceKey, String aGroupname) {
         Pattern pattern = GroupNameUtil.createGroupMatchingPattern(config, aSpaceKey);
         String groupsActionsPermitted = config.getGroupActionsPermitted();
         if ( groupsActionsPermitted!= null && CustomPermissionConfigConstants.YES.equals(groupsActionsPermitted) ) {
-            String aGroupname = config.getNewGroupNameCreationPrefixPattern() + aGroupMiddle + config.getNewGroupNameCreationSuffixPattern();
             if (!GroupNameUtil.doesGroupMatchPattern( aGroupname, pattern )) {
-                result.addFieldError("userGroupsMatchingPattern", "Based on current prefix and suffix, this " +
-                        "pattern should match groupname '" + aGroupname.toLowerCase() + "' but it didn't. " +
+                result.addFieldError("userGroupsMatchingPattern", "Based on current prefix and suffix, if spacekey were " +
+                        aSpaceKey +
+                        " this pattern should match groupname " + aGroupname.toLowerCase() + " but it did not. " +
                         "Please modify the pattern so that it works or visit the " +
                         "<a href=\"http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin\">" +
                         "plugin homepage</a> for support.");
