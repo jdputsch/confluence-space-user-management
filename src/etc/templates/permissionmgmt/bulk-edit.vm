@@ -28,8 +28,8 @@
 
 			<!-- start bulk-edit -->
 			<div class="sectionHeader">
-				<div id="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">&laquo; Return to normal view</a></div>
-				<h2>Bulk Change Tool</h2>
+				<div id="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">&laquo; $action.getText("normalView.link.title")</a></div>
+				<h2>$action.getText("bulkChange.title")</h2>
 			</div>
 
             #set ($allGroups = $action.allGroups)
@@ -38,16 +38,16 @@
 				<fieldset>
 
 				    <input type="hidden" name="key" value="$key"/>
-					<label>1. Select Action:</label>
-					<input type="radio" value="addUsersToGroups" name="adminAction"></input> Add Users<br />
-					<input type="radio" value="removeUsersFromGroups" name="adminAction"></input> Remove Users
+					<label>1. $action.getText("bulkChange.form.label.actionTitle"):</label>
+					<input type="radio" value="addUsersToGroups" name="adminAction"></input> $action.getText("bulkChange.form.radio.addUser.text")<br />
+					<input type="radio" value="removeUsersFromGroups" name="adminAction"></input> $action.getText("bulkChange.form.radio.removeUser.text")
 					<br />
 
-					<label>2. Enter Users:</label>
+					<label>2. $action.getText("bulkChange.form.label.userInputTitle"):</label>
 					<input type="text" style="width:100%;" id="users" name="users"></input>
 					<br />
 
-					<label>3. From Group(s):</label>
+					<label>3. $action.getText("bulkChange.form.label.selectGroupsTitle"):</label>
                     <ul>
                     #foreach ($group in $allGroups)
                         <li>
@@ -56,11 +56,11 @@
                     #end
                     </ul>
 
-					<label>4. Commit Changes</label>
+					<label>4. $action.getText("bulkChange.form.label.commitTitle"):</label>
 					<input type="submit" value="Commit"></input>
 				</fieldset>
 			</form>
             #else
-            <p>No groups available with rights to space that match configured pattern. Try adding some groups.</p>
+            <p>$action.getText("error.noGroupsAvailable")</p>
             #end
             <!-- end bulk-edit -->

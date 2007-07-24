@@ -153,32 +153,32 @@
 		<div id="footer">
 				<ul>
 				#if($groups && $groups.total>0)
-			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">Bulk Change Tool</a> </li>
+			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">$action.getText("bulkChange.link.title")</a> </li>
 			        #if($action.isUserSearchEnabled)
-					<li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">Search Users</a> </li>
+					<li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">$action.getText("searchUsers.link.title")</a> </li>
 					#end
 			    #end
 
 			    #if($isGroupActionsPermitted)
 					<li>| <a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">
 						#*<img src="${action.confluenceRoot}/images/icons/lock_16.gif"/>*#
-						Edit Space Permissions</a> </li>
+						$action.getText("space.permissions.link.title")</a> </li>
 					#*<li>| <a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">
 						<img src="${action.confluenceRoot}/images/icons/locked_pages_16.gif"/>
-						Edit Page Permissions</a> </li>*#
+						$action.getText("page.permissions.link.title")</a> </li>*#
 			    #end
 				</ul>
 				#set($availableSpaces = $action.spacesAsSpaceAdminForUser)
 	            #if($availableSpaces && $availableSpaces.size()>1)
 	            <form method="GET" action="docustompermissionsmanage.action" id="changeSpace" name="changeSpace">
 	                <fieldset>
-	                    <label>Change space: </label>
+	                    <label>$action.getText("form.label.changeSpace"): </label>
 	                    <select name="key">
 	                        #foreach ($availableSpace in $availableSpaces)
 	                        <option value="$availableSpace.key" #if($availableSpace.key==$action.space.key)selected="true"#end>$generalUtil.htmlEncode($availableSpace.name) ($generalUtil.htmlEncode($availableSpace.key))</option>
 	                        #end
 	                    </select>
-	                	<input type="submit" value="Change Space" class="submitBttn"/>
+	                	<input type="submit" value='$action.getText("form.button.changeSpace")' class="submitBttn"/>
 	                </fieldset>
 	            </form>
 	            #end
@@ -189,8 +189,8 @@
             <p class="infoMacro">${action.customPermissionConfiguration.downTimeMessage}</p>
 		#else
 		    <p class="noteMacro">
-		    <p>An administrator must <a href="$action.confluenceRoot/admin/plugins/custompermissionsconfig/config.action">reconfigure</a> "Custom Space Usergroups Manager" before you start using it.</p>
-		    <p>The following need to be configured before this plugin can be used:</p>
+		    <p>$action.getText("error.admin.reconfigure.text")<a href="$action.confluenceRoot/admin/plugins/custompermissionsconfig/config.action">$action.getText("error.admin.reconfigure.link.text")</a>.</p>
+		    <p>$action.getText("error.admin.reconfigure.list.text"):</p>
 			    #set($fieldNameToErrorMessage=$configValidationResponse.fieldNameToErrorMessage)
 				<ul>
 	            #foreach($configFieldName in $fieldNameToErrorMessage.keySet())

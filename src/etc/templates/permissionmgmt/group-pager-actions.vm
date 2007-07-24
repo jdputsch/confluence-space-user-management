@@ -19,7 +19,7 @@
 	                    <span class="count">
 	                        Groups $!{action.firstRecordNum($groups)}-$!{action.lastRecordNum($groups)} of $!{groups.total}<br/>
 
-#*
+
 	                        #if($groups.total > $groups.countOnEachPage)
 	                        <form action="docustompermissionsmanage.action" class="pageSkip">
 		                        <fieldset>
@@ -32,7 +32,7 @@
 		                        </fieldset>
 	                        </form>
 	                        #end
-*#
+
 	                    </span>
 	                    #end
                 #else
