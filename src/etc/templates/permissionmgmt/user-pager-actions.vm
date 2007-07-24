@@ -4,18 +4,17 @@
 <div class="paging">
                     #if($action.hasPrev($users))
                     <span class="prev">
-                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageUsers">&laquo; Prev</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageUsers">&laquo; $action.getText("previous.abrv")</a>
                     </span>
                     #end
                     #if($action.hasNext($users))
                     <span class="next">
-                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageUsers">Next &raquo;</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageUsers">$action.getText("next.abrv") &raquo;</a>
                     </span>
                     #end
                     #if(${action.groups})
                     <span class="count">
-                        Users $!{action.firstRecordNum($users)}-$!{action.lastRecordNum($users)} of $!{users.total}<br/>
-
+                        $action.getText("users") $!{action.firstRecordNum($users)}-$!{action.lastRecordNum($users)} $action.getText("of") $!{users.total}<br/>
 
                         #if($users.total > $users.countOnEachPage)
                         <form class="pageSkip" action="docustompermissionsmanage.action">
@@ -23,7 +22,7 @@
 			                    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
 			                    <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
 		                        <input type="hidden" name="pagerAction" value="skipToUser"/>
-								<label>Skip to User by number: </label>
+								<label>$action.getText("user.skip.byNum"): </label>
 								<input type="text" name="recordNum"/>
 		                        <input type="submit" class="submitBttn" id="skipToUserBtn" name="skipToUserBtn" value="Go"/>
 	                        </fieldset>

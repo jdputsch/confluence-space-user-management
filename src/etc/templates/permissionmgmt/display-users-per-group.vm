@@ -36,7 +36,7 @@
 </head>
 <body>
         <div class="pageheader">
-            <span class="pagetitle">Group ${action.selectedGroupName} details</span>
+            <span class="pagetitle">$action.getText("group") ${action.selectedGroupName} $action.getText("details")</span>
         </div>
         
 		<!-- Display all users associated to given group -->
@@ -46,11 +46,11 @@
 			#set ($group_name = ${action.selectedGroupName})
 			 <table class="grid">
 			     <tr>
-			         <th colspan=3>Total Users: $action.findUserCountForUserGroup($group_name)</th>
+			         <th colspan=3>$action.getText("totalUsers"): $action.findUserCountForUserGroup($group_name)</th>
 			     </tr>
 			    #if ($group_name == "confluence-users")
 						 <tr>
-						     <td>-All Users In Confluence Wiki-</td>
+						     <td>-$action.getText("confluence-users.title")-</td>
 						 </tr>
 			    #else
 				    #set ($users = $action.findUserDetailsForAGroup($group_name))

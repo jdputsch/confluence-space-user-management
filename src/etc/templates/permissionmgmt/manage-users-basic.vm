@@ -32,29 +32,30 @@
 
             <div class="sectionHeader">				
 				<div class="mode">
-					<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&refresh=1">Refresh</a>
+					<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&refresh=1">
+						$action.getText("refresh")</a>
 			    </div>
-				<h2>Edit Group $generalUtil.htmlEncode(${action.selectedGroup})</h2>
+				<h2>$action.getText("editGroup.title") $generalUtil.htmlEncode(${action.selectedGroup})</h2>
 				#if(${action.isGroupActionsPermitted})
-				<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> Delete Group ${action.selectedGroup}</a>
+				<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> $action.getText("delGroup") ${action.selectedGroup}</a>
 				#end
 			</div>
 
             #if($action.isUserSearchEnabled)
-            <a id="showAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1">&raquo; Duke Wiki Directory Search</a>
+            <a id="showAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1">&raquo; $action.getText("wiki.name") $action.getText("directorySearch")</a>
             #end
 
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)" id="addUsersForm" name="ManageUsersForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addUsersToGroups"/>
                     <input type="hidden" name="groups" value="$action.selectedGroup"/>
-                    <label for="users">Add User(s) to ${action.selectedGroup}:</label>
+                    <label for="users">$action.getText("form.label.add.users") ${action.selectedGroup}:</label>
                     <input type="text" style="width:100%;" id="users" name="users"/>
                     ##<div id="addUserOpts"></div>
 					<ul class="formHelp">
-						<li>Please enter a comma separated list of NetIds</li>
+						<li>$action.getText("form.example.commaSeparatedUsernames.text")</li>
 						<!-- <li>eg. Richard Broadhead, Nan Keohane, Keith Brodie, Terry Sanford</li> -->
-						<li>eg. rb04, nk93, kb85, ts69</li>
+						<li>$action.getText("form.example.commaSeparatedUsernames")</li>
 					</ul>
                     ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...
                     ## var quotedCommaSpaceDelimitedUsers = [$action.findUsersWhoseNameStartsWith("whatever", 5)];
@@ -68,10 +69,10 @@
                 <table cellspacing="0">                
                     <thead>
 						<tr>
-							<th>Name</th>
-							<th>Username</th>
-							<th>Email</th>
-							<th align="center">Delete</th>
+							<th>$action.getText("fullname")</th>
+							<th>$action.getText("username")</th>
+							<th>$action.getText("email")</th>
+							<th align="center">$action.getText("delete")</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -94,7 +95,7 @@
 
                 #parse ( "/templates/permissionmgmt/user-pager-actions.vm" )
             #else
-                No users found in group.
+                $action.getText("noUsersFoundInGroup")
             #end            
         #end
         

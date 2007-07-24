@@ -31,7 +31,7 @@
             #set ($groups = ${action.groups})
             <div class="sectionHeader">
 
-                <div class="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">Refresh</a></div>
+                <div class="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("refresh")</a></div>
                 <h2>$generalUtil.htmlEncode(${action.space.name}) ($generalUtil.htmlEncode($action.space.key)) Groups:</h2>
             </div>
 
@@ -49,18 +49,18 @@
             </div>
             #else
                 <p>There are currently no groups with rights to view space '$generalUtil.htmlEncode($key)' and matching the group name pattern '$generalUtil.htmlEncode($action.spacePattern)' defined for this space in the plugin configuration.</p>
-                <p>Please try adding some groups.</p>
+                <p>$action.getText("error.needToAddGroups")</p>
             #end
 
             #if(${action.isGroupActionsPermitted})
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)" id="addGroupForm" name="AddGroupForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addGroups"/>
-                    <label for="addGroups">Add Group:</label>
+                    <label for="addGroups">$action.getText("add") $action.getText("group")</label>
                     <input type="text" name="groups" id="groups" ></input>
 
                     <ul class="formHelp">
-                        <li>eg. entering Duke-Presidents will create the group "$generalUtil.htmlEncode($action.newGroupPrefix)Duke-Presidents$generalUtil.htmlEncode($action.newGroupSuffix)"</li>
+                        <li>$action.getText("example.add.group.text") "$generalUtil.htmlEncode($action.newGroupPrefix)$action.getText("example.add.group.name")$generalUtil.htmlEncode($action.newGroupSuffix)"</li>
                     </ul>
 #*
                     <label class="scndryInpt" for="addGroup">With Users:</label>

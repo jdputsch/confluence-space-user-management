@@ -37,11 +37,11 @@
                 #*
 				#if(${action.isGroupActionsPermitted})
 				<div class="mode">
-			        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroup&groupToRemove=$generalUtil.doubleUrlEncode($action.selectedGroup)"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> Delete Group ${action.selectedGroup}</a>
+			        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroup&groupToRemove=$generalUtil.doubleUrlEncode($action.selectedGroup)"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> $action.getText("delGroup") ${action.selectedGroup}</a>
 			    </div>
 			    #end
 			    *#
-				<h2>DukeWiki User Search #* ${action.selectedGroup} *#</h2>
+				<h2>$action.getText("wiki.name") $action.getText("user.search") #* ${action.selectedGroup} *#</h2>
 			</div>
 
             <div id="advancedUserSearchForm">
@@ -51,24 +51,24 @@
             </font>
 *#
             #if(${action.selectedGroup})
-            <a id="hideAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)">&laquo; Return to editing ${action.selectedGroup}</a>
+            <a id="hideAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)">&laquo; $action.getText("return.editing") ${action.selectedGroup}</a>
             #end
 
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>
                     #fielderror ('advancedSearch')
-                    <label>Find user where: </label>
+                    <label>$action.getText("form.label.findUserWhere"): </label>
                     <select name="lookupType">
-                        <option value="$action.usernameLookupType" selected="selected">Username</option>
-                        <option value="$action.fullNameLookupType">Full name</option>
-                        <option value="$action.emailLookupType">Email</option>
-                        <option value="$action.groupnameLookupType">Groupname</option>
+                        <option value="$action.usernameLookupType" selected="selected">$action.getText("username")</option>
+                        <option value="$action.fullNameLookupType">$action.getText("fullname")</option>
+                        <option value="$action.emailLookupType">$action.getText("email")</option>
+                        <option value="$action.groupnameLookupType">$action.getText("groupname")</option>
                     </select>
                     <select name="substringMatchType">
-                        <option value="$action.substringStartsWith" selected="selected">Starts With</option>
-                        <option value="$action.substringContains">Contains</option>
-                        <option value="$action.substringEndsWith">Ends With</option>
+                        <option value="$action.substringStartsWith" selected="selected">$action.getText("startsWith")</option>
+                        <option value="$action.substringContains">$action.getText("contains")</option>
+                        <option value="$action.substringEndsWith">$action.getText("endsWith")</option>
                     </select>
                     <input type="text" id="partialSearchTerm" name="partialSearchTerm"/>
                 </fieldset>
@@ -82,10 +82,10 @@
                 $users.total users found
                 <table width="100%">
                     <tr>
-                        <th class="permissionSuperTab">Full Name</th>
-                        <th class="permissionSuperTab">Username</th>
-                        <th class="permissionSuperTab">Email</th>
-                        <th align="left" class="permissionSuperTab" valign="top">Is Member</th>
+                        <th class="permissionSuperTab">$action.getText("fullname")</th>
+                        <th class="permissionSuperTab">$action.getText("username")</th>
+                        <th class="permissionSuperTab">$action.getText("email")</th>
+                        <th align="left" class="permissionSuperTab" valign="top">$action.getText("isMember")</th>
                         <th class="permissionHeading">&nbsp;</th>
                     </tr>
                     #foreach ($user in $users.page)
@@ -113,13 +113,15 @@
                     </tr>
                     #end
                 </table>
+#*
                 <p>
                 Manage User Permissions:
                 <a href="/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">Space</a>,
                 <a href="/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">Page-Level</a>
                 </p>
+*#
                 #else
-                No users found meeting search criteria.
+                $action.getText("noUsersFound")
                 #end
             #end
 

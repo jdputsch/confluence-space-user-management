@@ -5,60 +5,60 @@
                 #if ($action.selectedGroup)
 	                    #if($action.hasPrev($groups))
 	                    <span class="prev">
-	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageGroups">&laquo; Prev</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageGroups">&laquo; $action.getText("previous.abrv")</a>
 	                    </span>
 	                    #end
 
 	                    #if($action.hasNext($groups))
 	                    <span class="next">
-	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageGroups">Next &raquo;</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageGroups">$action.getText("next.abrv") &raquo;</a>
 	                    </span>
 	                    #end
 
 	                    #if(${action.groups})
 	                    <span class="count">
-	                        Groups $!{action.firstRecordNum($groups)}-$!{action.lastRecordNum($groups)} of $!{groups.total}<br/>
+	                        $action.getText("groups") $!{action.firstRecordNum($groups)}-$!{action.lastRecordNum($groups)} $action.getText("of") $!{groups.total}<br/>
 
-
+#*
 	                        #if($groups.total > $groups.countOnEachPage)
 	                        <form action="docustompermissionsmanage.action" class="pageSkip">
 		                        <fieldset>
 		                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
 		                        <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
 		                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
-								<label>Skip to Group by number:</label>
+								<label>$action.getText("skip.byNum"):</label>
 								<input type="text" name="recordNum"/>
 		                        <input type="submit" class="submitBttn" id="skipToGrpBtn" name="skipToGrpBtn" value="Go"/>
 		                        </fieldset>
 	                        </form>
 	                        #end
-
+*#
 	                    </span>
 	                    #end
                 #else
 
 	                    #if($action.hasPrev($groups))
 	                    <span class="prev">
-	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=prevPageGroups">&laquo; Prev</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=prevPageGroups">&laquo; $action.getText("prev.abrv")</a>
 	                    </span>
 	                    #end
 
 	                    #if($action.hasNext($groups))
 	                    <span class="next">
-	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=nextPageGroups">Next &raquo;</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=nextPageGroups">$action.getText("next.abrv") &raquo;</a>
 	                    </span>
 	                    #end
 
 	                    #if(${action.groups})
 	                    <span class="count">
-	                        Groups $!{action.firstRecordNum($groups)}-$!{action.lastRecordNum($groups)} of $!{groups.total}<br/>
+	                        $action.getText("groups") $!{action.firstRecordNum($groups)}-$!{action.lastRecordNum($groups)} $action.getText("of") $!{groups.total}<br/>
 #*
 	                        #if($groups.total > $groups.countOnEachPage)
 	                        <form action="docustompermissionsmanage.action" class="pageSkip">
 		                        <fieldset>
 			                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
 			                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
-									<label>Skip to Group Number:</label>
+									<label>$action.getText("skip.byNum"):</label>
 			                    	<input type="text" name="recordNum"/>
 									<input type="submit" class="submitBttn" id="skipToGrpBtn" name="skipToGrpBtn" value="Go"/>
 		                        </fieldset>
