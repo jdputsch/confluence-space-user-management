@@ -36,7 +36,6 @@ public class StringUtil {
                 String value = valueArray[i];
                 if (value!=null) {
                     value = value.trim();
-                    value = value.toLowerCase();
                     if (!"".equals(value)) {
                         result.add(value);
                     }
