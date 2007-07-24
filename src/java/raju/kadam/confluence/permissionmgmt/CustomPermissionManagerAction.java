@@ -567,9 +567,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     }
                     finally {
 
-                        // MAGIC! db work happens in another thread
-                        Thread.currentThread().sleep(5000);
-
                         // clear user cache and repopulate
                         this.clearUserCache(context.getKey(), context.getSpecifiedGroups());
                         this.populateData();
@@ -648,9 +645,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         }
                     }
                     finally {
-
-                        // MAGIC! db work happens in another thread
-                        Thread.currentThread().sleep(5000);
 
                         // clear group cache and repopulate
                         this.clearGroupCache(context.getKey());
