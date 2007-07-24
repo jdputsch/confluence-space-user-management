@@ -326,12 +326,16 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
                     This pattern is just a
                     <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html">
                     Java regular expression pattern</a> with the exception that the text <b>SPACEKEY</b>
-                    is replaced by the key of the selected Wiki space at runtime.
+                    is replaced by the key (converted to lowercase) of the selected Wiki space at runtime.
+                    Note that the regular regular expression will be matching the groupname after the
+                    groupname has been converted to lowercase, so except for SPACEKEY you should not
+                    expect any capital letters in the groupname it should match.
                     </font>
                 </p>
                 <p>
                     <font size="1">
-                	e.g.: If SPACEKEY is "ds", then pattern <b>SPACEKEY-.*</b> will match ds-users, ds-conf-users<br>
+                	e.g.: If SPACEKEY is "DS", then pattern <b>SPACEKEY-.*</b> will match groups called
+                	ds-users, ds-conf-users, ds-d&amp;d-players.<br/>
                     </font>
                 </p>
             </td>
@@ -345,7 +349,9 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
                 <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end onclick="toggleGroupSettingsInput(this)" />NO
                 <p>
                     <font size="1">
-                	This enables the ability to add/remove groups whose name matches the pattern specified above, effectively enabling the ability to have space-specific groups manageable by space administrators.
+                	This enables the ability to add/remove groups whose name matches the pattern specified
+                	above, effectively enabling the ability to have space-specific groups manageable by space
+                	administrators.
                     </font>
                 </p>
             </td>

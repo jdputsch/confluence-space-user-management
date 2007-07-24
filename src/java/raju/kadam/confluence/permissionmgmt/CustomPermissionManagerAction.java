@@ -1249,4 +1249,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             log.debug("VELOCITY SHOWING NULL USERS");
         }
     }
+
+    public List getRanges(PagerPaginationSupport pps, int roughNumberOfRanges) {
+        return PagerPaginationSupportUtil.getRanges(pps, roughNumberOfRanges);
+    }
   }

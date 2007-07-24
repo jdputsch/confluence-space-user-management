@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import raju.kadam.confluence.permissionmgmt.CustomPermissionConstants;
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigurable;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -30,7 +31,7 @@ public class GroupNameUtil {
         return groupPattern;
     }
 
-    public static Pattern createGroupMatchingPattern(CustomPermissionConfiguration config, String spaceKey)
+    public static Pattern createGroupMatchingPattern(CustomPermissionConfigurable config, String spaceKey)
     {
         log.debug("createGroupMatchingPattern() called.");
         String groupPattern = config.getUserGroupsMatchingPattern();
@@ -39,7 +40,10 @@ public class GroupNameUtil {
             groupPattern = CustomPermissionConstants.SPACEKEY_REGEXP;
         }
 
-        groupPattern = replaceSpaceKey(groupPattern, spaceKey);
+        // NOTE: spaceKey converted to lowercase here and it is expected that the groupPattern with the exception of
+        //       CustomPermissionConstants.SPACEKEY_REGEXP does not expect to match any groupname containing capital
+        //       letters (as stated in the config page).
+        groupPattern = replaceSpaceKey(groupPattern, spaceKey.toLowerCase());
 
         log.debug("group pattern -> " + groupPattern);
 
@@ -49,19 +53,12 @@ public class GroupNameUtil {
     }
 
     public static boolean doesGroupMatchPattern(String grpName, Pattern pat) {
-        //log.debug("doesGroupMatchPattern() called.");
-        Matcher matcher = pat.matcher(grpName);
-        boolean isMatch = matcher.matches();
-
-        //if (log.isDebugEnabled()) {
-        //    String pattern = pat.pattern();
-        //    if (isMatch) {
-        //        log.debug("group '" + grpName + "' matches pattern " + pattern);
-        //    }
-        //    else {
-        //        log.debug("group '" + grpName + "' did not match pattern " + pattern);
-        //    }
-        //}
+        boolean isMatch = false;
+        if (grpName != null) {
+            // NOTE: grpName converted to lowercase here. this means that 
+            Matcher matcher = pat.matcher(grpName.toLowerCase());
+            isMatch = matcher.matches();
+        }
 
         return isMatch;
     }

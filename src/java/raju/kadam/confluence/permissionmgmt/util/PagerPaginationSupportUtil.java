@@ -70,6 +70,83 @@ public class PagerPaginationSupportUtil {
         return result;
     }
 
+    public static List getRanges(PagerPaginationSupport pps, int roughNumberOfRanges) {
+        log.debug("getRanges() called. roughNumberOfRanges=" + roughNumberOfRanges);
+        List ranges = null;
+        int numBeforeAndAfter = roughNumberOfRanges / 2;
+        if (pps!=null && pps.getTotal() > pps.getCountOnEachPage()) {
+            int[] startIndexes = pps.getNextStartIndexes();
+            if (startIndexes!=null && startIndexes.length > 0) {
+                ranges = new ArrayList();
+
+                // ranges before current
+                int currStartIndex = pps.getStartIndex();
+                int lastCurrStartIndex = currStartIndex;
+                for (int i=0; i<numBeforeAndAfter; i++) {
+                    currStartIndex = currStartIndex - pps.getCountOnEachPage();
+                    if ( currStartIndex < 0 && lastCurrStartIndex != 0) {
+                        currStartIndex = 0;
+                    }
+
+                    if ( currStartIndex >= 0 ) {
+                        Range range = new Range();
+                        range.setRecordNum(currStartIndex + 1);
+                        range.setText("" + (currStartIndex + 1) + "-" + lastCurrStartIndex);
+                        ranges.add(range);
+                    }
+
+                    lastCurrStartIndex = currStartIndex;
+                }
+
+                // current
+                ranges.add(getCurrentRange(pps));
+
+                // ranges after current
+                int currEndIndex = pps.getStartIndex() + pps.getCountOnEachPage();
+                int lastCurrEndIndex = currEndIndex;
+                int maxIndex = pps.getTotal() - 1;
+                for (int i=0; i<numBeforeAndAfter; i++) {
+                    currEndIndex = currEndIndex + pps.getCountOnEachPage();
+                    if ( currEndIndex > maxIndex && lastCurrEndIndex != maxIndex) {
+                        currEndIndex = maxIndex;
+                    }
+
+                    if ( currEndIndex <= maxIndex ) {
+                        Range range = new Range();
+                        range.setRecordNum(lastCurrEndIndex + 1);
+                        range.setText("" + (lastCurrEndIndex + 1) + "-" + currEndIndex);
+                        ranges.add(range);
+                    }
+
+                    lastCurrEndIndex = currEndIndex;
+                }
+            }
+            else {
+                log.debug("nextStartIndexes was null");
+            }
+        }
+        else {
+            log.debug("safelyMoveToPageStartIndexClosestToIndex() shouldn't really be called with null. programming error");
+        }
+
+        return ranges;
+    }
+
+    private static Range getCurrentRange(PagerPaginationSupport pps) {
+        int lastIndexOfPage = pps.getStartIndex() + pps.getCountOnEachPage();
+        if (lastIndexOfPage > (pps.getTotal() - 1)) {
+            lastIndexOfPage = pps.getTotal() - 1;
+        }
+        Range range = new Range();
+        range.setRecordNum(pps.getStartIndex() + 1);
+        range.setText("" + (pps.getStartIndex() + 1) + "-" + lastIndexOfPage);
+        return range;
+    }
+
+    public static void sortRangesByRecordNumAscending(List ranges) {
+        Collections.sort(ranges, new RangeComparator());
+    }
+
     private static void addAllAsKeys(List list, Map map) {
         if (list!= null && map != null) {
             for (int i=0; i<list.size(); i++) {

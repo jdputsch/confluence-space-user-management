@@ -14,6 +14,7 @@ import raju.kadam.util.ConfigUtil;
 import raju.kadam.util.StringUtil;
 import raju.kadam.confluence.permissionmgmt.util.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.util.PropsUtil;
+import raju.kadam.confluence.permissionmgmt.util.GroupNameUtil;
 
 /**
  * Convenience methods that get/set persisted config values in BandanaManager.
@@ -172,8 +173,12 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         }
         else {
             try {
-                //validate is valid Pattern
-                Pattern.compile(userGroupsMatchingPattern);
+                //validate some patterns
+                //note: Space keys may only consist of ASCII letters or numbers (A-Z, a-z, 0-9) up to 255 chars
+                validatePattern(result, config, "DS", "FooBar");
+                validatePattern(result, config, "tst", "spongebob");
+                validatePattern(result, config, "Demo10", "Best-Group-Name-In-The-World");
+                validatePattern(result, config, "ILoveBass", "realbasslovers");
             }
             catch (PatternSyntaxException pse) {
                 result.addFieldError("userGroupsMatchingPattern", "Group matching pattern was invalid: " + pse.getMessage());
@@ -227,6 +232,23 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
         log.debug("CustomPermissionConfigAction - isValid=" + result + " fieldErrors=" + result.getFieldNameToErrorMessage());
         return result;
+    }
+
+    private static void validatePattern(ConfigValidationResponse result, CustomPermissionConfigurable config,
+                                        String aSpaceKey, String aGroupMiddle) {
+        Pattern pattern = GroupNameUtil.createGroupMatchingPattern(config, aSpaceKey);
+        String groupsActionsPermitted = config.getGroupActionsPermitted();
+        if ( groupsActionsPermitted!= null && CustomPermissionConfigConstants.YES.equals(groupsActionsPermitted) ) {
+            String aGroupname = config.getNewGroupNameCreationPrefixPattern() + aGroupMiddle + config.getNewGroupNameCreationSuffixPattern();
+            if (!GroupNameUtil.doesGroupMatchPattern( aGroupname, pattern )) {
+                result.addFieldError("userGroupsMatchingPattern", "Based on current prefix and suffix, this " +
+                        "pattern should match groupname '" + aGroupname.toLowerCase() + "' but it didn't. " +
+                        "Please modify the pattern so that it works or visit the " +
+                        "<a href=\"http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin\">" +
+                        "plugin homepage</a> for support.");
+                result.setValid(false);
+            }
+        }
     }
 
     public String getUserManagerLocation() {
