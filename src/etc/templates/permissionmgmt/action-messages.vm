@@ -29,7 +29,7 @@
 		<!-- start action-messages -->
 		#set ($messages = $stack.findValue("actionMessages"))
 		#if($messages && ($messages.size() > 0) )
-		<div id="topMessages">
+		<div class="topMessages">
 		    <ul>
             #foreach($message in $messages)
                 #if(!($!message == "") ) ## We will display message only if it's not null or empty string.

@@ -72,7 +72,7 @@
 							<th>$action.getText("fullname")</th>
 							<th>$action.getText("username")</th>
 							<th>$action.getText("email")</th>
-							<th align="center">$action.getText("delete")</th>
+							<th align="center">$action.getText("remove")</th>
 						</tr>
 					</thead>
 					<tbody>

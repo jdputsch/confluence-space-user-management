@@ -63,12 +63,8 @@
                         <li>$action.getText("example.add.group.text") "$generalUtil.htmlEncode($action.newGroupPrefix)$action.getText("example.add.group.name")$generalUtil.htmlEncode($action.newGroupSuffix)"</li>
                     </ul>
 
-                    <label class="scndryInpt" for="addGroup">With Users:</label>
+                    <label class="scndryInpt" for="addGroup">With Users (optional):</label>
                     <input id ="users" name="users" type="text" /></input>
-
-                    <ul class="formHelp">
-                        <li>(optional)</li>
-                    </ul>
 
                     <input type="submit" class="submitBttn" value="Add Group(s)"></input>
                 </fieldset>
@@ -77,7 +73,7 @@
 
 ##START TEST ONLY!
 ##TODO: Remove this test section and supporting method in action before release
-<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&createTestUsersAndGroups=1">create test users and groups</a>
+##<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&createTestUsersAndGroups=1">create test users and groups</a>
 ##END TEST ONLY!
 
             <!-- end group-list -->

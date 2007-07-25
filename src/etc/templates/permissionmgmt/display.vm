@@ -47,9 +47,9 @@
         div#csum h2 {background:none; font-size: 1.1em; font-weight: bold; color:#036; border-bottom:1px solid #036;}
         div#csum a img {border:none;}
 
-        div#csum div.messages {}
-        div#csum div.messages ul {margin:0; padding:0; list-style:none;}
-        div#csum div.messages ul li {padding:.5em; border:1px solid #3C78B5; background-color: #D8E4F1;}
+        div#csum div.topMessages {clear:both; margin:10px 0 5px 0;}
+        div#csum div.topMessages ul {margin:0; padding:0; list-style:none;}
+        div#csum div.topMessages ul li {padding:.5em; border:1px solid #3C78B5; background-color: #D8E4F1;}
 
         div#csum form {clear:both; margin:1em .1em; padding:7px; background-color:#F0F0F0; border:1px solid #CCC;}
         div#csum fieldset {border:none; padding:0; margin:0;}
@@ -154,9 +154,11 @@
 				<ul>
 				#if($groups && $groups.total>0)
 			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">$action.getText("bulkChange.link.title")</a> </li>
-			        #if($action.isUserSearchEnabled)
+			        #*
+					#if($action.isUserSearchEnabled)
 					<li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">$action.getText("searchUsers.link.title")</a> </li>
 					#end
+					*#
 			    #end
 
 			    #if($isGroupActionsPermitted)

@@ -39,7 +39,7 @@
 
 	                    #if($action.hasPrev($groups))
 	                    <span class="prev">
-	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=prevPageGroups">&laquo; $action.getText("prev.abrv")</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=prevPageGroups">&laquo; $action.getText("previous.abrv")</a>
 	                    </span>
 	                    #end
 

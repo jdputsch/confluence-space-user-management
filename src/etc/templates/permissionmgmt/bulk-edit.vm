@@ -28,8 +28,8 @@
 
 			<!-- start bulk-edit -->
 			<div class="sectionHeader">
-				<div id="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">&laquo; $action.getText("normalView.link.title")</a></div>
 				<h2>$action.getText("bulkChange.title")</h2>
+				<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">&laquo; $action.getText("normalView.link.title")</a>
 			</div>
 
             #set ($allGroups = $action.allGroups)
