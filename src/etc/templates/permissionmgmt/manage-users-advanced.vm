@@ -79,14 +79,14 @@
 
             #if(${action.userSearchFormFilled})
                 #if($users || $users.total > 0)
-                $users.total users found
-                <table width="100%">
+                <div class="srchResInfo">$users.total users found</div>
+                <table width="100%" cellspacing="0">
                     <tr>
-                        <th class="permissionSuperTab">$action.getText("fullname")</th>
-                        <th class="permissionSuperTab">$action.getText("username")</th>
-                        <th class="permissionSuperTab">$action.getText("email")</th>
-                        <th align="left" class="permissionSuperTab" valign="top">$action.getText("isMember")</th>
-                        <th class="permissionHeading">&nbsp;</th>
+                        <th>$action.getText("fullname")</th>
+                        <th>$action.getText("username")</th>
+                        <th>$action.getText("email")</th>
+                        #*<th>$action.getText("isMember")</th>*#
+                        <th>$action.getText("add") / $action.getText("remove") $action.getText("from") <br /> $action.selectedGroup</th>
                     </tr>
                     #foreach ($user in $users.page)
                         #set ($userFullName = $generalUtil.htmlEncode($user.getFullName()))
@@ -94,14 +94,14 @@
                         #set ($userEmail = $generalUtil.maskEmail($user.getEmail()))
                     <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
                         <td><img class="icon" src="${action.confluenceRoot}/images/icons/user_16.gif">$!userFullName</td>
-                        <td align="left" class="permissionCell" valign="top">$!userName</td>
-                        <td align="left" class="permissionCell" valign="top">$!userEmail</td>
+                        <td>$!userName</td>
+                        <td>$!userEmail</td>
                         #if($action.isMemberOfSelectedGroup($!userName))
-                        <td align="left" class="permissionCell" valign="top"><img alt="$!userName is a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/check.gif"/></td>
-                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
+                        #*<td><img alt="$!userName is a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/check.gif"/></td>*#
+                        <td><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
                         #else
-                        <td align="left" class="permissionCell" valign="top"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/error.gif"/></td>
-                        <td align="left" class="permissionCell" valign="top"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/logo_add_16.gif"/></a></td>
+                        #*<td><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/error.gif"/></td>*#
+                        <td><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/add_16.gif"/></a></td>
                         #end
                     </tr>
                     <tr>

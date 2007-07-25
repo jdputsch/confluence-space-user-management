@@ -43,7 +43,7 @@
     <body>
 
     <style>
-        div#csum {width:750px; margin:0 10px;}
+        div#csum {width:800px; margin:0 10px;}
         div#csum h2 {background:none; font-size: 1.1em; font-weight: bold; color:#036; border-bottom:1px solid #036;}
         div#csum a img {border:none;}
 
@@ -80,7 +80,7 @@
         div.mode a:hover {color:#333;}
         div.mode a.selected {font-weight:bold;}
 
-        div#csum div#groupEditor {float:right; width:476px; padding:0 10px;}
+        div#csum div#groupEditor {float:right; width:526px; padding:0 10px;}
 
         div#csum div.groupOpts {text-align:right;}
         div#csum div.groupOpts a {text-decoration:none;}
@@ -108,6 +108,8 @@
 		
         div#csum a#showAdvS {margin:6px 0 0 0; display: block; float:right; clear: both; text-decoration:none;}
         div#csum a#hideAdvS {display:block; margin:3px 3px 1px 0; float:right; text-decoration: none;}
+
+		div.csum div.srchResInfo {border:1px solid #008000; background-color:#CCFFC7; color:#036; padding:7px 10px; font-weight:bold;}
 
         div#csum div#addUserOpts {background-color: #FFF; border:1px solid #CCC; padding:0;}
         div#csum div#addUserOpts ul {list-style: none; margin:0; padding:0;}
