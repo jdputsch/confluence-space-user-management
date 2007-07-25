@@ -62,14 +62,14 @@
                     <ul class="formHelp">
                         <li>$action.getText("example.add.group.text") "$generalUtil.htmlEncode($action.newGroupPrefix)$action.getText("example.add.group.name")$generalUtil.htmlEncode($action.newGroupSuffix)"</li>
                     </ul>
-#*
+
                     <label class="scndryInpt" for="addGroup">With Users:</label>
                     <input id ="users" name="users" type="text" /></input>
 
                     <ul class="formHelp">
                         <li>(optional)</li>
                     </ul>
-*#
+
                     <input type="submit" class="submitBttn" value="Add Group(s)"></input>
                 </fieldset>
             </form>
