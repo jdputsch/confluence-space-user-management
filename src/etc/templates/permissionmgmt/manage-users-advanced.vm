@@ -98,12 +98,13 @@
                         <td>$!userEmail</td>
                         #if($action.isMemberOfSelectedGroup($!userName))
                         #*<td><img alt="$!userName is a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/check.gif"/></td>*#
-                        <td><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
+                        <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
                         #else
-                        #*<td><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/error.gif"/></td>*#
-                        <td><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/add_16.gif"/></a></td>
+                        #*<td text-align="center"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/error.gif"/></td>*#
+                        <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/add_16.gif"/></a></td>
                         #end
                     </tr>
+                    #end
                     <tr>
                         <td colspan="5">
                             <div style="text-align: center">
@@ -111,7 +112,6 @@
                             </div>
                         </td>
                     </tr>
-                    #end
                 </table>
 #*
                 <p>
