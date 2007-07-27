@@ -60,12 +60,14 @@ import raju.kadam.util.HtmlFormUtil;
 import raju.kadam.util.ListUtil;
 import raju.kadam.util.StringUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.net.URLEncoder;
+import java.net.URL;
+import java.util.*;
 
 /**
  * 
@@ -86,6 +88,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private SettingsManager settingsManager;
     private String pagerAction;
 
+    public static final String REDIRECT_PARAMNAME = "redirect";
     public static final String ACTION_ADD_GROUPS = "addGroups";
     public static final String ACTION_REMOVE_GROUPS = "removeGroups";
     public static final String ACTION_ADD_USERS_TO_GROUPS = "addUsersToGroups";
@@ -307,6 +310,79 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
     }
 
+    // this gets around bug in atlassian's API CSP-10371
+    // just append redirect= to end of URL and will redirect to the url.
+    private void handleRedirect() {
+        HttpServletRequest req = ServletActionContext.getRequest();
+        // note: wrapping with TreeMap so it will sort params by name, otherwise it makes inconsistent URL which looks
+        //       hackish.
+        Map paramMap = new TreeMap(ServletActionContext.getRequest().getParameterMap());
+        String[] redirect = (String[])paramMap.get(REDIRECT_PARAMNAME);
+        if (redirect!=null) {
+            HttpServletResponse resp = ServletActionContext.getResponse();
+
+            // Redirect HTTP POST as well as HTTP GET. Remove REDIRECT_PARAMNAME from params.
+            StringBuffer params = new StringBuffer();
+            params.append("?");
+            Iterator iter = paramMap.keySet().iterator();
+            String paramConcat = "";
+            while (iter.hasNext()) {
+                String param = (String)iter.next();
+                if (!REDIRECT_PARAMNAME.equals(param)) {
+                    params.append(paramConcat);
+                    params.append(bestAttemptUTF8Encode(param));
+                    params.append("=");
+                    String[] value = (String[])paramMap.get(param);
+                    String valueConcat = "";
+                    if (value!=null) {
+                        params.append(valueConcat);
+                        for (int i=0;i<value.length;i++) {
+                            params.append(bestAttemptUTF8Encode(value[i]));
+                        }                        
+                        valueConcat = ",";
+                    }
+                    paramConcat = "&";
+                }
+            }
+
+            String url = req.getRequestURI();
+            int indexOfQuery = url.indexOf('?');
+            if (indexOfQuery != -1) {
+                // chop off query
+                url = url.substring(0, indexOfQuery);
+            }
+            // readd query with any post params
+            url = url + params.toString();
+
+            log.debug("Workaround for bug CSP-10371. Redirecting to: " + url);
+            try {
+                resp.sendRedirect( url );
+            }
+            catch (IOException e) {
+                log.error(e);
+            }
+        }
+    }
+
+    private String bestAttemptUTF8Encode(String s) {
+        String result = s;
+        try {
+            result = URLEncoder.encode(s,"UTF-8");
+        }
+        catch (Throwable t) {
+            log.error("Failed to URLEncode '" + s + "'", t);
+        }
+        return result;
+    }
+
+    private String[] bestAttemptUTF8Encode(String[] s) {
+        String[] result = new String[s.length];
+        for (int i=0;i<s.length;i++) {
+            result[i] = bestAttemptUTF8Encode(s[i]);
+        }
+        return result;
+    }
+
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction.execute() called");
@@ -366,6 +442,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         log.debug("Ending execute() users");
         debug(getUsers());
+
+        if (result==SUCCESS && paramMap.get("adminAction") != null) {
+            // refresh to avoid atlassian bug CSP-10371
+            handleRedirect();
+        }
 
         return result;
     }
@@ -1007,7 +1088,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     <option value="$action.usernameLookupType" selected="selected">Username</option>
                         <option value="$action.fullNameLookupType">Full name</option>
                         <option value="$action.emailLookupType">Email</option>
-                        <option value="$action.groupnameLookupType">Groupname</option>
     */
 
     //TODO: is there a better way to access this?
@@ -1023,11 +1103,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     //TODO: is there a better way to access this?
     public String getEmailLookupType() {
         return AdvancedUserQueryLookupType.USER_EMAIL;
-    }
-
-    //TODO: is there a better way to access this?
-    public String getGroupnameLookupType() {
-        return AdvancedUserQueryLookupType.GROUPNAME;
     }
 
     //TODO: is there a better way to access this?

@@ -68,9 +68,6 @@ public class AdvancedUserQuery {
             else if (AdvancedUserQueryLookupType.USER_EMAIL.equalsIgnoreCase(s) ) {
                 result = AdvancedUserQueryLookupType.USER_EMAIL;
             }
-            else if (AdvancedUserQueryLookupType.GROUPNAME.equalsIgnoreCase(s) ) {
-                result = AdvancedUserQueryLookupType.GROUPNAME;
-            }
         }
         return result;
     }
@@ -111,14 +108,6 @@ public class AdvancedUserQuery {
     public boolean isEmailSearchDefined() {
         boolean result = false;
         if (this.getLookupType()==AdvancedUserQueryLookupType.USER_EMAIL) {
-            result = true;
-        }
-        return result;
-    }
-
-    public boolean isGroupnameSearchDefined() {
-        boolean result = false;
-        if (this.getLookupType()==AdvancedUserQueryLookupType.GROUPNAME) {
             result = true;
         }
         return result;

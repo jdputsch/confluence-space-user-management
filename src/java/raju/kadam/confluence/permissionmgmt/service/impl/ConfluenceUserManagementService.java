@@ -120,37 +120,6 @@ public class ConfluenceUserManagementService implements UserManagementService {
             }
         }
 
-        if (advancedUserQuery.isGroupnameSearchDefined()) {
-            try {
-                GroupNameTermQuery query = new GroupNameTermQuery(advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType());
-                SearchResult result = userAccessor.findGroups(query);
-                List groups = PagerUtils.toList(result.pager());
-                ArrayList returnedUsers = new ArrayList();
-                for (int i = 0; i < groups.size(); i++) {
-                    Group group = (Group) groups.get(i);
-                    Pager usernamePager = userAccessor.getMemberNames(group);
-                    // TODO: this is inefficient. probably should only return first 100, or maybe just axe the ability to do this query
-                    List usernames = PagerUtils.toList(usernamePager);
-                    for (int j=0; j<usernames.size(); j++) {
-                        String username = (String)usernames.get(j);
-                        User user = userAccessor.getUser(username);
-                        returnedUsers.add(user);
-                    }
-                }
-                pager = new DefaultPager(returnedUsers);
-                results.setMessage("" + PagerUtils.count(pager) + " returned");
-            }
-            catch (EntityException e) {
-                log.warn("query by groupname failed due to EntityException", e);
-                results.setMessage("" + e);
-            }
-            catch (IllegalArgumentException e) {
-                // if search type is not allowed
-                log.warn("Bad value '" + advancedUserQuery.getPartialSearchTerm() + "' for search type '" + advancedUserQuery.getSubstringMatchType() + "'", e);
-                results.setMessage("Bad value '" + advancedUserQuery.getPartialSearchTerm() + "' for search type '" + advancedUserQuery.getSubstringMatchType() + "'");
-            }
-        }
-
         results.setUsers(pager);
 
         return results;

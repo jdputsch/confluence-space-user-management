@@ -103,10 +103,6 @@ public class JiraSoapUserManagementService implements UserManagementService {
                 }
             }
         }
-        else if (advancedUserQuery.isGroupnameSearchDefined()) {
-            //TODO: this needs to be disabled in the UI but with fields still populated with valid values as hidden post param
-            results.setMessage("This feature is currently unsupported for systems using Jira for user and group management.");
-        }
 
         Pager pager = new DefaultPager(users);
         results.setUsers(pager);

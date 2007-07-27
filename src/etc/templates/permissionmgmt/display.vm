@@ -40,6 +40,8 @@
             <content tag="spacekey">${action.space.key}</content>
     #set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&" )
 
+    #set( $refreshbugworkaround = "&redirect=" )
+
     <body>
 
     <style>

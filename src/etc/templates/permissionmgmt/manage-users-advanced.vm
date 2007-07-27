@@ -63,7 +63,6 @@
                         <option value="$action.usernameLookupType" selected="selected">$action.getText("username")</option>
                         <option value="$action.fullNameLookupType">$action.getText("fullname")</option>
                         <option value="$action.emailLookupType">$action.getText("email")</option>
-                        <option value="$action.groupnameLookupType">$action.getText("groupname")</option>
                     </select>
                     <select name="substringMatchType">
                         <option value="$action.substringStartsWith" selected="selected">$action.getText("startsWith")</option>

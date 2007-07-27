@@ -11,5 +11,4 @@ public class AdvancedUserQueryLookupType {
     public static final String USERNAME = "username";
     public static final String USER_EMAIL = "user email";
     public static final String USER_FULL_NAME = "user full name";
-    public static final String GROUPNAME = "groupname";
 }
