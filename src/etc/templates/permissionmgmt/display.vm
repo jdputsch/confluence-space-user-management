@@ -82,7 +82,7 @@
         div.mode a:hover {color:#333;}
         div.mode a.selected {font-weight:bold;}
 
-        div#csum div#groupEditor {float:right; width:526px; padding:0 10px;}
+        div#csum div#groupEditor {float:right; width:520px; padding:0 10px;}
 
         div#csum div.groupOpts {text-align:right;}
         div#csum div.groupOpts a {text-decoration:none;}
@@ -129,6 +129,12 @@
 		div#csum form.pageSkip input {width:3em; display:inline;}
 		div#csum form.pageSkip input.submitBttn {width:auto; display:inline;}
     </style>
+
+	<!--[if IE]>
+		<style>
+			div#csum div#groupEditor {width:505px;}
+		</style>
+	<![endif]-->
 
 <div id="csum">
     <div class="messages">

@@ -31,10 +31,12 @@
         #if($action.selectedGroup)
 
             <div class="sectionHeader">				
+#*
 				<div class="mode">
 					<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&refresh=1">
 						$action.getText("refresh")</a>
 			    </div>
+*#
 				<h2>$action.getText("editGroup.title") $generalUtil.htmlEncode(${action.selectedGroup})</h2>
 				#if(${action.isGroupActionsPermitted})
 				<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> $action.getText("delGroup") ${action.selectedGroup}</a>
