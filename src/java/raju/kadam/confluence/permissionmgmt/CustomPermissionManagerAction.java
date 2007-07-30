@@ -310,7 +310,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
     }
 
-    // this gets around bug in atlassian's API CSP-10371
+    // this gets around bug in atlassian's API CSP-10371/CONF-9035
     // just append redirect= to end of URL and will redirect to the url.
     private void handleRedirect() {
         HttpServletRequest req = ServletActionContext.getRequest();
@@ -444,7 +444,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         debug(getUsers());
 
         if (result==SUCCESS && paramMap.get("adminAction") != null) {
-            // refresh to avoid atlassian bug CSP-10371
+            // refresh to avoid atlassian bug CSP-10371/CONF-9035
             handleRedirect();
         }
 
