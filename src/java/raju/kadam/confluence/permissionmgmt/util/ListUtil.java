@@ -25,19 +25,43 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package raju.kadam.confluence.permissionmgmt.service;
+package raju.kadam.confluence.permissionmgmt.util;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * (c) 2007 Duke University
  * User: gary.weaver@duke.edu
- * Date: Jun 22, 2007
- * Time: 10:22:59 AM
+ * Date: Jun 8, 2007
+ * Time: 2:11:23 PM
  */
-public interface ErrorReason {
+public class ListUtil {
 
-    public static final String USER_NOT_FOUND = "User(s) not found";
-    public static final String INVALID_GROUP_NAME = "Group name(s) invalid";
-    public static final String UNSUPPORTED_FEATURE = "This feature is currently unsupported";
-    public static final String INVALID_USER_MANAGER_LOCATION = "Please set User Manager Location in configuration";
-    public static final String ACTION_NOT_SELECTED = "Please select an action";
+    private static final Log log = LogFactory.getLog(ListUtil.class);
+
+    public static boolean isListSizeOverMaxNum( List list, int max ) {
+        boolean result = false;
+        if ( list != null && list.size() > max ) {
+            result = true;
+        }
+        return result;
+    }
+
+    // TODO: hopefully this goes away when we decide for sure whether we will support multiple users->group actions at once
+    public static List createListOfOneItem( Object item ) {
+        List list = new ArrayList();
+        list.add(item);
+        return list;
+    }
+
+    public static boolean isNullOrEmpty(List list) {
+        if (list==null || list.size()==0) {
+            return true;
+        }
+        return false;
+    }
 }
