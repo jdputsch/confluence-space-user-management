@@ -30,7 +30,7 @@
 
         #if($action.selectedGroup)
 
-            #set ($users = $action.users)
+            #set ($searchResultUsers = $action.searchResultUsers)
 
 
             <div class="sectionHeader">
@@ -76,9 +76,8 @@
                 </fieldset>
             </form>
 
-            #if(${action.userSearchFormFilled})
-                #if($users || $users.total > 0)
-                <div class="srchResInfo">$users.total users found</div>
+            #if($searchResultUsers && $searchResultUsers.total > 0)
+                <div class="srchResInfo">$searchResultUsers.total users found</div>
                 <table width="100%" cellspacing="0">
                     <tr>
                         <th>$action.getText("fullname")</th>
@@ -87,27 +86,27 @@
                         #*<th>$action.getText("isMember")</th>*#
                         <th>$action.getText("add") / $action.getText("remove") $action.getText("from") <br /> $action.selectedGroup</th>
                     </tr>
-                    #foreach ($user in $users.page)
-                        #set ($userFullName = $generalUtil.htmlEncode($user.getFullName()))
-                        #set ($userName = $generalUtil.htmlEncode($user.getName()))
-                        #set ($userEmail = $generalUtil.maskEmail($user.getEmail()))
+                #foreach ($user in $searchResultUsers.page)
+                    #set ($userFullName = $generalUtil.htmlEncode($user.getFullName()))
+                    #set ($userName = $generalUtil.htmlEncode($user.getName()))
+                    #set ($userEmail = $generalUtil.maskEmail($user.getEmail()))
                     <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
                         <td><img class="icon" src="${action.confluenceRoot}/images/icons/user_16.gif">$!userFullName</td>
                         <td>$!userName</td>
                         <td>$!userEmail</td>
-                        #if($action.isMemberOfSelectedGroup($!userName))
+                    #if($action.isMemberOfSelectedGroup($!userName))
                         #*<td><img alt="$!userName is a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/check.gif"/></td>*#
                         <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName&userSearch=1$refreshbugworkaround"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
-                        #else
+                    #else
                         #*<td text-align="center"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/error.gif"/></td>*#
                         <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName&userSearch=1$refreshbugworkaround"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/add_16.gif"/></a></td>
-                        #end
-                    </tr>
                     #end
+                    </tr>
+                #end
                     <tr>
                         <td colspan="5">
                             <div style="text-align: center">
-#parse ( "/templates/permissionmgmt/user-pager-actions.vm" )
+#parse ( "/templates/permissionmgmt/search-result-user-pager-actions.vm" )
                             </div>
                         </td>
                     </tr>
@@ -119,12 +118,10 @@
                 <a href="/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">Page-Level</a>
                 </p>
 *#
-                #else
-                $action.getText("noUsersFound")
-                #end
-
                 </br>
-            #end
             </div>
+            #else
+                $action.getText("noUsersFound")
+            #end
         #end
             <!-- end manage-users-advanced -->

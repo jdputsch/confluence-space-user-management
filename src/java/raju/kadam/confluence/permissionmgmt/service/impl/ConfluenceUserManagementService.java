@@ -71,7 +71,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 UserNameTermQuery query = new UserNameTermQuery(advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType());
                 SearchResult result = userAccessor.findUsers(query);
                 pager = result.pager();
-                results.setMessage("" + PagerUtils.count(pager) + " returned");
+                //results.setMessage("" + PagerUtils.count(pager) + " returned");
             }
             catch (EntityException e) {
                 log.warn("query by username failed due to EntityException", e);
@@ -89,7 +89,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 FullNameTermQuery query = new FullNameTermQuery(advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType());
                 SearchResult result = userAccessor.findUsers(query);
                 pager = result.pager();
-                results.setMessage("" + PagerUtils.count(pager) + " returned");
+                //results.setMessage("" + PagerUtils.count(pager) + " returned");
             }
             catch (EntityException e) {
                 log.warn("query by user fullname failed due to EntityException", e);
@@ -107,7 +107,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 EmailTermQuery query = new EmailTermQuery(advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType());
                 SearchResult result = userAccessor.findUsers(query);
                 pager = result.pager();
-                results.setMessage("" + PagerUtils.count(pager) + " returned");
+                //results.setMessage("" + PagerUtils.count(pager) + " returned");
             }
             catch (EntityException e) {
                 log.warn("query by user email failed due to EntityException", e);

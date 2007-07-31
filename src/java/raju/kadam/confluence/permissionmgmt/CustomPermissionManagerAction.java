@@ -93,6 +93,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public static final String ACTION_REMOVE_GROUPS = "removeGroups";
     public static final String ACTION_ADD_USERS_TO_GROUPS = "addUsersToGroups";
     public static final String ACTION_REMOVE_USERS_FROM_GROUPS = "removeUsersFromGroups";
+    public static final String ACTION_ADVANCED_FIND_USERS = "advancedFindUsers";
 
     public CustomPermissionManagerAction()
 	{
@@ -265,6 +266,26 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getUsers());
             }
         }
+
+        if ("nextPageSearchResultUsers".equals(pagerAction)) {
+            PagerPaginationSupport users = getSearchResultUsers();
+            if (hasNext(users)) {
+                next(users);
+            }
+        }
+        else if ("prevPageSearchResultUsers".equals(pagerAction)) {
+            PagerPaginationSupport users = getSearchResultUsers();
+            if (hasPrev(users)) {
+                prev(users);
+            }
+        }
+        else if ("skipToSearchResultUser".equals(pagerAction)) {
+            Integer recordNum = getRecordNum(paramMap);
+            if (recordNum!=null) {
+                // record num is one-based, not zero-based
+                PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getSearchResultUsers());
+            }
+        }
     }
 
     private Integer getRecordNum(Map paramMap) {
@@ -281,14 +302,19 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
 
-    private void handleUserSearch() {
-        if (getUserSearch()!=null) {
+    private void handleUserSearch(CustomPermissionManagerActionContext context) {
+        if (getUserSearch()!=null && getPagerAction()==null && ACTION_ADVANCED_FIND_USERS.equalsIgnoreCase(context.getAdminAction())) {
+            log.debug("validating user search form. userSearch=" + getUserSearch() + " pagerAction=" + getPagerAction()+ " adminAction=" + context.getAdminAction());
             AdvancedUserQuery advancedUserQuery = createAdvancedUserQuery();
             setAdvancedUserQuery(advancedUserQuery);
             setUserSearchFormFilled(advancedUserQuery.isValid());
             if (getUserSearchFormFilled()) {
+                log.debug("performing user search");
                 this.findUsersAdvanced();
             }
+        }
+        else {
+            log.debug("not a user search. userSearch=" + getUserSearch() + " pagerAction=" + getPagerAction()+ " adminAction=" + context.getAdminAction());            
         }
     }
 
@@ -301,6 +327,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private void refreshData() {
         Integer oldGroupsIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getGroups());
         Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
+        Integer oldSearchResultUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getSearchResultUsers());
 
         this.clearCache();
         this.populateData();
@@ -308,6 +335,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         // Note: is important that these are calling getGroups() and getUsers() again to get latest instances.
         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldSearchResultUsersIndex, getSearchResultUsers());
     }
 
     // this gets around bug in atlassian's API CSP-10371/CONF-9035
@@ -394,9 +422,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         CustomPermissionManagerActionContext context = createContext();
 
-        //TODO: maybe this should be another adminAction.
+        //TODO: maybe this should be another adminAction, but if so will need to update handleUserSearch() to exclude it
         setUserSearch(context.getUserSearch());
-        handleUserSearch();
+        handleUserSearch(context);
 
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
@@ -596,8 +624,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
             if(adminAction != null && !"".equals(adminAction))
             {
-
-                if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS) || adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS)) {
+                if (adminAction.equals(ACTION_ADVANCED_FIND_USERS)) {
+                    //TODO: consider calling find from here
+                    return SUCCESS;
+                }
+                else if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS) || adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS)) {
 
                     //validate
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedUsers())) {
@@ -634,6 +665,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                     // get the old instance's paging index
                     Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
+                    //Integer oldSearchResultUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getSearchResultUsers());
                     try {
                         if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS))
                         {
@@ -650,10 +682,12 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                         // clear user cache and repopulate
                         this.clearUserCache(context.getKey(), context.getSpecifiedGroups());
+                        //this.clearSearchResultUserCache(context.getKey(), context.getSpecifiedGroups());
                         this.populateData();
 
                         // NOTE: intentionally calling getUsers() again because it is a new instance!
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+                        //PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldSearchResultUsersIndex, getSearchResultUsers());
                     }
                 }
                 else if(adminAction.equals(ACTION_ADD_GROUPS) || adminAction.equals(ACTION_REMOVE_GROUPS)) {
@@ -678,6 +712,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     // get the old instance's paging index
                     Integer oldGroupsIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getGroups());
                     Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
+                    //Integer oldSearchResultUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getSearchResultUsers());
 
                     boolean usersAdded = false;
                     try {
@@ -730,16 +765,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         // clear group and user cache and repopulate
                         this.clearGroupCache(context.getKey());
                         this.clearUserCache(context.getKey(), context.getSpecifiedGroups());
+                        //this.clearSearchResultUserCache(context.getKey(), context.getSpecifiedGroups());
 
                         this.populateData();
 
                         // NOTE: intentionally calling getGroups() because it is a new instance
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
-
-                        if (usersAdded) {
-                            // NOTE: intentionally calling getUsers() because it is a new instance
-                            PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
-                        }
+                        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
+                        //PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldSearchResultUsersIndex, getSearchResultUsers());
                     }
                 }
                 else {
@@ -1184,7 +1217,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             log.warn("Failed creating test groups/users", t);
         }
 
-        setUsers(createPagerPaginationSupport(pager));
+        setSearchResultUsers(createPagerPaginationSupport(pager));
     }
 
     public boolean isMemberOfSelectedGroup(String userName) {
@@ -1235,6 +1268,18 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         String spaceKey = getKey();
         String selectedGroup = getSelectedGroup();
         setUsersPps(spaceKey, selectedGroup, users);
+    }
+
+    public PagerPaginationSupport getSearchResultUsers() {
+        String spaceKey = getKey();
+        String selectedGroup = getSelectedGroup();
+        return getSearchResultUsersPps(spaceKey, selectedGroup);
+    }
+
+    public void setSearchResultUsers(PagerPaginationSupport users) {
+        String spaceKey = getKey();
+        String selectedGroup = getSelectedGroup();
+        setSearchResultUsersPps(spaceKey, selectedGroup, users);
     }
 
     public String getPagerAction() {

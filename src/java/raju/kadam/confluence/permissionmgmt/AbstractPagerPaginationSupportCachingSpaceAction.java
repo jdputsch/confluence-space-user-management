@@ -24,6 +24,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     private static final String PLUGIN_SESSION_KEY_PREFIX = "SUSR";
     private static final String GROUPS_SESSION_KEY_SUFFIX = "groups";
     private static final String USERS_SESSION_KEY_SUFFIX = "users";
+    private static final String SEARCH_RESULT_USERS_SESSION_KEY_SUFFIX = "searchresultusers";
 
     private Object getSessionProperty(String key) {
         Map session = (Map) ActionContext.getContext().get("session");
@@ -78,6 +79,21 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
         return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + groupName + ":" + USERS_SESSION_KEY_SUFFIX;
     }
 
+    public PagerPaginationSupport getSearchResultUsersPps(String spaceKey, String groupName) {
+        PagerPaginationSupport result = (PagerPaginationSupport)getSessionProperty( getSearchResultUsersPpsKey(spaceKey, groupName) );
+        log.debug("Got search result users instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        return result;
+    }
+
+    public void setSearchResultUsersPps(String spaceKey, String groupName, PagerPaginationSupport searchResultUsersPps) {
+        setSessionProperty( getSearchResultUsersPpsKey(spaceKey, groupName), searchResultUsersPps);
+        log.debug("Set search result users instance " + id(searchResultUsersPps) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+    }
+
+    private String getSearchResultUsersPpsKey(String spaceKey, String groupName) {
+        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + groupName + ":" + SEARCH_RESULT_USERS_SESSION_KEY_SUFFIX;
+    }
+
     public void clearCache() {
         log.debug("Clearing all cache (removing all session data with keys that start with '" + PLUGIN_SESSION_KEY_PREFIX + "-')");
         Map session = (Map) ActionContext.getContext().get("session");
@@ -91,7 +107,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     public void clearGroupCache(String spaceKey) {
-        String sessionKey = PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + GROUPS_SESSION_KEY_SUFFIX;
+        String sessionKey = getGroupsPpsKey(spaceKey);
         log.debug("Clearing all groups cache for spacekey '" + spaceKey + "' (removing session data for '" + sessionKey + ")");
 
         Map session = (Map) ActionContext.getContext().get("session");
@@ -102,8 +118,18 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
         Map session = (Map) ActionContext.getContext().get("session");
         for (int i=0; i<groupNames.size(); i++) {
             String groupName = (String)groupNames.get(i);
-            String sessionKey = PLUGIN_SESSION_KEY_PREFIX + "-" + spaceKey + "-" + groupName + "-" + USERS_SESSION_KEY_SUFFIX;
+            String sessionKey = getUsersPpsKey(spaceKey, groupName);
             log.debug("Clearing all users cache for spacekey '" + spaceKey + "' and groupName '" + groupName + "' (removing all session data for key '" + sessionKey + "')");
+            session.remove(sessionKey);
+        }
+    }
+
+    public void clearSearchResultUserCache(String spaceKey, List groupNames) {
+        Map session = (Map) ActionContext.getContext().get("session");
+        for (int i=0; i<groupNames.size(); i++) {
+            String groupName = (String)groupNames.get(i);
+            String sessionKey = getSearchResultUsersPpsKey(spaceKey, groupName);
+            log.debug("Clearing all search result users cache for spacekey '" + spaceKey + "' and groupName '" + groupName + "' (removing all session data for key '" + sessionKey + "')");
             session.remove(sessionKey);
         }
     }
