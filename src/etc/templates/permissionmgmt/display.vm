@@ -160,7 +160,7 @@
         #end
         </div>
 
-		<div id="footer">
+        <div id="footer">
 				<ul>
 				#if($groups && $groups.total>0)
 			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">$action.getText("bulkChange.link.title")</a> </li>
@@ -179,10 +179,20 @@
 						<img src="${action.confluenceRoot}/images/icons/locked_pages_16.gif"/>
 						$action.getText("page.permissions.link.title")</a> </li>*#
 			    #end
+                    #if($action.selectedGroup)
+                    <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($selectedGroup)&refresh=1">$action.getText("refresh.link.title")</a> </li>
+                    #else
+			        <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("refresh.link.title")</a> </li>
+			        #end
+			        
 				</ul>
-				#set($availableSpaces = $action.spacesAsSpaceAdminForUser)
+
+                #set($availableSpaces = $action.spacesAsSpaceAdminForUser)
 	            #if($availableSpaces && $availableSpaces.size()>1)
-	            <form method="GET" action="docustompermissionsmanage.action" id="changeSpace" name="changeSpace">
+                <br/>
+                <br/>
+                <br/>
+                <form method="GET" action="docustompermissionsmanage.action" id="changeSpace" name="changeSpace">
 	                <fieldset>
 	                    <label>$action.getText("form.label.changeSpace"): </label>
 	                    <select name="key">
@@ -193,7 +203,7 @@
 	                	<input type="submit" value='$action.getText("form.button.changeSpace")' class="submitBttn"/>
 	                </fieldset>
 	            </form>
-	            #end
+	            #end				
 		</div>
 
     #else

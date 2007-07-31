@@ -47,7 +47,7 @@
             <a id="showAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1">&raquo; $action.getText("wiki.name") $action.getText("directorySearch")</a>
             #end
 
-            <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)" id="addUsersForm" name="ManageUsersForm">
+            <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround" id="addUsersForm" name="ManageUsersForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addUsersToGroups"/>
                     <input type="hidden" name="groups" value="$action.selectedGroup"/>
@@ -98,7 +98,9 @@
                 #parse ( "/templates/permissionmgmt/user-pager-actions.vm" )
             #else
                 $action.getText("noUsersFoundInGroup")
-            #end            
+            #end
+
+            </br>                        
         #end
         
             <!-- end manage-users-basic -->

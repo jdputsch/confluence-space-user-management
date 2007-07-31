@@ -54,7 +54,7 @@
             #end
 
             #if(${action.isGroupActionsPermitted})
-            <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)" id="addGroupForm" name="AddGroupForm">
+            <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)$refreshbugworkaround" id="addGroupForm" name="AddGroupForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addGroups"/>
                     <label for="addGroups">$action.getText("add") $action.getText("group")</label>
