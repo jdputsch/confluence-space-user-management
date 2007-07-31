@@ -169,12 +169,9 @@ public class PagerPaginationSupportUtil {
         log.debug("safelyMoveToOldStartIndex() called. startIndex=" + startIndex);
         if (pps!=null) {
             int closestStartIndex = startIndex;
-            if (closestStartIndex > (pps.getTotal() - 1)) {
-                int[] startIndexes = pps.getNextStartIndexes();
-                if (startIndexes!=null && startIndexes.length > 0) {
-                    // use last page start index
-                    closestStartIndex = startIndexes[startIndexes.length - 1];
-                }
+            int maxIndex = pps.getTotal() - 1;
+            if (closestStartIndex > maxIndex) {
+                closestStartIndex = maxIndex;
             }
             else if (closestStartIndex < 0) {
                 closestStartIndex = 0;

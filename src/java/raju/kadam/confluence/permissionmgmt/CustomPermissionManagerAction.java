@@ -727,11 +727,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     }
                     finally {
 
-                        // clear group cache and repopulate
+                        // clear group and user cache and repopulate
                         this.clearGroupCache(context.getKey());
-                        if (usersAdded) {
-                            this.clearUserCache(context.getKey(), context.getSpecifiedGroups());
-                        }
+                        this.clearUserCache(context.getKey(), context.getSpecifiedGroups());
 
                         this.populateData();
 
