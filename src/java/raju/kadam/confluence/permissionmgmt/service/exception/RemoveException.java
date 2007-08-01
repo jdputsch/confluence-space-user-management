@@ -27,14 +27,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package raju.kadam.confluence.permissionmgmt;
+package raju.kadam.confluence.permissionmgmt.service.exception;
+
+import raju.kadam.confluence.permissionmgmt.service.exception.IdListException;
 
 /**
- * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public interface CustomPermissionConstants {
+public class RemoveException extends IdListException {
 
-    public static final String SPACEKEY = "SPACEKEY";
-    public static final String SPACEKEY_REGEXP = SPACEKEY + "-.*";
+    public RemoveException() {
+        super();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public RemoveException(String string) {
+        super(string);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public RemoveException(String string, Throwable throwable) {
+        super(string, throwable);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public RemoveException(Throwable throwable) {
+        super(throwable);    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }

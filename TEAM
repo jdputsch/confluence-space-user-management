@@ -1,0 +1,34 @@
+Custom Space Usergroups Manager Development Team:
+
+    Rajendra Kadam - raju.kadam@gmail.com | http://adyamarathon.wordpress.com
+    Gary S. Weaver - gary.weaver@duke.edu
+    Ren Provey - renald.provey@duke.edu
+
+---
+
+August 1, 2007:
+
+   Initally I developed this plugin as part of Atlassian Codegeist 2006. I wanted 
+to add (missing) functionality in Confluence Wiki which would help Wiki 
+Space Administrators in managing users associated to their spaces. Very happy to know
+that many users find this plugin useful!
+   In June 2007 nice folks from Duke University (Gary & Ren) wanted to have something
+very similar to this but with more features. That's where v2.0 of this plugin got evolved.
+Thanks to them for putting great effort. We are improving and getting better. Stay tuned!
+
+ - Rajendra
+
+---
+
+August 1, 2007:
+
+   This plugin arose from a need we had to reduce the pain and suffering of our support
+team who had been managing groups for space administrators. When we saw the code in v1.1
+of Rajendra's plugin, we knew it would be a better idea to extend it rather than create
+our own. We are very thankful to Rajendra for letting us join the team. Thanks also to
+Ren to did all the cool UI stuff in the transition to v2 of the plugin.
+   Hope you enjoy it as much as we do!
+
+ - Gary S. Weaver
+
+---

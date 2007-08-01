@@ -27,14 +27,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package raju.kadam.confluence.permissionmgmt;
+package raju.kadam.confluence.permissionmgmt.service.exception;
+
+import raju.kadam.confluence.permissionmgmt.service.exception.ServiceException;
 
 /**
- * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public interface CustomPermissionConstants {
+public class FindException extends ServiceException {
 
-    public static final String SPACEKEY = "SPACEKEY";
-    public static final String SPACEKEY_REGEXP = SPACEKEY + "-.*";
+    public FindException() {
+        super();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public FindException(String string) {
+        super(string);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public FindException(String string, Throwable throwable) {
+        super(string, throwable);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public FindException(Throwable throwable) {
+        super(throwable);    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }

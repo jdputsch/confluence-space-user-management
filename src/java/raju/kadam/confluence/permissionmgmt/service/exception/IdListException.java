@@ -27,14 +27,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package raju.kadam.confluence.permissionmgmt;
+package raju.kadam.confluence.permissionmgmt.service.exception;
+
+import raju.kadam.confluence.permissionmgmt.util.StringUtil;
+import raju.kadam.confluence.permissionmgmt.service.exception.ServiceException;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /**
- * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public interface CustomPermissionConstants {
+public class IdListException extends ServiceException {
 
-    public static final String SPACEKEY = "SPACEKEY";
-    public static final String SPACEKEY_REGEXP = SPACEKEY + "-.*";
+    private List ids = new ArrayList();
+
+
+    public IdListException() {
+        super();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public IdListException(String string) {
+        super(string);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public IdListException(String string, Throwable throwable) {
+        super(string, throwable);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public IdListException(Throwable throwable) {
+        super(throwable);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public List getIds() {
+        return ids;
+    }
+
+    public String getIdsAsCommaDelimitedString() {
+        return StringUtil.convertCollectionToCommaDelimitedString(this.ids);
+    }
+
+    public void setIds(List ids) {
+        this.ids = ids;
+    }
+
+    public void addId(String id) {
+        ids.add(id);
+    }
 }
