@@ -175,18 +175,23 @@
 			    #end
 
 			    #if($isGroupActionsPermitted)
-					<li>| <a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">
+					<li>
+					#if($groups && $groups.total>0)
+					 |
+					#end
+					<a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">
 						#*<img src="${action.confluenceRoot}/images/icons/lock_16.gif"/>*#
 						$action.getText("space.permissions.link.title")</a> </li>
 					#*<li>| <a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">
 						<img src="${action.confluenceRoot}/images/icons/locked_pages_16.gif"/>
 						$action.getText("page.permissions.link.title")</a> </li>*#
 			    #end
-                    #if($action.selectedGroup)
-                    <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($selectedGroup)&refresh=1">$action.getText("refresh.link.title")</a> </li>
-                    #else
-			        <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("refresh.link.title")</a> </li>
-			        #end
+
+                #if($action.selectedGroup)
+                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($selectedGroup)&refresh=1">$action.getText("refresh.link.title")</a> </li>
+                #else
+                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("refresh.link.title")</a> </li>
+                #end
 			        
 				</ul>
 
