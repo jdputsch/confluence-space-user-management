@@ -46,6 +46,7 @@ import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration
 import raju.kadam.confluence.permissionmgmt.service.*;
 import raju.kadam.confluence.permissionmgmt.service.exception.AddException;
 import raju.kadam.confluence.permissionmgmt.service.exception.FindException;
+import raju.kadam.confluence.permissionmgmt.service.exception.RemoveException;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
@@ -55,9 +56,7 @@ import raju.kadam.confluence.permissionmgmt.util.paging.LazyLoadingUserByUsernam
 import raju.kadam.confluence.permissionmgmt.util.ldap.LDAPUser;
 import raju.kadam.confluence.permissionmgmt.util.ldap.LDAPUtil;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Rajendra Kadam
@@ -191,7 +190,9 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 ", groupnames=" + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
 
-        AddException ex = null;
+        List usersNotFound = new ArrayList();
+        // using map to get only unique groups. using treemap to keep groupnames in order
+        Map groupsNotFoundMap = new TreeMap();
 
         boolean isLDAPPresent = config.getLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false;
 
@@ -216,13 +217,9 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 //if user details not found in LDAP too, then retun userid in errorids
                 if (currUser == null) {
 
-                    if (ex == null) {
-                        ex = new AddException(context.getText("error.userNotFound") + ": " + userid);
-                    }
-
                     //for some reason we are unable to create user.
                     //add it to our notCreatedUser List.
-                    ex.addId(userid);
+                    usersNotFound.add(userid);
 
                     continue;
 
@@ -236,15 +233,21 @@ public class ConfluenceUserManagementService implements UserManagementService {
             if (currUser != null) {
                 //Associate this user to all selected user-groups
                 for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
-                    userAccessor.addMembership((String) iterator.next(), userid);
+                    String groupName = (String) iterator.next();
+                    if (groupsNotFoundMap.get(groupName)==null && userAccessor.getGroup(groupName)!=null) {
+                        userAccessor.addMembership(groupName, userid);
+                    }
+                    else {
+                        groupsNotFoundMap.put( "" + groupName, "");
+                    }
                 }
-
             }
         }
 
         // If we failed, throw exception
-        if (ex != null) {
-            throw ex;
+        List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
+        if (usersNotFound.size()>0 || groupsNotFound.size()>0) {
+            throw new AddException(getErrorMessage(usersNotFound, groupsNotFound, context));
         }
     }
 
@@ -274,14 +277,55 @@ public class ConfluenceUserManagementService implements UserManagementService {
     }
 
 
-    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) {
+    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws RemoveException {
         log.debug("removeUsersByUsernamesFromGroupsByGroupname() called.");
+
+        List usersNotFound = new ArrayList();
+        // using map to get only unique groups. using treemap to keep groupnames in order
+        Map groupsNotFoundMap = new TreeMap();
+
         for (Iterator itr = userNames.iterator(); itr.hasNext();) {
             String userid = (String) itr.next();
-            for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
-                userAccessor.removeMembership((String) iterator.next(), userid);
+
+            if (userAccessor.getUser(userid)!=null) {
+                for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
+                    String groupName = (String) iterator.next();
+                    if (groupsNotFoundMap.get(groupName)==null && userAccessor.getGroup(groupName)!=null) {
+                        userAccessor.removeMembership(groupName, userid);
+                    }
+                    else {
+                        groupsNotFoundMap.put( "" + groupName, "");
+                    }
+                }
+            }
+            else {
+                usersNotFound.add(userid);
             }
         }
+
+        // If we failed, throw exception
+        List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
+        if (usersNotFound.size()>0 || groupsNotFound.size()>0) {
+            throw new RemoveException(getErrorMessage(usersNotFound, groupsNotFound, context));
+        }
+    }
+
+    private String getErrorMessage(List usersNotFound, List groupsNotFound, ServiceContext context) {
+        String msg = "";
+        String concat = "";
+        if (usersNotFound.size()>0) {
+            msg += context.getText("error.usersNotFound") + ": " +
+                    StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".";
+            concat = " ";
+        }
+
+        if (groupsNotFound.size()>0) {
+            msg += concat;
+            msg += context.getText("error.groupsNotFound") + ": " +
+                    StringUtil.convertCollectionToCommaDelimitedString(groupsNotFound) + ".";
+        }
+
+        return msg;
     }
 
     public boolean isMemberOf(String userName, String groupName) {

@@ -29,12 +29,10 @@
 
 package raju.kadam.confluence.permissionmgmt.service.exception;
 
-import raju.kadam.confluence.permissionmgmt.service.exception.IdListException;
-
 /**
  * @author Gary S. Weaver
  */
-public class RemoveException extends IdListException {
+public class RemoveException extends ServiceException {
 
     public RemoveException() {
         super();    //To change body of overridden methods use File | Settings | File Templates.

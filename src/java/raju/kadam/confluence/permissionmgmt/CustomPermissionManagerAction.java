@@ -34,13 +34,10 @@ import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.confluence.setup.settings.SettingsManager;
-import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
-import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.confluence.util.SpaceComparator;
-import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
@@ -49,7 +46,6 @@ import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstan
 import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import raju.kadam.confluence.permissionmgmt.config.ConfigValidationResponse;
 import raju.kadam.confluence.permissionmgmt.service.*;
-import raju.kadam.confluence.permissionmgmt.service.exception.IdListException;
 import raju.kadam.confluence.permissionmgmt.service.exception.ServiceException;
 import raju.kadam.confluence.permissionmgmt.service.vo.*;
 import raju.kadam.confluence.permissionmgmt.util.ConfigUtil;
@@ -90,11 +86,16 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private String pagerAction;
 
     public static final String REDIRECT_PARAMNAME = "redirect";
+    public static final String ADMIN_ACTION_PARAMNAME = "adminAction";
+    public static final String USERS_PARAMNAME = "users";
+    public static final String GROUPS_PARAMNAME = "groups";
+    public static final String USER_SEARCH_PARAMNAME = "userSearch";
     public static final String ACTION_ADD_GROUPS = "addGroups";
     public static final String ACTION_REMOVE_GROUPS = "removeGroups";
     public static final String ACTION_ADD_USERS_TO_GROUPS = "addUsersToGroups";
     public static final String ACTION_REMOVE_USERS_FROM_GROUPS = "removeUsersFromGroups";
     public static final String ACTION_ADVANCED_FIND_USERS = "advancedFindUsers";
+    public static final String SELECTED_CACHE_REFRESH_PARAMNAME = "selectedCacheRefresh";
 
     public CustomPermissionManagerAction()
 	{
@@ -164,20 +165,20 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public CustomPermissionManagerActionContext createContext() {
         CustomPermissionManagerActionContext context = new CustomPermissionManagerActionContext();
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        List groups = getUrlDecodedCleanedTrimmedParameterValueList( paramMap, "groups");
+        List groups = getUrlDecodedCleanedTrimmedParameterValueList( paramMap, GROUPS_PARAMNAME);
         if ( groups != null ) {
             // groups specified as single comma-delimited string. used by everything else.
             context.setSpecifiedGroups(groups);
         }
         else {
             // groups specified by group of checkboxes with name "groups". used by bulk-edit.
-            context.setSpecifiedGroups(HtmlFormUtil.retrieveListOfCheckedCheckboxValues(paramMap, "groups"));
+            context.setSpecifiedGroups(HtmlFormUtil.retrieveListOfCheckedCheckboxValues(paramMap, GROUPS_PARAMNAME));
         }
-        context.setSpecifiedUsers(getUrlDecodedCleanedTrimmedParameterValueList( paramMap, "users"));
+        context.setSpecifiedUsers(getUrlDecodedCleanedTrimmedParameterValueList( paramMap, USERS_PARAMNAME));
         context.setLoggedInUser(getRemoteUser().getName());
 		context.setKey(getKey());
-    	context.setAdminAction(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "adminAction"));
-        context.setUserSearch(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "userSearch"));
+    	context.setAdminAction(getUrlDecodedCleanedTrimmedParameterValue( paramMap, ADMIN_ACTION_PARAMNAME));
+        context.setUserSearch(getUrlDecodedCleanedTrimmedParameterValue( paramMap, USER_SEARCH_PARAMNAME));
         context.setConfluenceActionSupport(this);
         return context;
     }
@@ -342,9 +343,28 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldSearchResultUsersIndex, getSearchResultUsers());
     }
 
+    private String bestAttemptUTF8Encode(String s) {
+        String result = s;
+        try {
+            result = URLEncoder.encode(s,"UTF-8");
+        }
+        catch (Throwable t) {
+            log.error("Failed to URLEncode '" + s + "'", t);
+        }
+        return result;
+    }
+
+    private String[] bestAttemptUTF8Encode(String[] s) {
+        String[] result = new String[s.length];
+        for (int i=0;i<s.length;i++) {
+            result[i] = bestAttemptUTF8Encode(s[i]);
+        }
+        return result;
+    }
+
     // this gets around bug in atlassian's API CSP-10371/CONF-9035
     // just append redirect= to end of URL and will redirect to the url.
-    private void handleRedirect() {
+    private void handleRefreshBugFirstRequest() {
         HttpServletRequest req = ServletActionContext.getRequest();
         // note: wrapping with TreeMap so it will sort params by name, otherwise it makes inconsistent URL which looks
         //       hackish.
@@ -360,7 +380,13 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             String paramConcat = "";
             while (iter.hasNext()) {
                 String param = (String)iter.next();
-                if (!REDIRECT_PARAMNAME.equals(param)) {
+
+                // remove any params that could either do an additional redirect or additional action, except for groups
+                // because will need groups to know what cache to refresh on second request
+                if (!REDIRECT_PARAMNAME.equalsIgnoreCase(param) &&
+                        !ADMIN_ACTION_PARAMNAME.equalsIgnoreCase(param) &&
+                        !USERS_PARAMNAME.equalsIgnoreCase(param)
+                        ) {
                     params.append(paramConcat);
                     params.append(bestAttemptUTF8Encode(param));
                     params.append("=");
@@ -370,12 +396,15 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         params.append(valueConcat);
                         for (int i=0;i<value.length;i++) {
                             params.append(bestAttemptUTF8Encode(value[i]));
-                        }                        
+                        }
                         valueConcat = ",";
                     }
                     paramConcat = "&";
                 }
             }
+
+            // add a param that tells action to refresh only cache associated with currently selected group in next req
+            params.append("&" + SELECTED_CACHE_REFRESH_PARAMNAME);
 
             String url = req.getRequestURI();
             int indexOfQuery = url.indexOf('?');
@@ -396,28 +425,29 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
     }
 
-    private String bestAttemptUTF8Encode(String s) {
-        String result = s;
-        try {
-            result = URLEncoder.encode(s,"UTF-8");
+    private void handleRefreshBugSecondRequest(Map paramMap) {
+        if (this.getRawParameterValue(paramMap, SELECTED_CACHE_REFRESH_PARAMNAME) != null) {
+            this.clearGroupCache(getKey());
+            // this is why we have to leave groups param in the url in handleRedirect
+            List groups = getUrlDecodedCleanedTrimmedParameterValueList(paramMap, GROUPS_PARAMNAME);
+            if (groups!=null) {
+                this.clearSearchResultUserCache(getKey(), groups);
+                this.clearUserCache(getKey(), groups);
+            }
         }
-        catch (Throwable t) {
-            log.error("Failed to URLEncode '" + s + "'", t);
-        }
-        return result;
-    }
-
-    private String[] bestAttemptUTF8Encode(String[] s) {
-        String[] result = new String[s.length];
-        for (int i=0;i<s.length;i++) {
-            result[i] = bestAttemptUTF8Encode(s[i]);
-        }
-        return result;
     }
 
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction.execute() called");
+
+        // only relevant for page itself, so not putting into context
+        Map paramMap = ServletActionContext.getRequest().getParameterMap();
+
+        handleRefreshBugSecondRequest(paramMap);
+
+        String selectedGroup = getUrlDecodedCleanedTrimmedParameterValue(paramMap, "selectedGroup");
+        setSelectedGroup(selectedGroup);
 
         log.debug("Starting execute() users");
         debug(getUsers());
@@ -430,13 +460,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         setUserSearch(context.getUserSearch());
         handleUserSearch(context);
 
-        // only relevant for page itself, so not putting into context
-        Map paramMap = ServletActionContext.getRequest().getParameterMap();
+
 
         setBulkEdit(getUrlDecodedCleanedTrimmedParameterValue(paramMap, "bulkEdit"));
 
-        String selectedGroup = getUrlDecodedCleanedTrimmedParameterValue(paramMap, "selectedGroup");
-        setSelectedGroup(selectedGroup);                
+
 
         // handle refresh
         handleRefreshData(paramMap);
@@ -474,9 +502,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         log.debug("Ending execute() users");
         debug(getUsers());
 
-        if (result==SUCCESS && paramMap.get("adminAction") != null) {
+        if (result==SUCCESS && paramMap.get(ADMIN_ACTION_PARAMNAME) != null) {
             // refresh to avoid atlassian bug CSP-10371/CONF-9035
-            handleRedirect();
+            handleRefreshBugFirstRequest();
         }
 
         return result;
@@ -664,12 +692,12 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS))
                         {
                             userManagementService.addUsersByUsernameToGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.users") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " " + getText("success.addedToGroups") + " " +  StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + getText("success.successfully") + "</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.users") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " " + getText("success.addedToGroups") + " " +  StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " " + getText("success.successfully") + "</font>";
                         }
                         else if(adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS))
                         {
                             userManagementService.removeUsersByUsernameFromGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.users") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " " + getText("success.removedFromGroups") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + getText("success.successfully") + "</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.users") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " " + getText("success.removedFromGroups") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " " + getText("success.successfully") + "</font>";
                         }
                     }
                     finally {
@@ -751,7 +779,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             List specifiedGroups = context.getSpecifiedGroups();
 
                             groupManagementService.removeGroups(specifiedGroups, serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.groups") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + getText("success.removed") + " " + getText("success.successfully")+ "!</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.groups") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " " + getText("success.removed") + " " + getText("success.successfully")+ "!</font>";
 
                             // groups no longer exist. remove cached group memberships if any.
                             this.clearUserCache(context.getKey(), specifiedGroups);
@@ -779,17 +807,16 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
             // note: is normal at times not to have an action (selecting group for example)
         }
-        catch (IdListException e) {
-            String msg = e.getMessage() + ": " + e.getIdsAsCommaDelimitedString();
-            log.error(msg, e);
-            resultList.add( msg );
+        catch (ServiceException e) {
+            log.error("Service exception", e);
+            resultList.add(e.getMessage());
             setActionErrors(resultList);
             return ERROR;
         }
         catch(Throwable t)
         {
             log.error("Failed action", t);
-            resultList.add("" + t.getMessage());
+            resultList.add(t.getMessage());
             setActionErrors(resultList);
             return ERROR;
         }

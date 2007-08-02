@@ -75,7 +75,7 @@ public class ServiceContext {
      * @return i18n message string if confluenceActionSupport set on context.
      */
     public String getText(String key) {
-        String result = CustomPermissionConstants.CONFLUENCE_ACTION_SUPPORT_NOT_SET;
+        String result = key;
 
         if (confluenceActionSupport!=null) {
             result = confluenceActionSupport.getText(key);

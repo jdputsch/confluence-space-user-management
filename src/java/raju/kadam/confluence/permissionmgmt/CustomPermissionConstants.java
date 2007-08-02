@@ -37,5 +37,4 @@ public interface CustomPermissionConstants {
 
     public static final String SPACEKEY = "SPACEKEY";
     public static final String SPACEKEY_REGEXP = SPACEKEY + "-.*";
-    public static final String CONFLUENCE_ACTION_SUPPORT_NOT_SET = "confluenceActionSupport not set on ServiceContext";
 }

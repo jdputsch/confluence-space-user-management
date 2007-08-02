@@ -142,12 +142,16 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
         log.debug("addGroups() called. groupName='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");
         Space space = context.getSpace();
 
+        List success = new ArrayList();
+        List alreadyExisted = new ArrayList();
+
         for (int i=0; i<groupNames.size(); i++) {
             String groupName = (String)groupNames.get(i);
             if (userAccessor.getGroup(groupName) == null) {
 
                 Group vGroup = userAccessor.addGroup(groupName);
                 log.debug("created " + groupName);
+                success.add(groupName);
 
                 //If group exists then set all required permissions
                 if (vGroup != null)
@@ -158,15 +162,35 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
                 }
             }
             else {
-                log.debug("group was already there, so didn't do anything.");
+                alreadyExisted.add(groupName);
             }
+        }
+
+        if (alreadyExisted.size()>0) {
+            String msg = "";
+            String concat = "";
+            if (alreadyExisted.size()>0) {
+                msg += context.getText("groups.already.existed") + ": " +
+                        StringUtil.convertCollectionToCommaDelimitedString(alreadyExisted) + ".";
+                concat = " ";
+            }
+
+            if (success.size()>0) {
+                msg += concat;
+                msg += context.getText("error.groupAddSuccess") + ": " +
+                        StringUtil.convertCollectionToCommaDelimitedString(success) + ".";
+            }
+
+            throw new AddException(msg);
         }
     }
 
     public void removeGroups( List groupNames, ServiceContext context ) throws RemoveException
     {
         log.debug("removeGroupsByGroupnames() called.");
-        RemoveException ex = null;
+        List didNotExist = new ArrayList();
+        List badGroupNames = new ArrayList();
+        List success = new ArrayList();
 
         //Remove Selected Groups
         for(Iterator iterator = groupNames.iterator(); iterator.hasNext();)
@@ -180,22 +204,40 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
                 Group group = userAccessor.getGroup(grpName);
                 if (group!=null) {
                     userAccessor.removeGroup(group);
+                    success.add(grpName);
+                }
+                else {
+                    didNotExist.add(grpName);
                 }
             }
             else {
                 log.debug("Not deleting group '" + grpName + "', as either it started with 'confluence' or didn't match pattern " + pat.pattern());
-
-                if (ex==null) {
-                    ex = new RemoveException(context.getText("error.badGroupName"));
-                }
-
-                ex.addId(grpName);
+                badGroupNames.add(grpName);
             }
         }
 
         // if we failed, throw exception
-        if (ex!=null) {
-            throw ex;
+        if (badGroupNames.size()>0 || didNotExist.size()>0) {
+            String msg = "";
+            String concat = "";
+            if (badGroupNames.size()>0) {
+                msg += context.getText("error.badGroupNames") + ": " + 
+                        StringUtil.convertCollectionToCommaDelimitedString(badGroupNames) + ".";
+                concat = " ";
+            }
+
+            if (didNotExist.size()>0) {
+                msg += concat;
+                msg += context.getText("error.groupsDidNotExist") + ": " +
+                        StringUtil.convertCollectionToCommaDelimitedString(didNotExist) + ".";
+            }
+
+            if (success.size()>0) {
+                msg += concat;
+                msg += context.getText("error.groupRemoveSuccess") + ": " +
+                        StringUtil.convertCollectionToCommaDelimitedString(success) + ".";
+            }
+            throw new RemoveException(msg);
         }
     }
 
