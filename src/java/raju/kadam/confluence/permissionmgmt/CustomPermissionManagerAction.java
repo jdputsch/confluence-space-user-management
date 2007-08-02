@@ -156,6 +156,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         ServiceContext context = new ServiceContext();
         context.setLoggedInUser(getRemoteUser().getName());
         context.setSpace(this.getSpace());
+        // for i18n - to use same resource all over plugin
+        context.setConfluenceActionSupport(this);
         return context;
     }
 
@@ -176,6 +178,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 		context.setKey(getKey());
     	context.setAdminAction(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "adminAction"));
         context.setUserSearch(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "userSearch"));
+        context.setConfluenceActionSupport(this);
         return context;
     }
 
@@ -441,12 +444,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         // handle paging
         handlePaging(paramMap);
 
-        //TODO: remove this section before release!
         // START TEST SECTION
-        if (getUrlDecodedCleanedTrimmedParameterValue(paramMap, "createTestUsersAndGroups")!= null) {
+        //if (getUrlDecodedCleanedTrimmedParameterValue(paramMap, "createTestUsersAndGroups")!= null) {
             // go nuts
-            createTestUsersAndGroups();
-        }
+            //createTestUsersAndGroups();
+        //}
         // END TEST SECTION
 
         // TODO: rewrite validation and include errors in display.vm
@@ -480,6 +482,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
 
+    /*
     private void createTestUsersAndGroups() {
         try
         {
@@ -530,20 +533,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
 
     }
+    */
     
-    
-    //If input group name matches with user select group, then return true
-    //This function will be useful to remember user selection of checkbox during displaying errors!
-    //public boolean isGroupSelected(String groupName)
-    //{
-    //	if( selectedUserGroupsList!=null && selectedUserGroupsList.contains(groupName))
-    //	{
-    //		return true;
-    //	}
-    //
-    //  return false;
-    //}
-
     /*
      * Action implements SpaceAdministrative interface.
      * To make sure that only Space Administrators, System checks information from getPermissionTypes() and isPermitted() functions 
@@ -634,14 +625,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     //validate
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedUsers())) {
                         log.warn("Failed action " + adminAction + ". users were null");
-                        resultList.add("users cannot be null");
+                        resultList.add(getText("error.usersCannotBeNull"));
                         setActionErrors(resultList);
                         return ERROR;
                     }
 
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
                         log.warn("Failed action " + adminAction + ". groups were null");
-                        resultList.add("groups cannot be null");
+                        resultList.add("error.groupsCannotBeNull");
                         setActionErrors(resultList);
                         return ERROR;
                     }
@@ -649,8 +640,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int usersSize = context.getSpecifiedGroups().size();
                     int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
                     if (usersSize > maxUserIDsLimit) {
+                        String msg = getText("error.maxUsersExceeded") + " " + maxUserIDsLimit + ".";
                         log.warn("Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
-                        resultList.add("cannot act on more than " + maxUserIDsLimit + " users. you tried to act on " + usersSize + " users, which is more than the amount allowed. the maximum value is set in the plugin's configuration");
+                        resultList.add(msg);
                         setActionErrors(resultList);
                         return ERROR;
                     }
@@ -658,8 +650,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int groupsSize = context.getSpecifiedGroups().size();
                     int maxGroupIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxGroupIDsLimit()).intValue();
                     if (groupsSize > maxGroupIDsLimit) {
+                        String msg = getText("error.maxGroupsExceeded") + " " + maxGroupIDsLimit + ".";
                         log.warn("Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
-                        resultList.add("cannot act on more than " + maxGroupIDsLimit + " groups. you tried to act on " + groupsSize + " groups, which is more than the amount allowed. the maximum value is set in the plugin's configuration");
+                        resultList.add(msg);
                         setActionErrors(resultList);
                         return ERROR;
                     }
@@ -671,12 +664,12 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS))
                         {
                             userManagementService.addUsersByUsernameToGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " added to group(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " successfully!</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.users") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " " + getText("success.addedToGroups") + " " +  StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + getText("success.successfully") + "</font>";
                         }
                         else if(adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS))
                         {
                             userManagementService.removeUsersByUsernameFromGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = "<font color=\"green\">User(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " removed from group(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " successfully!</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.users") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " " + getText("success.removedFromGroups") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + getText("success.successfully") + "</font>";
                         }
                     }
                     finally {
@@ -695,8 +688,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                     //validate
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
-                        log.warn("Failed action " + adminAction + ". users were null");
-                        resultList.add("groups cannot be null");
+                        log.warn("Failed action " + adminAction + ". groups were null");
+                        resultList.add(getText("error.groupsCannotBeNull"));
                         setActionErrors(resultList);
                         return ERROR;
                     }
@@ -704,8 +697,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int groupsSize = context.getSpecifiedGroups().size();
                     int maxGroupIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxGroupIDsLimit()).intValue();
                     if (groupsSize > maxGroupIDsLimit) {
+                        String msg = getText("error.maxGroupsExceeded") + " " + maxGroupIDsLimit + ".";
                         log.warn("Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
-                        resultList.add("cannot act on more than " + maxGroupIDsLimit + " groups. you tried to act on " + groupsSize + " groups, which is more than the amount allowed. the maximum value is set in the plugin's configuration");
+                        resultList.add(msg);
                         setActionErrors(resultList);
                         return ERROR;
                     }
@@ -732,7 +726,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             }
 
                             groupManagementService.addGroups(fixedGroupNames, serviceContext);
-                            opMessage = "<font color=\"green\">Group(s) " + StringUtil.convertCollectionToCommaDelimitedString(fixedGroupNames) + " added successfully!</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.groups") + " " + StringUtil.convertCollectionToCommaDelimitedString(fixedGroupNames) + getText("success.added") + " " + getText("success.successfully")+ "!</font>";
 
                             List specifiedUsers = context.getSpecifiedUsers();
                             if (specifiedUsers!=null && specifiedUsers.size()>0) {
@@ -740,8 +734,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                                 int usersSize = context.getSpecifiedGroups().size();
                                 int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
                                 if (usersSize > maxUserIDsLimit) {
+                                    String msg = getText("error.maxUsersExceeded") + " " + maxUserIDsLimit + ".";
                                     log.warn("Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
-                                    resultList.add("cannot act on more than " + maxUserIDsLimit + " users. you tried to act on " + usersSize + " users, which is more than the amount allowed. the maximum value is set in the plugin's configuration");
+                                    resultList.add(msg);
                                     setActionErrors(resultList);
                                     return ERROR;
                                 }
@@ -756,7 +751,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             List specifiedGroups = context.getSpecifiedGroups();
 
                             groupManagementService.removeGroups(specifiedGroups, serviceContext);
-                            opMessage = "<font color=\"green\">Group(s) " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " removed successfully!</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.groups") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + getText("success.removed") + " " + getText("success.successfully")+ "!</font>";
+
                             // groups no longer exist. remove cached group memberships if any.
                             this.clearUserCache(context.getKey(), specifiedGroups);
                         }
@@ -961,11 +957,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public GroupManagementService getGroupManagementService() throws ServiceException {
-        return getCustomPermissionServiceManager().getGroupManagementService();
+        return getCustomPermissionServiceManager().getGroupManagementService(this);
     }
 
     public UserManagementService getUserManagementService() throws ServiceException {
-        return getCustomPermissionServiceManager().getUserManagementService();
+        return getCustomPermissionServiceManager().getUserManagementService(this);
     }
 
     public String getSelectedGroup() {
@@ -1246,7 +1242,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     public String getActionName(String fullClassName)
     {
-    	return "Custom Space Usergroups Manager";
+    	return getText("manager.action.name");
     }
 
     public PagerPaginationSupport getGroups() {

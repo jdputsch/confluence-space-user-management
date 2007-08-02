@@ -35,6 +35,7 @@ import raju.kadam.confluence.permissionmgmt.service.impl.*;
 import raju.kadam.confluence.permissionmgmt.service.exception.ServiceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import com.atlassian.confluence.core.ConfluenceActionSupport;
 
 /**
  * @author Gary S. Weaver
@@ -49,13 +50,13 @@ public class CustomPermissionServiceManager {
     private JiraSoapUserManagementService jiraSoapUserManagementService;
     private CustomPermissionConfiguration customPermissionConfiguration;
 
-    public GroupManagementService getGroupManagementService() throws ServiceException {
+    public GroupManagementService getGroupManagementService(ConfluenceActionSupport action) throws ServiceException {
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
         String userManagerLocation = config.getUserManagerLocation();
 
         if ( userManagerLocation==null )
         {
-            throw new ServiceException(ErrorReason.INVALID_USER_MANAGER_LOCATION);
+            throw new ServiceException(action.getText("error.invalidUserManagerLocation"));
         }
         else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
     	{
@@ -66,17 +67,17 @@ public class CustomPermissionServiceManager {
             return jiraSoapGroupManagementService;
         }
         else {
-            throw new ServiceException(ErrorReason.INVALID_USER_MANAGER_LOCATION);
+            throw new ServiceException(action.getText("error.invalidUserManagerLocation"));
         }
     }
 
-    public UserManagementService getUserManagementService() throws ServiceException {
+    public UserManagementService getUserManagementService(ConfluenceActionSupport action) throws ServiceException {
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
         String userManagerLocation = config.getUserManagerLocation();
 
         if ( userManagerLocation==null )
         {
-            throw new ServiceException(ErrorReason.INVALID_USER_MANAGER_LOCATION);
+            throw new ServiceException(action.getText("error.invalidUserManagerLocation"));
         }
         else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
     	{
@@ -87,7 +88,7 @@ public class CustomPermissionServiceManager {
             return jiraSoapUserManagementService;
         }
         else {
-            throw new ServiceException(ErrorReason.INVALID_USER_MANAGER_LOCATION);
+            throw new ServiceException(action.getText("error.invalidUserManagerLocation"));
         }
     }
 

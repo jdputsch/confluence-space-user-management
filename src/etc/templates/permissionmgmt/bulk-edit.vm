@@ -36,10 +36,10 @@
 
             #set ($allGroups = $action.allGroups)
             #if($allGroups && $allGroups.size() > 0)
-			<form id="bulkChange" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">
+			<form id="bulkChange" action="docustompermissionsmanage.action">
 				<fieldset>
 
-				    <input type="hidden" name="key" value="$key"/>
+				    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
 					<label>1. $action.getText("bulkChange.form.label.actionTitle"):</label>
 					<input type="radio" value="addUsersToGroups" name="adminAction"></input> $action.getText("bulkChange.form.radio.addUser.text")<br />
 					<input type="radio" value="removeUsersFromGroups" name="adminAction"></input> $action.getText("bulkChange.form.radio.removeUser.text")
@@ -48,6 +48,10 @@
 					<label>2. $action.getText("bulkChange.form.label.userInputTitle"):</label>
 					<input type="text" style="width:100%;" id="users" name="users"></input>
 					<br />
+					<ul class="formHelp">
+						<li>$action.getText("form.example.commaSeparatedUsernames.text")</li>
+						<li>$action.getText("form.example.commaSeparatedUsernames")</li>
+					</ul>
 
 					<label>3. $action.getText("bulkChange.form.label.selectGroupsTitle"):</label>
                     <ul>

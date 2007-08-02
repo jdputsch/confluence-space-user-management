@@ -59,7 +59,6 @@
                     ##<div id="addUserOpts"></div>
 					<ul class="formHelp">
 						<li>$action.getText("form.example.commaSeparatedUsernames.text")</li>
-						<!-- <li>eg. Richard Broadhead, Nan Keohane, Keith Brodie, Terry Sanford</li> -->
 						<li>$action.getText("form.example.commaSeparatedUsernames")</li>
 					</ul>
                     ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...

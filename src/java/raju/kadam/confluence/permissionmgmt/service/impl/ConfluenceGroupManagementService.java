@@ -186,7 +186,7 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
                 log.debug("Not deleting group '" + grpName + "', as either it started with 'confluence' or didn't match pattern " + pat.pattern());
 
                 if (ex==null) {
-                    ex = new RemoveException(ErrorReason.INVALID_GROUP_NAME);
+                    ex = new RemoveException(context.getText("error.badGroupName"));
                 }
 
                 ex.addId(grpName);

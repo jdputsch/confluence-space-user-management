@@ -30,15 +30,26 @@
 package raju.kadam.confluence.permissionmgmt.service.vo;
 
 import com.atlassian.confluence.spaces.Space;
+import com.atlassian.confluence.core.ConfluenceActionSupport;
+import raju.kadam.confluence.permissionmgmt.CustomPermissionConstants;
 
 /**
  * @author Gary S. Weaver
  */
 public class ServiceContext {
 
-    String loggedInUser;
-    Space space;
+    private ConfluenceActionSupport confluenceActionSupport;
+    private String loggedInUser;
+    private Space space;
 
+
+    public ConfluenceActionSupport getConfluenceActionSupport() {
+        return confluenceActionSupport;
+    }
+
+    public void setConfluenceActionSupport(ConfluenceActionSupport confluenceActionSupport) {
+        this.confluenceActionSupport = confluenceActionSupport;
+    }
 
     public String getLoggedInUser() {
         return loggedInUser;
@@ -54,5 +65,22 @@ public class ServiceContext {
 
     public void setSpace(Space space) {
         this.space = space;
+    }
+
+    /**
+     *
+     * Convenience method to getText from i18n resource backing the action, assuming it exists
+     *
+     * @param key - key
+     * @return i18n message string if confluenceActionSupport set on context.
+     */
+    public String getText(String key) {
+        String result = CustomPermissionConstants.CONFLUENCE_ACTION_SUPPORT_NOT_SET;
+
+        if (confluenceActionSupport!=null) {
+            result = confluenceActionSupport.getText(key);
+        }
+
+        return result;
     }
 }

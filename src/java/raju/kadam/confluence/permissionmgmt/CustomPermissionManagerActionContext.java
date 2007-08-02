@@ -33,25 +33,37 @@ import raju.kadam.confluence.permissionmgmt.util.StringUtil;
 
 import java.util.List;
 
+import com.atlassian.confluence.core.ConfluenceActionSupport;
+
 /**
  * @author Gary S. Weaver
  */
 public class CustomPermissionManagerActionContext {
 
-    String loggedInUser;
-    String key;
-    String adminAction;
-    List specifiedUsers;
-    List specifiedGroups;
-    String userSearch;
+    private ConfluenceActionSupport confluenceActionSupport;
+    private String loggedInUser;
+    private String key;
+    private String adminAction;
+    private List specifiedUsers;
+    private List specifiedGroups;
+    private String userSearch;
 
     public String toString() {
-        return "loggedInUser=" + loggedInUser +
+        return  "confluenceActionSupport=" + confluenceActionSupport +
+                ", loggedInUser=" + loggedInUser +
                 ", key=" + key +
                 ", adminAction=" + adminAction +
                 ", specifiedUsers=" + StringUtil.convertCollectionToCommaDelimitedString(specifiedUsers) +
                 ", specifiedGroups=" + StringUtil.convertCollectionToCommaDelimitedString(specifiedGroups) +
                 ", userSearch=" + userSearch;
+    }
+
+    public ConfluenceActionSupport getConfluenceActionSupport() {
+        return confluenceActionSupport;
+    }
+
+    public void setConfluenceActionSupport(ConfluenceActionSupport confluenceActionSupport) {
+        this.confluenceActionSupport = confluenceActionSupport;
     }
 
     public String getLoggedInUser() {
@@ -100,5 +112,22 @@ public class CustomPermissionManagerActionContext {
 
     public void setUserSearch(String userSearch) {
         this.userSearch = userSearch;
+    }
+
+    /**
+     *
+     * Convenience method to getText from i18n resource backing the action, assuming it exists
+     *
+     * @param key - key
+     * @return i18n message string if confluenceActionSupport set on context.
+     */
+    public String getText(String key) {
+        String result = CustomPermissionConstants.CONFLUENCE_ACTION_SUPPORT_NOT_SET;
+
+        if (confluenceActionSupport!=null) {
+            result = confluenceActionSupport.getText(key);
+        }
+
+        return result;
     }
 }

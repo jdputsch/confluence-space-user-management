@@ -217,7 +217,7 @@ public class ConfluenceUserManagementService implements UserManagementService {
                 if (currUser == null) {
 
                     if (ex == null) {
-                        ex = new AddException(ErrorReason.USER_NOT_FOUND);
+                        ex = new AddException(context.getText("error.userNotFound") + ": " + userid);
                     }
 
                     //for some reason we are unable to create user.
