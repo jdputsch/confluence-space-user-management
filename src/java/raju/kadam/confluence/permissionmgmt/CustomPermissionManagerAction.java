@@ -334,17 +334,13 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void refreshData() {
-        Integer oldGroupsIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getGroups());
-        Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
-        Integer oldSearchResultUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getSearchResultUsers());
-
-        this.clearCache();
-        this.populateData();
+        clearCache();
+        populateData();
 
         // Note: is important that these are calling getGroups() and getUsers() again to get latest instances.
-        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldGroupsIndex, getGroups());
-        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
-        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldSearchResultUsersIndex, getSearchResultUsers());
+        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(getGroupsIndex(getKey()), getGroups());
+        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(getUsersIndex(getKey(), getSelectedGroup()), getUsers());
+        PagerPaginationSupportUtil.safelyMoveToOldStartIndex(getSearchResultUsersIndex(getKey(), getSelectedGroup()), getSearchResultUsers());
     }
 
     private String bestAttemptUTF8Encode(String s) {

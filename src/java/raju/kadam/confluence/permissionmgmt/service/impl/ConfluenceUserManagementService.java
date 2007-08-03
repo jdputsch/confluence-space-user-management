@@ -232,9 +232,14 @@ public class ConfluenceUserManagementService implements UserManagementService {
             //If user exists then associate him/her to all selected usergroups
             if (currUser != null) {
                 //Associate this user to all selected user-groups
+
+                // Am thoroughly confounded that the groupname here has to be lowercase. have backup check for
+                // regular (mixed-case) lookup, just in case that is a bug.
                 for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                     String groupName = (String) iterator.next();
-                    if (groupsNotFoundMap.get(groupName)==null && userAccessor.getGroup(groupName)!=null) {
+                    if (groupsNotFoundMap.get(groupName)==null &&
+                            (userAccessor.getGroup(groupName.toLowerCase())!=null ||
+                            userAccessor.getGroup(groupName)!=null)) {
                         userAccessor.addMembership(groupName, userid);
                     }
                     else {
