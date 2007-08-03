@@ -162,13 +162,13 @@ public class PagerPaginationSupportUtil {
     }
 
     private static Range getCurrentRange(PagerPaginationSupport pps) {
-        int lastIndexOfPage = pps.getStartIndex() + pps.getCountOnEachPage();
-        if (lastIndexOfPage > (pps.getTotal() - 1)) {
-            lastIndexOfPage = pps.getTotal() - 1;
+        int lastRecordNumOfPage = pps.getStartIndex() + pps.getCountOnEachPage();
+        if (lastRecordNumOfPage > pps.getTotal()) {
+            lastRecordNumOfPage = pps.getTotal();
         }
         Range range = new Range();
         range.setRecordNum(pps.getStartIndex() + 1);
-        range.setText("" + (pps.getStartIndex() + 1) + "-" + lastIndexOfPage);
+        range.setText("" + (pps.getStartIndex() + 1) + "-" + lastRecordNumOfPage);
         return range;
     }
 
@@ -254,7 +254,7 @@ public class PagerPaginationSupportUtil {
         //log.debug("hasNext() called");
         debug(pps);
         if (pps!=null) {
-            if (pps.getStartIndex() < ((pps.getTotal() - 1) - pps.getCountOnEachPage())) {
+            if (pps.getStartIndex() < (pps.getTotal() - pps.getCountOnEachPage())) {
                 result = true;
             }
         }
@@ -271,7 +271,7 @@ public class PagerPaginationSupportUtil {
         log.debug("next() called");
         debug(pps);
         if (pps!=null) {
-            if (pps.getStartIndex() < ((pps.getTotal() - 1) - pps.getCountOnEachPage())) {
+            if (hasNext(pps)) {
                 pps.setStartIndex(pps.getStartIndex() + pps.getCountOnEachPage());
             }
         }
