@@ -318,11 +318,11 @@ public class PagerPaginationSupportUtil {
     }
 
     public static int getPageEndIndex( PagerPaginationSupport pps ) {
-        int i = pps.getStartIndex() + pps.getCountOnEachPage() - 1;
-        if ( pps.getTotal() < i ) {
-            i = pps.getTotal() - 1;
+        int pageEndIndex = pps.getStartIndex() + pps.getCountOnEachPage() - 1;
+        if ( pageEndIndex > (pps.getTotal() - 1) ) {
+            pageEndIndex = pps.getTotal() - 1;
         }
-        return i;
+        return pageEndIndex;
     }
 
     private static void debug( PagerPaginationSupport pps ) {
