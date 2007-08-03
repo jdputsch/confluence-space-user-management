@@ -69,7 +69,7 @@
 
             #set ($users = $action.users)
 
-            #if($users)
+            #if($users && $users.total > 0)
                 <table cellspacing="0">                
                     <thead>
 						<tr>

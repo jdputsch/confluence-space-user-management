@@ -30,7 +30,7 @@
 
                 ## Provide pagerAction links for users
 
-                #if ($action.selectedGroup && $users)
+                #if ($action.selectedGroup && $users && $users.total > 0)
 <div class="paging">
                     #if($action.hasPrev($users))
                     <span class="prev">
