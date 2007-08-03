@@ -31,31 +31,15 @@
             <!-- start manage-users-advanced -->
 
         #if($action.selectedGroup)
-
             #set ($searchResultUsers = $action.searchResultUsers)
-
-
             <div class="sectionHeader">
-                #*
-				#if(${action.isGroupActionsPermitted})
-				<div class="mode">
-			        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroup&groupToRemove=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> $action.getText("delGroup") ${action.selectedGroup}</a>
-			    </div>
-			    #end
-			    *#
-				<h2>$action.getText("wiki.name") $action.getText("user.search") #* ${action.selectedGroup} *#</h2>
+				<h2>$action.getText("wiki.name") $action.getText("user.search")</h2>
 			</div>
 
             <div id="advancedUserSearchForm">
-#*
-		    <font size="1">
-            	Note: Leave field(s) blank if you don&quot;t want to search on them.
-            </font>
-*#
             #if(${action.selectedGroup})
             <a id="hideAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)">&laquo; $action.getText("return.editing") ${action.selectedGroup}</a>
             #end
-
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>
@@ -113,17 +97,10 @@
                         </td>
                     </tr>
                 </table>
-#*
-                <p>
-                Manage User Permissions:
-                <a href="/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">Space</a>,
-                <a href="/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">Page-Level</a>
-                </p>
-*#
-                </br>
-            </div>
+
             #else
                 $action.getText("noUsersFound")
             #end
+			</div>
         #end
             <!-- end manage-users-advanced -->

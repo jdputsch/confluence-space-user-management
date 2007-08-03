@@ -47,97 +47,319 @@
 
     <body>
 
-    <style>
-        div#csum {width:800px; margin:0 10px;}
-        div#csum h2 {background:none; font-size: 1.1em; font-weight: bold; color:#036; border-bottom:1px solid #036;}
-        div#csum a img {border:none;}
+		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 
-        div#csum div.topMessages {clear:both; margin:10px 0 5px 0;}
-        div#csum div.topMessages ul {margin:0; padding:0; list-style:none;}
-        div#csum div.topMessages ul li {padding:.5em; border:1px solid #3C78B5; background-color: #D8E4F1;}
+		<!-- JS Source files -->
+		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.0/build/container/container-min.js"></script>
+		<!--
+		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.0/build/animation/animation-min.js"></script>
+		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.0/build/dragdrop/dragdrop-min.js"></script>
+		-->
+		<script>
+			YAHOO.namespace("ifs");
 
-        div#csum form {clear:both; margin:1em .1em; padding:7px; background-color:#F0F0F0; border:1px solid #CCC;}
-        div#csum fieldset {border:none; padding:0; margin:0;}
-        div#csum legend {padding:10px 0 5px 0; margin:0; display:block; font-weight: bold; color: #036; font-size: 1.1em;}
-        div#csum input {width:100%;}
-        div#csum label {font-size:1em;}
-        div#csum .submitBttn {width:auto;}
-        div#csum ul.formHelp {display:block; clear:both; list-style: none; font-size:.9em; padding:1px 2px; margin: 2px 2px 10px 2px;}
-        div#csum ul.formHelp li {display:block; color:#444;}
+			var trashLinkInterception = function(e) {
+				YAHOO.util.Event.preventDefault(e);
+				var targetLink = e.currentTarget;
 
-        div#csum div.sectionHeader {}
-		div#csum div.sectionHeader a {text-decoration:none;}
-		div#csum div.sectionHeader a img {text-decoration:none; border:none; height:11px;}
+				groupTrashDialog = new YAHOO.widget.SimpleDialog("dlg", { 
+					width: "25em", 
+					//effect:[{effect:YAHOO.widget.ContainerEffect.FADE, 
+					//		duration:0.25}],
+					fixedcenter:true,
+					modal:true,
+					draggable:false } );
+				groupTrashDialog.setHeader("Confirm Group Deletion");
+				groupTrashDialog.setBody("Are you sure you want to delete this group?");
 
-		div#csum div#header {margin:0 0 20px 0;}
+				var handleYes = function() {
+				 window.location = targetLink;
+				 this.hide();
+				}
 
-        div#csum div#groups {display:block; float:left; margin:0; padding:0; width:250px;}
-        div#csum div#groups ul {margin:0; padding:0;}
-        div#csum div#groups ul li {list-style:none;}
-        div#csum div#groups ul li a {display:block; background:url(${action.confluenceRoot}/images/icons/group_16.gif) no-repeat 3px 3px; clear:both; line-height:1.5; padding:4px 0 4px 25px; color:#036; text-decoration:underline;}
-        div#csum div#groups ul li a.selected {color:black; font-weight:bold; text-decoration:none; border:1px solid #CCC; background-color:#FFC;}
-        div#csum div#groups ul li a.selected:hover {background-color: #FFC;}
-        div#csum div#groups ul li a:hover {background-color:#F0F0F0;}
-        div#csum div#groups ul li a:active {background-color:#DDD;}
+				var handleNo = function() {
+				 //user cancels item deletion; this method
+				 //would handle the cancellation of the
+				 //process.
+				 this.hide();
+				}
 
-        div.mode {float:right; padding:3px 3px 0 0;}
-        div.mode a {text-decoration:none;}
-        div.mode a:hover {color:#333;}
-        div.mode a.selected {font-weight:bold;}
+				var trashButtons = [ { text:"Yes", handler:handleYes },
+								  { text:"Cancel", handler:handleNo, isDefault:true } 
+								];
 
-        div#csum div#groupEditor {float:right; width:520px; padding:0 10px;}
+				groupTrashDialog.cfg.queueProperty("buttons", trashButtons);
+				groupTrashDialog.render(document.body);
+			}
 
-        div#csum div.groupOpts {text-align:right;}
-        div#csum div.groupOpts a {text-decoration:none;}
-        div#csum div.groupOpts a img {height:12px;}
+			YAHOO.ifs.init = function() {
+				YAHOO.util.Event.addListener("trashGroup", "click", trashLinkInterception);
+			};
 
-        div#csum table {width:100%; border-bottom:2px solid #FFF;}
-        div#csum table tr {}
-        div#csum table tr.even {background-color:#EEE;}
-        div#csum table tr th {font-weight:bold; color:#036; text-align:left; border-bottom:2px solid #036;}
-        div#csum table tr td {padding:1px 2px;}
-        div#csum table tr td.delete {width:4em; text-align:center;}
+			YAHOO.util.Event.addListener(window, "load", YAHOO.ifs.init);
+		</script>
 
-        div#csum div#bulkEdit {}
-        div#csum form#bulkChange fieldset label {display: block; margin: 1em 0 0 0;}
-        div#csum form#bulkChange fieldset input {width:auto;}
+	    <style>
+	        div#csum {width:800px; margin:0 10px;}
+	        div#csum h2 {background:none; font-size: 1.1em; font-weight: bold; color:#036; border-bottom:1px solid #036;}
+	        div#csum a img {border:none;}
 
-        div#csum div#footer {clear:both; border-top:1px solid #CCC; margin:5px 0 0 0;}
-        div#csum div#footer ul {clear:both; display:block; margin:7px 0 0 1px; padding:0;}
-        div#csum div#footer ul li {display:inline; color:#036;}
-        div#csum div#footer ul li a {color:#036; line-height:1;}
-        div#csum div#footer ul li a img {padding:2px;}
-		div#csum div#footer form {padding:3px;}
-		div#csum div#footer form fieldset {}
-		div#csum div#footer form label {display:inline;}
-		
-        div#csum a#showAdvS {margin:6px 0 0 0; display: block; float:right; clear: both; text-decoration:none;}
-        div#csum a#hideAdvS {display:block; margin:3px 3px 1px 0; float:right; text-decoration: none;}
+	        div#csum div.topMessages {clear:both; margin:10px 0 5px 0;}
+	        div#csum div.topMessages ul {margin:0; padding:0; list-style:none;}
+	        div#csum div.topMessages ul li {padding:.5em; border:1px solid #3C78B5; background-color: #D8E4F1;}
 
-		div.csum div.srchResInfo {border:1px solid #008000; background-color:#CCFFC7; color:#036; padding:7px 10px; font-weight:bold;}
+	        div#csum form {clear:both; margin:1em .1em; padding:7px; background-color:#F0F0F0; border:1px solid #CCC;}
+	        div#csum fieldset {border:none; padding:0; margin:0;}
+	        div#csum legend {padding:10px 0 5px 0; margin:0; display:block; font-weight: bold; color: #036; font-size: 1.1em;}
+	        div#csum input {width:100%;}
+	        div#csum label {font-size:1em;}
+	        div#csum .submitBttn {width:auto;}
+	        div#csum ul.formHelp {display:block; clear:both; list-style: none; font-size:.9em; padding:1px 2px; margin: 2px 2px 10px 2px;}
+	        div#csum ul.formHelp li {display:block; color:#444;}
 
-        div#csum div#addUserOpts {background-color: #FFF; border:1px solid #CCC; padding:0;}
-        div#csum div#addUserOpts ul {list-style: none; margin:0; padding:0;}
-        div#csum div#addUserOpts ul li {display:block; margin:0; padding:.2em .4em;}
-        div#csum div#addUserOpts ul li.myCustomHighlightClass {margin:0; padding:.2em .4em; background:#FFFFCC; font-weight: bold;}
-        div#csum div#addUserOpts ul li.myCustomPrehighlightClass {margin:0; padding:.2em .4em; background:#D8E4F1;}
-		
-		div#csum div.paging {border-top:1px solid #DDD; color:#666;}
-		div#csum div.paging span.prev  {display:block; float:left;}
-		div#csum div.paging span.next  {display:block; float:right;}
-		div#csum div.paging span.count {display:block; text-align:center;}
-		div#csum form.pageSkip {border:none; margin:0; background-color:#FFF;}
-		div#csum form.pageSkip fieldset {}
-		div#csum form.pageSkip label {font-weight:normal; font-size:inherit; color:inherit; display:inline;}
-		div#csum form.pageSkip input {width:3em; display:inline;}
-		div#csum form.pageSkip input.submitBttn {width:auto; display:inline;}
-    </style>
+	        div#csum div.sectionHeader {}
+			div#csum div.sectionHeader a {text-decoration:none;}
+			div#csum div.sectionHeader a img {text-decoration:none; border:none; height:11px;}
 
-	<!--[if IE]>
+			div#csum div#header {margin:0 0 20px 0;}
+
+	        div#csum div#groups {display:block; float:left; margin:0; padding:0; width:250px;}
+	        div#csum div#groups ul {margin:0; padding:0;}
+	        div#csum div#groups ul li {list-style:none;}
+	        div#csum div#groups ul li a {display:block; background:url(${action.confluenceRoot}/images/icons/group_16.gif) no-repeat 3px 3px; clear:both; line-height:1.5; padding:4px 0 4px 25px; color:#036; text-decoration:underline;}
+	        div#csum div#groups ul li a.selected {color:black; font-weight:bold; text-decoration:none; border:1px solid #CCC; background-color:#FFC;}
+	        div#csum div#groups ul li a.selected:hover {background-color: #FFC;}
+	        div#csum div#groups ul li a:hover {background-color:#F0F0F0;}
+	        div#csum div#groups ul li a:active {background-color:#DDD;}
+
+	        div.mode {float:right; padding:3px 3px 0 0;}
+	        div.mode a {text-decoration:none;}
+	        div.mode a:hover {color:#333;}
+	        div.mode a.selected {font-weight:bold;}
+
+	        div#csum div#groupEditor {float:right; width:520px; padding:0 10px;}
+
+	        div#csum div.groupOpts {text-align:right;}
+	        div#csum div.groupOpts a {text-decoration:none;}
+	        div#csum div.groupOpts a img {height:12px;}
+
+	        div#csum table {width:100%; border-bottom:2px solid #FFF;}
+	        div#csum table tr {}
+	        div#csum table tr.even {background-color:#EEE;}
+	        div#csum table tr th {font-weight:bold; color:#036; text-align:left; border-bottom:2px solid #036;}
+	        div#csum table tr td {padding:1px 2px;}
+	        div#csum table tr td.delete {width:4em; text-align:center;}
+
+	        div#csum div#bulkEdit {}
+	        div#csum form#bulkChange fieldset label {display: block; margin: 1em 0 0 0;}
+	        div#csum form#bulkChange fieldset input {width:auto;}
+
+	        div#csum div#footer {clear:both; border-top:1px solid #CCC; margin:5px 0 0 0;}
+	        div#csum div#footer ul {clear:both; display:block; margin:7px 0 0 1px; padding:0;}
+	        div#csum div#footer ul li {display:inline; color:#036;}
+	        div#csum div#footer ul li a {color:#036; line-height:1;}
+	        div#csum div#footer ul li a img {padding:2px;}
+			div#csum div#footer form {padding:3px;}
+			div#csum div#footer form fieldset {}
+			div#csum div#footer form label {display:inline;}
+
+	        div#csum a#showAdvS {margin:6px 0 0 0; display: block; float:right; clear: both; text-decoration:none;}
+	        div#csum a#hideAdvS {display:block; margin:3px 3px 1px 0; float:right; text-decoration: none;}
+
+			div.csum div.srchResInfo {border:1px solid #008000; background-color:#CCFFC7; color:#036; padding:7px 10px; font-weight:bold;}
+
+	        div#csum div#addUserOpts {background-color: #FFF; border:1px solid #CCC; padding:0;}
+	        div#csum div#addUserOpts ul {list-style: none; margin:0; padding:0;}
+	        div#csum div#addUserOpts ul li {display:block; margin:0; padding:.2em .4em;}
+	        div#csum div#addUserOpts ul li.myCustomHighlightClass {margin:0; padding:.2em .4em; background:#FFFFCC; font-weight: bold;}
+	        div#csum div#addUserOpts ul li.myCustomPrehighlightClass {margin:0; padding:.2em .4em; background:#D8E4F1;}
+
+			div#csum div.paging {border-top:1px solid #DDD; color:#666;}
+			div#csum div.paging span.prev  {display:block; float:left;}
+			div#csum div.paging span.next  {display:block; float:right;}
+			div#csum div.paging span.count {display:block; text-align:center;}
+			div#csum form.pageSkip {border:none; margin:0; background-color:#FFF;}
+			div#csum form.pageSkip fieldset {}
+			div#csum form.pageSkip label {font-weight:normal; font-size:inherit; color:inherit; display:inline;}
+			div#csum form.pageSkip input {width:3em; display:inline;}
+			div#csum form.pageSkip input.submitBttn {width:auto; display:inline;}
+	    </style>
+
+		<!--[if IE]>
+			<style>
+				div#csum div#groupEditor {width:505px;}
+			</style>
+		<![endif]-->
+
 		<style>
-			div#csum div#groupEditor {width:505px;}
+		.yui-overlay,
+		.yui-panel-container {visibility:hidden; position:absolute; z-index: 1;}
+
+		.masked .yui-panel-container {
+		    /*
+		        Default to a z-index 1 higher than default if the Panel is modal
+		        to make sure the panel is above its modality mask.
+		    */
+		   z-index: 2;
+		}
+
+		.yui-tt {
+			visibility:hidden;
+			position:absolute;
+			color:#333;
+			background-color:#FDFFB4;
+			font-family:arial,helvetica,verdana,sans-serif;
+			padding:2px;
+			border:1px solid #FCC90D;
+			font:100% sans-serif;
+			width:auto;
+		}
+
+		/*
+		    PLEASE NOTE: The <DIV> element used for a Tooltip's shadow is appended 
+		    to its root element via JavaScript once it has been rendered.  The 
+		    code that creates the shadow lives in the Tooltip's public "onRender" 
+		    event handler that is a prototype method of YAHOO.widget.Tooltip.  
+		    Implementers wishing to remove a Tooltip's shadow or add any other markup
+		    required for a given skin for Tooltip should override the "onRender" method.
+		*/
+
+		.yui-tt-shadow {
+
+		    display: none;
+
+		}
+
+		* html body.masked select {
+			visibility:hidden;
+		}
+
+		* html div.yui-panel-container select {
+			visibility:inherit;
+		}
+
+		* html div.drag select {
+			visibility:hidden;
+		}
+
+		* html div.hide-select select {
+			visibility:hidden;
+		}
+
+		.mask {
+		    /*
+		        Default to a z-index of 1 less than the default defined 
+		        by ".masked .yui-panel-container"
+		    */
+		    z-index: 1; 
+		    display:none;
+		    position:absolute;
+		    top:0;
+		    left:0;
+		    -moz-opacity: 0.5;
+		    opacity:.50;
+		    filter: alpha(opacity=50);
+		    background-color:#CCC;
+		}
+
+		.hide-scrollbars,
+		.hide-scrollbars * {overflow: hidden;}
+		.hide-scrollbars select {display: none;}
+		.show-scrollbars {overflow: auto;}
+		.yui-panel-container.show-scrollbars {overflow: visible;}
+		.yui-panel-container.show-scrollbars .underlay {overflow: auto;}
+		.yui-panel-container.focused {}
+
+		/* Panel underlay styles */
+		.yui-panel-container .underlay {position: absolute; top: 0; right: 0; bottom: 0; left: 0;}
+		.yui-panel-container.matte {padding: 3px; background-color: #fff;}
+		.yui-panel-container.shadow .underlay {top: 3px; bottom: -3px; right: -3px; left: 3px; background-color: #000; opacity: .12;
+		    filter: alpha(opacity=12);  /* For IE */
+		}
+
+		.yui-panel {visibility:hidden; border-collapse:separate; position:relative; left:0; top:0; font:1em Arial; background-color:#FFF; border:1px solid #3C78B5; z-index:1; overflow:hidden;}
+		.yui-panel .hd {background-color:#D8E4F1; color:#000; font-size:1.3em; line-height:1.2; border:none; border-bottom:1px solid #3C78B5; font-weight:bold; padding:4px; white-space:nowrap;}
+		.yui-panel .bd {overflow:hidden; padding:4px; line-height:1.2; font-size:1.1em;}\
+		.yui-panel .bd p {margin:0 0 1em;}
+
+		.yui-panel .container-close {position:absolute; top:5px; right:4px; z-index:6; height:12px; width:12px; margin:0px; padding:0px; background:url(close12_1.gif) no-repeat; cursor:pointer; visibility:inherit;}
+
+		.yui-panel .ft {padding:4px; overflow:hidden;}
+
+		.yui-simple-dialog .bd .yui-icon {background-repeat:no-repeat; width:16px; height:16px; margin-right:10px; float:left;}
+
+		.yui-simple-dialog .bd span.blckicon {
+			background: url("blck16_1.gif") no-repeat;
+		}
+
+		.yui-simple-dialog .bd span.alrticon {
+			background: url("alrt16_1.gif") no-repeat;
+		}
+
+		.yui-simple-dialog .bd span.hlpicon {
+			background: url("hlp16_1.gif") no-repeat;
+		}
+
+		.yui-simple-dialog .bd span.infoicon {
+			background: url("info16_1.gif") no-repeat;
+		}
+
+		.yui-simple-dialog .bd span.warnicon {
+			background: url("warn16_1.gif") no-repeat;
+		}
+
+		.yui-simple-dialog .bd span.tipicon {
+			background: url("tip16_1.gif") no-repeat;
+		}
+
+		.yui-dialog .ft, 
+		.yui-simple-dialog .ft {
+			padding-bottom:5px;
+			padding-right:5px;
+			text-align:right;
+		}
+
+		.yui-dialog form, 
+		.yui-simple-dialog form {
+			margin:0;
+		}
+
+		.button-group button {
+			font:verdana;
+			font-size:1em;
+			text-decoration:none;
+			background-color: #E4E4E4;
+			color: #333;
+			cursor: hand;
+			vertical-align: middle;
+			border: 2px solid #797979;
+			border-top-color:#FFF;
+			border-left-color:#FFF;
+			margin:2px;
+			padding:2px;
+		}
+
+		.button-group button.default {
+			font-weight:bold;
+		}
+
+		.button-group button:hover, 
+		.button-group button.hover {
+			border:2px solid #90A029;
+			background-color:#EBF09E;
+			border-top-color:#FFF;
+			border-left-color:#FFF;
+		}
+
+		.button-group button:active {
+			border:2px solid #E4E4E4;
+			background-color:#BBB;
+			border-top-color:#333;
+			border-left-color:#333;
+		}
 		</style>
-	<![endif]-->
+
+
 
 <div id="csum">
     <div class="messages">
@@ -162,7 +384,7 @@
             #end
         #end
         </div>
-
+<div style="clear:both"></div>
         <div id="footer">
 				<ul>
 				#if($groups && $groups.total>0)
@@ -197,9 +419,6 @@
 
                 #set($availableSpaces = $action.spacesAsSpaceAdminForUser)
 	            #if($availableSpaces && $availableSpaces.size()>1)
-                <br/>
-                <br/>
-                <br/>
                 <form method="GET" action="docustompermissionsmanage.action" id="changeSpace" name="changeSpace">
 	                <fieldset>
 	                    <label>$action.getText("form.label.changeSpace"): </label>
