@@ -154,8 +154,8 @@
 	        div#csum form#bulkChange fieldset label {display: block; margin: 1em 0 0 0;}
 	        div#csum form#bulkChange fieldset input {width:auto;}
 
-	        div#csum div#footer {clear:both; border-top:1px solid #CCC; margin:5px 0 0 0;}
-	        div#csum div#footer ul {clear:both; display:block; margin:7px 0 0 1px; padding:0;}
+	        div#csum div#footer {clear:both; border-top:1px solid #CCC; margin:10px 0 0 0; padding:7px 0 0 0;}
+	        div#csum div#footer ul {clear:both; display:block; margin:0; padding:0 0 0 2px;}
 	        div#csum div#footer ul li {display:inline; color:#036;}
 	        div#csum div#footer ul li a {color:#036; line-height:1;}
 	        div#csum div#footer ul li a img {padding:2px;}
