@@ -93,7 +93,7 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">Current Settings for Custom Space User Management Plugin:</td>
+            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("configure.heading")</td>
         </tr>
         <tr>
             <td class="label" width="30%">$action.getText("user.manager.location.label"):</td>
@@ -242,7 +242,7 @@
             <td colspan="2">&nbsp;</td>
         </tr>
         <tr>
-            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">Update Settings for Custom Space User Management Module:</td>
+            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("configure.user.management.module.heading")</td>
         </tr>
 
        <form action="doconfig.action" method="POST" name="CustomUserManagementConfigForm">
@@ -256,11 +256,9 @@
                 <font size="1">
             	Notes:
             	<ul>
-            	  <li>If you are using LDAP for user management, then please select option <b>CONFLUENCE</b>.</li>
-            	  <li>If you are using <b>JIRA</b> for user management, please define a properties file called
-            	      <b>$action.jiraPropertiesFilename</b> and copy that file somewhere into the classpath of each
-            	      Confluence server using this plugin; the contents of this file should look like the following
-            	      (<b>change values in the file to match your environment</b>):</li>
+            	  <li>$action.getText("configure.user.management.module.note1")</li>
+            	  <li>$action.getText("configure.user.management.module.note2.part1")
+            	      <b>$action.jiraPropertiesFilename</b> $action.getText("configure.user.management.module.note2.part2")</li>
                 </ul>
                 </font>
 <div class="preformatted"><div class="preformattedContent">
@@ -277,9 +275,7 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
             <td>
 				#fielderror ('jiraJNDILookupKey')
                 <input type="text" name="jiraJNDILookupKey" id="jiraJNDILookupKey" value="$!action.jiraJNDILookupKey" #if ($action.userManagerLocation == "CONFLUENCE") disabled="true" #end size="50" />
-                <p>
-                    Enter Jira Datasource name that is being used during <b>Confluence and Jira Integration</b> as explained <a href="http://confluence.atlassian.com/display/DOC/How+to+delegate+user+management+in+Confluence+to+JIRA#HowtodelegateusermanagementinConfluencetoJIRA-2.SetupdatasourcetoJIRAuserbasewithinConfluence">here</a> &nbsp; <font size="1">Example: jdbc/JiraDS</font>
-                </p>
+                <p>$action.getText("configure.jiraDSname")</p>
             </td>
         </tr>
 
@@ -289,7 +285,7 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
                 #fielderror ('maxUserIDsLimit')
                 <input type="text" name="maxUserIDsLimit" value="$!action.maxUserIDsLimit" size="2" />
                 <p>
-                    <font size="1">Must be an integer greater than 0.</font>
+                    <font size="1">$action.getText("configure.error.greaterThanZero")</font>
                 </p>
             </td>
         </tr>
@@ -312,33 +308,24 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
                 <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />$action.getText("yes") &nbsp;
                 <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />$action.getText("no")
                 <p>
-                    <font size="1">
-                    If you have a large number of users and search is slow you may either want to disable user search or <a href="http://confluence.atlassian.com/display/DOC/How+to+Improve+User+Search+Performance">migrate users to the new user/group data structures</a>.
-                    </font>
+                    <font size="1">$action.getText("configure.warn.largeUserNumber")</font>
                 </p>
             </td>
         </tr>
         
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("usergroups.matching.pattern.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("usergroups.matching.patternMatch")</td>
             <td>
                 #fielderror ('userGroupsMatchingPattern')
                 <input type="text" name="userGroupsMatchingPattern" value="$!action.userGroupsMatchingPattern" size="30" />
                 <p>
                     <font size="1">
-                    This pattern is just a
-                    <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html">
-                    Java regular expression pattern</a> with the exception that the text <b>SPACEKEY</b>
-                    is replaced by the key (converted to lowercase) of the selected Wiki space at runtime.
-                    Note that the regular regular expression will be matching the groupname after the
-                    groupname has been converted to lowercase, so except for SPACEKEY you should not
-                    expect any capital letters in the groupname it should match.
+                    $action.getText("configure.info.patternMatch")
                     </font>
                 </p>
                 <p>
                     <font size="1">
-                	e.g.: If SPACEKEY is "DS", then pattern <b>SPACEKEY-.*</b> will match groups called
-                	ds-users, ds-conf-users, ds-d&amp;d-players.<br/>
+                	$action.getText("configure.example.patternMatch")
                     </font>
                 </p>
             </td>
@@ -352,9 +339,7 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
                 <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end onclick="toggleGroupSettingsInput(this)" />$action.getText("no")
                 <p>
                     <font size="1">
-                	This enables the ability to add/remove groups whose name matches the pattern specified
-                	above, effectively enabling the ability to have space-specific groups manageable by space
-                	administrators.
+                	$action.getText("configure.groupAction.explanation")
                     </font>
                 </p>
             </td>
@@ -381,18 +366,13 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
 				</table>
                 <p>
                     <font size="1">
-                    Anywhere that SPACEKEY occurs within the prefix or suffix is replaced by the key of the
-                    selected Wiki space at runtime. The prefix and suffix are NOT regular expressions.
+                    $action.getText("configure.spacekey.explanation")
                     </font>
                 </p>
                 <p>
                     <font size="1">
-                    Examples: If prefix <b>SPACEKEY-</b> and no suffix are specified, and SPACEKEY is "tst", then only
-                	groups that start with <b>tst-</b> can be created like "tst-apples" and "tst-oranges".<br/>
-                	If prefix <b>sa.</b> and suffix <b>.SPACEKEY</b> are specified, and SPACEKEY is "tst", then only
-                	groups that start with <b>sa.</b> and end in <b>.tst</b> can be created like "sa.apples.tst" and
-                	"sa.oranges.tst".
-                	</font>
+					$action.getText("configure.spacekey.example")
+                    </font>
                 </p>
             </td>
         </tr>
@@ -412,7 +392,7 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
 				#fielderror ('companyLDAPUrl')
                  <input type="text" name="companyLDAPUrl" id="companyLDAPUrl" value="$!action.companyLDAPUrl" #if ($!action.ldapAuthUsed == "NO") disabled="true" #end size="50" />
 					<br>
-	            	<font size="1">Example: ldap://acme:389</font>                 
+	            	<font size="1">$action.getText("example"): ldap://acme:389</font>                 
             </td>
         </tr>
 
@@ -422,7 +402,7 @@ ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
 				#fielderror ('companyLDAPBaseDN')
                  <input type="text" name="companyLDAPBaseDN" id="companyLDAPBaseDN" value="$!action.companyLDAPBaseDN" #if ($!action.ldapAuthUsed == "NO") disabled="true" #end size="50" />
 					<br>
-	            	<font size="1">Example: dc=acme,dc=com</font>                 
+	            	<font size="1">$action.getText("example"): dc=acme,dc=com</font>                 
             </td>
         </tr>
         
