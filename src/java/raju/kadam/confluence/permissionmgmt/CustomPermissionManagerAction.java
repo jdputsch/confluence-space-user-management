@@ -117,21 +117,37 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return PagerPaginationSupport.DEFAULT_COUNT_ON_EACH_PAGE;
     }
 
+    private List getUrlDecodedCleanedTrimmedParameterValues(Map paramMap, String param) {
+        List result = null;
+        String[] values = (String[])paramMap.get(param);
+        if ( values != null ) {
+            result = new ArrayList();
+            for (int i=0;i<values.length;i++) {
+                String value = cleanParamValue(param, values[i]);
+                result.add(value);
+            }
+        }
+        return result;
+    }
+
     private String getUrlDecodedCleanedTrimmedParameterValue(Map paramMap, String param) {
-        String result = null;
         String value = getRawParameterValue(paramMap, param);
+        return cleanParamValue(param, value);
+    }
+
+    private String cleanParamValue(String param, String value) {
         if (value!=null) {
             value = StringUtil.clean(value.trim());
             if (!StringUtil.isNullOrEmpty(value)) {
                 try {
-                    result = URLDecoder.decode(value, "UTF-8");
+                    value = URLDecoder.decode(value, "UTF-8");
                 }
                 catch (UnsupportedEncodingException e) {
                     log.error("request parameter '" + param + "' had cleaned up value '" + value + "' which could not be URL decoded", e);
                 }
             }
         }
-        return result;
+        return value;
     }
 
     private String getRawParameterValue(Map paramMap, String param) {
@@ -152,6 +168,19 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
 
+    private List getUrlDecodedCleanedTrimmedParameterValueListWithCheckboxSupport(Map paramMap, String param) {
+        List result = new ArrayList();
+        List decodedValues = getUrlDecodedCleanedTrimmedParameterValues(paramMap, param);
+        if (decodedValues!=null) {
+            for (int i=0; i<decodedValues.size(); i++) {
+                String decodedValue = (String)decodedValues.get(i);
+                result.addAll(StringUtil.getCleanedListFromDelimitedValueString(decodedValue));
+            }
+        }
+
+        return result;
+    }
+
     public ServiceContext createServiceContext() {
         ServiceContext context = new ServiceContext();
         context.setLoggedInUser(getRemoteUser().getName());
@@ -164,20 +193,18 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public CustomPermissionManagerActionContext createContext() {
         CustomPermissionManagerActionContext context = new CustomPermissionManagerActionContext();
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        List groups = getUrlDecodedCleanedTrimmedParameterValueList( paramMap, GROUPS_PARAMNAME);
-        if ( groups != null ) {
-            // groups specified as single comma-delimited string. used by everything else.
-            context.setSpecifiedGroups(groups);
-        }
-        else {
-            // groups specified by group of checkboxes with name "groups". used by bulk-edit.
-            context.setSpecifiedGroups(HtmlFormUtil.retrieveListOfCheckedCheckboxValues(paramMap, GROUPS_PARAMNAME));
-        }
+        context.setSpecifiedGroups(getUrlDecodedCleanedTrimmedParameterValueListWithCheckboxSupport( paramMap, GROUPS_PARAMNAME));
+        log.debug("groups=" + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()));
         context.setSpecifiedUsers(getUrlDecodedCleanedTrimmedParameterValueList( paramMap, USERS_PARAMNAME));
+        log.debug("users=" + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()));
         context.setLoggedInUser(getRemoteUser().getName());
-		context.setKey(getKey());
-    	context.setAdminAction(getUrlDecodedCleanedTrimmedParameterValue( paramMap, ADMIN_ACTION_PARAMNAME));
+		log.debug("loggedInUser=" + context.getLoggedInUser());
+        context.setKey(getKey());
+        log.debug("key=" + context.getKey());
+        context.setAdminAction(getUrlDecodedCleanedTrimmedParameterValue( paramMap, ADMIN_ACTION_PARAMNAME));
+        log.debug("adminAction=" + context.getAdminAction());
         context.setUserSearch(getUrlDecodedCleanedTrimmedParameterValue( paramMap, USER_SEARCH_PARAMNAME));
+        log.debug("userSearch=" + context.getUserSearch());
         context.setConfluenceActionSupport(this);
         return context;
     }
@@ -186,9 +213,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         AdvancedUserQuery userQuery = new AdvancedUserQuery();
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
         userQuery.setLookupType(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "lookupType"));
+        log.debug("lookupType=" + userQuery.getLookupType());
         userQuery.setPartialSearchTerm(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "partialSearchTerm"));
+        log.debug("partialSearchTerm=" + userQuery.getPartialSearchTerm());
         userQuery.setSubstringMatchType(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "substringMatchType"));
-        log.debug("Created advanced user query: " + userQuery.toString());
+        log.debug("substringMatchType=" + userQuery.getSubstringMatchType());
         return userQuery;
     }
 
@@ -442,13 +471,16 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction.execute() called");
-
+        log.debug("request uri: " + ServletActionContext.getRequest().getRequestURI());
+        
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
+        log.debug("paramMap: " + paramMap);
 
         handleRefreshBugSecondRequest(paramMap);
 
         String selectedGroup = getUrlDecodedCleanedTrimmedParameterValue(paramMap, "selectedGroup");
+        log.debug("selectedGroup=" + selectedGroup);
         setSelectedGroup(selectedGroup);
 
         log.debug("Starting execute() users");
