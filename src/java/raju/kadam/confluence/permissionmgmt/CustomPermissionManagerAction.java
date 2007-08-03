@@ -80,7 +80,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private String selectedGroup;
     private String userSearch;
     private boolean userSearchFormFilled;
-    private AdvancedUserQuery advancedUserQuery;
     private String bulkEdit;
     private SettingsManager settingsManager;
     private String pagerAction;
@@ -310,16 +309,21 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private void handleUserSearch(CustomPermissionManagerActionContext context) {
         if (getUserSearch()!=null && getPagerAction()==null && ACTION_ADVANCED_FIND_USERS.equalsIgnoreCase(context.getAdminAction())) {
             log.debug("validating user search form. userSearch=" + getUserSearch() + " pagerAction=" + getPagerAction()+ " adminAction=" + context.getAdminAction());
-            AdvancedUserQuery advancedUserQuery = createAdvancedUserQuery();
-            setAdvancedUserQuery(advancedUserQuery);
-            setUserSearchFormFilled(advancedUserQuery.isValid());
-            if (getUserSearchFormFilled()) {
-                log.debug("performing user search");
-                this.findUsersAdvanced();
-            }
+            doUserSearch();
         }
         else {
             log.debug("not a user search. userSearch=" + getUserSearch() + " pagerAction=" + getPagerAction()+ " adminAction=" + context.getAdminAction());            
+        }
+    }
+
+    private void doUserSearch() {
+        AdvancedUserQuery advancedUserQuery = createAdvancedUserQuery();
+        setAdvancedUserQuery(advancedUserQuery);
+        setUserSearchFormFilled(advancedUserQuery.isValid());
+        if (getUserSearchFormFilled()) {
+            log.debug("performing user search");
+            this.findUsersAdvanced();
+            this.setAdvancedUserQuery(getKey(), getSelectedGroup(), advancedUserQuery);
         }
     }
 
@@ -362,8 +366,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
 
-    // this gets around bug in atlassian's API CSP-10371/CONF-9035
-    // just append redirect= to end of URL and will redirect to the url.
+    // this helps get around bug in atlassian's API CSP-10371/CONF-9035 to be fixed in confluence 2.6
     private void handleRefreshBugFirstRequest() {
         HttpServletRequest req = ServletActionContext.getRequest();
         // note: wrapping with TreeMap so it will sort params by name, otherwise it makes inconsistent URL which looks
@@ -425,13 +428,16 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
     }
 
+    // this helps get around bug in atlassian's API CSP-10371/CONF-9035 to be fixed in confluence 2.6
     private void handleRefreshBugSecondRequest(Map paramMap) {
         if (this.getRawParameterValue(paramMap, SELECTED_CACHE_REFRESH_PARAMNAME) != null) {
             this.clearGroupCache(getKey());
             // this is why we have to leave groups param in the url in handleRedirect
             List groups = getUrlDecodedCleanedTrimmedParameterValueList(paramMap, GROUPS_PARAMNAME);
             if (groups!=null) {
+                // TODO: Argh! this 
                 this.clearSearchResultUserCache(getKey(), groups);
+                doUserSearch();
                 this.clearUserCache(getKey(), groups);
             }
         }
@@ -459,12 +465,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         //TODO: maybe this should be another adminAction, but if so will need to update handleUserSearch() to exclude it
         setUserSearch(context.getUserSearch());
         handleUserSearch(context);
-
-
-
         setBulkEdit(getUrlDecodedCleanedTrimmedParameterValue(paramMap, "bulkEdit"));
-
-
 
         // handle refresh
         handleRefreshData(paramMap);
@@ -1194,11 +1195,20 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public AdvancedUserQuery getAdvancedUserQuery() {
+        String spaceKey = getKey();
+        String selectedGroup = getSelectedGroup();
+        AdvancedUserQuery advancedUserQuery = this.getAdvancedUserQuery(spaceKey, selectedGroup);
+        if ( advancedUserQuery == null ) {
+            advancedUserQuery = new AdvancedUserQuery();
+            this.setAdvancedUserQuery(spaceKey, selectedGroup, advancedUserQuery);
+        }
         return advancedUserQuery;
     }
 
     public void setAdvancedUserQuery(AdvancedUserQuery advancedUserQuery) {
-        this.advancedUserQuery = advancedUserQuery;
+        String spaceKey = getKey();
+        String selectedGroup = getSelectedGroup();
+        setAdvancedUserQuery(spaceKey, selectedGroup, advancedUserQuery);
     }
 
     public String getBulkEdit() {

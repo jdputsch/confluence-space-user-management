@@ -46,16 +46,16 @@
                     #fielderror ('advancedSearch')
                     <label>$action.getText("form.label.findUserWhere"): </label>
                     <select name="lookupType">
-                        <option value="$action.usernameLookupType" selected="selected">$action.getText("username")</option>
-                        <option value="$action.fullNameLookupType">$action.getText("fullname")</option>
-                        <option value="$action.emailLookupType">$action.getText("email")</option>
+                        <option value="$action.usernameLookupType" #if ($action.advancedUserQuery && $action.advancedUserQuery.lookupType == $action.usernameLookupType) selected="selected" #end>$action.getText("username")</option>
+                        <option value="$action.fullNameLookupType" #if ($action.advancedUserQuery && $action.advancedUserQuery.lookupType == $action.fullNameLookupType) selected="selected" #end>$action.getText("fullname")</option>
+                        <option value="$action.emailLookupType" #if ($action.advancedUserQuery && $action.advancedUserQuery.lookupType == $action.emailLookupType) selected="selected" #end>$action.getText("email")</option>
                     </select>
                     <select name="substringMatchType">
-                        <option value="$action.substringStartsWith" selected="selected">$action.getText("startsWith")</option>
-                        <option value="$action.substringContains">$action.getText("contains")</option>
-                        <option value="$action.substringEndsWith">$action.getText("endsWith")</option>
+                        <option value="$action.substringStartsWith" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringStartsWith) selected="selected" #end>$action.getText("startsWith")</option>
+                        <option value="$action.substringContains" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringContains) selected="selected" #end>$action.getText("contains")</option>
+                        <option value="$action.substringEndsWith" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringEndsWith) selected="selected" #end>$action.getText("endsWith")</option>
                     </select>
-                    <input type="text" id="partialSearchTerm" name="partialSearchTerm"/>
+                    <input type="text" id="partialSearchTerm" #if ($action.advancedUserQuery) value="$!action.advancedUserQuery.partialSearchTerm" #end name="partialSearchTerm"/>
                 </fieldset>
                 <fieldset>
                     <input type="submit" value="Find Users" class="submitBttn"/>
