@@ -41,7 +41,7 @@
 
     <name>Custom Space Usergroups Management Plugin</name>
     <version>2.0-SNAPSHOT</version>
-    <url>raju.kadam@gmail.com</url>
+    <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
     <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces</description>
 
     <properties>
