@@ -46,7 +46,8 @@
 
     <properties>
         <!-- The plugin key. This will be injected into the atlassian-plugins.xml file when built. -->
-        <atlassian.plugin.key>csumdevteam.confluence.permissionmgmt</atlassian.plugin.key>
+        <!-- NOTE: because we needed to make sure this would be backwards compatible with earlier versions, we left raju kadam in the key name. -->
+        <atlassian.plugin.key>raju.kadam.confluence.permissionmgmt</atlassian.plugin.key>
     </properties>
 
     <scm>
@@ -177,19 +178,16 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src/java</sourceDirectory>
-        <testSourceDirectory>src/test/java</testSourceDirectory>
-        
         <!-- This will automatically put POM settings into atlassian-plugin.xml when building.  -->
         <resources>
             <resource>
-                <directory>src/etc</directory>
+                <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>atlassian-plugin.xml</exclude>
                 </excludes>
             </resource>
             <resource>
-                <directory>src/etc</directory>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
                     <include>atlassian-plugin.xml</include>
