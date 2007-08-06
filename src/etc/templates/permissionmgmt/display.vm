@@ -126,7 +126,7 @@
 	        div#csum div#groups {display:block; float:left; margin:0; padding:0; width:250px;}
 	        div#csum div#groups ul {margin:0; padding:0;}
 	        div#csum div#groups ul li {list-style:none;}
-	        div#csum div#groups ul li a {display:block; background:url(${action.confluenceRoot}/images/icons/group_16.gif) no-repeat 3px 3px; clear:both; line-height:1.5; padding:4px 0 4px 25px; color:#036; text-decoration:underline;}
+	        div#csum div#groups ul li a {display:block; background:url(${req.contextPath}/images/icons/group_16.gif) no-repeat 3px 3px; clear:both; line-height:1.5; padding:4px 0 4px 25px; color:#036; text-decoration:underline;}
 	        div#csum div#groups ul li a.selected {color:black; font-weight:bold; text-decoration:none; border:1px solid #CCC; background-color:#FFC;}
 	        div#csum div#groups ul li a.selected:hover {background-color: #FFC;}
 	        div#csum div#groups ul li a:hover {background-color:#F0F0F0;}
@@ -401,11 +401,11 @@
 					#if($groups && $groups.total>0)
 					 |
 					#end
-					<a href="${action.confluenceRoot}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">
-						#*<img src="${action.confluenceRoot}/images/icons/lock_16.gif"/>*#
+					<a href="${req.contextPath}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">
+						#*<img src="${req.contextPath}/images/icons/lock_16.gif"/>*#
 						$action.getText("space.permissions.link.title")</a> </li>
-					#*<li>| <a href="${action.confluenceRoot}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">
-						<img src="${action.confluenceRoot}/images/icons/locked_pages_16.gif"/>
+					#*<li>| <a href="${req.contextPath}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">
+						<img src="${req.contextPath}/images/icons/locked_pages_16.gif"/>
 						$action.getText("page.permissions.link.title")</a> </li>*#
 			    #end
 
@@ -438,7 +438,7 @@
             <p class="infoMacro">${action.customPermissionConfiguration.downTimeMessage}</p>
 		#else
 		    <p class="noteMacro">
-		    <p>$action.getText("error.admin.reconfigure.text")<a href="$action.confluenceRoot/admin/plugins/custompermissionsconfig/config.action">$action.getText("error.admin.reconfigure.link.text")</a>.</p>
+		    <p>$action.getText("error.admin.reconfigure.text")<a href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">$action.getText("error.admin.reconfigure.link.text")</a>.</p>
 		    <p>$action.getText("error.admin.reconfigure.list.text"):</p>
 			    #set($fieldNameToErrorMessage=$configValidationResponse.fieldNameToErrorMessage)
 				<ul>

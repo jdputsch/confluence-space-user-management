@@ -1301,10 +1301,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getUserGroupsMatchingPattern(), getSpace().getKey());
     }
 
-    public String getConfluenceRoot() {
-        return ConfluenceUtil.getConfluenceUrl(getSettingsManager());
-    }    
-
     public String getActionName(String fullClassName)
     {
     	return getText("manager.action.name");

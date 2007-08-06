@@ -29,7 +29,6 @@
 
 package raju.kadam.confluence.permissionmgmt.util.confluence;
 
-import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.spring.container.ContainerManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,12 +39,6 @@ import org.apache.commons.logging.LogFactory;
 public class ConfluenceUtil {
 
     private static Log log = LogFactory.getLog(ConfluenceUtil.class);
-
-    public static String getConfluenceUrl(SettingsManager settingsManager) {
-        
-        //Get base URL for confluence installation
-        return settingsManager.getGlobalSettings().getBaseUrl();
-    }
 
     public static Object loadComponentWithRetry(String component) {
         Object result = null;

@@ -77,15 +77,15 @@
                     #set ($userName = $generalUtil.htmlEncode($user.getName()))
                     #set ($userEmail = $generalUtil.maskEmail($user.getEmail()))
                     <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
-                        <td><img class="icon" src="${action.confluenceRoot}/images/icons/user_16.gif">$!userFullName</td>
+                        <td><img class="icon" src="${req.contextPath}/images/icons/user_16.gif">$!userFullName</td>
                         <td>$!userName</td>
                         <td>$!userEmail</td>
                     #if($action.isMemberOfSelectedGroup($!userName))
-                        #*<td><img alt="$!userName is a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/check.gif"/></td>*#
-                        <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName&userSearch=1$refreshbugworkaround"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
+                        #*<td><img alt="$!userName is a member of group $!{action.selectedGroup}" src="${req.contextPath}/images/icons/emoticons/check.gif"/></td>*#
+                        <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName&userSearch=1$refreshbugworkaround"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
                     #else
-                        #*<td text-align="center"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="${action.confluenceRoot}/images/icons/emoticons/error.gif"/></td>*#
-                        <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName&userSearch=1$refreshbugworkaround"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/add_16.gif"/></a></td>
+                        #*<td text-align="center"><img alt="$!userName is NOT a member of group $!{action.selectedGroup}" src="${req.contextPath}/images/icons/emoticons/error.gif"/></td>*#
+                        <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=addUsersToGroups&groups=$!{action.selectedGroup}&users=$!userName&userSearch=1$refreshbugworkaround"><img border="0" alt="Add $!userName to group ${action.selectedGroup}" src="${req.contextPath}/images/icons/add_16.gif"/></a></td>
                     #end
                     </tr>
                 #end

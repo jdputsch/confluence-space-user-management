@@ -42,7 +42,7 @@
 *#
 				<h2>$action.getText("editGroup.title") $generalUtil.htmlEncode(${action.selectedGroup})</h2>
 				#if(${action.isGroupActionsPermitted})
-				<a id="trashGroup" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround"><img src="${action.confluenceRoot}/images/icons/trash_16.gif" /> $action.getText("delGroup") ${action.selectedGroup}</a>
+				<a id="trashGroup" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround"><img src="${req.contextPath}/images/icons/trash_16.gif" /> $action.getText("delGroup") ${action.selectedGroup}</a>
 				#end
 			</div>
 
@@ -88,10 +88,10 @@
                     #set ($userName = $generalUtil.htmlEncode($user.getName()))
                     #set ($userEmail = $generalUtil.maskEmail($user.getEmail()))
                     <tr #if ($velocityCount % 2 == 0) class="even" #end>
-                        <td><img class="icon" src="${action.confluenceRoot}/images/icons/user_16.gif"/>$!userFullName</td>
+                        <td><img class="icon" src="${req.contextPath}/images/icons/user_16.gif"/>$!userFullName</td>
                         <td>$!userName</td>
                         <td><a href="mailto:$!userEmail" alt="Send email to $!userName">$!userEmail</a></td>
-                        <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$!userName$refreshbugworkaround"><img alt="Remove $!userName from group ${action.selectedGroup}" src="${action.confluenceRoot}/images/icons/trash_16.gif"/></a></td>
+                        <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$!userName$refreshbugworkaround"><img alt="Remove $!userName from group ${action.selectedGroup}" src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
                     </tbody>
