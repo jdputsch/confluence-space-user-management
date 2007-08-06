@@ -49,7 +49,7 @@ public class GroupNameUtil {
     public static String replaceSpaceKey(String groupPattern, String spaceKey) {
         log.debug("replaceSpaceKey() called.");
         //If spacekey is present in groupPattern then before compiling it replace it with current space key
-        if (groupPattern.indexOf(CustomPermissionConstants.SPACEKEY) != -1) {
+        if ( (groupPattern != null) && (groupPattern.indexOf(CustomPermissionConstants.SPACEKEY) != -1) ) {
             //Replace String "SPACEKEY" with input Space Key.
             groupPattern = groupPattern.replaceFirst(CustomPermissionConstants.SPACEKEY, spaceKey);
         }
