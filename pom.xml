@@ -35,7 +35,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>raju.kadam.confluence.permissionmgmt</groupId>
+    <groupId>csumdevteam.confluence.permissionmgmt</groupId>
     <artifactId>permission-management</artifactId>
     <packaging>atlassian-plugin</packaging>
 
@@ -46,7 +46,7 @@
 
     <properties>
         <!-- The plugin key. This will be injected into the atlassian-plugins.xml file when built. -->
-        <atlassian.plugin.key>raju.kadam.confluence.permissionmgmt</atlassian.plugin.key>
+        <atlassian.plugin.key>csumdevteam.confluence.permissionmgmt</atlassian.plugin.key>
     </properties>
 
     <scm>
@@ -76,6 +76,14 @@
             <organization>Duke University</organization>
             <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
             <roles><role>Developer - v2 User Experience</role></roles>
+        </developer>
+
+        <developer>
+            <name>Andy Brook</name>
+            <email>axb@dolby.co.uk</email>
+            <organization>Dolby Laboratories, Inc.</organization>
+            <organizationUrl>http://www.dolby.co.uk/</organizationUrl>
+            <roles><role>Developer - v2 LDAP Integration</role></roles>
         </developer>
     </developers>
 
@@ -203,7 +211,7 @@
                <artifactId>axistools-maven-plugin</artifactId>
                <configuration>
                   <sourceDirectory>wsdl</sourceDirectory>
-                  <packageSpace>raju.kadam.confluence.permissionmgmt.soap</packageSpace>
+                  <packageSpace>csumdevteam.confluence.permissionmgmt.soap</packageSpace>
                   <testCases>false</testCases>
                   <serverSide>false</serverSide>
                   <subPackageByFileName>true</subPackageByFileName>

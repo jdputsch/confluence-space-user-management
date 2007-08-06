@@ -37,7 +37,7 @@
         <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
     </organization>
 
-    <package>raju.kadam.confluence.permissionmgmt</package>
+    <package>csumdevteam.confluence.permissionmgmt</package>
 
     <description>Used for managing user-groups within given wiki space</description>
 
