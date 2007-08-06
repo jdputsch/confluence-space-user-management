@@ -531,7 +531,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         log.debug("Ending execute() users");
         debug(getUsers());
 
-        if (result==SUCCESS && paramMap.get(ADMIN_ACTION_PARAMNAME) != null) {
+        // note: data needs to get updated even if was error, because could have been partially updated
+        if (paramMap.get(ADMIN_ACTION_PARAMNAME) != null) {
             // refresh to avoid atlassian bug CSP-10371/CONF-9035
             handleRefreshBugFirstRequest();
         }
