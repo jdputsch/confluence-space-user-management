@@ -43,12 +43,6 @@ public interface CustomPermissionConfigurable {
     public String getLdapAuthUsed();
     public void setLdapAuthUsed(String ldapAuthUsed);
 
-    public String getCompanyLDAPUrl();
-    public void setCompanyLDAPUrl(String companyLDAPUrl);
-
-    public String getCompanyLDAPBaseDN();
-    public void setCompanyLDAPBaseDN(String companyLDAPBaseDN);
-
     public String getMaxUserIDsLimit();
     public void setMaxUserIDsLimit(String maxUserIDsLimit);
 

@@ -54,7 +54,7 @@ import raju.kadam.confluence.permissionmgmt.util.user.UserUtil;
 import raju.kadam.confluence.permissionmgmt.util.StringUtil;
 import raju.kadam.confluence.permissionmgmt.util.paging.LazyLoadingUserByUsernamePager;
 import raju.kadam.confluence.permissionmgmt.util.ldap.LDAPUser;
-import raju.kadam.confluence.permissionmgmt.util.ldap.LDAPUtil;
+import raju.kadam.confluence.permissionmgmt.util.ldap.OSUserLDAPHelper;
 
 import java.util.*;
 
@@ -273,7 +273,9 @@ public class ConfluenceUserManagementService implements UserManagementService {
             if (isLDAPAvailable) {
                 //log.debug("LDAP Lookup available");
                 //Get user details from LDAP.
-                lUser = LDAPUtil.getLDAPUser(creationUserName, companyLDAPUrl, companyLDAPBaseDN);
+                OSUserLDAPHelper helper = new OSUserLDAPHelper();
+                helper.getLDAPUser(creationUserName);                
+
                 if (lUser != null) {
                     vUser = userAccessor.addUser(creationUserName, creationUserName, lUser.getEmail(), lUser.getFullName());
                 }

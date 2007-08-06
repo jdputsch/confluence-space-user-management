@@ -3,6 +3,7 @@ Custom Space Usergroups Manager Development Team:
     Rajendra Kadam - raju.kadam@gmail.com | http://adyamarathon.wordpress.com
     Gary S. Weaver - gary.weaver@duke.edu
     Ren Provey - renald.provey@duke.edu
+    Andy Brook - axb@dolby.co.uk
 
 ---
 
@@ -30,5 +31,3 @@ Ren to did all the cool UI stuff in the transition to v2 of the plugin.
    Hope you enjoy it as much as we do!
 
  - Gary S. Weaver
-
----

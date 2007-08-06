@@ -116,22 +116,12 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         	setJiraJNDILookupKey("");
         }
 
-        //if user is not using LDAP, then we have to set "" values to LDAPUrl and BaseDN as we can't sent null values!
-        //Note null values will be passed from input as those two inputs are disabled
-        if(CustomPermissionConfigConstants.NO.equals(getLdapAuthUsed()))
-        {
-        	setCompanyLDAPUrl("");
-        	setCompanyLDAPBaseDN("");
-        }
-
         // Set presets as config, trimming and using defaults as needed
         setUserManagerLocation(ConfigUtil.getTrimmedStringOrNull(getUserManagerLocation()));
         setJiraJNDILookupKey(ConfigUtil.getTrimmedStringOrNull(getJiraJNDILookupKey()));
         setMaxUserIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIdsLimit", getMaxUserIDsLimit(), 20));
         setUserGroupsMatchingPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userGroupsMatchingPattern", getUserGroupsMatchingPattern(), CustomPermissionConstants.SPACEKEY_REGEXP));
         setLdapAuthUsed(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("ldapAuthUsed", getLdapAuthUsed(), "NO"));
-        setCompanyLDAPUrl(ConfigUtil.getTrimmedStringOrNull(getCompanyLDAPUrl()));
-        setCompanyLDAPBaseDN(ConfigUtil.getTrimmedStringOrNull(getCompanyLDAPBaseDN()));
         setPluginDown(ConfigUtil.getTrimmedStringOrNull(getPluginDown()));
         setDownTimeMessage(ConfigUtil.getTrimmedStringOrNull(getDownTimeMessage()));
     }

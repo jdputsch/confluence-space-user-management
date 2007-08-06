@@ -76,22 +76,6 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
         this.ldapAuthUsed = ldapAuthUsed;
     }
 
-    public String getCompanyLDAPUrl() {
-        return companyLDAPUrl;
-    }
-
-    public void setCompanyLDAPUrl(String companyLDAPUrl) {
-        this.companyLDAPUrl = companyLDAPUrl;
-    }
-
-    public String getCompanyLDAPBaseDN() {
-        return companyLDAPBaseDN;
-    }
-
-    public void setCompanyLDAPBaseDN(String companyLDAPBaseDN) {
-        this.companyLDAPBaseDN = companyLDAPBaseDN;
-    }
-
     public String getMaxUserIDsLimit() {
         return maxUserIDsLimit;
     }

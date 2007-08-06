@@ -66,8 +66,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setMaxGroupIDsLimit(getMaxGroupIDsLimit());
         config.setUserGroupsMatchingPattern(getUserGroupsMatchingPattern());
         config.setLdapAuthUsed(getLdapAuthUsed());
-        config.setCompanyLDAPUrl(getCompanyLDAPUrl());
-        config.setCompanyLDAPBaseDN(getCompanyLDAPBaseDN());
         config.setPluginDown(getPluginDown());
         config.setDownTimeMessage(getDownTimeMessage());
         config.setGroupActionsPermitted(getGroupActionsPermitted());
@@ -83,8 +81,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setMaxGroupIDsLimit(config.getMaxGroupIDsLimit());
         setUserGroupsMatchingPattern(config.getUserGroupsMatchingPattern());
         setLdapAuthUsed(config.getLdapAuthUsed());
-        setCompanyLDAPUrl(config.getCompanyLDAPUrl());
-        setCompanyLDAPBaseDN(config.getCompanyLDAPBaseDN());
         setPluginDown(config.getPluginDown());
         setDownTimeMessage(config.getDownTimeMessage());
         setGroupActionsPermitted(config.getGroupActionsPermitted());
@@ -155,23 +151,10 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 			}
 		}
 
-		boolean isLDAPAvailable = (config.getLdapAuthUsed() != null) && (config.getLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false);
-		if(isLDAPAvailable)
-		{
-            //check if LDAP URL is set or not
-			if( config.getCompanyLDAPUrl() == null || config.getCompanyLDAPUrl().trim().equals(""))
-			{
-	            result.addFieldError("companyLDAPUrl", "Enter LDAP URL");
-	            result.setValid(false);
-			}
-
-			//check if LDAP URL is set or not
-			if( config.getCompanyLDAPBaseDN() == null || config.getCompanyLDAPBaseDN().trim().equals(""))
-			{
-	            result.addFieldError("companyLDAPBaseDN", "Enter LDAP Base DN");
-	            result.setValid(false);
-			}
-		}
+        if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getLdapAuthUsed())) {
+            result.addFieldError("ldapAuthUsed", "Must be YES or NO");
+            result.setValid(false);
+        }        		
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getUserSearchEnabled())) {
             result.addFieldError("userSearchEnabled", "Must be YES or NO");
@@ -214,20 +197,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 result.addFieldError("userGroupsMatchingPattern", "Group matching pattern was invalid: " + pse.getMessage());
                 result.setValid(false);
             }
-        }
-
-        String ldapAuthUsed = config.getLdapAuthUsed();
-        if (ConfigUtil.isNotNullAndIsYesOrNo(ldapAuthUsed)) {
-            if ("YES".equals(ldapAuthUsed)) {
-                if (ConfigUtil.isNullOrEmpty(config.getCompanyLDAPUrl()) || config.getCompanyLDAPBaseDN() == null) {
-                    result.addFieldError("ldapAuthUsed", "If LDAP auth used, must specify company LDAP URL and company LDAP base DN");
-                    result.setValid(false);
-                }
-            }
-        }
-        else {
-            result.addFieldError("ldapAuthUsed", "Must be YES or NO");
-            result.setValid(false);
         }
 
         String pluginInDown = config.getPluginDown();

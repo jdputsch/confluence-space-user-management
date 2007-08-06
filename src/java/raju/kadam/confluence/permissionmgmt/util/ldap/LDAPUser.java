@@ -32,14 +32,16 @@ package raju.kadam.confluence.permissionmgmt.util.ldap;
 /**
  * @author Rajendra Kadam
  */
-public class LDAPUser{
+public class LDAPUser {
 
-	String userId;
-	String fullName;
-	String email; 
-	
-    public LDAPUser(String userid, String fullName, String email) 
-    {
+    String userId;
+    String fullName;
+    String email;
+
+    public LDAPUser() {
+    }
+
+    public LDAPUser(String userid, String fullName, String email) {
         this.userId = userid;
         this.fullName = fullName;
         this.email = email;
@@ -49,7 +51,7 @@ public class LDAPUser{
         return userId;
     }
 
-    public void setUserId (String userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

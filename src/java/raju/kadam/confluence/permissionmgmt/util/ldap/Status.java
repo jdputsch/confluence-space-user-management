@@ -29,53 +29,50 @@
 
 package raju.kadam.confluence.permissionmgmt.util.ldap;
 
-import java.util.*;
 import org.apache.log4j.Category;
+
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * @author Rajendra Kadam
  */
-public class Status{
+public class Status {
 
     private static final Category log = Category.getInstance(Status.class);
 
     public boolean isTaskDone;
-	public String message;
-	public Vector vNotCreatedUsers;
-	public Vector vNotUsedGroups; 
-	
-    public Status(boolean isTaskDone, String message, Vector vNotCreatedUsers, Vector vNotUsedGroups) 
-    {
+    public String message;
+    public Vector vNotCreatedUsers;
+    public Vector vNotUsedGroups;
+
+    public Status(boolean isTaskDone, String message, Vector vNotCreatedUsers, Vector vNotUsedGroups) {
         this.isTaskDone = isTaskDone;
-        this.message  = message;
-        this.vNotCreatedUsers = vNotCreatedUsers ;
-		this.vNotUsedGroups = vNotUsedGroups;
+        this.message = message;
+        this.vNotCreatedUsers = vNotCreatedUsers;
+        this.vNotUsedGroups = vNotUsedGroups;
     }
 
-    public String toString()
-    {
-    	StringBuffer output = new StringBuffer();
-    	output.append("Operation Result - " + isTaskDone + "\n")
-    		.append("Operation Details - " + message + "\n")
+    public String toString() {
+        StringBuffer output = new StringBuffer();
+        output.append("Operation Result - " + isTaskDone + "\n")
+                .append("Operation Details - " + message + "\n")
 
-    		.append("------Not created Users ---------\n");
-    		goEnumeration(vNotCreatedUsers, output);
-    	
-		output.append("------Groups that are not in system ---------\n");
-    		goEnumeration(vNotUsedGroups, output);
+                .append("------Not created Users ---------\n");
+        goEnumeration(vNotCreatedUsers, output);
 
-    	return output.toString();
+        output.append("------Groups that are not in system ---------\n");
+        goEnumeration(vNotUsedGroups, output);
+
+        return output.toString();
     }
-    
-    public void goEnumeration(Vector vec, StringBuffer output)
-    {
-    	if(vec != null)
-    	{
-			Enumeration e = vec.elements();
-	    	while(e.hasMoreElements())
-	    	{
-	    		output.append((String)e.nextElement() + "\n");
-	    	}
-    	}
+
+    public void goEnumeration(Vector vec, StringBuffer output) {
+        if (vec != null) {
+            Enumeration e = vec.elements();
+            while (e.hasMoreElements()) {
+                output.append((String) e.nextElement() + "\n");
+            }
+        }
     }
 }
