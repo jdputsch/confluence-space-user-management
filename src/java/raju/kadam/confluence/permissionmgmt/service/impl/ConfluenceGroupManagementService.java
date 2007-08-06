@@ -68,7 +68,7 @@ public class ConfluenceGroupManagementService implements GroupManagementService 
     private BandanaManager bandanaManager;
     private SpaceDao spaceDao;
     private SpacePermissionManager spacePermissionManager;
-    private UserAccessor userAccessor;
+    protected UserAccessor userAccessor;
     private CustomPermissionConfiguration customPermissionConfiguration;
 
     public ConfluenceGroupManagementService() {

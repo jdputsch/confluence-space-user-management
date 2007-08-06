@@ -40,6 +40,7 @@ import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import raju.kadam.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteUser;
+import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import raju.kadam.confluence.permissionmgmt.util.jira.JiraUtil;
 import raju.kadam.confluence.permissionmgmt.util.StringUtil;
 
@@ -55,80 +56,31 @@ import java.util.ArrayList;
 
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.DefaultPager;
+import com.atlassian.confluence.security.SpacePermission;
+import com.atlassian.confluence.spaces.Space;
 
 /**
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class JiraSoapGroupManagementService implements GroupManagementService {
+public class JiraSoapGroupManagementService extends ConfluenceGroupManagementService {
 
     private Log log = LogFactory.getLog(this.getClass());
 
     private CustomPermissionConfiguration customPermissionConfiguration;
     private JiraSoapUserManagementService jiraSoapUserManagementService;
 
-    //TODO: request getGroups(String token) as a feature in Jira's soap service
-    public Pager findGroups(ServiceContext context) throws FindException {
-        log.debug("findGroups() called.");
-        // select groupname from groupbase
-
-        List results = new ArrayList();
-        Pager pager = new DefaultPager(results);
-
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        DataSource ds = null;
-        String jiraJNDI = "java:comp/env/" + getCustomPermissionConfiguration().getJiraJNDILookupKey();
-        InitialContext ctx = null;
-
-        try {
-            ctx = new InitialContext();
-        }
-        catch (NamingException e) {
-            log.error("Could not get JNDI context.", e);
-            return pager;
-        }
-
-        try {
-            ds = (DataSource) ctx.lookup(jiraJNDI);
-        }
-        catch (NamingException e) {
-            log.error("dataSource: " + jiraJNDI + " not found.", e);
-            //not able to connect to jira database.
-            return pager;
-        }
-
-        try {
-            connection = ds.getConnection();
-        }
-        catch (SQLException e) {
-            log.error("Couldn't get connection to Jira DB via JNDI lookup using '" + jiraJNDI + "'", e);
-        }
-
-        String sql = "select groupname from groupbase";
-
-        try {
-            statement = connection.prepareStatement(sql);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                String groupName = resultSet.getString(0);
-                if ( groupName != null ) {
-                    results.add(groupName);
-                }
-            }
-        }
-        catch (SQLException e) {
-            log.error("Failure in statement '" + sql + "' using Jira DB via JNDI lookup using '" + jiraJNDI + "'", e);
-        }
-
-        return pager;
-    }
+    // note: findGroups()... are in ConfluenceGroupManagementService, as Confluence has read-only access to JIRA
 
     public void addGroups(List groupNames, ServiceContext context) throws AddException {
-        log.debug("addGroup() called. groupNames='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");
+        log.debug("addGroups() called. groupName='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");
+        Space space = context.getSpace();
+        
         JiraSoapService jiraSoapService = null;
         String token = null;
+
+        List success = new ArrayList();
+        List alreadyExisted = new ArrayList();
 
         try {
             JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
@@ -138,7 +90,23 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
             RemoteUser remoteUser = null;
             for (int i=0; i<groupNames.size(); i++) {
                 String groupName = (String)groupNames.get(i);
-                jiraSoapService.createGroup(token, groupName, remoteUser);
+
+                if (userAccessor.getGroup(groupName) == null) {
+                    RemoteGroup vGroup = jiraSoapService.createGroup(token, groupName, remoteUser);
+                    log.debug("created " + groupName);
+                    success.add(groupName);
+
+                    //If group exists then set all required permissions
+                    if (vGroup != null)
+                    {
+                        SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION, space, vGroup.getName());
+                        space.addPermission(perm);
+                        log.debug("added viewspace perm to " + groupName);
+                    }
+                }
+                else {
+                    alreadyExisted.add(groupName);
+                }
             }
         }
         catch (Throwable e) {
@@ -153,6 +121,24 @@ public class JiraSoapGroupManagementService implements GroupManagementService {
                     t.printStackTrace();
                 }
             }
+        }
+
+        if (alreadyExisted.size()>0) {
+            String msg = "";
+            String concat = "";
+            if (alreadyExisted.size()>0) {
+                msg += context.getText("groups.already.existed") + ": " +
+                        StringUtil.convertCollectionToCommaDelimitedString(alreadyExisted) + ".";
+                concat = " ";
+            }
+
+            if (success.size()>0) {
+                msg += concat;
+                msg += context.getText("error.groupAddSuccess") + ": " +
+                        StringUtil.convertCollectionToCommaDelimitedString(success) + ".";
+            }
+
+            throw new AddException(msg);
         }
     }
 

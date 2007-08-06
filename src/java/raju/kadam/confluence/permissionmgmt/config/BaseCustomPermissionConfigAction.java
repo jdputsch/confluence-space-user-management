@@ -38,10 +38,7 @@ import com.atlassian.confluence.core.Administrative;
 public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements Administrative, CustomPermissionConfigurable {
 
     private String userManagerLocation;
-    private String jiraJNDILookupKey;
     private String ldapAuthUsed;
-    private String companyLDAPUrl;
-    private String companyLDAPBaseDN;
     private String maxUserIDsLimit;
     private String maxGroupIDsLimit;
     private String userGroupsMatchingPattern;
@@ -58,14 +55,6 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setUserManagerLocation(String userManagerLocation) {
         this.userManagerLocation = userManagerLocation;
-    }
-
-    public String getJiraJNDILookupKey() {
-        return jiraJNDILookupKey;
-    }
-
-    public void setJiraJNDILookupKey(String jiraJNDILookupKey) {
-        this.jiraJNDILookupKey = jiraJNDILookupKey;
     }
 
     public String getLdapAuthUsed() {

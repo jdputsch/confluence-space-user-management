@@ -109,16 +109,8 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
     public void fixFormValues()
     {
-        //if CONFLUENCE used for user management, then we have to set "" values to jiraUrl and jiraJNDILookupKey as we can't sent null values!
-        //Note null values will be passed from input as those two inputs are disabled
-        if(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE.equals(getUserManagerLocation()))
-        {
-        	setJiraJNDILookupKey("");
-        }
-
         // Set presets as config, trimming and using defaults as needed
         setUserManagerLocation(ConfigUtil.getTrimmedStringOrNull(getUserManagerLocation()));
-        setJiraJNDILookupKey(ConfigUtil.getTrimmedStringOrNull(getJiraJNDILookupKey()));
         setMaxUserIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIdsLimit", getMaxUserIDsLimit(), 20));
         setUserGroupsMatchingPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userGroupsMatchingPattern", getUserGroupsMatchingPattern(), CustomPermissionConstants.SPACEKEY_REGEXP));
         setLdapAuthUsed(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("ldapAuthUsed", getLdapAuthUsed(), "NO"));

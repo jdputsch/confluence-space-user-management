@@ -61,7 +61,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void copyTo(CustomPermissionConfigurable config) {
         config.setUserManagerLocation(getUserManagerLocation());
-        config.setJiraJNDILookupKey(getJiraJNDILookupKey());
         config.setMaxUserIDsLimit(getMaxUserIDsLimit());
         config.setMaxGroupIDsLimit(getMaxGroupIDsLimit());
         config.setUserGroupsMatchingPattern(getUserGroupsMatchingPattern());
@@ -76,7 +75,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void updateWith(CustomPermissionConfigurable config) {
         setUserManagerLocation(config.getUserManagerLocation());
-        setJiraJNDILookupKey(config.getJiraJNDILookupKey());
         setMaxUserIDsLimit(config.getMaxUserIDsLimit());
         setMaxGroupIDsLimit(config.getMaxGroupIDsLimit());
         setUserGroupsMatchingPattern(config.getUserGroupsMatchingPattern());
@@ -141,14 +139,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 log.error("Error loading properties file " + PropsUtil.PROPS_FILENAME, t);
                 result.setValid(false);
             }
-
-
-            //check if user has set Jira URL and Jira JNDI
-			if( config.getJiraJNDILookupKey() == null || config.getJiraJNDILookupKey().trim().equals(""))
-			{
-	            result.addFieldError("jiraJNDILookupKey", "Enter Jira JNDI DataSource");
-	            result.setValid(false);
-			}
 		}
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getLdapAuthUsed())) {

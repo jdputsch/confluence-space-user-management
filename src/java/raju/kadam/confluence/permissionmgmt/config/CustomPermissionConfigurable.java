@@ -37,9 +37,6 @@ public interface CustomPermissionConfigurable {
     public String getUserManagerLocation();
     public void setUserManagerLocation(String userManagerLocation);
 
-    public String getJiraJNDILookupKey();
-    public void setJiraJNDILookupKey(String jiraJNDILookupKey);
-
     public String getLdapAuthUsed();
     public void setLdapAuthUsed(String ldapAuthUsed);
 

@@ -88,16 +88,6 @@
             </td>
         </tr>
         <tr>
-            <td class="label" width="30%">$action.getText("jira.jndi.datasource.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.jiraJNDILookupKey)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraJNDILookupKey</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>                        
-        <tr>
             <td class="label" width="30%">$action.getText("ldap.authentication.used.label"):</td>
             <td nowrap>
                     <span style="color: green; font-weight: bold">#if ($!action.customPermissionConfiguration.ldapAuthUsed == "YES") YES #else NO #end</span>
@@ -228,15 +218,6 @@ ${action.propertyNameForJiraSoapUsername}=yourjiraadminusername
 ${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
 </pre>
 </div></div>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.jndi.datasource.label"):</td>
-            <td>
-				#fielderror ('jiraJNDILookupKey')
-                <input type="text" name="jiraJNDILookupKey" id="jiraJNDILookupKey" value="$!action.jiraJNDILookupKey" #if ($action.userManagerLocation == "CONFLUENCE") disabled="true" #end size="50" />
-                <p>$action.getText("configure.jiraDSname")</p>
             </td>
         </tr>
 
