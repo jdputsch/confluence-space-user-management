@@ -29,330 +29,262 @@
 
 package raju.kadam.confluence.permissionmgmt.service.impl;
 
-import raju.kadam.confluence.permissionmgmt.service.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import raju.kadam.confluence.permissionmgmt.service.exception.AddException;
-import raju.kadam.confluence.permissionmgmt.service.exception.FindException;
 import raju.kadam.confluence.permissionmgmt.service.exception.RemoveException;
-import raju.kadam.confluence.permissionmgmt.service.vo.*;
+import raju.kadam.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
+import raju.kadam.confluence.permissionmgmt.service.vo.ServiceContext;
 import raju.kadam.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import raju.kadam.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import raju.kadam.confluence.permissionmgmt.soap.jira.RemoteUser;
-import raju.kadam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import raju.kadam.confluence.permissionmgmt.util.StringUtil;
 import raju.kadam.confluence.permissionmgmt.util.jira.JiraUtil;
-import raju.kadam.confluence.permissionmgmt.util.user.UserUtil;
+import raju.kadam.confluence.permissionmgmt.util.ldap.LDAPUser;
+import raju.kadam.confluence.permissionmgmt.util.ldap.OSUserLDAPHelper;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import com.atlassian.user.impl.DefaultUser;
-import com.atlassian.user.search.page.Pager;
-import com.atlassian.user.search.page.DefaultPager;
-import com.atlassian.user.search.page.PagerUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.*;
 
 /**
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class JiraSoapUserManagementService implements UserManagementService {
+public class JiraSoapUserManagementService extends ConfluenceUserManagementService {
 
     private Log log = LogFactory.getLog(this.getClass());
 
-    private CustomPermissionConfiguration customPermissionConfiguration;
-
-    private boolean matches( String value, String searchValue, String type ) {
+    private boolean matches(String value, String searchValue, String type) {
         log.debug("matches() called.");
         boolean result = false;
         if (value != null && searchValue != null && type != null) {
             if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH && value.startsWith(searchValue)) {
                 result = true;
-            }
-            else if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS && value.indexOf(searchValue) != -1) {
+            } else
+            if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS && value.indexOf(searchValue) != -1) {
                 result = true;
-            }
-            else if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH && value.endsWith(searchValue)) {
+            } else if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH && value.endsWith(searchValue)) {
                 result = true;
             }
         }
 
         return result;
-    }
-
-    private List findIntersection( List existingUsersList, List returnedUsers, boolean ranQueryAtLeastOnce) {
-        List users = null;
-        if (ranQueryAtLeastOnce) {
-            users = UserUtil.findIntersectionOfUsers(existingUsersList, returnedUsers);
-        }
-        else {
-            users = returnedUsers;
-        }
-
-        return users;
-    }
-
-    protected List getAllJiraUsers(ServiceContext context) throws FindException {
-        log.debug("getAllJiraUsers() called.");
-        // TODO: refactor. converting from pager to list to pager is just plain stupid
-        return PagerUtils.toList(findUsersForGroup("jira-users", context));
-    }
-
-    public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
-        log.debug("findUsers() called.");
-        AdvancedUserQueryResults results = new AdvancedUserQueryResults();
-
-        if (!advancedUserQuery.isDefined()) {
-            // no need to do anything if no search defined
-            return results;
-        }
-
-        List allJiraUsers = getAllJiraUsers(context);
-        List users = new ArrayList();
-        if (advancedUserQuery.isUsernameSearchDefined()) {
-            for (int i=0; i<allJiraUsers.size(); i++) {
-                DefaultUser jiraUser = (DefaultUser)allJiraUsers.get(0);
-                if (matches(jiraUser.getName(), advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType())) {
-                    users.add(jiraUser);
-                }
-            }
-        }
-        else if (advancedUserQuery.isFullnameSearchDefined()) {
-            for (int i=0; i<allJiraUsers.size(); i++) {
-                DefaultUser jiraUser = (DefaultUser)allJiraUsers.get(0);
-                if (matches(jiraUser.getFullName(), advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType())) {
-                    users.add(jiraUser);
-                }
-            }
-        }
-        else if (advancedUserQuery.isEmailSearchDefined()) {
-            for (int i=0; i<allJiraUsers.size(); i++) {
-                DefaultUser jiraUser = (DefaultUser)allJiraUsers.get(0);
-                if (matches(jiraUser.getEmail(), advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType())) {
-                    users.add(jiraUser);
-                }
-            }
-        }
-
-        Pager pager = new DefaultPager(users);
-        results.setUsers(pager);
-
-        return results;
-    }
-
-    public Pager findUsersForGroup(String groupName, ServiceContext context) throws FindException {
-        log.debug("findUsersForGroup() called.");
-        List users = new ArrayList();
-
-        JiraSoapService jiraSoapService = null;
-        String token = null;
-
-        try
-        {
-            JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
-            jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
-            RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
-            if (remoteGroup != null) {
-                RemoteUser[] jiraUsers = remoteGroup.getUsers();
-
-                if (jiraUsers!=null)
-                {
-                    for (int i=0; i<jiraUsers.length; i++)
-                    {
-                        RemoteUser jiraUser = jiraUsers[i];
-                        if (jiraUser != null)
-                        {
-                            DefaultUser user = new DefaultUser();
-                            user.setEmail(jiraUser.getEmail());
-                            user.setFullName(jiraUser.getFullname());
-                            user.setName(jiraUser.getName());
-                            users.add(user);
-                        }
-                    }
-                }
-            }
-        }
-        catch (Throwable e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if (token != null)
-            {
-                try
-                {
-                    jiraSoapService.logout(token);
-                }
-                catch (Throwable t)
-                {
-                    t.printStackTrace();
-                }
-            }
-        }
-
-        Pager pager = new DefaultPager(users);
-
-        return pager;
-    }
-
-    public Pager findUsersWhoseNameStartsWith(String partialName, ServiceContext context) throws FindException {
-        log.debug("findUsersWhoseNameStartsWith() called.");
-        AdvancedUserQuery advancedUserQuery = new AdvancedUserQuery();
-        advancedUserQuery.setLookupType(AdvancedUserQueryLookupType.USERNAME);
-        advancedUserQuery.setPartialSearchTerm(partialName);
-        advancedUserQuery.setSubstringMatchType(AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH);
-        return findUsers(advancedUserQuery, context).getUsers();
     }
 
     public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws AddException {
-        log.debug("addUsersByUsernameToGroup() called.");
+        log.debug("addUsersByUsernameToGroupsByGroupname() called. " +
+                "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
+                ", groupnames=" + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
+
         JiraSoapService jiraSoapService = null;
         String token = null;
 
-        try
-        {
+        List usersNotFound = new ArrayList();
+        // using map to get only unique groups. using treemap to keep groupnames in order
+        Map groupsNotFoundMap = new TreeMap();
+
+        try {
             JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
             jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
             jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
             token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
 
-            for (int i=0; i<groupNames.size(); i++) {
-                String groupName = (String)groupNames.get(i);
-                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
+            CustomPermissionConfiguration config = getCustomPermissionConfiguration();
 
-                for (int j=0; j<userNames.size(); j++) {
-                    String userName = (String)userNames.get(j);
-                    RemoteUser remoteUser = jiraSoapService.getUser(token, userName);
+            boolean isLDAPPresent = config.getLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false;
 
-                    jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+            //Associate selected user-groups to all users.
+            for (Iterator itr = userNames.iterator(); itr.hasNext();) {
+                //First check if given user is present or not
+                String userid = (String) itr.next();
+                RemoteUser currUser = jiraSoapService.getUser(token, userid);
+                if (currUser == null) {
+                    //create an user
+                    //userid doesn't exists, if LDAP present then we will create User if it exists in LDAP.
+                    if (isLDAPPresent) {
+                        //create an user.
+
+                        // TODO: the option to create users if they don't exist using LDAP info should be in config
+
+                        // TODO: consider adding option and ability to create users if they don't exist, even if LDAP not used
+
+                        currUser = createJiraUser(token, jiraSoapService, userid, isLDAPPresent);
+                    }
+
+                    //if user details not found in LDAP too, then retun userid in errorids
+                    if (currUser == null) {
+
+                        //for some reason we are unable to create user.
+                        //add it to our notCreatedUser List.
+                        usersNotFound.add(userid);
+
+                        continue;
+
+                    } else {
+                        RemoteUser remoteUser = jiraSoapService.getUser(token, userid);
+                        if (remoteUser != null) {
+
+                            //Add this user to default group confluence-users
+                            if (groupsNotFoundMap.get(ServiceConstants.CONFLUENCE_USERS_GROUP_NAME)==null) {
+                                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, ServiceConstants.CONFLUENCE_USERS_GROUP_NAME);
+                                if (remoteGroup!=null) {
+                                    jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                                }
+                                else {
+                                    groupsNotFoundMap.put(ServiceConstants.CONFLUENCE_USERS_GROUP_NAME, "");
+                                }
+                            }
+
+                            if (groupsNotFoundMap.get(ServiceConstants.JIRA_USERS_GROUP_NAME)==null) {
+                                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, ServiceConstants.JIRA_USERS_GROUP_NAME);
+                                if (remoteGroup!=null) {
+                                    jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                                }
+                                else {
+                                    groupsNotFoundMap.put(ServiceConstants.JIRA_USERS_GROUP_NAME, "");
+                                }
+                            }
+                        }
+                        else {
+                            usersNotFound.add(userid);
+                        }
+                    }
                 }
-            }
-        }
-        catch (Throwable e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if (token != null)
-            {
-                try
-                {
-                    jiraSoapService.logout(token);
-                }
-                catch (Throwable t)
-                {
-                    t.printStackTrace();
-                }
-            }
-        }
-    }
 
-    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws RemoveException {
-        log.debug("removeUsersByUsernameFromGroup() called.");
-        JiraSoapService jiraSoapService = null;
-        String token = null;
+                //If user exists then associate him/her to all selected usergroups
+                if (currUser != null) {
+                    //Associate this user to all selected user-groups
+                    for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
+                        String groupName = (String) iterator.next();
+                        if (groupsNotFoundMap.get(groupName) == null) {
+                            // Am thoroughly confounded that the groupname here has to be lowercase. have backup check for
+                            // regular (mixed-case) lookup, just in case that is a bug.
+                            // TODO: test this and submit bug as needed
+                            String lowercaseGroupName = groupName.toLowerCase();
 
-        try
-        {
-            JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
-            jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
+                            RemoteGroup remoteGroup = jiraSoapService.getGroup(token, lowercaseGroupName);
+                            RemoteUser remoteUser = jiraSoapService.getUser(token, userid);
 
-            for (int i=0; i<groupNames.size(); i++) {
-                String groupName = (String)groupNames.get(i);
-                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
-
-                for (int j=0; j<userNames.size(); j++) {
-                    String userName = (String)userNames.get(j);
-                    RemoteUser remoteUser = jiraSoapService.getUser(token, userName);
-
-                    jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
-                }
-            }
-        }
-        catch (Throwable e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if (token != null)
-            {
-                try
-                {
-                    jiraSoapService.logout(token);
-                }
-                catch (Throwable t)
-                {
-                    t.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public boolean isMemberOf(String userName, String groupName) throws FindException
-    {
-        log.debug("isMemberOf() called.");
-        boolean result = false;
-
-        JiraSoapService jiraSoapService = null;
-        String token = null;
-
-        try
-        {
-            JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
-            jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
-            RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
-            if (remoteGroup != null) {
-                RemoteUser[] users = remoteGroup.getUsers();
-
-                if (users!=null)
-                {
-                    for (int i=0; i<users.length; i++)
-                    {
-                        RemoteUser thisUser = users[i];
-                        if (thisUser != null && userName.equals(thisUser.getName()))
-                        {
-                            result = true;
+                            if (userAccessor.getGroup(lowercaseGroupName) != null && remoteGroup != null) {
+                                userAccessor.addMembership(lowercaseGroupName, userid);
+                                jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                            } else if (userAccessor.getGroup(groupName) != null) {
+                                userAccessor.addMembership(groupName, userid);
+                            } else {
+                                groupsNotFoundMap.put("" + groupName, "");
+                            }
                         }
                     }
                 }
             }
         }
-        catch (Throwable e)
-        {
-            e.printStackTrace();
+        catch (Throwable e) {
+            log.error(e);
+            throw new AddException(e.getMessage(), e);
         }
-        finally
-        {
-            if (token != null)
-            {
-                try
-                {
+        finally {
+            if (token != null) {
+                try {
                     jiraSoapService.logout(token);
                 }
-                catch (Throwable t)
-                {
+                catch (Throwable t) {
                     t.printStackTrace();
                 }
             }
         }
 
-        return result;
+        // If we failed, throw exception
+        List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
+        if (usersNotFound.size() > 0 || groupsNotFound.size() > 0) {
+            throw new AddException(getErrorMessage(usersNotFound, groupsNotFound, context));
+        }
     }
 
-    public CustomPermissionConfiguration getCustomPermissionConfiguration() {
-        return customPermissionConfiguration;
+    //This method will be used to create an user when Confluence is used for Managing Wiki Users
+    private RemoteUser createJiraUser(String token, JiraSoapService jiraSoapService, String creationUserName, boolean isLDAPAvailable) {
+        log.debug("createConfUser() called. creationUserName=" + creationUserName + " isLDAPAvailable" + isLDAPAvailable);
+        RemoteUser vUser = null;
+        LDAPUser lUser = null;
+
+        try {
+            //if LDAP Lookup is available, get information from there.
+            if (isLDAPAvailable) {
+                //log.debug("LDAP Lookup available");
+                //Get user details from LDAP.
+                OSUserLDAPHelper helper = new OSUserLDAPHelper();
+                helper.getLDAPUser(creationUserName);
+
+                if (lUser != null) {
+                    //createUser(String token, String username, String password, String fullName, String email)
+                    vUser = jiraSoapService.createUser(token, creationUserName, creationUserName, lUser.getEmail(), lUser.getFullName());
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return vUser;
     }
 
-    public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
-        this.customPermissionConfiguration = customPermissionConfiguration;
+    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws RemoveException {
+        log.debug("removeUsersByUsernameFromGroups() called. " +
+                "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
+                ", groupnames=" + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
+        JiraSoapService jiraSoapService = null;
+        String token = null;
+
+        List usersNotFound = new ArrayList();
+        // using map to get only unique groups. using treemap to keep groupnames in order
+        Map groupsNotFoundMap = new TreeMap();
+
+        try {
+            JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
+            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
+            jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
+            token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
+
+            for (Iterator itr = userNames.iterator(); itr.hasNext();) {
+                String userid = (String) itr.next();
+
+                RemoteUser remoteUser = jiraSoapService.getUser(token, userid);
+                if (remoteUser != null) {
+                    for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
+                        String groupName = (String) iterator.next();
+                        if (groupsNotFoundMap.get(groupName) == null) {
+                            RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
+                            if (remoteGroup != null) {
+                                jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
+                            }
+                        } else {
+                            groupsNotFoundMap.put("" + groupName, "");
+                        }
+                    }
+                } else {
+                    usersNotFound.add(userid);
+                }
+            }
+        }
+        catch (Throwable e) {
+            log.error(e);
+            throw new RemoveException(e.getMessage(), e);
+        }
+        finally {
+            if (token != null) {
+                try {
+                    jiraSoapService.logout(token);
+                }
+                catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+        }
+
+        // If we failed, throw exception
+        List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
+        if (usersNotFound.size() > 0 || groupsNotFound.size() > 0) {
+            throw new RemoveException(getErrorMessage(usersNotFound, groupsNotFound, context));
+        }
     }
 }
