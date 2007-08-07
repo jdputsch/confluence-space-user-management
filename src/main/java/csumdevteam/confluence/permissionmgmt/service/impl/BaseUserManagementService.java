@@ -136,7 +136,7 @@ public abstract class BaseUserManagementService implements UserManagementService
             pager = searchResult.pager();
         }
         catch (EntityException e) {
-            e.printStackTrace();
+            log.error("Error finding username that starts with " + partialName, e);
         }
 
         return pager;

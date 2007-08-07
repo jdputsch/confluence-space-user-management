@@ -106,7 +106,7 @@ public class JiraSoapGroupManagementService extends ConfluenceGroupManagementSer
                     jiraSoapService.logout(token);
                 }
                 catch (Throwable t) {
-                    t.printStackTrace();
+                    log.error("Error in Jira logout", t);
                 }
             }
         }
@@ -179,7 +179,7 @@ public class JiraSoapGroupManagementService extends ConfluenceGroupManagementSer
                     jiraSoapService.logout(token);
                 }
                 catch (Throwable t) {
-                    t.printStackTrace();
+                    log.error("Error in Jira logout", t);
                 }
             }
         }

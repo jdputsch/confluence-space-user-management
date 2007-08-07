@@ -73,7 +73,7 @@ public class PropsUtil {
                     in.close();
                 }
                 catch (Throwable t) {
-                    t.printStackTrace();
+                    log.error("Error closing props file input stream", t);
                 }
             }
         }

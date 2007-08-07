@@ -140,7 +140,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error creating confluence user " + creationUserName, e);
         }
 
         return vUser;

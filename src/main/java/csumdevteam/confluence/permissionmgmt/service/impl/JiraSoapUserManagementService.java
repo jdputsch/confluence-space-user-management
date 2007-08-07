@@ -190,7 +190,7 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
                     jiraSoapService.logout(token);
                 }
                 catch (Throwable t) {
-                    t.printStackTrace();
+                    log.error("Error in Jira logout", t);
                 }
             }
         }
@@ -222,7 +222,7 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
                 }
             }
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.error("Error creating Jira user", e);
         }
 
         return vUser;
@@ -276,7 +276,7 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
                     jiraSoapService.logout(token);
                 }
                 catch (Throwable t) {
-                    t.printStackTrace();
+                    log.error("Error in Jira logout", t);
                 }
             }
         }
