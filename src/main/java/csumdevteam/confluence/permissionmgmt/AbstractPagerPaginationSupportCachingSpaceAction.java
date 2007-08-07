@@ -39,13 +39,18 @@ import java.util.List;
 
 import bucket.core.actions.PagerPaginationSupport;
 import csumdevteam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Gary S. Weaver
  */
 public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends AbstractSpaceAction implements SpaceAdministrative {
 
+    private static final Log staticlog = LogFactory.getLog(AbstractPagerPaginationSupportCachingSpaceAction.class);
+
     private static final String PLUGIN_SESSION_KEY_PREFIX = "SUSR";
+    private static final String DELIMITER = ":";
     private static final String GROUPS_SESSION_KEY_SUFFIX = "groups";
     private static final String USERS_SESSION_KEY_SUFFIX = "users";
     private static final String SEARCH_RESULT_USERS_SESSION_KEY_SUFFIX = "searchresultusers";
@@ -93,7 +98,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     private String getGroupsPpsKey(String spaceKey) {
-        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + GROUPS_SESSION_KEY_SUFFIX;
+        return PLUGIN_SESSION_KEY_PREFIX + DELIMITER + spaceKey + DELIMITER + GROUPS_SESSION_KEY_SUFFIX;
     }
 
     public Integer getGroupsIndex(String spaceKey) {
@@ -108,7 +113,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     private String getGroupsIndexKey(String spaceKey) {
-        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + GROUPS_INDEX_SESSION_KEY_SUFFIX;
+        return PLUGIN_SESSION_KEY_PREFIX + DELIMITER + spaceKey + DELIMITER + GROUPS_INDEX_SESSION_KEY_SUFFIX;
     }
 
     // USERS LIST AND GROUP LIST INDEX CACHING
@@ -125,7 +130,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     private String getUsersPpsKey(String spaceKey, String groupName) {
-        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + groupName + ":" + USERS_SESSION_KEY_SUFFIX;
+        return PLUGIN_SESSION_KEY_PREFIX + DELIMITER + spaceKey + DELIMITER + groupName + DELIMITER + USERS_SESSION_KEY_SUFFIX;
     }
 
     public Integer getUsersIndex(String spaceKey, String groupName) {
@@ -140,7 +145,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     private String getUsersIndexKey(String spaceKey, String groupName) {
-        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + groupName + ":" + USERS_INDEX_SESSION_KEY_SUFFIX;
+        return PLUGIN_SESSION_KEY_PREFIX + DELIMITER + spaceKey + DELIMITER + groupName + DELIMITER + USERS_INDEX_SESSION_KEY_SUFFIX;
     }
 
     // USER SEARCH-RELATED CACHING
@@ -157,7 +162,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     private String getSearchResultUsersPpsKey(String spaceKey, String groupName) {
-        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + groupName + ":" + SEARCH_RESULT_USERS_SESSION_KEY_SUFFIX;
+        return PLUGIN_SESSION_KEY_PREFIX + DELIMITER + spaceKey + DELIMITER + groupName + DELIMITER + SEARCH_RESULT_USERS_SESSION_KEY_SUFFIX;
     }
 
     public Integer getSearchResultUsersIndex(String spaceKey, String groupName) {
@@ -172,7 +177,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     private String getSearchResultUsersIndexKey(String spaceKey, String groupName) {
-        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + groupName + ":" + SEARCH_RESULT_USERS_INDEX_SESSION_KEY_SUFFIX;
+        return PLUGIN_SESSION_KEY_PREFIX + DELIMITER + spaceKey + DELIMITER + groupName + DELIMITER + SEARCH_RESULT_USERS_INDEX_SESSION_KEY_SUFFIX;
     }
 
     public AdvancedUserQuery getAdvancedUserQuery(String spaceKey, String groupName) {
@@ -187,7 +192,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     private String getAdvancedUserQueryKey(String spaceKey, String groupName) {
-        return PLUGIN_SESSION_KEY_PREFIX + ":" + spaceKey + ":" + groupName + ":" + ADVANCED_USER_QUERY_SESSION_KEY_SUFFIX;
+        return PLUGIN_SESSION_KEY_PREFIX + DELIMITER + spaceKey + DELIMITER + groupName + DELIMITER + ADVANCED_USER_QUERY_SESSION_KEY_SUFFIX;
     }
 
     // CACHE-CLEARING METHODS
@@ -201,6 +206,20 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
         }
     }        
 
+    // called by config
+    public static void clearCacheIncludingIndexes() {
+        staticlog.debug("Clearing all cache (removing all session data with keys that start with '" + PLUGIN_SESSION_KEY_PREFIX + DELIMITER + "')");
+        Map session = (Map) ActionContext.getContext().get("session");
+        Iterator iter = session.keySet().iterator();
+        while (iter.hasNext()) {
+            String key = (String)iter.next();
+            // intentionally not removing index here
+            if (key.startsWith(PLUGIN_SESSION_KEY_PREFIX + DELIMITER)) {
+                session.remove(key);
+            }
+        }
+    }
+
     // Note: intentionally not clearing index cache. That is used to find out where you were in result set.
     public void clearCache() {
         log.debug("Clearing all cache (removing all session data with keys that start with '" + PLUGIN_SESSION_KEY_PREFIX + "' and not ending with '" + INDEX_SUFFIX + "')");
@@ -209,7 +228,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
         while (iter.hasNext()) {
             String key = (String)iter.next();
             // intentionally not removing index here
-            if (key.startsWith(PLUGIN_SESSION_KEY_PREFIX) && !key.endsWith(INDEX_SUFFIX)) {
+            if (key.startsWith(PLUGIN_SESSION_KEY_PREFIX + DELIMITER) && !key.endsWith(INDEX_SUFFIX)) {
                 cachePpsIndexIfSupported(key);
                 session.remove(key);
             }

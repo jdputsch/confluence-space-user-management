@@ -42,6 +42,7 @@ import csumdevteam.confluence.permissionmgmt.util.ConfigUtil;
 import csumdevteam.confluence.permissionmgmt.util.jira.JiraUtil;
 import csumdevteam.confluence.permissionmgmt.util.PropsUtil;
 import csumdevteam.confluence.permissionmgmt.util.group.GroupNameUtil;
+import csumdevteam.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
 
 /**
  * @author Gary S. Weaver
@@ -85,6 +86,9 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setNewGroupNameCreationPrefixPattern(config.getNewGroupNameCreationPrefixPattern());
         setNewGroupNameCreationSuffixPattern(config.getNewGroupNameCreationSuffixPattern());
         setUserSearchEnabled(config.getUserSearchEnabled());
+
+        // config has changed. clear ALL cache including indexes!!!
+        AbstractPagerPaginationSupportCachingSpaceAction.clearCacheIncludingIndexes();
     }
 
     public ConfigValidationResponse validate() {
