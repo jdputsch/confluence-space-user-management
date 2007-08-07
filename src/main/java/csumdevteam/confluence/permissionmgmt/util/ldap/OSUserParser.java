@@ -168,15 +168,15 @@ public class OSUserParser extends DefaultHandler {
             parser.parse(is, this);
         }
         catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
+            log.error(pce);
             throw new ParserConfigurationException("OSUserParser failed with a general configuration parse problem: " + pce.getLocalizedMessage());
         }
         catch (SAXException saxe) {
-            saxe.printStackTrace();
+            log.error(saxe);
             throw new ParserConfigurationException("OSUserParser failed with a SAX parse problem: " + saxe.getLocalizedMessage());
         }
         catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
             throw new ParserConfigurationException("OSUserParser failed with an IO problem: " + e.getLocalizedMessage());
         }
     }
