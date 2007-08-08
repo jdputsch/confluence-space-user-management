@@ -196,6 +196,16 @@
                 </includes>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </testResource>
+        </testResources>
 
         <plugins>
             <plugin>
@@ -204,6 +214,7 @@
                 <extensions>true</extensions>
             </plugin>
 
+			<!-- target = axistools:wsdl2java -->
             <plugin>
                <groupId>org.codehaus.mojo</groupId>
                <artifactId>axistools-maven-plugin</artifactId>
