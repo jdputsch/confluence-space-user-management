@@ -254,7 +254,7 @@
             <td valign="top" class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
             <td>
                 #fielderror ('jiraSoapUrl')
-                <input type="text" name="jiraSoapUrl" value="$!action.jiraSoapUrl" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
+                <input type="text" id="jiraSoapUrl" name="jiraSoapUrl" value="$!action.jiraSoapUrl" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
                 <p>
                     <font size="1">$action.getText("jira.soap.url.note")</font>
                 </p>
@@ -265,7 +265,7 @@
             <td valign="top" class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
             <td>
                 #fielderror ('jiraSoapUsername')
-                <input type="text" name="jiraSoapUsername" value="$!action.jiraSoapUsername" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
+                <input type="text" id="jiraSoapUsername" name="jiraSoapUsername" value="$!action.jiraSoapUsername" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
                 <p>
                     <font size="1">$action.getText("jira.soap.username.note")</font>
                 </p>
@@ -278,7 +278,7 @@
                 #fielderror ('jiraSoapPassword')
                 <input type="checkbox" value="y" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
                 $action.getText('jira.soap.password.set.label') 
-                <input type="password" name="jiraSoapPassword" value="$!action.jiraSoapPassword" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
+                <input type="password" id="jiraSoapPassword" name="jiraSoapPassword" value="$!action.jiraSoapPassword" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
                 <p>
                     <font size="1">$action.getText("jira.soap.password.note")</font>
                 </p>
