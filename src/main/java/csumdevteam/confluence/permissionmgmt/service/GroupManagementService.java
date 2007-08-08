@@ -44,6 +44,8 @@ public interface GroupManagementService {
 
     public Pager findGroups( ServiceContext context ) throws FindException;
 
+    public boolean isAllowedToManageGroup( ServiceContext context, String groupName ) throws FindException;
+
     public void addGroups( List groupNames, ServiceContext context ) throws AddException;
 
     public void removeGroups( List groupNames, ServiceContext context ) throws RemoveException;

@@ -10,6 +10,7 @@ import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.search.page.DefaultPager;
 import com.atlassian.user.search.page.Pager;
+import com.atlassian.user.Group;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -64,9 +65,28 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
         return pager;
     }
 
+    public boolean isAllowedToManageGroup( ServiceContext context, String groupName ) throws FindException {
+        log.debug("isAllowedToManageGroup() called. groupName=" + groupName);
+        Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
+        List groupNames = getGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
+        return groupNames.contains(groupName);         
+    }
+
     private List getGroupsThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
         log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
+        List groupNames = getGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
         List groups = new ArrayList();
+        for (int i=0; i<groupNames.size(); i++) {
+            String groupName = (String)groupNames.get(i);
+            Group group = userAccessor.getGroup(groupName);
+            groups.add(group);
+        }
+        return groups;
+    }
+
+    private List getGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
+        log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
+        List groupNames = new ArrayList();
         Space space = context.getSpace();
 
         ArrayList notAllowedUserGroups = new ArrayList();
@@ -75,21 +95,21 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
         Pattern pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), space.getKey());
 
         for (Iterator iterator = mapWithGroupnamesAsKeys.keySet().iterator(); iterator.hasNext();) {
-            String grpName = (String) iterator.next();
+            String groupName = (String) iterator.next();
             //If notAllowedUserGroups doesn't contain this group name
             //and group name matches the pattern, then only add this user-group for display.
             //log.debug("Selected Groups .....");
-            boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(grpName, pat);
-            if ((!notAllowedUserGroups.contains(grpName)) && isPatternMatch) {
+            boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(groupName, pat);
+            if ((!notAllowedUserGroups.contains(groupName)) && isPatternMatch) {
                 //log.debug("Group '" + grpName + "' allowed and matched pattern " + pat.pattern() );
-                groups.add(userAccessor.getGroup(grpName));
+                groupNames.add(groupName);
             } else {
                 //log.debug("Group '" + grpName + "' not allowed or didn't match pattern. notAllowedUserGroups=" + StringUtil.convertCollectionToCommaDelimitedString(notAllowedUserGroups) + " isPatternMatch=" + isPatternMatch + " pattern=" + pat.pattern());
             }
             //log.debug("-------End of Groups---------");
 
         }
-        return groups;
+        return groupNames;
     }
 
     private Map getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(ServiceContext context) {

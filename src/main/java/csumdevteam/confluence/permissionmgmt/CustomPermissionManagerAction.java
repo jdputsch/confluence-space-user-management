@@ -479,7 +479,30 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         String selectedGroup = getUrlDecodedCleanedTrimmedParameterValue(paramMap, "selectedGroup");
         log.debug("selectedGroup=" + selectedGroup);
-        setSelectedGroup(selectedGroup);
+
+        ServiceContext serviceContext = createServiceContext();
+
+        // fix for bug: if group (due to permissions or config change) is no longer selectable, it should be removed
+        // from cache
+        boolean canManageSelectedGroup = getGroupManagementService().isAllowedToManageGroup(serviceContext,selectedGroup);
+        log.debug("isAllowedToManage '" + selectedGroup + "' = " + canManageSelectedGroup);
+
+        if (canManageSelectedGroup) {
+            setSelectedGroup(selectedGroup);
+        }
+        else {
+            setSelectedGroup(null);
+
+            Collection actionErrors = getActionErrors();
+            if (actionErrors==null) {
+                actionErrors = new ArrayList();
+            }
+            actionErrors.add(getText("error.notAllowedToManageSelectedGroup") + ": " + selectedGroup);
+            setActionErrors(actionErrors);
+
+            // config or permissions have changed - blow away users/groups/search cache
+            this.clearCache();
+        }
 
         log.debug("Starting execute() users");
         debug(getUsers());
@@ -524,7 +547,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     	//	return ERROR;
     	//}
 
-        String result = this.manage(context);
+        String result = this.manage(context, serviceContext);
 
         log.debug("Ending execute() users");
         debug(getUsers());
@@ -655,7 +678,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
 
-    public String manage(CustomPermissionManagerActionContext context)
+    public String manage(CustomPermissionManagerActionContext context, ServiceContext serviceContext)
     {
 		log.debug("manage() called");
 
@@ -667,7 +690,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         {
             GroupManagementService groupManagementService = getGroupManagementService();
             UserManagementService userManagementService = getUserManagementService();
-            ServiceContext serviceContext = createServiceContext();
 
             log.debug("adminAction=" + adminAction);
 
