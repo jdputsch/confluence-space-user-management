@@ -28,6 +28,10 @@ cd ../..
 
 mvn clean install
 
+note: if tests are failing, you may need to skip them to build the plugin. If so, use:
+
+mvn -Dmaven.test.skip=true clean install
+
 5) After that go into confluence into administration -> plugins. Choose this project's plugin. If it already exists, uninstall the plugin from confluence and (re)install the new one in target/...jar. If the plugin fails to load for any reason, you probably don't have enough or have too many dependencies, so see http://confluence.atlassian.com/display/DISC/Developing+Confluence+Plugins+with+Maven+2 for info on defining your pom.xml.
 
 Other helpful hints for those new to maven 2:
