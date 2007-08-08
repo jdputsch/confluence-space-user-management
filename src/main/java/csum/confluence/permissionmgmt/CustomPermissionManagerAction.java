@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt;
+package csum.confluence.permissionmgmt;
 
 import bucket.core.actions.PagerPaginationSupport;
 import com.atlassian.bandana.BandanaManager;
@@ -42,18 +42,18 @@ import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
 import com.opensymphony.webwork.ServletActionContext;
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
-import csumdevteam.confluence.permissionmgmt.config.ConfigValidationResponse;
-import csumdevteam.confluence.permissionmgmt.service.*;
-import csumdevteam.confluence.permissionmgmt.service.exception.ServiceException;
-import csumdevteam.confluence.permissionmgmt.service.vo.*;
-import csumdevteam.confluence.permissionmgmt.util.ConfigUtil;
-import csumdevteam.confluence.permissionmgmt.util.ListUtil;
-import csumdevteam.confluence.permissionmgmt.util.StringUtil;
-import csumdevteam.confluence.permissionmgmt.util.group.GroupNameUtil;
-import csumdevteam.confluence.permissionmgmt.util.group.GroupUtil;
-import csumdevteam.confluence.permissionmgmt.util.paging.PagerPaginationSupportUtil;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import csum.confluence.permissionmgmt.config.ConfigValidationResponse;
+import csum.confluence.permissionmgmt.service.*;
+import csum.confluence.permissionmgmt.service.exception.ServiceException;
+import csum.confluence.permissionmgmt.service.vo.*;
+import csum.confluence.permissionmgmt.util.ConfigUtil;
+import csum.confluence.permissionmgmt.util.ListUtil;
+import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
+import csum.confluence.permissionmgmt.util.group.GroupUtil;
+import csum.confluence.permissionmgmt.util.paging.PagerPaginationSupportUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

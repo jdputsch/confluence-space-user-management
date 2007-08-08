@@ -1,4 +1,4 @@
-package csumdevteam.confluence.permissionmgmt.service.impl;
+package csum.confluence.permissionmgmt.service.impl;
 
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.spring.container.ContainerManager;
@@ -14,14 +14,14 @@ import com.atlassian.user.search.query.TermQuery;
 import com.atlassian.user.search.query.UserNameTermQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
-import csumdevteam.confluence.permissionmgmt.service.UserManagementService;
-import csumdevteam.confluence.permissionmgmt.service.exception.FindException;
-import csumdevteam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
-import csumdevteam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
-import csumdevteam.confluence.permissionmgmt.service.vo.ServiceContext;
-import csumdevteam.confluence.permissionmgmt.util.StringUtil;
-import csumdevteam.confluence.permissionmgmt.util.paging.LazyLoadingUserByUsernamePager;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import csum.confluence.permissionmgmt.service.UserManagementService;
+import csum.confluence.permissionmgmt.service.exception.FindException;
+import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
+import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
+import csum.confluence.permissionmgmt.service.vo.ServiceContext;
+import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.paging.LazyLoadingUserByUsernamePager;
 
 import java.util.ArrayList;
 import java.util.List;

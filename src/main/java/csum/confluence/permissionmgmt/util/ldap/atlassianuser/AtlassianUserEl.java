@@ -1,4 +1,4 @@
-package csumdevteam.confluence.permissionmgmt.util.ldap.atlassianuser;
+package csum.confluence.permissionmgmt.util.ldap.atlassianuser;
 
 import java.util.ArrayList;
 

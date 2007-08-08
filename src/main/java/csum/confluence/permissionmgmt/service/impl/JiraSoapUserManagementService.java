@@ -27,23 +27,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.service.impl;
+package csum.confluence.permissionmgmt.service.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
-import csumdevteam.confluence.permissionmgmt.service.exception.AddException;
-import csumdevteam.confluence.permissionmgmt.service.exception.RemoveException;
-import csumdevteam.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
-import csumdevteam.confluence.permissionmgmt.service.vo.ServiceContext;
-import csumdevteam.confluence.permissionmgmt.soap.jira.JiraSoapService;
-import csumdevteam.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
-import csumdevteam.confluence.permissionmgmt.soap.jira.RemoteGroup;
-import csumdevteam.confluence.permissionmgmt.soap.jira.RemoteUser;
-import csumdevteam.confluence.permissionmgmt.util.StringUtil;
-import csumdevteam.confluence.permissionmgmt.util.ldap.LDAPUser;
-import csumdevteam.confluence.permissionmgmt.util.ldap.OSUserLDAPHelper;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import csum.confluence.permissionmgmt.service.exception.AddException;
+import csum.confluence.permissionmgmt.service.exception.RemoveException;
+import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
+import csum.confluence.permissionmgmt.service.vo.ServiceContext;
+import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
+import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
+import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
+import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
+import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
+import csum.confluence.permissionmgmt.util.ldap.OSUserLDAPHelper;
 
 import java.util.*;
 

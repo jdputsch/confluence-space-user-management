@@ -27,16 +27,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.service.impl;
+package csum.confluence.permissionmgmt.service.impl;
 
 import com.atlassian.user.Group;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.security.SpacePermission;
-import csumdevteam.confluence.permissionmgmt.service.exception.RemoveException;
-import csumdevteam.confluence.permissionmgmt.service.exception.AddException;
-import csumdevteam.confluence.permissionmgmt.service.vo.ServiceContext;
-import csumdevteam.confluence.permissionmgmt.util.StringUtil;
-import csumdevteam.confluence.permissionmgmt.util.group.GroupNameUtil;
+import csum.confluence.permissionmgmt.service.exception.RemoveException;
+import csum.confluence.permissionmgmt.service.exception.AddException;
+import csum.confluence.permissionmgmt.service.vo.ServiceContext;
+import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.paging;
+package csum.confluence.permissionmgmt.util.paging;
 
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerException;

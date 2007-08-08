@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.group;
+package csum.confluence.permissionmgmt.util.group;
 
 import com.atlassian.user.Group;
 

@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt;
+package csum.confluence.permissionmgmt;
 
 import java.util.ArrayList;
 import java.util.Collections;

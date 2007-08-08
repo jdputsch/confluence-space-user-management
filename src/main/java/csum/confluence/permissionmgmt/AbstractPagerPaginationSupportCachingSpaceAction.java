@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt;
+package csum.confluence.permissionmgmt;
 
 import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import bucket.core.actions.PagerPaginationSupport;
-import csumdevteam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
+import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

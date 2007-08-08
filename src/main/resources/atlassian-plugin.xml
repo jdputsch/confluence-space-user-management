@@ -41,31 +41,31 @@
     <!-- Modules here -->
 	<resource type="download" name="customusermanagement.css" location="templates/css/customusermanagement.css"/>        
 
-    <resource type="i18n" name="i18n" location="csumdevteam/confluence/permissionmgmt/AtlassianPlugin" />
+    <resource type="i18n" name="i18n" location="csum/confluence/permissionmgmt/AtlassianPlugin" />
 
     <component name="customPermissionConfiguration"
         key="customPermissionConfiguration"
-        class="csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfiguration" />
+        class="csum.confluence.permissionmgmt.config.CustomPermissionConfiguration" />
 
     <component name="confluenceUserManagementService"
         key="confluenceUserManagementService"
-        class="csumdevteam.confluence.permissionmgmt.service.impl.ConfluenceUserManagementService" />
+        class="csum.confluence.permissionmgmt.service.impl.ConfluenceUserManagementService" />
 
     <component name="confluenceGroupManagementService"
         key="confluenceGroupManagementService"
-        class="csumdevteam.confluence.permissionmgmt.service.impl.ConfluenceGroupManagementService" />
+        class="csum.confluence.permissionmgmt.service.impl.ConfluenceGroupManagementService" />
 
     <component name="jiraSoapUserManagementService"
             key="jiraSoapUserManagementService"
-            class="csumdevteam.confluence.permissionmgmt.service.impl.JiraSoapUserManagementService" />
+            class="csum.confluence.permissionmgmt.service.impl.JiraSoapUserManagementService" />
 
     <component name="jiraSoapGroupManagementService"
         key="jiraSoapGroupManagementService"
-        class="csumdevteam.confluence.permissionmgmt.service.impl.JiraSoapGroupManagementService" />
+        class="csum.confluence.permissionmgmt.service.impl.JiraSoapGroupManagementService" />
 
     <component name="customPermissionServiceManager"
         key="customPermissionServiceManager"
-        class="csumdevteam.confluence.permissionmgmt.service.CustomPermissionServiceManager" />
+        class="csum.confluence.permissionmgmt.service.CustomPermissionServiceManager" />
 
     <xwork name="Configure Custom Space User Management Plugin" key="configure-delegateusermgmt">
         
@@ -78,12 +78,12 @@
 				To do configuration of :
 				URL: http://<host>/confluence/admin/plugins/custompermissionsconfig/config.action
 			-->
-            <action name="config" class="csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfigAction" method="doDefault">
+            <action name="config" class="csum.confluence.permissionmgmt.config.CustomPermissionConfigAction" method="doDefault">
                 <result name="input" type="velocity">/templates/permissionmgmt/configure-plugin.vm</result>
                 <result name="error" type="velocity">/templates/permissionmgmt/configure-plugin.vm</result>
             </action>
             
-            <action name="doconfig" class="csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfigAction">
+            <action name="doconfig" class="csum.confluence.permissionmgmt.config.CustomPermissionConfigAction">
                 <result name="input" type="velocity">/templates/permissionmgmt/configure-plugin.vm</result>
                 <result name="error" type="velocity">/templates/permissionmgmt/configure-plugin.vm</result>
                 <result name="success" type="velocity">/templates/permissionmgmt/configure-plugin.vm</result>
@@ -105,12 +105,12 @@
 				1. Go to Browse Space and you should be able to see the "Manage Users" tab and click on it.
 				2. or access it using URL: http://<host>/confluence/customspacemgmt/permissions/custompermissionsmanage.action?key=<SPACEKEY>
 			-->
-            <action name="custompermissionsmanage" class="csumdevteam.confluence.permissionmgmt.CustomPermissionManagerAction" method="doDefault">
+            <action name="custompermissionsmanage" class="csum.confluence.permissionmgmt.CustomPermissionManagerAction" method="doDefault">
                 <result name="input" type="velocity">/templates/permissionmgmt/display.vm</result>
                 <result name="error" type="velocity">/templates/permissionmgmt/display.vm</result>
             </action>
 
-            <action name="docustompermissionsmanage" class="csumdevteam.confluence.permissionmgmt.CustomPermissionManagerAction">
+            <action name="docustompermissionsmanage" class="csum.confluence.permissionmgmt.CustomPermissionManagerAction">
                 <result name="input" type="velocity">/templates/permissionmgmt/display.vm</result>
                 <result name="success" type="velocity">/templates/permissionmgmt/display.vm</result>
                 <result name="error" type="velocity">/templates/permissionmgmt/display.vm</result>

@@ -1,4 +1,4 @@
-package csumdevteam.confluence.permissionmgmt.util.ldap;
+package csum.confluence.permissionmgmt.util.ldap;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -20,8 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 
-import csumdevteam.confluence.permissionmgmt.util.ldap.atlassianuser.AUParser;
-import csumdevteam.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
+import csum.confluence.permissionmgmt.util.ldap.atlassianuser.AUParser;
+import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
 
 
 /** Common ldap accessor class, relies on other sources for ldap environment.

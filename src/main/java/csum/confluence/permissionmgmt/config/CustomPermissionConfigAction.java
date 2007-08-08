@@ -27,15 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.config;
+package csum.confluence.permissionmgmt.config;
 
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.setup.BootstrapManager;
 import com.opensymphony.webwork.ServletActionContext;
 import org.apache.log4j.Category;
-import csumdevteam.confluence.permissionmgmt.CustomPermissionConstants;
-import csumdevteam.confluence.permissionmgmt.util.ConfigUtil;
+import csum.confluence.permissionmgmt.CustomPermissionConstants;
+import csum.confluence.permissionmgmt.util.ConfigUtil;
 
 import java.util.Map;
 import java.util.Iterator;

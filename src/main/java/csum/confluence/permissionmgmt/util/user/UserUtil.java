@@ -27,10 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.user;
+package csum.confluence.permissionmgmt.util.user;
 
 import com.atlassian.user.User;
-import csumdevteam.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.StringUtil;
 
 import java.util.List;
 import java.util.ArrayList;

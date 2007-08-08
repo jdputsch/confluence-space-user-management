@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.paging;
+package csum.confluence.permissionmgmt.util.paging;
 
 import bucket.core.actions.PagerPaginationSupport;
 import org.apache.commons.logging.Log;
@@ -35,8 +35,8 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.*;
 
-import csumdevteam.confluence.permissionmgmt.util.paging.Range;
-import csumdevteam.confluence.permissionmgmt.util.paging.RangeComparator;
+import csum.confluence.permissionmgmt.util.paging.Range;
+import csum.confluence.permissionmgmt.util.paging.RangeComparator;
 
 /**
  * @author Gary S. Weaver

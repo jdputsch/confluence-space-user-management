@@ -1,4 +1,4 @@
-package csumdevteam.confluence.permissionmgmt.util.ldap;
+package csum.confluence.permissionmgmt.util.ldap;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import csumdevteam.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
+import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
 
 /** Test to prove all the providers can be used to retrieve a valid user from lookup
  * 

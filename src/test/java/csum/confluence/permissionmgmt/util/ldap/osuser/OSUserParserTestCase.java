@@ -1,4 +1,4 @@
-package csumdevteam.confluence.permissionmgmt.util.ldap.osuser;
+package csum.confluence.permissionmgmt.util.ldap.osuser;
 
 import java.io.InputStream;
 import java.util.Hashtable;
@@ -14,8 +14,8 @@ import org.apache.log4j.Category;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import csumdevteam.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
-import csumdevteam.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
+import csum.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
+import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
 
 /** Test case to provide correct parsing of osuser.xml, also to try a connection (obviously this is going to need a valid osuser.xml file to run on your network)
  * 

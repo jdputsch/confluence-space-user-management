@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.ldap;
+package csum.confluence.permissionmgmt.util.ldap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

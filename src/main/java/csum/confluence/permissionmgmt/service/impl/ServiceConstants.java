@@ -1,4 +1,4 @@
-package csumdevteam.confluence.permissionmgmt.service.impl;
+package csum.confluence.permissionmgmt.service.impl;
 
 /**
  * (c) 2007 Duke University

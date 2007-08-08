@@ -27,12 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.service;
+package csum.confluence.permissionmgmt.service;
 
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
-import csumdevteam.confluence.permissionmgmt.service.impl.*;
-import csumdevteam.confluence.permissionmgmt.service.exception.ServiceException;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import csum.confluence.permissionmgmt.service.impl.*;
+import csum.confluence.permissionmgmt.service.exception.ServiceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.atlassian.confluence.core.ConfluenceActionSupport;

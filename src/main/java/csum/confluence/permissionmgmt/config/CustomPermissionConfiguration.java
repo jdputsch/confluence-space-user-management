@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.config;
+package csum.confluence.permissionmgmt.config;
 
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
@@ -38,11 +38,11 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import csumdevteam.confluence.permissionmgmt.util.ConfigUtil;
-import csumdevteam.confluence.permissionmgmt.util.group.GroupNameUtil;
-import csumdevteam.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
-import csumdevteam.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
-import csumdevteam.confluence.permissionmgmt.soap.jira.JiraSoapService;
+import csum.confluence.permissionmgmt.util.ConfigUtil;
+import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
+import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
+import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
+import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
 
 /**
  * @author Gary S. Weaver

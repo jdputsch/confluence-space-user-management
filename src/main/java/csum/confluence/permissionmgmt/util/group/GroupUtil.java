@@ -27,9 +27,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.group;
+package csum.confluence.permissionmgmt.util.group;
 
-import csumdevteam.confluence.permissionmgmt.util.group.GroupComparator;
+import csum.confluence.permissionmgmt.util.group.GroupComparator;
 
 import java.util.List;
 import java.util.Collections;

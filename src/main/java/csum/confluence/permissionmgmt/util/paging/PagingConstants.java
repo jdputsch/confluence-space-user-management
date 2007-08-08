@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.paging;
+package csum.confluence.permissionmgmt.util.paging;
 
 /**
  * @author Gary S. Weaver

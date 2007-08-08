@@ -27,16 +27,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.service;
+package csum.confluence.permissionmgmt.service;
 
 import java.util.List;
 
-import csumdevteam.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
-import csumdevteam.confluence.permissionmgmt.service.vo.ServiceContext;
-import csumdevteam.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
-import csumdevteam.confluence.permissionmgmt.service.exception.AddException;
-import csumdevteam.confluence.permissionmgmt.service.exception.FindException;
-import csumdevteam.confluence.permissionmgmt.service.exception.RemoveException;
+import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
+import csum.confluence.permissionmgmt.service.vo.ServiceContext;
+import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
+import csum.confluence.permissionmgmt.service.exception.AddException;
+import csum.confluence.permissionmgmt.service.exception.FindException;
+import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import com.atlassian.user.search.page.Pager;
 
 /**

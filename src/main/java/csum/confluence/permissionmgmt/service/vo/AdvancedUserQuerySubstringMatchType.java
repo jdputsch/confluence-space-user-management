@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.service.vo;
+package csum.confluence.permissionmgmt.service.vo;
 
 import com.atlassian.user.search.query.TermQuery;
 

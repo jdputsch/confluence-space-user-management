@@ -27,12 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.group;
+package csum.confluence.permissionmgmt.util.group;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import csumdevteam.confluence.permissionmgmt.CustomPermissionConstants;
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfigurable;
+import csum.confluence.permissionmgmt.CustomPermissionConstants;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfigurable;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;

@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.config;
+package csum.confluence.permissionmgmt.config;
 
 import java.util.Map;
 import java.util.TreeMap;

@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.ldap.osuser;
+package csum.confluence.permissionmgmt.util.ldap.osuser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,9 +47,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import csumdevteam.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
-import csumdevteam.confluence.permissionmgmt.util.ldap.LDAPException;
-import csumdevteam.confluence.permissionmgmt.util.ldap.LDAPLookup;
+import csum.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
+import csum.confluence.permissionmgmt.util.ldap.LDAPException;
+import csum.confluence.permissionmgmt.util.ldap.LDAPLookup;
 
 /**
  * Class to handle manipulation of the osuser.xml file, to allow the configuration for LDAP connections to be extractable

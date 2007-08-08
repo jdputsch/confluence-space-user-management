@@ -1,4 +1,4 @@
-package csumdevteam.confluence.permissionmgmt.service.impl;
+package csum.confluence.permissionmgmt.service.impl;
 
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
@@ -13,13 +13,13 @@ import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.Group;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfiguration;
-import csumdevteam.confluence.permissionmgmt.service.GroupManagementService;
-import csumdevteam.confluence.permissionmgmt.service.exception.FindException;
-import csumdevteam.confluence.permissionmgmt.service.vo.ServiceContext;
-import csumdevteam.confluence.permissionmgmt.util.StringUtil;
-import csumdevteam.confluence.permissionmgmt.util.group.GroupNameUtil;
-import csumdevteam.confluence.permissionmgmt.util.group.GroupUtil;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import csum.confluence.permissionmgmt.service.GroupManagementService;
+import csum.confluence.permissionmgmt.service.exception.FindException;
+import csum.confluence.permissionmgmt.service.vo.ServiceContext;
+import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
+import csum.confluence.permissionmgmt.util.group.GroupUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -35,7 +35,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>csumdevteam.confluence.permissionmgmt</groupId>
+    <groupId>csum.confluence.permissionmgmt</groupId>
     <artifactId>permission-management</artifactId>
     <packaging>atlassian-plugin</packaging>
 
@@ -220,7 +220,7 @@
                <artifactId>axistools-maven-plugin</artifactId>
                <configuration>
                   <sourceDirectory>wsdl</sourceDirectory>
-                  <packageSpace>csumdevteam.confluence.permissionmgmt.soap</packageSpace>
+                  <packageSpace>csum.confluence.permissionmgmt.soap</packageSpace>
                   <testCases>false</testCases>
                   <serverSide>false</serverSide>
                   <subPackageByFileName>true</subPackageByFileName>

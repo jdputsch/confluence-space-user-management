@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt;
+package csum.confluence.permissionmgmt;
 
 /**
  * @author Rajendra Kadam

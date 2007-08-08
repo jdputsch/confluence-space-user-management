@@ -27,11 +27,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.service.vo;
+package csum.confluence.permissionmgmt.service.vo;
 
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.core.ConfluenceActionSupport;
-import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfigurable;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfigurable;
 
 /**
  * @author Gary S. Weaver

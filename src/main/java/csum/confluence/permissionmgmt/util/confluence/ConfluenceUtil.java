@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.util.confluence;
+package csum.confluence.permissionmgmt.util.confluence;
 
 import com.atlassian.spring.container.ContainerManager;
 import org.apache.commons.logging.Log;

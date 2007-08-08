@@ -1,4 +1,4 @@
-package csumdevteam.confluence.permissionmgmt.util.ldap;
+package csum.confluence.permissionmgmt.util.ldap;
 
 public class LDAPException extends Exception {
 

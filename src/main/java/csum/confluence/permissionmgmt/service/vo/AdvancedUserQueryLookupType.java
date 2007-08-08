@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.service.vo;
+package csum.confluence.permissionmgmt.service.vo;
 
 /**
  * @author Gary S. Weaver

@@ -1,4 +1,4 @@
-package csumdevteam.confluence.permissionmgmt.util.ldap.atlassianuser;
+package csum.confluence.permissionmgmt.util.ldap.atlassianuser;
 
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import csumdevteam.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
+import csum.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
 
 /** Test case to provide correct parsing of atlassian-user.xml, also to try a connection (obviously this is going to need a valid atlassian-user.xml file to run on your network)
  * 

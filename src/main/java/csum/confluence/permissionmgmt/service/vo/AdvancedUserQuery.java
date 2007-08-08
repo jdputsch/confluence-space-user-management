@@ -27,10 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csumdevteam.confluence.permissionmgmt.service.vo;
+package csum.confluence.permissionmgmt.service.vo;
 
-import csumdevteam.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
-import csumdevteam.confluence.permissionmgmt.util.ConfigUtil;
+import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
+import csum.confluence.permissionmgmt.util.ConfigUtil;
 
 /**
  * @author Gary S. Weaver
