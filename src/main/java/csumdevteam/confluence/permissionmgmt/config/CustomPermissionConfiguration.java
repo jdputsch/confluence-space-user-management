@@ -39,10 +39,10 @@ import java.util.regex.PatternSyntaxException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import csumdevteam.confluence.permissionmgmt.util.ConfigUtil;
-import csumdevteam.confluence.permissionmgmt.util.jira.JiraUtil;
-import csumdevteam.confluence.permissionmgmt.util.PropsUtil;
 import csumdevteam.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csumdevteam.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
+import csumdevteam.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
+import csumdevteam.confluence.permissionmgmt.soap.jira.JiraSoapService;
 
 /**
  * @author Gary S. Weaver
@@ -72,6 +72,10 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setNewGroupNameCreationPrefixPattern(getNewGroupNameCreationPrefixPattern());
         config.setNewGroupNameCreationSuffixPattern(getNewGroupNameCreationSuffixPattern());
         config.setUserSearchEnabled(getUserSearchEnabled());
+        config.setUserSearchEnabled(getJiraSoapUrl());
+        config.setUserSearchEnabled(getJiraSoapUsername());
+
+        // NOTE: INTENTIONALLY NOT COPYING PASSWORD
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -86,16 +90,32 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setNewGroupNameCreationPrefixPattern(config.getNewGroupNameCreationPrefixPattern());
         setNewGroupNameCreationSuffixPattern(config.getNewGroupNameCreationSuffixPattern());
         setUserSearchEnabled(config.getUserSearchEnabled());
+        setUserSearchEnabled(config.getJiraSoapUrl());
+        setUserSearchEnabled(config.getJiraSoapUsername());
+
+        String jiraSoapPassword = getJiraSoapPassword();
+        if (jiraSoapPassword!=null) {
+            // only change password if it is set to a string (can be empty, but if null that indicates not to change)
+            config.setJiraSoapPassword(jiraSoapPassword);
+        }
 
         // config has changed. clear ALL cache including indexes!!!
         AbstractPagerPaginationSupportCachingSpaceAction.clearCacheIncludingIndexes();
     }
 
+    /**
+     * Validatation for configuration from manager area instead of config area. Otherwise, use
+     * validate(config,existingConfig).
+     *
+     * @return
+     */
     public ConfigValidationResponse validate() {
-        return validate(this);
+        // this is kind of quirky-looking because the validate(config,existingConfig) method is able to use this
+        // existing password for JIRA SOAP testing when entering config from config UI
+        return validate(this, this);
     }
 
-    public static ConfigValidationResponse validate(CustomPermissionConfigurable config) {
+    public static ConfigValidationResponse validate(CustomPermissionConfigurable config, CustomPermissionConfigurable existingConfig) {
 
         ConfigValidationResponse result = new ConfigValidationResponse();
         result.setValid(true);
@@ -115,35 +135,38 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 		//Following information needs to be check only if Wiki User Management is delegated to Jira
 		if(isUserManagerLocationSet && userManagerLocationIsJira)
 		{
-			try {
-                String jiraSoapUrl = JiraUtil.getJiraSoapUrl();
-                String jiraSoapUsername = JiraUtil.getJiraSoapUsername();
-                String jiraSoapPassword = JiraUtil.getJiraSoapPassword();
-
-                if( jiraSoapUrl == null || jiraSoapUrl.trim().equals(""))
-                {
-                    result.addFieldError("userManagerLocation", "Missing property " + CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_URL + " in " + PropsUtil.PROPS_FILENAME );
-                    result.setValid(false);
-                }
-
-                if( jiraSoapUsername == null || jiraSoapUsername.trim().equals(""))
-                {
-                    result.addFieldError("userManagerLocation", "Missing property " + CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_USERNAME + " in " + PropsUtil.PROPS_FILENAME );
-                    result.setValid(false);
-                }
-
-                if( jiraSoapPassword == null || jiraSoapPassword.trim().equals(""))
-                {
-                    result.addFieldError("userManagerLocation", "Missing property " + CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_PASSWORD + " in " + PropsUtil.PROPS_FILENAME );
-                    result.setValid(false);
-                }
-            }
-            catch (Throwable t) {
-                result.addFieldError("userManagerLocation", "Error loading properties file " + PropsUtil.PROPS_FILENAME + ": " + t);
-                log.error("Error loading properties file " + PropsUtil.PROPS_FILENAME, t);
+			if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUrl())) {
+                result.addFieldError("jiraSoapUrl", "JIRA SOAP URL cannot be empty");
                 result.setValid(false);
             }
-		}
+
+            if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUsername())) {
+                result.addFieldError("jiraSoapUsername", "JIRA SOAP username cannot be empty");
+                result.setValid(false);
+            }
+
+            // test connection
+            try {
+                JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
+                jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(config.getJiraSoapUrl());
+                JiraSoapService jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
+
+                String passwd = config.getJiraSoapPassword();
+                if (passwd==null) {
+                    //chose not to set password so get existing password
+                    passwd = existingConfig.getJiraSoapPassword();
+                }
+
+                // Note: as long as we are ONLY logging in and logging out, don't need to save token and logout in finally
+                String token = jiraSoapService.login(config.getJiraSoapUsername(), passwd);
+                jiraSoapService.logout(token);
+            }
+            catch (Throwable t) {
+                log.error("Problem testing JIRA SOAP configuration by connecting to JIRA", t);
+                result.addFieldError("jiraSoapUrl", "Problem logging in to JIRA SOAP service: " + t);
+                result.setValid(false);
+            }
+        }
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getLdapAuthUsed())) {
             result.addFieldError("ldapAuthUsed", "Must be YES or NO");
@@ -361,6 +384,30 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setUserSearchEnabled(String userSearchEnabled) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_USER_SEARCH_ENABLED, userSearchEnabled);
+    }
+
+    public String getJiraSoapUrl() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_SOAP_URL);
+    }
+
+    public void setJiraSoapUrl(String jiraSoapUrl) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_SOAP_URL, jiraSoapUrl);
+    }
+
+    public String getJiraSoapUsername() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_SOAP_USERNAME);
+    }
+
+    public void setJiraSoapUsername(String jiraSoapUsername) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_SOAP_USERNAME, jiraSoapUsername);
+    }
+
+    public String getJiraSoapPassword() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_SOAP_PASSWORD);
+    }
+
+    public void setJiraSoapPassword(String jiraSoapPassword) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_SOAP_PASSWORD, jiraSoapPassword);
     }
 
     public BandanaManager getBandanaManager() {

@@ -49,6 +49,9 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_PREFIX_PATTERN = "ext.delegateusermgmt.new.group.name.creation.prefix.pattern";
     public static final String DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_SUFFIX_PATTERN = "ext.delegateusermgmt.new.group.name.creation.suffix.pattern";
     public static final String DELEGATE_USER_MGMT_USER_SEARCH_ENABLED = "ext.delegateusermgmt.user.search.enabled";
+    public static final String DELEGATE_USER_MGMT_JIRA_SOAP_URL = "ext.delegateusermgmt.jira.soap.url";
+    public static final String DELEGATE_USER_MGMT_JIRA_SOAP_USERNAME = "ext.delegateusermgmt.jira.soap.username";
+    public static final String DELEGATE_USER_MGMT_JIRA_SOAP_PASSWORD = "ext.delegateusermgmt.jira.soap.password";
 
     // static values
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";

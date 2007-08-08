@@ -43,7 +43,6 @@ import csumdevteam.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import csumdevteam.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csumdevteam.confluence.permissionmgmt.util.StringUtil;
 import csumdevteam.confluence.permissionmgmt.util.group.GroupNameUtil;
-import csumdevteam.confluence.permissionmgmt.util.jira.JiraUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -73,9 +72,9 @@ public class JiraSoapGroupManagementService extends ConfluenceGroupManagementSer
 
         try {
             JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
+            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(context.getCustomPermissionConfigurable().getJiraSoapUrl());
             jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
+            token = jiraSoapService.login(context.getCustomPermissionConfigurable().getJiraSoapUsername(), context.getCustomPermissionConfigurable().getJiraSoapPassword());
             RemoteUser remoteUser = null;
             for (int i = 0; i < groupNames.size(); i++) {
                 String groupName = (String) groupNames.get(i);
@@ -143,9 +142,9 @@ public class JiraSoapGroupManagementService extends ConfluenceGroupManagementSer
 
         try {
             JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
+            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(context.getCustomPermissionConfigurable().getJiraSoapUrl());
             jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
+            token = jiraSoapService.login(context.getCustomPermissionConfigurable().getJiraSoapUsername(), context.getCustomPermissionConfigurable().getJiraSoapPassword());
 
             //Remove Selected Groups
             for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {

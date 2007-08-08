@@ -181,10 +181,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     public ServiceContext createServiceContext() {
         ServiceContext context = new ServiceContext();
-        context.setLoggedInUser(getRemoteUser().getName());
-        context.setSpace(this.getSpace());
         // for i18n - to use same resource all over plugin
         context.setConfluenceActionSupport(this);
+        context.setCustomPermissionConfigurable(getCustomPermissionConfiguration());
+        context.setSpace(this.getSpace());
         return context;
     }
 
@@ -649,7 +649,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     //reduce unnecessary number of variables going to services
     public ServiceContext createServiceContext(CustomPermissionManagerActionContext context) {
         ServiceContext result = new ServiceContext();
-        result.setLoggedInUser(context.getLoggedInUser());
+        result.setConfluenceActionSupport(this);
+        result.setCustomPermissionConfigurable(this.getCustomPermissionConfiguration());
         result.setSpace(getSpace());
         return result;
     }

@@ -41,12 +41,21 @@
                 //If User Management delegated to jira then only ask user for jira URL and Jira JNDI values
                 if (e.value == 'JIRA')
                 {
-                    document.getElementById('jiraJNDILookupKey').disabled = false;
+                    document.getElementById('jiraSoapUrl').disabled = false;
+                    document.getElementById('jiraSoapUsername').disabled = false;
+                    document.getElementById('jiraSoapPassword').disabled = false;
+                    document.getElementById('jiraSoapPasswordSet').disabled = false;
                 }
                 else
                 {
-                    document.getElementById('jiraJNDILookupKey').disabled = true;
-                    document.getElementById('jiraJNDILookupKey').value = '';
+                    document.getElementById('jiraSoapUrl').disabled = true;
+                    document.getElementById('jiraSoapUrl').value = '';
+                    document.getElementById('jiraSoapUsername').disabled = true;
+                    document.getElementById('jiraSoapUsername').value = '';
+                    document.getElementById('jiraSoapPassword').disabled = true;
+                    document.getElementById('jiraSoapPassword').value = '';
+                    document.getElementById('jiraSoapPasswordSet').disabled = true;
+                    document.getElementById('jiraSoapPasswordSet').checked = false;
                 }
             }
             
@@ -87,6 +96,37 @@
                 #end
             </td>
         </tr>
+        <tr>
+            <td class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.jiraSoapUrl)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapUrl</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.jiraSoapUsername)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapUsername</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.jiraSoapPassword)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapPassword</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
         <tr>
             <td class="label" width="30%">$action.getText("ldap.authentication.used.label"):</td>
             <td nowrap>
@@ -205,19 +245,42 @@
                 <input type="radio" name="userManagerLocation" value="JIRA" #if ($action.userManagerLocation == "JIRA") checked="true" #end onclick="toggleJiraSettingsInput(this)" />JIRA
                 <br>
                 <font size="1">
-            	Notes:
-            	<ul>
-            	  <li>$action.getText("configure.user.management.module.note1")</li>
-            	  <li>$action.getText("configure.user.management.module.note2.part1")
-            	      <b>$action.jiraPropertiesFilename</b> $action.getText("configure.user.management.module.note2.part2")</li>
-                </ul>
+            	    $action.getText("configure.user.management.module.note")</li>
                 </font>
-<div class="preformatted"><div class="preformattedContent">
-<pre>${action.propertyNameForJiraSoapUrl}=http://yourhostname/rpc/soap/jirasoapservice-v2
-${action.propertyNameForJiraSoapUsername}=yourjiraadminusername
-${action.propertyNameForJiraSoapPassword}=yourjiraadminpassword
-</pre>
-</div></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
+            <td>
+                #fielderror ('jiraSoapUrl')
+                <input type="text" name="jiraSoapUrl" value="$!action.jiraSoapUrl" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end size="2" />
+                <p>
+                    <font size="1">$action.getText("jira.soap.url.note")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
+            <td>
+                #fielderror ('jiraSoapUsername')
+                <input type="text" name="jiraSoapUsername" value="$!action.jiraSoapUsername" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end size="2" />
+                <p>
+                    <font size="1">$action.getText("jira.soap.username.note")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
+            <td>
+                #fielderror ('jiraSoapPassword')
+                <input type="checkbox" value="$action.getText('jira.soap.password.set.label')" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
+                <input type="password" name="jiraSoapPassword" value="$!action.jiraSoapPassword" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end size="2" />
+                <p>
+                    <font size="1">$action.getText("jira.soap.password.note")</font>
+                </p>
             </td>
         </tr>
 

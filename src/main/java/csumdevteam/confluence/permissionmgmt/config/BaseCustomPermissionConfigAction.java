@@ -39,6 +39,9 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     private String userManagerLocation;
     private String ldapAuthUsed;
+    private String jiraSoapUrl;
+    private String jiraSoapUsername;
+    private String jiraSoapPassword;
     private String maxUserIDsLimit;
     private String maxGroupIDsLimit;
     private String userGroupsMatchingPattern;
@@ -63,6 +66,30 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setLdapAuthUsed(String ldapAuthUsed) {
         this.ldapAuthUsed = ldapAuthUsed;
+    }
+
+    public String getJiraSoapUrl() {
+        return jiraSoapUrl;
+    }
+
+    public void setJiraSoapUrl(String jiraSoapUrl) {
+        this.jiraSoapUrl = jiraSoapUrl;
+    }
+
+    public String getJiraSoapUsername() {
+        return jiraSoapUsername;
+    }
+
+    public void setJiraSoapUsername(String jiraSoapUsername) {
+        this.jiraSoapUsername = jiraSoapUsername;
+    }
+
+    public String getJiraSoapPassword() {
+        return jiraSoapPassword;
+    }
+
+    public void setJiraSoapPassword(String jiraSoapPassword) {
+        this.jiraSoapPassword = jiraSoapPassword;
     }
 
     public String getMaxUserIDsLimit() {

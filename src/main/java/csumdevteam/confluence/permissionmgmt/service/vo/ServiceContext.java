@@ -31,6 +31,7 @@ package csumdevteam.confluence.permissionmgmt.service.vo;
 
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.core.ConfluenceActionSupport;
+import csumdevteam.confluence.permissionmgmt.config.CustomPermissionConfigurable;
 
 /**
  * @author Gary S. Weaver
@@ -38,9 +39,8 @@ import com.atlassian.confluence.core.ConfluenceActionSupport;
 public class ServiceContext {
 
     private ConfluenceActionSupport confluenceActionSupport;
-    private String loggedInUser;
     private Space space;
-
+    private CustomPermissionConfigurable customPermissionConfigurable;    
 
     public ConfluenceActionSupport getConfluenceActionSupport() {
         return confluenceActionSupport;
@@ -50,20 +50,20 @@ public class ServiceContext {
         this.confluenceActionSupport = confluenceActionSupport;
     }
 
-    public String getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    public void setLoggedInUser(String loggedInUser) {
-        this.loggedInUser = loggedInUser;
-    }
-
     public Space getSpace() {
         return space;
     }
 
     public void setSpace(Space space) {
         this.space = space;
+    }
+
+    public CustomPermissionConfigurable getCustomPermissionConfigurable() {
+        return customPermissionConfigurable;
+    }
+
+    public void setCustomPermissionConfigurable(CustomPermissionConfigurable customPermissionConfigurable) {
+        this.customPermissionConfigurable = customPermissionConfigurable;
     }
 
     /**
@@ -76,8 +76,9 @@ public class ServiceContext {
     public String getText(String key) {
         String result = key;
 
-        if (confluenceActionSupport!=null) {
-            result = confluenceActionSupport.getText(key);
+        ConfluenceActionSupport cas = getConfluenceActionSupport();
+        if (cas!=null) {
+            result = cas.getText(key);
         }
 
         return result;

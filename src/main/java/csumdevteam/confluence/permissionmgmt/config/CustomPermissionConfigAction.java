@@ -32,9 +32,9 @@ package csumdevteam.confluence.permissionmgmt.config;
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.setup.BootstrapManager;
+import com.opensymphony.webwork.ServletActionContext;
 import org.apache.log4j.Category;
 import csumdevteam.confluence.permissionmgmt.CustomPermissionConstants;
-import csumdevteam.confluence.permissionmgmt.util.PropsUtil;
 import csumdevteam.confluence.permissionmgmt.util.ConfigUtil;
 
 import java.util.Map;
@@ -52,6 +52,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     BandanaManager bandanaManager;
     BootstrapManager bootstrapManager;
     CustomPermissionConfiguration customPermissionConfiguration;
+    private static final String JIRA_SOAP_PASSWORD_SET_PARAMNAME = "jiraSoapPasswordSet";
     
     
     public CustomPermissionConfigAction()
@@ -116,12 +117,20 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         setLdapAuthUsed(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("ldapAuthUsed", getLdapAuthUsed(), "NO"));
         setPluginDown(ConfigUtil.getTrimmedStringOrNull(getPluginDown()));
         setDownTimeMessage(ConfigUtil.getTrimmedStringOrNull(getDownTimeMessage()));
+
+        // only relevant for page itself, so not putting into context
+        Map paramMap = ServletActionContext.getRequest().getParameterMap();
+        log.debug("paramMap: " + paramMap);
+        if (paramMap.get(JIRA_SOAP_PASSWORD_SET_PARAMNAME)==null) {
+            // make sure password is set to null if jiraSoapPasswordSet is not checked/set
+            setJiraSoapPassword(null);
+        }
     }
     
     public boolean validateConfiguration()
 	{
 		log.debug("CustomPermissionConfigAction - Inside validate Configuration ...");
-        ConfigValidationResponse validResp = CustomPermissionConfiguration.validate(this);
+        ConfigValidationResponse validResp = CustomPermissionConfiguration.validate(this, getCustomPermissionConfiguration());
         Map fieldErrorMap = validResp.getFieldNameToErrorMessage();
         Iterator keys = fieldErrorMap.keySet().iterator();
         while (keys.hasNext()) {
@@ -139,22 +148,6 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
         this.customPermissionConfiguration = customPermissionConfiguration;
     }
-
-    public String getJiraPropertiesFilename() {
-        return PropsUtil.PROPS_FILENAME;
-    }
-
-    public String getPropertyNameForJiraSoapPassword() {
-        return CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_PASSWORD;
-    }
-
-    public String getPropertyNameForJiraSoapUrl() {
-        return CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_URL;
-    }
-
-    public String getPropertyNameForJiraSoapUsername() {
-        return CustomPermissionConfigConstants.PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_USERNAME;
-    }        
 
     public String getActionName(String fullClassName)
     {

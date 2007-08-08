@@ -66,4 +66,13 @@ public interface CustomPermissionConfigurable {
 
     public String getUserSearchEnabled();
     public void setUserSearchEnabled(String userSearchEnabled);
+
+    public String getJiraSoapUrl();
+    public void setJiraSoapUrl(String jiraSoapUrl);
+
+    public String getJiraSoapUsername();
+    public void setJiraSoapUsername(String jiraSoapUsername);
+
+    public String getJiraSoapPassword();
+    public void setJiraSoapPassword(String jiraSoapPassword);
 }

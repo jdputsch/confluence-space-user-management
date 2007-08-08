@@ -42,7 +42,6 @@ import csumdevteam.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLoc
 import csumdevteam.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import csumdevteam.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csumdevteam.confluence.permissionmgmt.util.StringUtil;
-import csumdevteam.confluence.permissionmgmt.util.jira.JiraUtil;
 import csumdevteam.confluence.permissionmgmt.util.ldap.LDAPUser;
 import csumdevteam.confluence.permissionmgmt.util.ldap.OSUserLDAPHelper;
 
@@ -87,9 +86,9 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
 
         try {
             JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
+            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(context.getCustomPermissionConfigurable().getJiraSoapUrl());
             jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
+            token = jiraSoapService.login(context.getCustomPermissionConfigurable().getJiraSoapUsername(), context.getCustomPermissionConfigurable().getJiraSoapPassword());
 
             CustomPermissionConfiguration config = getCustomPermissionConfiguration();
 
@@ -241,9 +240,9 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
 
         try {
             JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(JiraUtil.getJiraSoapUrl());
+            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(context.getCustomPermissionConfigurable().getJiraSoapUrl());
             jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(JiraUtil.getJiraSoapUsername(), JiraUtil.getJiraSoapPassword());
+            token = jiraSoapService.login(context.getCustomPermissionConfigurable().getJiraSoapUsername(), context.getCustomPermissionConfigurable().getJiraSoapPassword());
 
             for (Iterator itr = userNames.iterator(); itr.hasNext();) {
                 String userid = (String) itr.next();
