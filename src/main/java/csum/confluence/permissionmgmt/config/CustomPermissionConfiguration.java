@@ -134,36 +134,48 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 		//Following information needs to be check only if Wiki User Management is delegated to Jira
 		if(isUserManagerLocationSet && userManagerLocationIsJira)
 		{
-			if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUrl())) {
+			boolean testSoapService = true;
+            if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUrl())) {
+                testSoapService = false;
                 result.addFieldError("jiraSoapUrl", "JIRA SOAP URL cannot be empty");
                 result.setValid(false);
             }
 
             if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUsername())) {
+                testSoapService = false;
                 result.addFieldError("jiraSoapUsername", "JIRA SOAP username cannot be empty");
                 result.setValid(false);
             }
 
-            // test connection
-            try {
-                JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-                jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(config.getJiraSoapUrl());
-                JiraSoapService jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-
-                String passwd = config.getJiraSoapPassword();
-                if (passwd==null) {
-                    //chose not to set password so get existing password
-                    passwd = existingConfig.getJiraSoapPassword();
-                }
-
-                // Note: as long as we are ONLY logging in and logging out, don't need to save token and logout in finally
-                String token = jiraSoapService.login(config.getJiraSoapUsername(), passwd);
-                jiraSoapService.logout(token);
-            }
-            catch (Throwable t) {
-                log.error("Problem testing JIRA SOAP configuration by connecting to JIRA", t);
-                result.addFieldError("jiraSoapUrl", "Problem logging in to JIRA SOAP service: " + t);
+            if (config.getJiraSoapPassword() == null &&
+                existingConfig.getJiraSoapPassword() == null) {
+                testSoapService = false;
+                result.addFieldError("jiraSoapPassword", "JIRA SOAP password has never been set. Must be set once even if it is empty.");
                 result.setValid(false);
+            }
+
+            // test connection
+            if (testSoapService) {
+                try {
+                    JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
+                    jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(config.getJiraSoapUrl());
+                    JiraSoapService jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
+
+                    String passwd = config.getJiraSoapPassword();
+                    if (passwd==null) {
+                        //chose not to set password so get existing password
+                        passwd = existingConfig.getJiraSoapPassword();
+                    }
+
+                    // Note: as long as we are ONLY logging in and logging out, don't need to save token and logout in finally
+                    String token = jiraSoapService.login(config.getJiraSoapUsername(), passwd);
+                    jiraSoapService.logout(token);
+                }
+                catch (Throwable t) {
+                    log.error("Problem testing JIRA SOAP configuration by connecting to JIRA", t);
+                    result.addFieldError("jiraSoapUrl", "Problem logging in to JIRA SOAP service: " + t);
+                    result.setValid(false);
+                }
             }
         }
 
