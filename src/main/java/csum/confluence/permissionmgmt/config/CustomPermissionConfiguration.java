@@ -72,10 +72,9 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setNewGroupNameCreationPrefixPattern(getNewGroupNameCreationPrefixPattern());
         config.setNewGroupNameCreationSuffixPattern(getNewGroupNameCreationSuffixPattern());
         config.setUserSearchEnabled(getUserSearchEnabled());
-        config.setUserSearchEnabled(getJiraSoapUrl());
-        config.setUserSearchEnabled(getJiraSoapUsername());
-
-        // NOTE: INTENTIONALLY NOT COPYING PASSWORD
+        config.setJiraSoapUrl(getJiraSoapUrl());
+        config.setJiraSoapUsername(getJiraSoapUsername());
+        config.setJiraSoapPassword(getJiraSoapPassword());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -90,8 +89,8 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setNewGroupNameCreationPrefixPattern(config.getNewGroupNameCreationPrefixPattern());
         setNewGroupNameCreationSuffixPattern(config.getNewGroupNameCreationSuffixPattern());
         setUserSearchEnabled(config.getUserSearchEnabled());
-        setUserSearchEnabled(config.getJiraSoapUrl());
-        setUserSearchEnabled(config.getJiraSoapUsername());
+        setJiraSoapUrl(config.getJiraSoapUrl());
+        setJiraSoapUsername(config.getJiraSoapUsername());
 
         String jiraSoapPassword = getJiraSoapPassword();
         if (jiraSoapPassword!=null) {
