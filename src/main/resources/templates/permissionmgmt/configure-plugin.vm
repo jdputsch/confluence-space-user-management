@@ -108,44 +108,16 @@
 		#parse ( "/templates/permissionmgmt/action-messages.vm" )
 
         <table class="grid" width="80%">
+
         <tr>
             <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("configure.heading")</td>
         </tr>
+
         <tr>
             <td class="label" width="30%">$action.getText("user.manager.location.label"):</td>
             <td nowrap>
                 #if ($!action.customPermissionConfiguration.userManagerLocation)
                     <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.userManagerLocation</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-        <tr>
-            <td class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.jiraSoapUrl)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapUrl</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-        <tr>
-            <td class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.jiraSoapUsername)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapUsername</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-        <tr>
-            <td class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.jiraSoapPassword)
-                    <span style="color: green; font-weight: bold">(set)</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -208,6 +180,37 @@
             <td nowrap>
                 #if ($!action.customPermissionConfiguration.ldapProviderFullyQualifiedClassname)
                     <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.ldapProviderFullyQualifiedClassname</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.jiraSoapUrl)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapUrl</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.jiraSoapUsername)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapUsername</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        <tr>
+            <td class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.jiraSoapPassword)
+                    <span style="color: green; font-weight: bold">(set)</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -332,139 +335,6 @@
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
-            <td>
-                #fielderror ('jiraSoapUrl')
-                <input type="text" id="jiraSoapUrl" name="jiraSoapUrl" value="$!action.jiraSoapUrl" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
-                <p>
-                    <font size="1">$action.getText("jira.soap.url.note")</font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
-            <td>
-                #fielderror ('jiraSoapUsername')
-                <input type="text" id="jiraSoapUsername" name="jiraSoapUsername" value="$!action.jiraSoapUsername" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
-                <p>
-                    <font size="1">$action.getText("jira.soap.username.note")</font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
-            <td>
-                #fielderror ('jiraSoapPassword')
-                <input type="checkbox" value="y" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
-                $action.getText('jira.soap.password.set.label') 
-                <input type="password" id="jiraSoapPassword" name="jiraSoapPassword" value="$!action.jiraSoapPassword" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
-                <p>
-                    <font size="1">$action.getText("jira.soap.password.note")</font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("max.number.of.userids.to.act.on.at.once"):</td>
-            <td>
-                #fielderror ('maxUserIDsLimit')
-                <input type="text" name="maxUserIDsLimit" value="$!action.maxUserIDsLimit" size="2" />
-                <p>
-                    <font size="1">$action.getText("configure.error.greaterThanZero")</font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("max.number.of.groupids.to.act.on.at.once"):</td>
-            <td>
-                #fielderror ('maxGroupIDsLimit')
-                <input type="text" name="maxGroupIDsLimit" value="$!action.maxGroupIDsLimit" size="2" />
-                <p>
-                    <font size="1">Must be an integer greater than 0.</font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("user.search.enabled"):</td>
-            <td>
-                #fielderror ('userSearchEnabled')
-                <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />$action.getText("yes") &nbsp;
-                <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />$action.getText("no")
-                <p>
-                    <font size="1">$action.getText("configure.warn.largeUserNumber")</font>
-                </p>
-            </td>
-        </tr>
-        
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("usergroups.matching.pattern.label")</td>
-            <td>
-                #fielderror ('userGroupsMatchingPattern')
-                <input type="text" name="userGroupsMatchingPattern" value="$!action.userGroupsMatchingPattern" size="30" />
-                <p>
-                    <font size="1">
-                    $action.getText("configure.info.patternMatch")
-                    </font>
-                </p>
-                <p>
-                    <font size="1">
-                	$action.getText("configure.example.patternMatch")
-                    </font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("group.actions.permitted.label"):</td>
-            <td>
-				#fielderror ('groupActionsPermitted')
-                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end onclick="toggleGroupSettingsInput(this)" />$action.getText("yes") &nbsp;
-                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end onclick="toggleGroupSettingsInput(this)" />$action.getText("no")
-                <p>
-                    <font size="1">
-                	$action.getText("configure.groupAction.explanation")
-                    </font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("new.group.name.creation.pattern.label"):</td>
-            <td>
-                <!-- TODO: Cleanup ugly table and CSS. -->
-				<table style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				    <tr style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				            #fielderror ('newGroupNameCreationPrefixPattern')
-				            <input type="text" name="newGroupNameCreationPrefixPattern" id="newGroupNameCreationPrefixPattern" value="$!action.newGroupNameCreationPrefixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
-				        </td>
-				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				            &nbsp;(group identifier)&nbsp;
-				        </td>
-				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				            #fielderror ('newGroupNameCreationSuffixPattern')
-				            <input type="text" name="newGroupNameCreationSuffixPattern" id="newGroupNameCreationSuffixPattern" value="$!action.newGroupNameCreationSuffixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
-				        </td>
-				    </tr>
-				</table>
-                <p>
-                    <font size="1">
-                    $action.getText("configure.spacekey.explanation")
-                    </font>
-                </p>
-                <p>
-                    <font size="1">
-					$action.getText("configure.spacekey.example")
-                    </font>
-                </p>
-            </td>
-        </tr>
-        
-        <tr>     
             <td valign="top" class="label" width="30%">$action.getText("ldap.authentication.used.label"):</td>
             <td>
 				#fielderror ('ldapAuthUsed')
@@ -529,7 +399,140 @@
                 </p>
             </td>
         </tr>
-        
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
+            <td>
+                #fielderror ('jiraSoapUrl')
+                <input type="text" id="jiraSoapUrl" name="jiraSoapUrl" value="$!action.jiraSoapUrl" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
+                <p>
+                    <font size="1">$action.getText("jira.soap.url.note")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
+            <td>
+                #fielderror ('jiraSoapUsername')
+                <input type="text" id="jiraSoapUsername" name="jiraSoapUsername" value="$!action.jiraSoapUsername" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
+                <p>
+                    <font size="1">$action.getText("jira.soap.username.note")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
+            <td>
+                #fielderror ('jiraSoapPassword')
+                <input type="checkbox" value="y" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
+                $action.getText('jira.soap.password.set.label') 
+                <input type="password" id="jiraSoapPassword" name="jiraSoapPassword" value="$!action.jiraSoapPassword" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
+                <p>
+                    <font size="1">$action.getText("jira.soap.password.note")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("usergroups.matching.pattern.label")</td>
+            <td>
+                #fielderror ('userGroupsMatchingPattern')
+                <input type="text" name="userGroupsMatchingPattern" value="$!action.userGroupsMatchingPattern" size="30" />
+                <p>
+                    <font size="1">
+                    $action.getText("configure.info.patternMatch")
+                    </font>
+                </p>
+                <p>
+                    <font size="1">
+                	$action.getText("configure.example.patternMatch")
+                    </font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("group.actions.permitted.label"):</td>
+            <td>
+				#fielderror ('groupActionsPermitted')
+                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end onclick="toggleGroupSettingsInput(this)" />$action.getText("yes") &nbsp;
+                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end onclick="toggleGroupSettingsInput(this)" />$action.getText("no")
+                <p>
+                    <font size="1">
+                	$action.getText("configure.groupAction.explanation")
+                    </font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("new.group.name.creation.pattern.label"):</td>
+            <td>
+                <!-- TODO: Cleanup ugly table and CSS. -->
+				<table style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				    <tr style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            #fielderror ('newGroupNameCreationPrefixPattern')
+				            <input type="text" name="newGroupNameCreationPrefixPattern" id="newGroupNameCreationPrefixPattern" value="$!action.newGroupNameCreationPrefixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
+				        </td>
+				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            &nbsp;(group identifier)&nbsp;
+				        </td>
+				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
+				            #fielderror ('newGroupNameCreationSuffixPattern')
+				            <input type="text" name="newGroupNameCreationSuffixPattern" id="newGroupNameCreationSuffixPattern" value="$!action.newGroupNameCreationSuffixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
+				        </td>
+				    </tr>
+				</table>
+                <p>
+                    <font size="1">
+                    $action.getText("configure.spacekey.explanation")
+                    </font>
+                </p>
+                <p>
+                    <font size="1">
+					$action.getText("configure.spacekey.example")
+                    </font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("max.number.of.userids.to.act.on.at.once"):</td>
+            <td>
+                #fielderror ('maxUserIDsLimit')
+                <input type="text" name="maxUserIDsLimit" value="$!action.maxUserIDsLimit" />
+                <p>
+                    <font size="1">$action.getText("configure.error.greaterThanZero")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("max.number.of.groupids.to.act.on.at.once"):</td>
+            <td>
+                #fielderror ('maxGroupIDsLimit')
+                <input type="text" name="maxGroupIDsLimit" value="$!action.maxGroupIDsLimit" />
+                <p>
+                    <font size="1">Must be an integer greater than 0.</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("user.search.enabled"):</td>
+            <td>
+                #fielderror ('userSearchEnabled')
+                <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />$action.getText("yes") &nbsp;
+                <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />$action.getText("no")
+                <p>
+                    <font size="1">$action.getText("configure.warn.largeUserNumber")</font>
+                </p>
+            </td>
+        </tr>
+
         <tr>
             <td valign="top" class="label" width="30%">$action.getText("plugin.deactivated.label"):</td>
             <td>
