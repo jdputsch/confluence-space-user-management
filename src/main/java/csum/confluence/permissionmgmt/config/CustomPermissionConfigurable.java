@@ -78,4 +78,16 @@ public interface CustomPermissionConfigurable {
 
     public String getProviderType();
     public void setProviderType(String providerType);
+
+    public String getLdapUserIdAttribute();
+    public void setLdapUserIdAttribute(String ldapUserIdAttribute);
+
+    public String getLdapEmailAttribute();
+    public void setLdapEmailAttribute(String ldapEmailAttribute);
+
+    public String getLdapNameAttribute();
+    public void setLdapNameAttribute(String ldapNameAttribute);
+
+    public String getLdapProviderFullyQualifiedClassname();
+    public void setLdapProviderFullyQualifiedClassname(String ldapProviderFullyQualifiedClassname);
 }

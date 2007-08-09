@@ -32,13 +32,16 @@ package csum.confluence.permissionmgmt.config;
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.spring.container.ContainerManager;
+import com.opensymphony.webwork.ServletActionContext;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
+import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
@@ -76,6 +79,10 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setJiraSoapUsername(getJiraSoapUsername());
         config.setJiraSoapPassword(getJiraSoapPassword());
         config.setProviderType(getProviderType());
+        config.setLdapUserIdAttribute(getLdapUserIdAttribute());
+        config.setLdapEmailAttribute(getLdapEmailAttribute());
+        config.setLdapNameAttribute(getLdapNameAttribute());
+        config.setLdapProviderFullyQualifiedClassname(getLdapProviderFullyQualifiedClassname());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -111,13 +118,13 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
      *
      * @return
      */
-    public ConfigValidationResponse validate() {
+    public ConfigValidationResponse validate(String remoteUser) {
         // this is kind of quirky-looking because the validate(config,existingConfig) method is able to use this
         // existing password for JIRA SOAP testing when entering config from config UI
-        return validate(this, this);
+        return validate(this, this, remoteUser);
     }
 
-    public static ConfigValidationResponse validate(CustomPermissionConfigurable config, CustomPermissionConfigurable existingConfig) {
+    public static ConfigValidationResponse validate(CustomPermissionConfigurable config, CustomPermissionConfigurable existingConfig, String remoteUser) {
 
         ConfigValidationResponse result = new ConfigValidationResponse();
         result.setValid(true);
@@ -185,7 +192,53 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getLdapAuthUsed())) {
             result.addFieldError("ldapAuthUsed", "Must be YES or NO");
             result.setValid(false);
-        }        		
+        }
+        else {
+            if ("YES".equals(config.getLdapAuthUsed())) {
+                String providerType = config.getProviderType();
+                if( providerType == null ||
+                        (!providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER) &&
+                       !providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER)))
+                {
+                    result.addFieldError("providerType", "Please indicate which provider type you are using");
+                    result.setValid(false);
+                }
+
+                if (config.getLdapUserIdAttribute()==null) {
+                    result.addFieldError("ldapUserIdAttribute", "Please indicate the LDAP user id attribute");
+                    result.setValid(false);
+                }
+
+                if (config.getLdapEmailAttribute()==null) {
+                    result.addFieldError("ldapEmailAttribute", "Please indicate the LDAP email attribute");
+                    result.setValid(false);
+                }
+
+                if (config.getLdapNameAttribute()==null) {
+                    result.addFieldError("ldapNameAttribute", "Please indicate the LDAP name attribute");
+                    result.setValid(false);
+                }
+
+                if (config.getLdapProviderFullyQualifiedClassname()==null) {
+                    // ok to be empty. is not used in user-atlassian provider implementation
+                    result.addFieldError("ldapProviderFullyQualifiedClassname", "Please indicate the LDAP provider fully qualified classname you are using");
+                    result.setValid(false);
+                }
+                else {
+                    if (remoteUser!=null) {
+                        try {
+                            LDAPHelper.getLDAPUser(config, remoteUser);
+                            log.debug("Got null user back from LDAP for " + remoteUser);
+                            result.addFieldError("ldapAuthUsed", "Could not retrieve LDAP user for currently logged in user: " + remoteUser);
+                        }
+                        catch (Throwable t) {
+                            log.error("Problem testing LDAP config in config UI", t);
+                            result.addFieldError("ldapAuthUsed", t.getMessage());
+                        }
+                    }
+                }
+            }
+        }
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getUserSearchEnabled())) {
             result.addFieldError("userSearchEnabled", "Must be YES or NO");
@@ -259,15 +312,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             result.addFieldError("groupActionsPermitted", "Must be YES or NO");
             result.setValid(false);
         }
-
-        String providerType = config.getProviderType();
-        if( providerType == null ||
-                (!providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER) &&
-               !providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER)))
-		{
-            result.addFieldError("providerType", "Please indicate which provider type you are using");
-            result.setValid(false);
-		}
 
         log.debug("CustomPermissionConfigAction - isValid=" + result + " fieldErrors=" + result.getFieldNameToErrorMessage());
         return result;
@@ -439,6 +483,38 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setProviderType(String providerType) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PROVIDER_TYPE, providerType);
+    }
+
+    public String getLdapUserIdAttribute() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_USER_ID_ATTRIBUTE);
+    }
+
+    public void setLdapUserIdAttribute(String ldapUserIdAttribute) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_USER_ID_ATTRIBUTE, ldapUserIdAttribute);
+    }
+
+    public String getLdapEmailAttribute() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_EMAIL_ATTRIBUTE);
+    }
+
+    public void setLdapEmailAttribute(String ldapEmailAttribute) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_EMAIL_ATTRIBUTE, ldapEmailAttribute);
+    }
+
+    public String getLdapNameAttribute() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_NAME_ATTRIBUTE);
+    }
+
+    public void setLdapNameAttribute(String ldapNameAttribute) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_NAME_ATTRIBUTE, ldapNameAttribute);
+    }
+
+    public String getLdapProviderFullyQualifiedClassname() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_PROVIDER_FULLY_QUALIFIED_CLASSNAME);
+    }
+
+    public void setLdapProviderFullyQualifiedClassname(String ldapProviderFullyQualifiedClassname) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_PROVIDER_FULLY_QUALIFIED_CLASSNAME, ldapProviderFullyQualifiedClassname);
     }
 
     public BandanaManager getBandanaManager() {

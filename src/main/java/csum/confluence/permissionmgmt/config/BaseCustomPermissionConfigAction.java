@@ -52,6 +52,11 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String newGroupNameCreationSuffixPattern;
     private String userSearchEnabled;
     private String providerType;
+    private String ldapUserIdAttribute;
+    private String ldapEmailAttribute;
+    private String ldapNameAttribute;
+    private String ldapProviderFullyQualifiedClassname;
+
 
     public String getUserManagerLocation() {
         return userManagerLocation;
@@ -171,5 +176,37 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setProviderType(String providerType) {
         this.providerType = providerType;
+    }
+
+    public String getLdapUserIdAttribute() {
+        return ldapUserIdAttribute;
+    }
+
+    public void setLdapUserIdAttribute(String ldapUserIdAttribute) {
+        this.ldapUserIdAttribute = ldapUserIdAttribute;
+    }
+
+    public String getLdapEmailAttribute() {
+        return ldapEmailAttribute;
+    }
+
+    public void setLdapEmailAttribute(String ldapEmailAttribute) {
+        this.ldapEmailAttribute = ldapEmailAttribute;
+    }
+
+    public String getLdapNameAttribute() {
+        return ldapNameAttribute;
+    }
+
+    public void setLdapNameAttribute(String ldapNameAttribute) {
+        this.ldapNameAttribute = ldapNameAttribute;
+    }
+
+    public String getLdapProviderFullyQualifiedClassname() {
+        return ldapProviderFullyQualifiedClassname;
+    }
+
+    public void setLdapProviderFullyQualifiedClassname(String ldapProviderFullyQualifiedClassname) {
+        this.ldapProviderFullyQualifiedClassname = ldapProviderFullyQualifiedClassname;
     }
 }

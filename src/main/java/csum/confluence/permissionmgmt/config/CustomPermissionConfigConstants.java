@@ -53,6 +53,10 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_JIRA_SOAP_USERNAME = "ext.delegateusermgmt.jira.soap.username";
     public static final String DELEGATE_USER_MGMT_JIRA_SOAP_PASSWORD = "ext.delegateusermgmt.jira.soap.password";
     public static final String DELEGATE_USER_MGMT_PROVIDER_TYPE = "ext.delegateusermgmt.provider.type";
+    public static final String DELEGATE_USER_MGMT_LDAP_USER_ID_ATTRIBUTE = "ext.delegateusermgmt.ldap,user.id.attribute";
+    public static final String DELEGATE_USER_MGMT_LDAP_EMAIL_ATTRIBUTE = "ext.delegateusermgmt.ldap.email.attribute";
+    public static final String DELEGATE_USER_MGMT_LDAP_NAME_ATTRIBUTE = "ext.delegateusermgmt.ldap.name.attribute";
+    public static final String DELEGATE_USER_MGMT_LDAP_PROVIDER_FULLY_QUALIFIED_CLASSNAME = "ext.delegateusermgmt.ldap.provider.fully.qualified.classname";
 
     // static values
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";
