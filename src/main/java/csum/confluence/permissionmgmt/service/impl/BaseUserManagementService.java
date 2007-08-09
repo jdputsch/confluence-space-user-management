@@ -15,16 +15,21 @@ import com.atlassian.user.search.query.UserNameTermQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.service.UserManagementService;
 import csum.confluence.permissionmgmt.service.exception.FindException;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
+import csum.confluence.permissionmgmt.util.ldap.LDAPLookup;
+import csum.confluence.permissionmgmt.util.ldap.LDAPException;
+import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
 import csum.confluence.permissionmgmt.util.paging.LazyLoadingUserByUsernamePager;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.xml.parsers.ParserConfigurationException;
+import java.util.*;
 
 /**
  * (c) 2007 Duke University
@@ -43,6 +48,57 @@ public abstract class BaseUserManagementService implements UserManagementService
         userAccessor = (UserAccessor) ContainerManager.getComponent("userAccessor");
         //customPermissionConfiguration = (CustomPermissionConfiguration) ConfluenceUtil.loadComponentWithRetry("customPermissionConfiguration");
         log.debug("BaseUserManagementService end constructor");
+    }
+
+    protected LDAPUser getLDAPUser(String userid) throws ParserConfigurationException, LDAPException {
+        Map options=new HashMap();
+
+		OSUserParser instance= OSUserParser.getInstance();
+
+		//dont forget to parse the content so we can get the initial list of providerClasses
+		instance.parse();
+
+		//this list to put in the UI somehow if OSUSer provider is required
+		List providers = instance.getProviderClasses();
+		for (Iterator iterator = providers.iterator(); iterator.hasNext();) {
+			String providerClass = (String) iterator.next();
+			log.info("found provider class: "+providerClass);
+			if (providerClass.equalsIgnoreCase("com.opensymphony.user.provider.ldap.LDAPCredentialsProvider"))
+			{
+				log.info("match found, setting required provider");
+				//userSelection would be set like this
+				instance.setRequiredProvider(providerClass);
+				break;
+			}
+		}
+
+		//users would setup the exact attributes containing the relavent information,
+		//for AD (my test environment, the following attribute values work
+		options.put(LDAPLookup.USERID_ATTRIBUTE_KEY, "sAMAccountName");
+		options.put(LDAPLookup.EMAIL_ATTRIBUTE_KEY, "mail");
+		options.put(LDAPLookup.NAME_ATTRIBUTE_KEY, "displayName");
+
+		LDAPLookup lookup = new LDAPLookup(options);
+		//User selection would choose either LDAPLookup.OSUSER_PROVIDER or LDAPLookup.ATLASSIAN_USER_PROVIDER, that value is passed into the constructor
+		CustomPermissionConfiguration customPermissionConfiguration = getCustomPermissionConfiguration();
+        String providerType = customPermissionConfiguration.getProviderType();
+        if ( CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER.equals(providerType) ) {
+            log.debug("Using atlassian-user as provider type for LDAP config. Provider type from config was " + providerType);
+            lookup.setProvider(LDAPLookup.ATLASSIAN_USER_PROVIDER);
+        }
+        else {
+            log.debug("Using osuser as provider type for LDAP config since it didn't match " +
+                    CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER +
+                    ". Provider type from config was " + providerType);
+            lookup.setProvider(LDAPLookup.OSUSER_PROVIDER);
+        }
+
+        //init kicks of the parsing cycle.
+		lookup.init();
+
+		//actually do the lookup
+		LDAPUser u = lookup.getLDAPUser("axb");
+        return u;
     }
 
     public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {

@@ -111,6 +111,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     public void fixFormValues()
     {
         // Set presets as config, trimming and using defaults as needed
+        setProviderType(ConfigUtil.getTrimmedStringOrNull(getProviderType()));
         setUserManagerLocation(ConfigUtil.getTrimmedStringOrNull(getUserManagerLocation()));
         setMaxUserIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIdsLimit", getMaxUserIDsLimit(), 20));
         setUserGroupsMatchingPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userGroupsMatchingPattern", getUserGroupsMatchingPattern(), CustomPermissionConstants.SPACEKEY_REGEXP));

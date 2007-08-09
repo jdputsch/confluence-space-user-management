@@ -43,7 +43,6 @@ import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
-import csum.confluence.permissionmgmt.util.ldap.OSUserLDAPHelper;
 
 import java.util.*;
 
@@ -212,8 +211,7 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
             if (isLDAPAvailable) {
                 //log.debug("LDAP Lookup available");
                 //Get user details from LDAP.
-                OSUserLDAPHelper helper = new OSUserLDAPHelper();
-                helper.getLDAPUser(creationUserName);
+                lUser = getLDAPUser(creationUserName);
 
                 if (lUser != null) {
                     //createUser(String token, String username, String password, String fullName, String email)

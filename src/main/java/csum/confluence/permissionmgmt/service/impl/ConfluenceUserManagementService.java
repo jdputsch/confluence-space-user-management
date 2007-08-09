@@ -37,7 +37,7 @@ import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
-import csum.confluence.permissionmgmt.util.ldap.OSUserLDAPHelper;
+import csum.confluence.permissionmgmt.util.ldap.LDAPLookup;
 
 import java.util.*;
 
@@ -132,8 +132,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
             if (isLDAPAvailable) {
                 //log.debug("LDAP Lookup available");
                 //Get user details from LDAP.
-                OSUserLDAPHelper helper = new OSUserLDAPHelper();
-                helper.getLDAPUser(creationUserName);
+                lUser = getLDAPUser(creationUserName);
 
                 if (lUser != null) {
                     vUser = userAccessor.addUser(creationUserName, creationUserName, lUser.getEmail(), lUser.getFullName());

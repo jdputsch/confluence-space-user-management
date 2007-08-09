@@ -75,6 +75,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setJiraSoapUrl(getJiraSoapUrl());
         config.setJiraSoapUsername(getJiraSoapUsername());
         config.setJiraSoapPassword(getJiraSoapPassword());
+        config.setProviderType(getProviderType());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -97,6 +98,8 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             // only change password if it is set to a string (can be empty, but if null that indicates not to change)
             config.setJiraSoapPassword(jiraSoapPassword);
         }
+
+        setProviderType(config.getProviderType());
 
         // config has changed. clear ALL cache including indexes!!!
         AbstractPagerPaginationSupportCachingSpaceAction.clearCacheIncludingIndexes();
@@ -256,6 +259,15 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             result.addFieldError("groupActionsPermitted", "Must be YES or NO");
             result.setValid(false);
         }
+
+        String providerType = config.getProviderType();
+        if( providerType == null ||
+                (!providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER) &&
+               !providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER)))
+		{
+            result.addFieldError("providerType", "Please indicate which provider type you are using");
+            result.setValid(false);
+		}
 
         log.debug("CustomPermissionConfigAction - isValid=" + result + " fieldErrors=" + result.getFieldNameToErrorMessage());
         return result;
@@ -419,6 +431,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setJiraSoapPassword(String jiraSoapPassword) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_SOAP_PASSWORD, jiraSoapPassword);
+    }
+
+    public String getProviderType() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PROVIDER_TYPE);
+    }
+
+    public void setProviderType(String providerType) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PROVIDER_TYPE, providerType);
     }
 
     public BandanaManager getBandanaManager() {

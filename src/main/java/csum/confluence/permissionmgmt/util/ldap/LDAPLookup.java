@@ -2,7 +2,6 @@ package csum.confluence.permissionmgmt.util.ldap;
 
 import java.io.IOException;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 
 import javax.naming.CommunicationException;

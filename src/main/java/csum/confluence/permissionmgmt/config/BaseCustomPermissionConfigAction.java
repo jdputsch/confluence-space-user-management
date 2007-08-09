@@ -51,6 +51,7 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String newGroupNameCreationPrefixPattern;
     private String newGroupNameCreationSuffixPattern;
     private String userSearchEnabled;
+    private String providerType;
 
     public String getUserManagerLocation() {
         return userManagerLocation;
@@ -162,5 +163,13 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setUserSearchEnabled(String userSearchEnabled) {
         this.userSearchEnabled = userSearchEnabled;
+    }
+
+    public String getProviderType() {
+        return providerType;
+    }
+
+    public void setProviderType(String providerType) {
+        this.providerType = providerType;
     }
 }

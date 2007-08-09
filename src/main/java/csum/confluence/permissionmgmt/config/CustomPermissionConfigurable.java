@@ -75,4 +75,7 @@ public interface CustomPermissionConfigurable {
 
     public String getJiraSoapPassword();
     public void setJiraSoapPassword(String jiraSoapPassword);
+
+    public String getProviderType();
+    public void setProviderType(String providerType);
 }

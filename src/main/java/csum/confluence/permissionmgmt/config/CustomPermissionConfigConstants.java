@@ -52,10 +52,14 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_JIRA_SOAP_URL = "ext.delegateusermgmt.jira.soap.url";
     public static final String DELEGATE_USER_MGMT_JIRA_SOAP_USERNAME = "ext.delegateusermgmt.jira.soap.username";
     public static final String DELEGATE_USER_MGMT_JIRA_SOAP_PASSWORD = "ext.delegateusermgmt.jira.soap.password";
+    public static final String DELEGATE_USER_MGMT_PROVIDER_TYPE = "ext.delegateusermgmt.provider.type";
 
     // static values
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";
     public static final String DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE = "JIRA";
+
+    public static final String PROVIDER_TYPE_OSUSER = "OSUSER";
+    public static final String PROVIDER_TYPE_ATLASSIAN_USER = "ATLASSIAN-USER";
 
     public static final String YES = "YES";
     public static final String NO = "NO";

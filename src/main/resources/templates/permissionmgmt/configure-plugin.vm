@@ -87,6 +87,16 @@
             <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("configure.heading")</td>
         </tr>
         <tr>
+            <td class="label" width="30%">$action.getText("provider.type.label"):</td>
+            <td nowrap>
+                #if ($!action.customPermissionConfiguration.providerType)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.providerType</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+        <tr>
             <td class="label" width="30%">$action.getText("user.manager.location.label"):</td>
             <td nowrap>
                 #if ($!action.customPermissionConfiguration.userManagerLocation)
@@ -120,7 +130,7 @@
             <td class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
             <td nowrap>
                 #if ($action.customPermissionConfiguration.jiraSoapPassword)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapPassword</span>
+                    <span style="color: green; font-weight: bold">(set)</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -237,6 +247,19 @@
         </tr>
 
        <form action="doconfig.action" method="POST" name="CustomUserManagementConfigForm">
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("provider.type.label"):</td>
+            <td>
+				#fielderror ('providerType')
+                <input type="radio" id="providerType" name="providerType" value="OSUSER" #if ($action.providerType == "OSUSER") checked="true" #end/>OSUSER &nbsp;
+                <input type="radio" id="providerType" name="providerType" value="ATLASSIAN-USER" #if ($action.providerType == "ATLASSIAN-USER") checked="true" #end/>ATLASSIAN-USER
+                <br>
+                <font size="1">
+            	    $action.getText("provider.type.note")</li>
+                </font>
+            </td>
+        </tr>
+
         <tr>
             <td valign="top" class="label" width="30%">$action.getText("user.manager.location.label"):</td>
             <td>

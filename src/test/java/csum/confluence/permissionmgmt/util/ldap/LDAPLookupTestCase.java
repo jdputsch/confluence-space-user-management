@@ -1,16 +1,9 @@
 package csum.confluence.permissionmgmt.util.ldap;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
 
 /** Test to prove all the providers can be used to retrieve a valid user from lookup
  * 
@@ -21,10 +14,18 @@ public class LDAPLookupTestCase extends TestCase
 {
 	private static final Log LOG = LogFactory.getLog(LDAPLookupTestCase.class);
 	
-	/** Test case to prove osuser parse and lookup
+	public void testToTestLDAPWithLDAPServerUncommentLDAPLookupTestCaseTests() {
+
+    }
+
+
+    // THESE TESTS ARE COMMENTED OUT BECAUSE THEY ONLY WORK IF YOU CAN POINT AT A WORKING LDAP SERVER
+
+    /** Test case to prove osuser parse and lookup
 	 * 
 	 */
-	public void testOSUserLookup() throws Exception
+    /*
+    public void testOSUserLookup() throws Exception
 	{
 		Map options=new HashMap();
 				
@@ -66,12 +67,14 @@ public class LDAPLookupTestCase extends TestCase
 		LOG.info("OSUSER source - Got user: id="+u.getUserId()+", name="+u.getFullName()+", email="+u.getEmail());
 		return;
 	}
+    */
 
-	/** Test case to prove atlassian-user parse and lookup
+    /** Test case to prove atlassian-user parse and lookup
 	 * 
 	 * @throws Exception
 	 */
-	public void testAtlassianUserLookup() throws Exception
+	/*
+    public void testAtlassianUserLookup() throws Exception
 	{
 		Map options=new HashMap();
 		options.put(LDAPLookup.USERID_ATTRIBUTE_KEY, "sAMAccountName");
@@ -87,5 +90,5 @@ public class LDAPLookupTestCase extends TestCase
 		LOG.info("Atlassian User source - Got user: id="+u.getUserId()+", name="+u.getFullName()+", email="+u.getEmail());
 		return;		
 	}
-
+    */
 }

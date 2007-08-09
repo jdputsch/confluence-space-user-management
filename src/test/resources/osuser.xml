@@ -42,4 +42,15 @@
     <!--<provider class="com.opensymphony.user.provider.memory.MemoryCredentialsProvider" />
     <provider class="com.opensymphony.user.provider.memory.MemoryAccessProvider" />
     <provider class="com.opensymphony.user.provider.memory.MemoryProfileProvider" />-->
+
+    <!--  example LDAP provider, with uidSearchName configured for AD -->   
+    <provider class="com.opensymphony.user.provider.ldap.LDAPCredentialsProvider">
+    <property name="java.naming.factory.initial">com.sun.jndi.ldap.LdapCtxFactory</property>
+    <property name="java.naming.provider.url">ldap://server:389</property>
+    <property name="searchBase">DC=this,DC=that</property>
+    <property name="uidSearchName">sAMAccountName</property>
+    <property name="java.naming.security.principal">CN=..........</property>
+    <property name="java.naming.security.credentials">password</property>
+    <property name="exclusive-access">true</property>
+    </provider>
 </opensymphony-user>

@@ -58,7 +58,7 @@ public class OSUserParserTestCase extends TestCase
             LOG.debug("example osuser.xml parsed ok");
         }
         catch (Exception e) {
-            LOG.error("Error in static initializer of OSUserLDAPHelper", e);
+            LOG.error("Error in static initializer", e);
             throw e;
         }
 	}
