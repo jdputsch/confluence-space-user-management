@@ -101,7 +101,7 @@ public class LDAPLookup
     
     /** Method to set the LDAP environment provider, choices include:
      * 'atlassian-user', 'osuser
-     * @param providerType
+     * @param type
      * @throws IllegalArgumentException if an illegal value is specified
      */
     public void setProvider(int type) throws IllegalArgumentException
