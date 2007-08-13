@@ -463,11 +463,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         String result = null;
 
-        storeInPluginCache("result", result);
-            storeInPluginCache("actionmessages", this.getActionMessages());
-            storeInPluginCache("actionerrors", this.getActionErrors());
-            storeInPluginCache("fielderrors", this.getFieldErrors());
-
         if (this.getRawParameterValue(paramMap, REFRESH_BUG_SECOND_REQUEST_PARAMNAME) != null) {
 
             // RECOVER STATE
