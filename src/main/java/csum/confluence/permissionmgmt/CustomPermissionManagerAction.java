@@ -801,7 +801,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
                         log.warn("Failed action " + adminAction + ". groups were null");
-                        resultList.add("error.groupsCannotBeNull");
+                        resultList.add(getText("error.groupsCannotBeNull"));
                         setActionErrors(resultList);
                         return ERROR;
                     }

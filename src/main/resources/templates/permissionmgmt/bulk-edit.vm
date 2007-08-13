@@ -29,6 +29,45 @@
 ## @author Gary S. Weaver
 
 			<!-- start bulk-edit -->
+
+<script type="text/javascript">
+function validateBulkChecked( thisfield )
+{
+    var valid = false;
+    for ( var i = 0; i < thisfield.length; i++ )
+    {
+       if ( thisfield[i].checked ) {
+           valid = true;
+       }
+    }
+
+    return valid;
+}
+
+function validateBulkForm( thisform )
+{
+    var valid = true;
+
+    if ( validateBulkChecked( document.bulkChange.adminAction ) )
+    {
+        alert ( "Please choose an action" );
+        valid = false;
+    }
+    else if ( document.bulkChange.users.value == null || document.bulkChange.users.value == "" ) {
+        alert ( "Please specify users" );
+        valid = false;
+    }
+    else if ( validateBulkChecked( document.bulkChange.groups ) )
+    {
+        alert ( "Please choose one or more groups" );
+        valid = false;
+    }
+
+    return valid;
+}
+</script>
+
+
 			<div class="sectionHeader">
 				<h2>$action.getText("bulkChange.title")</h2>
 				<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">&laquo; $action.getText("normalView.link.title")</a>
@@ -36,7 +75,7 @@
 
             #set ($allGroups = $action.allGroups)
             #if($allGroups && $allGroups.size() > 0)
-			<form id="bulkChange" action="docustompermissionsmanage.action">
+			<form id="bulkChange" onsubmit="return validateBulkForm(this)" action="docustompermissionsmanage.action">
 				<fieldset>
                     <input type="hidden" name="bulkEdit" value="1"/>
 				    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
