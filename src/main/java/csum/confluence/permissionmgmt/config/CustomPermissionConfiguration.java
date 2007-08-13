@@ -42,6 +42,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
+import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
@@ -83,6 +84,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setLdapEmailAttribute(getLdapEmailAttribute());
         config.setLdapNameAttribute(getLdapNameAttribute());
         config.setLdapProviderFullyQualifiedClassname(getLdapProviderFullyQualifiedClassname());
+        config.setPersonalSpaceAllowed(getPersonalSpaceAllowed());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -107,6 +109,11 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         }
 
         setProviderType(config.getProviderType());
+        setLdapUserIdAttribute(config.getLdapUserIdAttribute());
+        setLdapEmailAttribute(config.getLdapEmailAttribute());
+        setLdapNameAttribute(config.getLdapNameAttribute());
+        setLdapProviderFullyQualifiedClassname(config.getLdapProviderFullyQualifiedClassname());
+        setPersonalSpaceAllowed(config.getPersonalSpaceAllowed());
 
         // config has changed. clear ALL cache including indexes!!!
         AbstractPagerPaginationSupportCachingSpaceAction.clearCacheIncludingIndexes();
@@ -118,10 +125,8 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
      *
      * @return
      */
-    public ConfigValidationResponse validate(String remoteUser) {
-        // this is kind of quirky-looking because the validate(config,existingConfig) method is able to use this
-        // existing password for JIRA SOAP testing when entering config from config UI
-        return validate(this, this, remoteUser);
+    public ConfigValidationResponse validate() {
+        return validate(this, null, null);
     }
 
     public static ConfigValidationResponse validate(CustomPermissionConfigurable config, CustomPermissionConfigurable existingConfig, String remoteUser) {
@@ -157,10 +162,16 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 result.setValid(false);
             }
 
-            if (config.getJiraSoapPassword() == null &&
-                existingConfig.getJiraSoapPassword() == null) {
+            String jiraSoapPassword = null;
+            if (config.getJiraSoapPassword()!=null) {
+                jiraSoapPassword = config.getJiraSoapPassword();
+            }
+            else if (existingConfig != null && existingConfig.getJiraSoapPassword()!=null) {
+                jiraSoapPassword = existingConfig.getJiraSoapPassword();
+            }
+            else {
                 testSoapService = false;
-                result.addFieldError("jiraSoapPassword", "JIRA SOAP password has never been set. Must be set once even if it is empty.");
+                result.addFieldError("jiraSoapPassword", "JIRA SOAP password must be set");
                 result.setValid(false);
             }
 
@@ -171,14 +182,8 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                     jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(config.getJiraSoapUrl());
                     JiraSoapService jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
 
-                    String passwd = config.getJiraSoapPassword();
-                    if (passwd==null) {
-                        //chose not to set password so get existing password
-                        passwd = existingConfig.getJiraSoapPassword();
-                    }
-
                     // Note: as long as we are ONLY logging in and logging out, don't need to save token and logout in finally
-                    String token = jiraSoapService.login(config.getJiraSoapUsername(), passwd);
+                    String token = jiraSoapService.login(config.getJiraSoapUsername(), jiraSoapPassword);
                     jiraSoapService.logout(token);
                 }
                 catch (Throwable t) {
@@ -227,13 +232,18 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 else {
                     if (remoteUser!=null) {
                         try {
-                            LDAPHelper.getLDAPUser(config, remoteUser);
-                            log.debug("Got null user back from LDAP for " + remoteUser);
-                            result.addFieldError("ldapAuthUsed", "Could not retrieve LDAP user for currently logged in user: " + remoteUser);
+                            LDAPUser usr = LDAPHelper.getLDAPUser(config, remoteUser);
+							if(usr == null)
+							{
+								log.debug("Got null user back from LDAP for " + remoteUser);
+								result.addFieldError("ldapAuthUsed", "Could not retrieve LDAP user for currently logged in user: " + remoteUser);
+			                    result.setValid(false);
+							}
                         }
                         catch (Throwable t) {
                             log.error("Problem testing LDAP config in config UI", t);
                             result.addFieldError("ldapAuthUsed", t.getMessage());
+		                    result.setValid(false);
                         }
                     }
                 }
@@ -515,6 +525,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setLdapProviderFullyQualifiedClassname(String ldapProviderFullyQualifiedClassname) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_PROVIDER_FULLY_QUALIFIED_CLASSNAME, ldapProviderFullyQualifiedClassname);
+    }
+
+    public String getPersonalSpaceAllowed() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PERSONAL_SPACE_ALLOWED);
+    }
+
+    public void setPersonalSpaceAllowed(String personalSpaceAllowed) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PERSONAL_SPACE_ALLOWED, personalSpaceAllowed);
     }
 
     public BandanaManager getBandanaManager() {

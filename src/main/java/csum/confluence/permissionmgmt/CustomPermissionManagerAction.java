@@ -465,6 +465,24 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
     }
 
+    private boolean isNotAllowed(Map paramMap) {
+        boolean isNotAllowed = false;
+
+        // Is this a personal space, and is personal space administration not allowed?
+        String spaceKey = getKey();
+        if (spaceKey!=null && spaceKey.startsWith("~")) {
+            String personalSpaceAllowed = getCustomPermissionConfiguration().getPersonalSpaceAllowed();
+            if (ConfigUtil.isNotNullAndIsYesOrNo(personalSpaceAllowed)) {
+                if ("NO".equals(personalSpaceAllowed)) {
+                    log.warn("User " + getRemoteUser().getName() + " denied access to administer users/groups for personal space " + spaceKey + " because personal space user/group administration was not allowed in plugin configuration");
+                    isNotAllowed = true;
+                }
+            }
+        }
+
+        return isNotAllowed;
+    }
+
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction.execute() called");
@@ -473,6 +491,15 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
         log.debug("paramMap: " + paramMap);
+
+        if(isNotAllowed(paramMap)) {
+            log.warn("Action not allowed");
+            List resultList = new ArrayList();
+            resultList.add(getText("not.allowed"));
+            setActionErrors(resultList);
+            return ERROR;
+        }
+
 
         handleRefreshBugSecondRequest(paramMap);
 
@@ -1011,7 +1038,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public ConfigValidationResponse getConfigValidationResponse() {
         log.debug("getConfigValidationResponse() called");
 
-        ConfigValidationResponse resp = this.getCustomPermissionConfiguration().validate(getRemoteUser().getName());
+        ConfigValidationResponse resp = this.getCustomPermissionConfiguration().validate();
         log.debug("getConfigValidationResponse.isValid = " + resp.isValid());
         return resp;
     }

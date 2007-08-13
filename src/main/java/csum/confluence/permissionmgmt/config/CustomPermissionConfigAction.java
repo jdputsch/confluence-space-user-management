@@ -110,14 +110,15 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
     public void fixFormValues()
     {
-        // Set presets as config, trimming and using defaults as needed
-        setProviderType(ConfigUtil.getTrimmedStringOrNull(getProviderType()));
-        setUserManagerLocation(ConfigUtil.getTrimmedStringOrNull(getUserManagerLocation()));
+        // Set presets as config, trimming and using defaults if they make sense
         setMaxUserIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIdsLimit", getMaxUserIDsLimit(), 20));
+        setMaxGroupIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxGroupIdsLimit", getMaxUserIDsLimit(), 20));
         setUserGroupsMatchingPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userGroupsMatchingPattern", getUserGroupsMatchingPattern(), CustomPermissionConstants.SPACEKEY_REGEXP));
-        setLdapAuthUsed(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("ldapAuthUsed", getLdapAuthUsed(), "NO"));
-        setPluginDown(ConfigUtil.getTrimmedStringOrNull(getPluginDown()));
+        setNewGroupNameCreationPrefixPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("newGroupNameCreationPrefixPattern", getNewGroupNameCreationPrefixPattern(), CustomPermissionConstants.DEFAULT_NEW_GROUP_NAME_PREFIX));
+        setNewGroupNameCreationSuffixPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("newGroupNameCreationSuffixPattern", getNewGroupNameCreationSuffixPattern(), CustomPermissionConstants.DEFAULT_NEW_GROUP_NAME_SUFFIX));
+        setPluginDown(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("pluginDown", getPluginDown(), CustomPermissionConfigConstants.NO));
         setDownTimeMessage(ConfigUtil.getTrimmedStringOrNull(getDownTimeMessage()));
+        setPersonalSpaceAllowed(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("personalSpaceAllowed", getPersonalSpaceAllowed(), CustomPermissionConfigConstants.NO));
 
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();

@@ -29,7 +29,7 @@
 ## @author Gary S. Weaver
 
             <!-- start manage-users-advanced -->
-
+    #if($action.isUserSearchEnabled)
         #if($action.selectedGroup)
             #set ($searchResultUsers = $action.searchResultUsers)
             <div class="sectionHeader">
@@ -103,4 +103,7 @@
             #end
 			</div>
         #end
+    #else
+        $action.getText("user.search.disabled.message")
+    #end
             <!-- end manage-users-advanced -->

@@ -292,6 +292,17 @@
         </tr>
 
         <tr>
+            <td class="label" width="30%">$action.getText("personal.space.allowed"):</td>
+            <td nowrap>
+                #if ($action.customPermissionConfiguration.personalSpaceAllowed)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.personalSpaceAllowed</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
+        <tr>
             <td class="label" width="30%">$action.getText("plugin.deactivated.label"):</td>
             <td nowrap>
                 #if ($action.customPermissionConfiguration.pluginDown)
@@ -529,6 +540,18 @@
                 <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />$action.getText("no")
                 <p>
                     <font size="1">$action.getText("configure.warn.largeUserNumber")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("personal.space.allowed.label"):</td>
+            <td>
+                #fielderror ('personalSpaceAllowed')
+                <input type="radio" name="personalSpaceAllowed" value="YES" #if ($!action.personalSpaceAllowed == "YES") checked="true" #end />$action.getText("yes") &nbsp;
+                <input type="radio" name="personalSpaceAllowed" value="NO" #if ($!action.personalSpaceAllowed == "NO") checked="true" #end />$action.getText("no")
+                <p>
+                    <font size="1">$action.getText("personal.space.allowed.note")</font>
                 </p>
             </td>
         </tr>

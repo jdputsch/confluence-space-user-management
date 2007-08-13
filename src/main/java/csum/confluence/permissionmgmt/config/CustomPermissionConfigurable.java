@@ -90,4 +90,7 @@ public interface CustomPermissionConfigurable {
 
     public String getLdapProviderFullyQualifiedClassname();
     public void setLdapProviderFullyQualifiedClassname(String ldapProviderFullyQualifiedClassname);
+
+    public String getPersonalSpaceAllowed();
+    public void setPersonalSpaceAllowed(String personalSpaceAllowed);
 }

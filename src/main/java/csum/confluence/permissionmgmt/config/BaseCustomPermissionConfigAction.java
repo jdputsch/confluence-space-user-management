@@ -56,6 +56,7 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String ldapEmailAttribute;
     private String ldapNameAttribute;
     private String ldapProviderFullyQualifiedClassname;
+    private String personalSpaceAllowed;
 
 
     public String getUserManagerLocation() {
@@ -208,5 +209,13 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setLdapProviderFullyQualifiedClassname(String ldapProviderFullyQualifiedClassname) {
         this.ldapProviderFullyQualifiedClassname = ldapProviderFullyQualifiedClassname;
+    }
+
+    public String getPersonalSpaceAllowed() {
+        return personalSpaceAllowed;
+    }
+
+    public void setPersonalSpaceAllowed(String personalSpaceAllowed) {
+        this.personalSpaceAllowed = personalSpaceAllowed;
     }
 }

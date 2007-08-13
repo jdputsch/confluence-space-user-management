@@ -36,5 +36,7 @@ package csum.confluence.permissionmgmt;
 public interface CustomPermissionConstants {
 
     public static final String SPACEKEY = "SPACEKEY";
-    public static final String SPACEKEY_REGEXP = SPACEKEY + "-.*";
+    public static final String DEFAULT_NEW_GROUP_NAME_PREFIX = SPACEKEY + "-";
+    public static final String SPACEKEY_REGEXP = DEFAULT_NEW_GROUP_NAME_PREFIX + ".*";
+    public static final String DEFAULT_NEW_GROUP_NAME_SUFFIX = "";
 }
