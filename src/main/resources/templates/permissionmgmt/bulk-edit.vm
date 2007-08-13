@@ -38,7 +38,7 @@
             #if($allGroups && $allGroups.size() > 0)
 			<form id="bulkChange" action="docustompermissionsmanage.action">
 				<fieldset>
-
+                    <input type="hidden" name="bulkEdit" value="1"/>
 				    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
 					<label>1. $action.getText("bulkChange.form.label.actionTitle"):</label>
 					<input type="radio" value="addUsersToGroups" name="adminAction"></input> $action.getText("bulkChange.form.radio.addUser.text")<br />
