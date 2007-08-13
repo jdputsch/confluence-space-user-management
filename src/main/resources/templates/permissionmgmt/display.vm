@@ -438,7 +438,7 @@
             <p class="infoMacro">${action.customPermissionConfiguration.downTimeMessage}</p>
 		#else
 		    <p class="noteMacro">
-		    <p>$action.getText("error.admin.reconfigure.text")<a href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">$action.getText("error.admin.reconfigure.link.text")</a>.</p>
+		    <p>$action.getText("error.admin.reconfigure.text") <a href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">$action.getText("error.admin.reconfigure.link.text")</a>.</p>
 		    <p>$action.getText("error.admin.reconfigure.list.text"):</p>
 			    #set($fieldNameToErrorMessage=$configValidationResponse.fieldNameToErrorMessage)
 				<ul>
