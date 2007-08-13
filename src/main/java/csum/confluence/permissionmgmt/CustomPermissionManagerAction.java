@@ -36,6 +36,7 @@ import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
+import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.confluence.util.SpaceComparator;
 import com.atlassian.user.User;
@@ -499,25 +500,25 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
 
-    // Name of method is strange because it is called from display.vm also
-    private boolean isNotAllowed() {
+    private boolean isPersonalSpaceAdminAllowed() {
+        boolean result = false;
+        String personalSpaceAllowed = getCustomPermissionConfiguration().getPersonalSpaceAllowed();
+        log.debug("PersonalSpaceAllowed=" + personalSpaceAllowed);
+        if ("YES".equals(personalSpaceAllowed)) {
+            result = true;
+        }
+        return result;
+    }
+
+    // MUST BE PUBLIC because is called from display.vm also
+    public boolean isNotAllowed() {
         boolean isNotAllowed = false;
 
         // Is this a personal space, and is personal space administration not allowed?
         String spaceKey = getKey();
         if (spaceKey!=null && spaceKey.startsWith("~")) {
-            String personalSpaceAllowed = getCustomPermissionConfiguration().getPersonalSpaceAllowed();
-            if (ConfigUtil.isNotNullAndIsYesOrNo(personalSpaceAllowed)) {
-                if ("NO".equals(personalSpaceAllowed)) {
-                    log.warn("User " + getRemoteUser().getName() + " denied access to administer users/groups for personal space " + spaceKey + " because personal space user/group administration was not allowed in plugin configuration");
-                    isNotAllowed = true;
-                }
-                else {
-                    log.debug("User " + getRemoteUser().getName() + " was allowed access to administer users/groups for personal space " + spaceKey + " via plugin config.");
-                }
-            }
-            else {
-                log.warn("Got invalid config value " + personalSpaceAllowed + " for personalSpaceAllowed. Assuming personal space management not allowed.");
+            if (!isPersonalSpaceAdminAllowed()) {
+                log.info("Refused to allow " + getRemoteUser().getName() + " to administer users/groups in personal space " + spaceKey);
                 isNotAllowed = true;
             }
         }
@@ -722,13 +723,37 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     
     public List getSpacesAssociatedToUserForGivenPermission(User user, String permission)
     {
-        if (GeneralUtil.isSuperUser(user))
-            return getAllSpaces();
-   
-        List permittedSpacesForUser = spaceDao.getPermittedSpacesForUser(user,permission);
-        Collections.sort(permittedSpacesForUser, new SpaceComparator());
+        List spaceList = null;
 
-        return permittedSpacesForUser;
+        if (GeneralUtil.isSuperUser(user)) {
+            spaceList = getAllSpaces();
+        }
+        else {
+            spaceList = spaceDao.getPermittedSpacesForUser(user,permission);
+        }
+
+        if ( spaceList != null ) {
+            //remove personal spaces if not allowed
+            if (!isPersonalSpaceAdminAllowed()) {
+                List newList = new ArrayList();
+                for ( int i=0; i<spaceList.size(); i++ ) {
+                    Space thisSpace = (Space)spaceList.get(i);
+                    String key = thisSpace.getKey();
+                    if (key != null && key.startsWith("~")) {
+                        log.debug("Removing " + key + " from list of spaces that can be administered, since personal space administration not allowed" );
+                    }
+                    else {
+                        newList.add(thisSpace);
+                    }
+                }
+                spaceList = newList;
+            }
+
+            Collections.sort(spaceList, new SpaceComparator());
+
+        }
+
+        return spaceList;
     }
     
     /*

@@ -359,13 +359,11 @@
 		}
 		</style>
 
-
-
 <div id="csum">
-  #if($action.isNotAllowed())
-    $action.getText("not.allowed")  
-  #else
 
+  #if($action.isNotAllowed())
+    $action.getText("not.allowed")
+  #else
     <div class="messages">
 		#parse ( "/templates/permissionmgmt/action-messages.vm" )
 	</div>
