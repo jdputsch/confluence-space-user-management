@@ -510,7 +510,17 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     log.warn("User " + getRemoteUser().getName() + " denied access to administer users/groups for personal space " + spaceKey + " because personal space user/group administration was not allowed in plugin configuration");
                     isNotAllowed = true;
                 }
+                else {
+                    log.debug("User " + getRemoteUser().getName() + " was allowed access to administer users/groups for personal space " + spaceKey + " via plugin config.");
+                }
             }
+            else {
+                log.warn("Got invalid config value " + personalSpaceAllowed + " for personalSpaceAllowed. Assuming personal space management not allowed.");
+                isNotAllowed = true;
+            }
+        }
+        else {
+            log.debug("Space is not a personal space");
         }
 
         return isNotAllowed;

@@ -323,7 +323,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             result.setValid(false);
         }
 
-        if (ConfigUtil.isNotNullAndIsYesOrNo(config.getPersonalSpaceAllowed())) {
+        if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getPersonalSpaceAllowed())) {
             result.addFieldError("personalSpaceAllowed", "Must be YES or NO");
             result.setValid(false);
         }
