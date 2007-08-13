@@ -498,7 +498,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
 
-    private boolean isNotAllowed(Map paramMap) {
+
+    // Name of method is strange because it is called from display.vm also
+    private boolean isNotAllowed() {
         boolean isNotAllowed = false;
 
         // Is this a personal space, and is personal space administration not allowed?
@@ -535,7 +537,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
         log.debug("paramMap: " + paramMap);
 
-        if(isNotAllowed(paramMap)) {
+        if(isNotAllowed()) {
             log.warn("Action not allowed");
             List resultList = new ArrayList();
             resultList.add(getText("not.allowed"));
