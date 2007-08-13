@@ -195,7 +195,27 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
         return PLUGIN_SESSION_KEY_PREFIX + DELIMITER + spaceKey + DELIMITER + groupName + DELIMITER + ADVANCED_USER_QUERY_SESSION_KEY_SUFFIX;
     }
 
+
+    // MISCELLANEOUS
+
+
+    public void storeInPluginCache( String key, Object o ) {
+        setSessionProperty(PLUGIN_SESSION_KEY_PREFIX + DELIMITER + key, o);
+    }
+
+    public Object getFromPluginCache( String key ) {
+        Map session = (Map) ActionContext.getContext().get("session");
+        return session.get(PLUGIN_SESSION_KEY_PREFIX + DELIMITER + key);
+    }
+
+    public void removeFromPluginCache( String key ) {
+        Map session = (Map) ActionContext.getContext().get("session");
+        session.remove(PLUGIN_SESSION_KEY_PREFIX + DELIMITER + key);
+    }
+
+
     // CACHE-CLEARING METHODS
+
 
     // Note: this is a little dangerous as it makes an assumption that we want to cache every index for every pps
     private void cachePpsIndexIfSupported(String key) {

@@ -92,7 +92,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public static final String ACTION_ADD_USERS_TO_GROUPS = "addUsersToGroups";
     public static final String ACTION_REMOVE_USERS_FROM_GROUPS = "removeUsersFromGroups";
     public static final String ACTION_ADVANCED_FIND_USERS = "advancedFindUsers";
-    public static final String SELECTED_CACHE_REFRESH_PARAMNAME = "selectedCacheRefresh";
+    public static final String REFRESH_BUG_SECOND_REQUEST_PARAMNAME = "conf9035";
 
     public CustomPermissionManagerAction()
 	{
@@ -390,7 +390,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     // this helps get around bug in atlassian's API CSP-10371/CONF-9035 to be fixed in confluence 2.6
-    private void handleRefreshBugFirstRequest() {
+    private void handleRefreshBugFirstRequest(String result) {
         HttpServletRequest req = ServletActionContext.getRequest();
         // note: wrapping with TreeMap so it will sort params by name, otherwise it makes inconsistent URL which looks
         //       hackish.
@@ -429,8 +429,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 }
             }
 
+            // store result, etc in session to be removed after redirect
+            storeInPluginCache("result", result);
+            storeInPluginCache("actionmessages", this.getActionMessages());
+            storeInPluginCache("actionerrors", this.getActionErrors());
+            storeInPluginCache("fielderrors", this.getFieldErrors());
+
             // add a param that tells action to refresh only cache associated with currently selected group in next req
-            params.append("&" + SELECTED_CACHE_REFRESH_PARAMNAME);
+            params.append("&" + REFRESH_BUG_SECOND_REQUEST_PARAMNAME);
 
             String url = req.getRequestURI();
             int indexOfQuery = url.indexOf('?');
@@ -452,8 +458,33 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     // this helps get around bug in atlassian's API CSP-10371/CONF-9035 to be fixed in confluence 2.6
-    private void handleRefreshBugSecondRequest(Map paramMap) {
-        if (this.getRawParameterValue(paramMap, SELECTED_CACHE_REFRESH_PARAMNAME) != null) {
+    private String handleRefreshBugSecondRequest(Map paramMap) {
+
+        String result = null;
+
+        storeInPluginCache("result", result);
+            storeInPluginCache("actionmessages", this.getActionMessages());
+            storeInPluginCache("actionerrors", this.getActionErrors());
+            storeInPluginCache("fielderrors", this.getFieldErrors());
+
+        if (this.getRawParameterValue(paramMap, REFRESH_BUG_SECOND_REQUEST_PARAMNAME) != null) {
+
+            // RECOVER STATE
+
+            result = (String)getFromPluginCache("result");
+            setActionMessages((Collection)getFromPluginCache("actionmessages"));
+            setActionErrors((Collection)getFromPluginCache("actionerrors"));
+            setFieldErrors((Map)getFromPluginCache("fielderrors"));
+
+            // CLEAR STATE
+
+            removeFromPluginCache("result");
+            removeFromPluginCache("actionmessages");
+            removeFromPluginCache("actionerrors");
+            removeFromPluginCache("fielderrors");
+
+            // CLEAR SELECTED CACHE
+
             this.clearGroupCache(getKey());
             // this is why we have to leave groups param in the url in handleRedirect
             List groups = getUrlDecodedCleanedTrimmedParameterValueList(paramMap, GROUPS_PARAMNAME);
@@ -463,6 +494,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 this.clearUserCache(getKey(), groups);
             }
         }
+
+        return result;
     }
 
     private boolean isNotAllowed(Map paramMap) {
@@ -501,7 +534,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
 
 
-        handleRefreshBugSecondRequest(paramMap);
+        String result = handleRefreshBugSecondRequest(paramMap);
 
         String selectedGroup = getUrlDecodedCleanedTrimmedParameterValue(paramMap, "selectedGroup");
         log.debug("selectedGroup=" + selectedGroup);
@@ -570,7 +603,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     	//	return ERROR;
     	//}
 
-        String result = this.manage(context, serviceContext);
+        if ( result == null) {
+            result = this.manage(context, serviceContext);
+        }
 
         log.debug("Ending execute() users");
         debug(getUsers());
@@ -578,7 +613,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         // note: data needs to get updated even if was error, because could have been partially updated
         if (paramMap.get(ADMIN_ACTION_PARAMNAME) != null) {
             // refresh to avoid atlassian bug CSP-10371/CONF-9035
-            handleRefreshBugFirstRequest();
+            handleRefreshBugFirstRequest(result);
         }
 
         return result;
