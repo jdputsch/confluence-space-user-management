@@ -10,6 +10,8 @@ import java.util.ArrayList;
 public class RepositoryEl {
 	private ArrayList fLdaps=new ArrayList();
 	
+	public RepositoryEl(){}
+	
 	public void addLdap(LdapEl r)
 	{
 		fLdaps.add(r);

@@ -47,6 +47,8 @@ public class LdapEl
 	private String userSearchAllDepths;
 	private String groupSearchAllDepths;
 	
+	public LdapEl(){}
+	
 	public String getHost() {
 		return fHost;
 	}

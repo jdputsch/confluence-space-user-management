@@ -43,6 +43,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.pdfbox.util.operator.SetCharSpacing;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -212,6 +213,11 @@ public class OSUserParser extends DefaultHandler implements ILdapEnvironmentProv
     	fRequiredClass=providerClass;
     }
 
+    /** kick off the parser, ensuring the classloader for resource loading
+     * is retrieved from the current thread
+     * 
+     * @throws ParserConfigurationException
+     */
     public void parse() throws ParserConfigurationException
     {
 		InputStream is = getClass().getClassLoader().getResourceAsStream(OSUSER_XML_FILENAME);
@@ -225,9 +231,7 @@ public class OSUserParser extends DefaultHandler implements ILdapEnvironmentProv
 			String msg="The "+OSUSER_XML_FILENAME+" file could not be found.";
 			LOG.error(msg);
 			throw new ParserConfigurationException(msg);
-			
 		}
-
     }
     
     /** internal method to parse the resource

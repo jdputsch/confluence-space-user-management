@@ -59,7 +59,7 @@ public class LDAPLookupTestCase extends TestCase
 		options.put(LDAPLookup.USERID_ATTRIBUTE_KEY, "sAMAccountName");
 		options.put(LDAPLookup.EMAIL_ATTRIBUTE_KEY, "mail");
 		options.put(LDAPLookup.FIRSTNAME_ATTRIBUTE_KEY, "givenName");
-		options.put(LDAPLookup.SURNAME_ATTRIBUTE_KEY, "sn");
+		options.put(LDAPLookup.LASTNAME_ATTRIBUTE_KEY, "sn");
 		
 		LDAPLookup lookup = new LDAPLookup(options);
 		//User selection would choose either LDAPLookup.OSUSER_PROVIDER or LDAPLookup.ATLASSIAN_USER_PROVIDER, that value is passed into the constructor
@@ -83,10 +83,10 @@ public class LDAPLookupTestCase extends TestCase
     public void testAtlassianUserLookup() throws Exception
 	{
 		Map options=new HashMap();
-		options.put(LDAPLookup.USERID_ATTRIBUTE_KEY, "sAMAccountName");
+			options.put(LDAPLookup.USERID_ATTRIBUTE_KEY, "sAMAccountName");
 		options.put(LDAPLookup.EMAIL_ATTRIBUTE_KEY, "mail");
 		options.put(LDAPLookup.FIRSTNAME_ATTRIBUTE_KEY, "givenName");
-		options.put(LDAPLookup.SURNAME_ATTRIBUTE_KEY, "sn");
+		options.put(LDAPLookup.LASTNAME_ATTRIBUTE_KEY, "sn");
 		
 		LDAPLookup lookup = new LDAPLookup(options);
 		lookup.setProvider(LDAPLookup.ATLASSIAN_USER_PROVIDER);
@@ -98,4 +98,5 @@ public class LDAPLookupTestCase extends TestCase
 		return;		
 	}
 	*/
+
 }

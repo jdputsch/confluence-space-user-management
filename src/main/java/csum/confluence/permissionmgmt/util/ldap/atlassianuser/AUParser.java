@@ -6,14 +6,19 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.naming.Context;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
+import org.apache.webdav.lib.properties.GetContentLengthProperty;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import com.atlassian.plugin.loaders.ClassPathPluginLoader;
+import com.atlassian.user.util.ClassLoaderUtils;
 
 import csum.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
 import csum.confluence.permissionmgmt.util.ldap.LDAPException;
@@ -21,6 +26,7 @@ import csum.confluence.permissionmgmt.util.ldap.LDAPLookup;
 
 /** This class manages the parsing of the atlassian-user.xml file found in WEB-INF/classes of deployed applications
  * 
+ * More on the Digester : http://wiki.apache.org/jakarta-commons/Digester
  * @author Andy Brook
  */
 public class AUParser implements ILdapEnvironmentProvider{
@@ -30,13 +36,16 @@ public class AUParser implements ILdapEnvironmentProvider{
     
     public static final String DEFAULT_CONTEXT_FACTORY="com.sun.jndi.ldap.LdapCtxFactory";
     
-    private static Digester gDigester;
-	private static AtlassianUserEl fAtlassianUser=null;
+    private Digester gDigester;
+	private AtlassianUserEl fAtlassianUser=null;
 	private static AUParser gInstance=null;
-	
-	static {
+		
+	private void init()
+	{
         gDigester = new Digester();
-        gDigester.setValidating( false );
+        gDigester.setValidating( false );       
+        //gDigester.setUseContextClassLoader(true);
+        
         gDigester.setErrorHandler(new ErrorHandler(){
 
 			public void error(SAXParseException arg0) throws SAXException {
@@ -99,7 +108,10 @@ public class AUParser implements ILdapEnvironmentProvider{
         gDigester.addBeanPropertySetter( "atlassian-user/repositories/ldap/groupSearchAllDepths", "groupSearchAllDepths" );
 	}
 	
-	protected AUParser(){}
+	protected AUParser()
+	{
+		init();
+	}
 	
 	public static AUParser getInstance()
 	{
@@ -110,13 +122,17 @@ public class AUParser implements ILdapEnvironmentProvider{
 		return gInstance;
 	}
 	
-	/** Method to parse the atlassian user file
-	 * 
+	/** kick off the parser, ensuring the classloader for resource loading
+     * is retrieved from the current thread
+     * 
 	 * @throws IOException
 	 * @throws SAXException
 	 */
 	public void parse() throws IOException,SAXException
 	{
+		//in a web app this should limit loading to /WEB-INF/classes
+		//ClassLoader cl=getClass().getClassLoader().getSystemClassLoader(); 
+		//gDigester.setClassLoader(cl);
 		InputStream is = getClass().getClassLoader().getResourceAsStream(AU_XML_FILENAME);
 		try
 		{
@@ -156,11 +172,19 @@ public class AUParser implements ILdapEnvironmentProvider{
 	public Hashtable getLdapEnvironment() throws LDAPException
 	{
 		Hashtable env=null;
-		
+		AtlassianUserEl au=fAtlassianUser;
 		if (fAtlassianUser!=null)
 		{
 			ArrayList aEl = fAtlassianUser.getRepositories();
+			if (aEl.size()==0)
+			{
+				throw new LDAPException("atlassian-user parser hasnt found any repositories element");
+			}
 			RepositoryEl rEl = (RepositoryEl)aEl.get(0);
+			if (rEl.getRepositories().size()==0)
+			{
+				throw new LDAPException("atlassian-user parser hasnt found any repository elements");
+			}
 			ArrayList ldapList = rEl.getRepositories();
 			LdapEl lEl = (LdapEl)ldapList.get(0);
 			

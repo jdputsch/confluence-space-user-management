@@ -1,8 +1,17 @@
 package csum.confluence.permissionmgmt.util.ldap;
 
+/**
+ * Basic Exception wrapper
+ * @author Andy Brook
+ */
 public class LDAPException extends Exception {
 
-    public LDAPException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6901995466364262665L;
+
+	public LDAPException() {
         super();    //To change body of overridden methods use File | Settings | File Templates.
     }
 

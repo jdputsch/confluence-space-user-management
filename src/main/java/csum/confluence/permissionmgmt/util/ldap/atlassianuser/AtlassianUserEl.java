@@ -11,6 +11,8 @@ import java.util.ArrayList;
 public class AtlassianUserEl {
 	private ArrayList fRepositories=new ArrayList();
 	
+	public AtlassianUserEl(){}
+	
 	public ArrayList getRepositories()
 	{
 		return fRepositories;

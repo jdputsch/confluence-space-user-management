@@ -29,15 +29,29 @@
 
 package csum.confluence.permissionmgmt.util.ldap;
 
-/**
- * @author Rajendra Kadam
- */
-public class LDAPUser {
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+/**
+ * Wrapper class for retrieved LDAP attributes and optional formatting of name
+ * @author Andy Brook
+ */
+public class LDAPUser
+{
+	private static final Log LOG = LogFactory.getLog(LDAPUser.class);
+	
     String userId;
     String fullName;
     String email;
-
+    String firstName;
+    String lastName;
+    
+    public static final int LASTNAME_COMMA_FIRSTNAME=0;
+    public static final int FIRSTNAME_SPACE_LASTNAME=1;
+    
+    /** default format lastname_comma_firstname */
+    int fullNameFormat=LASTNAME_COMMA_FIRSTNAME;
+    
     public LDAPUser() {
     }
 
@@ -55,12 +69,21 @@ public class LDAPUser {
         this.userId = userId;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public String getFullName()
+    {
+    	String name=null;
+        switch (fullNameFormat)
+        {
+        	case LASTNAME_COMMA_FIRSTNAME:
+        		name=(lastName!=null?lastName:"?")+", "+(firstName!=null?firstName:"?");
+        		break;
+        	case FIRSTNAME_SPACE_LASTNAME:
+        		name=(lastName!=null?lastName:"?")+", "+(firstName!=null?firstName:"?");
+        		break;
+        	default:
+        		LOG.warn("Unknown format: "+fullNameFormat);
+        }
+    	return name;
     }
 
     public String getEmail() {
@@ -70,4 +93,28 @@ public class LDAPUser {
     public void setEmail(String email) {
         this.email = email;
     }
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public int getFullNameFormat() {
+		return fullNameFormat;
+	}
+
+	public void setFullNameFormat(int fullNameFormat) {
+		this.fullNameFormat = fullNameFormat;
+	}
 }

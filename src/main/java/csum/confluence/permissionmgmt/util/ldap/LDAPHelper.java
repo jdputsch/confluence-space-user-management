@@ -31,7 +31,8 @@ public class LDAPHelper {
         //for AD (my test environment, the following attribute values work
         options.put(LDAPLookup.USERID_ATTRIBUTE_KEY, config.getLdapUserIdAttribute());
         options.put(LDAPLookup.EMAIL_ATTRIBUTE_KEY, config.getLdapEmailAttribute());
-        options.put(LDAPLookup.NAME_ATTRIBUTE_KEY, config.getLdapNameAttribute());
+        options.put(LDAPLookup.FIRSTNAME_ATTRIBUTE_KEY, "givenName");
+        options.put(LDAPLookup.LASTNAME_ATTRIBUTE_KEY, "cn");
 
         LDAPLookup lookup = new LDAPLookup(options);
         //User selection would choose either LDAPLookup.OSUSER_PROVIDER or LDAPLookup.ATLASSIAN_USER_PROVIDER, that value is passed into the constructor

@@ -15,11 +15,17 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.digester.Digester;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 
+import com.atlassian.user.util.ClassLoaderUtils;
+
 import csum.confluence.permissionmgmt.util.ldap.atlassianuser.AUParser;
+import csum.confluence.permissionmgmt.util.ldap.atlassianuser.AtlassianUserEl;
+import csum.confluence.permissionmgmt.util.ldap.atlassianuser.LdapEl;
+import csum.confluence.permissionmgmt.util.ldap.atlassianuser.RepositoryEl;
 import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
 
 
@@ -78,7 +84,8 @@ public class LDAPLookup
     
     /** common ldap lookup keys for userid, email, name */ 
     static public final String USERID_ATTRIBUTE_KEY="useridAttributeKey";
-    static public final String NAME_ATTRIBUTE_KEY="nameAttributeKey";
+	public static String FIRSTNAME_ATTRIBUTE_KEY="firstNameAttributeKey";;
+	public static String LASTNAME_ATTRIBUTE_KEY="lastNameAttributeKey";    
     static public final String EMAIL_ATTRIBUTE_KEY="emailAttributeKey";
 
 	/**  map containing UI options relavent to the provider */
@@ -228,7 +235,19 @@ public class LDAPLookup
         		break;
         		
         	case ATLASSIAN_USER_PROVIDER:
-                AUParser aup = AUParser.getInstance();
+        	try
+        	{
+            	ClassLoaderUtils.loadClass("Digester", Digester.class);
+            	ClassLoaderUtils.loadClass("AtlassianUserEl", AtlassianUserEl.class);
+            	ClassLoaderUtils.loadClass("RepositoryEl", RepositoryEl.class);
+            	ClassLoaderUtils.loadClass("LdapEl", LdapEl.class);
+        	}
+        	catch (ClassNotFoundException cnfe)
+        	{
+        		LOG.info("Couldnt get instance: "+cnfe.getLocalizedMessage());
+        	}
+        	
+        		AUParser aup = AUParser.getInstance();
                 try {
 					aup.parse();
 				} catch (IOException ioe) {
@@ -240,6 +259,11 @@ public class LDAPLookup
                 	LOG.error(msg+" - "+saxe.getLocalizedMessage());
                 	throw new LDAPException(msg, saxe);
 				}
+				catch (Exception e)
+				{
+					LOG.error("huh? "+e.getLocalizedMessage());
+					throw new LDAPException("unknown exception occurred during parsing - "+e.getLocalizedMessage(), e);
+				}
                 fEnv = ((ILdapEnvironmentProvider)aup).getLdapEnvironment();        		
         		break;
         		
@@ -247,7 +271,7 @@ public class LDAPLookup
         		//shouldnt happen
         		throw new LDAPException("huh?");
         }
-        
+                
         //sanity check
         if (fEnv==null)
         {
@@ -271,9 +295,10 @@ public class LDAPLookup
 	
 	    //setup required fields we want back, userId, name, mail.	
 	    String useridAttKey=(String)fOptions.get(USERID_ATTRIBUTE_KEY);
-	    String nameAttKey=(String)fOptions.get(NAME_ATTRIBUTE_KEY);
+	    String firstNameAttKey=(String)fOptions.get(FIRSTNAME_ATTRIBUTE_KEY);
+	    String lastNameAttKey=(String)fOptions.get(LASTNAME_ATTRIBUTE_KEY);
 	    String emailAttKey=(String)fOptions.get(EMAIL_ATTRIBUTE_KEY);
-	    fRequiredAttributes=new String[]{useridAttKey, nameAttKey, emailAttKey};
+	    fRequiredAttributes=new String[]{useridAttKey, firstNameAttKey, lastNameAttKey, emailAttKey};
 	    
 	    LOG.debug("setting controls");
 	    searchControls = new SearchControls();	    
@@ -341,15 +366,17 @@ public class LDAPLookup
                                     data.setUserId(value.toLowerCase());
                                     break;
                                 case 1:
-                                    data.setFullName(value);
+                                    data.setFirstName(value);
                                     break;
                                 case 2:
+                                    data.setLastName(value);
+                                    break;                                	
+                                case 3:
                                     data.setEmail(value);
                                     break;
                                 default:
                                     throw new LDAPException("Unknown index, fix code!");
-                            }
-                            ;
+                            };
                         }
                         catch (NamingException ne)
                         {
