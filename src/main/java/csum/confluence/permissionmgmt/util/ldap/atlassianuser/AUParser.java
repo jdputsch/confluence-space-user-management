@@ -6,19 +6,14 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import javax.naming.Context;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
-import org.apache.webdav.lib.properties.GetContentLengthProperty;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import com.atlassian.plugin.loaders.ClassPathPluginLoader;
-import com.atlassian.user.util.ClassLoaderUtils;
 
 import csum.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
 import csum.confluence.permissionmgmt.util.ldap.LDAPException;
@@ -44,8 +39,6 @@ public class AUParser implements ILdapEnvironmentProvider{
 	{
         gDigester = new Digester();
         gDigester.setValidating( false );       
-        //gDigester.setUseContextClassLoader(true);
-        
         gDigester.setErrorHandler(new ErrorHandler(){
 
 			public void error(SAXParseException arg0) throws SAXException {
@@ -130,12 +123,24 @@ public class AUParser implements ILdapEnvironmentProvider{
 	 */
 	public void parse() throws IOException,SAXException
 	{
-		//in a web app this should limit loading to /WEB-INF/classes
-		//ClassLoader cl=getClass().getClassLoader().getSystemClassLoader(); 
-		//gDigester.setClassLoader(cl);
-		InputStream is = getClass().getClassLoader().getResourceAsStream(AU_XML_FILENAME);
+		//check we have a SAX parser
 		try
+		{		
+			LOG.debug("checking a SAXParserFactory exists");
+			SAXParserFactory.newInstance();
+		}
+		catch (Exception saxe1)
 		{
+			saxe1.printStackTrace();
+			String msg="No SAX Parser factory present, needs xerces or similar";
+			LOG.error(msg);
+			throw new SAXException(msg);
+		}
+		
+		//according to http://confluence.atlassian.com/pages/viewpage.action?pageId=200934
+		InputStream is = com.atlassian.core.util.ClassLoaderUtils.getResourceAsStream(AU_XML_FILENAME, getClass());
+		try
+		{			
 			if (is!=null)
 			{
 	        	fAtlassianUser = (AtlassianUserEl)gDigester.parse( is );

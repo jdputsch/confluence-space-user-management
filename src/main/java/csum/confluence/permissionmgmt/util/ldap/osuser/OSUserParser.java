@@ -219,8 +219,10 @@ public class OSUserParser extends DefaultHandler implements ILdapEnvironmentProv
      * @throws ParserConfigurationException
      */
     public void parse() throws ParserConfigurationException
-    {
-		InputStream is = getClass().getClassLoader().getResourceAsStream(OSUSER_XML_FILENAME);
+    {    	
+		//according to http://confluence.atlassian.com/pages/viewpage.action?pageId=200934
+		InputStream is = com.atlassian.core.util.ClassLoaderUtils.getResourceAsStream(OSUSER_XML_FILENAME, getClass());
+
 		if (is!=null)
 		{
         	parseImpl( is );
