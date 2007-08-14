@@ -54,7 +54,8 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String providerType;
     private String ldapUserIdAttribute;
     private String ldapEmailAttribute;
-    private String ldapNameAttribute;
+    private String ldapFirstNameAttribute;
+    private String ldapLastNameAttribute;
     private String ldapProviderFullyQualifiedClassname;
     private String personalSpaceAllowed;
 
@@ -195,12 +196,20 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
         this.ldapEmailAttribute = ldapEmailAttribute;
     }
 
-    public String getLdapNameAttribute() {
-        return ldapNameAttribute;
+    public String getLdapFirstNameAttribute() {    
+        return ldapFirstNameAttribute;
     }
 
-    public void setLdapNameAttribute(String ldapNameAttribute) {
-        this.ldapNameAttribute = ldapNameAttribute;
+    public void setLdapFirstNameAttribute(String ldapFirstNameAttribute) {
+        this.ldapFirstNameAttribute = ldapFirstNameAttribute;
+    }
+
+    public String getLdapLastNameAttribute() {    
+        return ldapLastNameAttribute;
+    }
+
+    public void setLdapLastNameAttribute(String ldapLastNameAttribute) {
+        this.ldapLastNameAttribute = ldapLastNameAttribute;
     }
 
     public String getLdapProviderFullyQualifiedClassname() {

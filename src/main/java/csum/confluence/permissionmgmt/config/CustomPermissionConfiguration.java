@@ -82,7 +82,8 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setProviderType(getProviderType());
         config.setLdapUserIdAttribute(getLdapUserIdAttribute());
         config.setLdapEmailAttribute(getLdapEmailAttribute());
-        config.setLdapNameAttribute(getLdapNameAttribute());
+        config.setLdapFirstNameAttribute(getLdapFirstNameAttribute());
+        config.setLdapLastNameAttribute(getLdapLastNameAttribute());
         config.setLdapProviderFullyQualifiedClassname(getLdapProviderFullyQualifiedClassname());
         config.setPersonalSpaceAllowed(getPersonalSpaceAllowed());
     }
@@ -111,7 +112,8 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setProviderType(config.getProviderType());
         setLdapUserIdAttribute(config.getLdapUserIdAttribute());
         setLdapEmailAttribute(config.getLdapEmailAttribute());
-        setLdapNameAttribute(config.getLdapNameAttribute());
+        setLdapFirstNameAttribute(config.getLdapFirstNameAttribute());
+        setLdapLastNameAttribute(config.getLdapLastNameAttribute());
         setLdapProviderFullyQualifiedClassname(config.getLdapProviderFullyQualifiedClassname());
         setPersonalSpaceAllowed(config.getPersonalSpaceAllowed());
 
@@ -210,17 +212,21 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 }
 
                 if (config.getLdapUserIdAttribute()==null) {
-                    result.addFieldError("ldapUserIdAttribute", "Please indicate the LDAP user id attribute");
+                    result.addFieldError("ldapUserIdAttribute", "Please indicate the LDAP user id attribute (e.g. sAMAccountName)");
                     result.setValid(false);
                 }
 
                 if (config.getLdapEmailAttribute()==null) {
-                    result.addFieldError("ldapEmailAttribute", "Please indicate the LDAP email attribute");
+                    result.addFieldError("ldapEmailAttribute", "Please indicate the LDAP email attribute (e.g. mail)");
                     result.setValid(false);
                 }
 
-                if (config.getLdapNameAttribute()==null) {
-                    result.addFieldError("ldapNameAttribute", "Please indicate the LDAP name attribute");
+                if (config.getLdapFirstNameAttribute()==null) {
+                    result.addFieldError("ldapFirstNameAttribute", "Please indicate the LDAP firstName attribute (e.g. givenName)");
+                    result.setValid(false);
+                }
+                if (config.getLdapLastNameAttribute()==null) {
+                    result.addFieldError("ldapLastNameAttribute", "Please indicate the LDAP lastName attribute (e.g. sn)");
                     result.setValid(false);
                 }
 

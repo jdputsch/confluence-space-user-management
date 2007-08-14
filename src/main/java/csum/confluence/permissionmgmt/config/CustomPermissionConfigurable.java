@@ -85,12 +85,16 @@ public interface CustomPermissionConfigurable {
     public String getLdapEmailAttribute();
     public void setLdapEmailAttribute(String ldapEmailAttribute);
 
-    public String getLdapNameAttribute();
-    public void setLdapNameAttribute(String ldapNameAttribute);
-
+	public String getLdapFirstNameAttribute();
+	public void setLdapFirstNameAttribute(String ldapFirstNameAttribute);
+	
+	public String getLdapLastNameAttribute();
+	public void setLdapLastNameAttribute(String ldapLastNameAttribute);
+	
     public String getLdapProviderFullyQualifiedClassname();
     public void setLdapProviderFullyQualifiedClassname(String ldapProviderFullyQualifiedClassname);
 
     public String getPersonalSpaceAllowed();
     public void setPersonalSpaceAllowed(String personalSpaceAllowed);
+    
 }
