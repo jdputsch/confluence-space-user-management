@@ -143,6 +143,15 @@
                 <version>2.0+xmlrpc61</version>
                 <scope>provided</scope>
             </dependency>
+            
+            <!-- atlassian-user.xml parser -->            
+            <dependency>
+                <groupId>commons-digester</groupId>
+                <artifactId>commons-digester</artifactId>
+                <version>1.8</version>
+                <scope>compile</scope>
+            </dependency>
+
             <dependency>
                 <groupId>commons-logging</groupId>
                 <artifactId>commons-logging</artifactId>
