@@ -59,3 +59,6 @@ svn commit (from tag dir) comment should be "Updated pom.xml for version VERSION
 cp target/(jar which should contain version in filename) ../releases/
 svn add ../releases/(jarname you just copied)
 svn commit ../releases
+
+Notes:
+* Follow the process above and don't make substitutions. For example, the maven build should ensure Java backwards compatibility, but if you build with IDea or something else, it might not.
