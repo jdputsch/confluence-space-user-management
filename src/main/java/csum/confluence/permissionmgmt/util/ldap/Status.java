@@ -29,17 +29,17 @@
 
 package csum.confluence.permissionmgmt.util.ldap;
 
-import org.apache.log4j.Category;
-
 import java.util.Enumeration;
 import java.util.Vector;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Rajendra Kadam
  */
 public class Status {
-
-    private static final Category log = Category.getInstance(Status.class);
+	private static final Log LOG = LogFactory.getLog(Status.class);
 
     public boolean isTaskDone;
     public String message;
