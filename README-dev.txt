@@ -59,6 +59,7 @@ svn commit (from tag dir) comment should be "Updated pom.xml for version VERSION
 cp target/(jar which should contain version in filename) ../releases/
 svn add ../releases/(jarname you just copied)
 svn commit ../releases
+edit the plugin page at http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin and change all references to point at latest jar release. Add comment to it to let people know there is a new release with a link to the built jar.
 
 Notes:
 * Follow the process above and don't make substitutions. For example, the maven build should ensure Java backwards compatibility, but if you build with IDea or something else, it might not.
