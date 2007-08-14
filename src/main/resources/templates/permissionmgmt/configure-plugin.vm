@@ -44,7 +44,8 @@
                     document.getElementById('providerType').disabled = false;
                     document.getElementById('ldapUserIdAttribute').disabled = false;
                     document.getElementById('ldapEmailAttribute').disabled = false;
-                    document.getElementById('ldapNameAttribute').disabled = false;
+                    document.getElementById('ldapFirstNameAttribute').disabled = false;
+                    document.getElementById('ldapLastNameAttribute').disabled = false;                    
                     document.getElementById('ldapProviderFullyQualifiedClassname').disabled = false;
                 }
                 else
@@ -54,8 +55,10 @@
                     document.getElementById('ldapUserIdAttribute').value = '';
                     document.getElementById('ldapEmailAttribute').disabled = true;
                     document.getElementById('ldapEmailAttribute').value = '';
-                    document.getElementById('ldapNameAttribute').disabled = true;
-                    document.getElementById('ldapNameAttribute').value = '';
+                    document.getElementById('ldapFirstNameAttribute').disabled = true;
+                    document.getElementById('ldapFirstNameAttribute').value = '';
+                    document.getElementById('ldapLastNameAttribute').disabled = true;
+                    document.getElementById('ldapLastNameAttribute').value = '';
                     document.getElementById('ldapProviderFullyQualifiedClassname').disabled = true;
                     document.getElementById('ldapProviderFullyQualifiedClassname').value = '';
                 }
@@ -165,10 +168,21 @@
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("ldap.name.attribute.label"):</td>
+            <td class="label" width="30%">$action.getText("ldap.firstName.attribute.label"):</td>
             <td nowrap>
-                #if ($!action.customPermissionConfiguration.ldapNameAttribute)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.ldapNameAttribute</span>
+                #if ($!action.customPermissionConfiguration.ldapFirstNameAttribute)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.ldapFirstNameAttribute</span>
+                #else
+                    <span style="color: #900; font-weight: bold">-</span>
+                #end
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label" width="30%">$action.getText("ldap.lastName.attribute.label"):</td>
+            <td nowrap>
+                #if ($!action.customPermissionConfiguration.ldapLastNameAttribute)
+                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.ldapLastNameAttribute</span>
                 #else
                     <span style="color: #900; font-weight: bold">-</span>
                 #end
@@ -390,12 +404,23 @@
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("ldap.name.attribute.label"):</td>
+            <td class="label" width="30%">$action.getText("ldap.firstName.attribute.label"):</td>
             <td nowrap>
-                #fielderror ('ldapNameAttribute')
-                <input type="text" id="ldapNameAttribute" name="ldapNameAttribute" value="$!action.ldapNameAttribute" #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>
+                #fielderror ('ldapFirstNameAttribute')
+                <input type="text" id="ldapFirstNameAttribute" name="ldapFirstNameAttribute" value="$!action.ldapFirstNameAttribute" #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>
                 <p>
-                    <font size="1">$action.getText("ldap.name.attribute.note")</font>
+                    <font size="1">$action.getText("ldap.firstName.attribute.note")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label" width="30%">$action.getText("ldap.lastName.attribute.label"):</td>
+            <td nowrap>
+                #fielderror ('ldapLastNameAttribute')
+                <input type="text" id="ldapLastNameAttribute" name="ldapLastNameAttribute" value="$!action.ldapLastNameAttribute" #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>
+                <p>
+                    <font size="1">$action.getText("ldap.lastName.attribute.note")</font>
                 </p>
             </td>
         </tr>

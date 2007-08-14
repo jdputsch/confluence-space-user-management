@@ -29,24 +29,26 @@
 
 package csum.confluence.permissionmgmt.config;
 
-import com.atlassian.bandana.BandanaManager;
-import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
-import com.atlassian.spring.container.ContainerManager;
-import com.opensymphony.webwork.ServletActionContext;
-
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.atlassian.bandana.BandanaManager;
+import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
+import com.atlassian.spring.container.ContainerManager;
+
+import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
+import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
 import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
-import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
-import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
-import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
+
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
+import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
+import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
+import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
 
 /**
  * @author Gary S. Weaver
@@ -522,12 +524,20 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_EMAIL_ATTRIBUTE, ldapEmailAttribute);
     }
 
-    public String getLdapNameAttribute() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_NAME_ATTRIBUTE);
+    public String getLdapFirstNameAttribute() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_FIRSTNAME_ATTRIBUTE);
     }
 
-    public void setLdapNameAttribute(String ldapNameAttribute) {
-        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_NAME_ATTRIBUTE, ldapNameAttribute);
+    public void setLdapFirstNameAttribute(String ldapNameAttribute) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_FIRSTNAME_ATTRIBUTE, ldapNameAttribute);
+    }
+
+    public String getLdapLastNameAttribute() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_LASTNAME_ATTRIBUTE);
+    }
+
+    public void setLdapLastNameAttribute(String ldapNameAttribute) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_LASTNAME_ATTRIBUTE, ldapNameAttribute);
     }
 
     public String getLdapProviderFullyQualifiedClassname() {

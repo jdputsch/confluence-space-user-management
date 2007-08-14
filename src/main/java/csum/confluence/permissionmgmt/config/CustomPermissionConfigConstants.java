@@ -55,7 +55,8 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_PROVIDER_TYPE = "ext.delegateusermgmt.provider.type";
     public static final String DELEGATE_USER_MGMT_LDAP_USER_ID_ATTRIBUTE = "ext.delegateusermgmt.ldap,user.id.attribute";
     public static final String DELEGATE_USER_MGMT_LDAP_EMAIL_ATTRIBUTE = "ext.delegateusermgmt.ldap.email.attribute";
-    public static final String DELEGATE_USER_MGMT_LDAP_NAME_ATTRIBUTE = "ext.delegateusermgmt.ldap.name.attribute";
+    public static final String DELEGATE_USER_MGMT_LDAP_FIRSTNAME_ATTRIBUTE = "ext.delegateusermgmt.ldap.firstname.attribute";
+    public static final String DELEGATE_USER_MGMT_LDAP_LASTNAME_ATTRIBUTE = "ext.delegateusermgmt.ldap.lastname.attribute";    
     public static final String DELEGATE_USER_MGMT_LDAP_PROVIDER_FULLY_QUALIFIED_CLASSNAME = "ext.delegateusermgmt.ldap.provider.fully.qualified.classname";
     public static final String DELEGATE_USER_MGMT_PERSONAL_SPACE_ALLOWED = "ext.delegateusermgmt.personal.space.allowed";
 
