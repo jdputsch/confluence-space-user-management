@@ -235,18 +235,6 @@ public class LDAPLookup
         		break;
         		
         	case ATLASSIAN_USER_PROVIDER:
-//	        	try
-//	        	{
-//	            	ClassLoaderUtils.loadClass("Digester", Digester.class);
-//	            	ClassLoaderUtils.loadClass("AtlassianUserEl", AtlassianUserEl.class);
-//	            	ClassLoaderUtils.loadClass("RepositoryEl", RepositoryEl.class);
-//	            	ClassLoaderUtils.loadClass("LdapEl", LdapEl.class);
-//	        	}
-//	        	catch (ClassNotFoundException cnfe)
-//	        	{
-//	        		LOG.info("Couldnt get instance: "+cnfe.getLocalizedMessage());
-//	        	}
-        	
         		AUParser aup = AUParser.getInstance();
                 try {
 					aup.parse();
