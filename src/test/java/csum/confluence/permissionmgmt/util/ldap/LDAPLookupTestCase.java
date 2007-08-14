@@ -1,9 +1,16 @@
 package csum.confluence.permissionmgmt.util.ldap;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
 
 /** Test to prove all the providers can be used to retrieve a valid user from lookup
  * 
@@ -24,7 +31,6 @@ public class LDAPLookupTestCase extends TestCase
     /** Test case to prove osuser parse and lookup
 	 * 
 	 */
-    /*
     public void testOSUserLookup() throws Exception
 	{
 		Map options=new HashMap();
@@ -52,7 +58,8 @@ public class LDAPLookupTestCase extends TestCase
 		//for AD (my test environment, the following attribute values work
 		options.put(LDAPLookup.USERID_ATTRIBUTE_KEY, "sAMAccountName");
 		options.put(LDAPLookup.EMAIL_ATTRIBUTE_KEY, "mail");
-		options.put(LDAPLookup.NAME_ATTRIBUTE_KEY, "displayName");
+		options.put(LDAPLookup.FIRSTNAME_ATTRIBUTE_KEY, "givenName");
+		options.put(LDAPLookup.SURNAME_ATTRIBUTE_KEY, "sn");
 		
 		LDAPLookup lookup = new LDAPLookup(options);
 		//User selection would choose either LDAPLookup.OSUSER_PROVIDER or LDAPLookup.ATLASSIAN_USER_PROVIDER, that value is passed into the constructor
@@ -67,19 +74,18 @@ public class LDAPLookupTestCase extends TestCase
 		LOG.info("OSUSER source - Got user: id="+u.getUserId()+", name="+u.getFullName()+", email="+u.getEmail());
 		return;
 	}
-    */
 
     /** Test case to prove atlassian-user parse and lookup
 	 * 
 	 * @throws Exception
 	 */
-	/*
     public void testAtlassianUserLookup() throws Exception
 	{
 		Map options=new HashMap();
 		options.put(LDAPLookup.USERID_ATTRIBUTE_KEY, "sAMAccountName");
 		options.put(LDAPLookup.EMAIL_ATTRIBUTE_KEY, "mail");
-		options.put(LDAPLookup.NAME_ATTRIBUTE_KEY, "displayName");
+		options.put(LDAPLookup.FIRSTNAME_ATTRIBUTE_KEY, "givenName");
+		options.put(LDAPLookup.SURNAME_ATTRIBUTE_KEY, "sn");
 		
 		LDAPLookup lookup = new LDAPLookup(options);
 		lookup.setProvider(LDAPLookup.ATLASSIAN_USER_PROVIDER);
@@ -90,5 +96,4 @@ public class LDAPLookupTestCase extends TestCase
 		LOG.info("Atlassian User source - Got user: id="+u.getUserId()+", name="+u.getFullName()+", email="+u.getEmail());
 		return;		
 	}
-    */
 }
