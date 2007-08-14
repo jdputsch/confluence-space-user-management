@@ -30,7 +30,7 @@ public class LDAPLookupTestCase extends TestCase
 
     /** Test case to prove osuser parse and lookup
 	 * 
-	 */
+	 *
     public void testOSUserLookup() throws Exception
 	{
 		Map options=new HashMap();
@@ -74,11 +74,12 @@ public class LDAPLookupTestCase extends TestCase
 		LOG.info("OSUSER source - Got user: id="+u.getUserId()+", name="+u.getFullName()+", email="+u.getEmail());
 		return;
 	}
+	*/
 
     /** Test case to prove atlassian-user parse and lookup
 	 * 
 	 * @throws Exception
-	 */
+	 *
     public void testAtlassianUserLookup() throws Exception
 	{
 		Map options=new HashMap();
@@ -96,4 +97,5 @@ public class LDAPLookupTestCase extends TestCase
 		LOG.info("Atlassian User source - Got user: id="+u.getUserId()+", name="+u.getFullName()+", email="+u.getEmail());
 		return;		
 	}
+	*/
 }
