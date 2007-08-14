@@ -35,6 +35,8 @@ However, before you make any changes please read and accept the following guidel
 Releasing Plugin
 ----------------
 
+Before releasing check with team to make sure is ok and that they know you are releasing.
+
 (where VERSION is the format major.minor like 2.0 or major.minor-alpha/beta-number like 2.0-alpha-1 and 2.0-beta-1. Please see http://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/tags/ )
 
 (if needed) svn co https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/
