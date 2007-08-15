@@ -11,7 +11,7 @@ then feel free to contact atlassian to get dev access to subversion and make cha
 Development Rules
 -----------------
 
-However, before you make any changes please read and accept the following guidelines:
+Before you make any changes to the project, please read and accept the following guidelines:
 
 1) All changes to the plugin must not be specific to any single organization that might be using confluence.
 
@@ -29,7 +29,9 @@ However, before you make any changes please read and accept the following guidel
 
 8) Good code should not need many comments. Write self-documenting code.
 
-9) Tests and code should be able to run in any environment. If not, comment it out or remove it altogether.
+9) Tests should be able to run in any supported environment.
+
+10) Have fun!
 
 ----------------
 Releasing Plugin
