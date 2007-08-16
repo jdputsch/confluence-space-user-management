@@ -309,7 +309,7 @@
             -->
 
 			<!--  commented out as it probably wont run for you, due to the above -->     
-			<!--                         
+			<!--   -->                      
 			<plugin>
 				<groupId>ch.elca.el4j.maven.plugins</groupId>
 				<artifactId>maven-depgraph-plugin</artifactId>
@@ -337,7 +337,7 @@
 				<artifactId>maven-database-plugin</artifactId>
 				<version>1.1</version>
 			</plugin>
-             -->
+             
              
         </plugins>
     </build>
@@ -448,6 +448,16 @@
             <enabled>false</enabled>
           </snapshots>
         </pluginRepository>
+
+		<!-- depgraph plugin -->
+		<pluginRepository>
+		  <id>elca-services</id>
+		  <url>http://el4.elca-services.ch/el4j/maven2repository</url>
+		  <releases>
+		   <enabled>true</enabled>
+		  </releases>
+		</pluginRepository>  
+		      
     </pluginRepositories>
     
 </project>
