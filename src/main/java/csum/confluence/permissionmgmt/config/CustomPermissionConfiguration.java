@@ -127,7 +127,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
      * Validatation for configuration from manager area instead of config area. Otherwise, use
      * validate(config,existingConfig).
      *
-     * @return
+     * @return ConfigValidationResponse
      */
     public ConfigValidationResponse validate() {
         return validate(this, null, null);
