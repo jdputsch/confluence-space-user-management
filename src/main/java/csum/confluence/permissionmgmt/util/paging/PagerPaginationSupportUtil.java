@@ -59,7 +59,7 @@ public class PagerPaginationSupportUtil {
      * submit a bug. This does way too many queries by having to query for each page.
      *
      * @param pps
-     * @return
+     * @return List
      */
     public static List toList(PagerPaginationSupport pps) {
         //TODO: it is awful than PagerUtils.toList(pps.getItems()) doesn't work. submit a bug. this does way too many queries            
