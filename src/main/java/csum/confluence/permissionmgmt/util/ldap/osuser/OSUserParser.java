@@ -206,7 +206,7 @@ public class OSUserParser extends DefaultHandler implements ILdapEnvironmentProv
     
     /** Method to set the provider class declared in the osuser.xml file, it should be a subset of the available providers
      * 
-     * @param providerClass, fully qualified provider class
+     * @param providerClass fully qualified provider class
      */
     public void setRequiredProvider(String providerClass)
     {
