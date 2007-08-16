@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+	<properties>
+		<title>Welcome to the Custom Space User Management project</title>
+		<author email="raju.kadam@gmail.com">Rajendra Kadam</author>
+		<author email="gary.weaver@duke.edu">Gary S. Weaver</author>
+		<author email="renald.provey@duke.edu">Peter R.</author>
+		<author email="axb@dolby.co.uk">Andy Brook</author>
+	</properties>
+	<body>
+		<section name="Welcome to the Custom Space User Management project">
+			<h3>Introduction</h3>
+			
+			<h3>Description</h3>
+			<P>
+			stuff
+			</P>
+			
+			<H3>Bugs/Issues</H3>
+			Current bugs/issues can be found and new ones reported through the main Atlassian Developer JIRA <A HREF="http://developer.atlassian.com/jira/browse/SUSR">SUSR</A> project.			
+		</section>
+	</body>
+</document>
+
