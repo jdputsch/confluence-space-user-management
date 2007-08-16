@@ -1,6 +1,5 @@
 package csum.confluence.permissionmgmt.util.ldap.atlassianuser;
 
-import java.util.Hashtable;
 
 /** This class models the &lt;ldap&gt; element within the atlassian-user.xml file,
  * not all sub-element values need to be present, they will be left as nulls here.

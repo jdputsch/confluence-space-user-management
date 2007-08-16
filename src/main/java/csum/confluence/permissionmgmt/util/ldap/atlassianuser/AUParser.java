@@ -177,7 +177,6 @@ public class AUParser implements ILdapEnvironmentProvider{
 	public Hashtable getLdapEnvironment() throws LDAPException
 	{
 		Hashtable env=null;
-		AtlassianUserEl au=fAtlassianUser;
 		if (fAtlassianUser!=null)
 		{
 			ArrayList aEl = fAtlassianUser.getRepositories();
