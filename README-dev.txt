@@ -78,3 +78,15 @@ Releasing Plugin
 13) Edit http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin and change all references to point at latest jar release. Add comment to it to let people know there is a new release with a link to the built jar.
 
 14) Follow the process above and don't make substitutions or changes. For example, the maven build should ensure Java backwards compatibility, but if you build with IDea or something else, it might not. Also, note that it is intentional that the tag's pom is changed and that it is not changed in trunk. Trunk's pom should always have SNAPSHOT in the version of the pom.
+
+-------
+Reports
+-------
+
+Thanks to Andy we have a site.xml and pom.xml changes to support it
+
+To produce site use:
+ mvn -Dmaven.test.skip=true clean site
+
+If you are Andy or you have graphviz installed http://www.graphviz.org and have uncommented the pom.xml and added a local repository to the pom that contains the CSUM plugin, then you can do this:
+ mvn depgraph:depgraph
