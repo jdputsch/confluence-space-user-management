@@ -29,16 +29,16 @@
 
 package csum.confluence.permissionmgmt;
 
+import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
+import com.atlassian.user.User;
+import com.atlassian.user.search.page.Pager;
+import com.atlassian.user.search.page.PagerUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-
-import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
-import com.atlassian.user.User;
-import com.atlassian.user.search.page.Pager;
-import com.atlassian.user.search.page.PagerUtils;
 
 /**
  * @author Rajendra Kadam

@@ -29,11 +29,11 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
-import com.atlassian.user.Group;
-import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.security.SpacePermission;
-import csum.confluence.permissionmgmt.service.exception.RemoveException;
+import com.atlassian.confluence.spaces.Space;
+import com.atlassian.user.Group;
 import csum.confluence.permissionmgmt.service.exception.AddException;
+import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;

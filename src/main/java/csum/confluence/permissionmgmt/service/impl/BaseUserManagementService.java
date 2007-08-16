@@ -12,7 +12,6 @@ import com.atlassian.user.search.query.EmailTermQuery;
 import com.atlassian.user.search.query.FullNameTermQuery;
 import com.atlassian.user.search.query.TermQuery;
 import com.atlassian.user.search.query.UserNameTermQuery;
-import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.UserManagementService;
 import csum.confluence.permissionmgmt.service.exception.FindException;
@@ -21,16 +20,15 @@ import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPException;
-import csum.confluence.permissionmgmt.util.ldap.LDAPLookup;
-import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
-import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
+import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.util.paging.LazyLoadingUserByUsernamePager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * (c) 2007 Duke University

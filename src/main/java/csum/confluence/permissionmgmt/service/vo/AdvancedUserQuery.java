@@ -29,7 +29,6 @@
 
 package csum.confluence.permissionmgmt.service.vo;
 
-import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 
 /**

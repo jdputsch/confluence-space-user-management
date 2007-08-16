@@ -31,8 +31,6 @@ package csum.confluence.permissionmgmt.util.paging;
 
 import java.util.Comparator;
 
-import csum.confluence.permissionmgmt.util.paging.Range;
-
 /**
  * @author Gary S. Weaver
  */

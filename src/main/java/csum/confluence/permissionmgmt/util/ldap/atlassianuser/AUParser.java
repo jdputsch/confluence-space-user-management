@@ -1,13 +1,8 @@
 package csum.confluence.permissionmgmt.util.ldap.atlassianuser;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Hashtable;
-
-import javax.naming.Context;
-import javax.xml.parsers.SAXParserFactory;
-
+import csum.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
+import csum.confluence.permissionmgmt.util.ldap.LDAPException;
+import csum.confluence.permissionmgmt.util.ldap.LDAPLookup;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,9 +10,12 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import csum.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
-import csum.confluence.permissionmgmt.util.ldap.LDAPException;
-import csum.confluence.permissionmgmt.util.ldap.LDAPLookup;
+import javax.naming.Context;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 /** This class manages the parsing of the atlassian-user.xml file found in WEB-INF/classes of deployed applications
  * 

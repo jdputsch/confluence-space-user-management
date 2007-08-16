@@ -29,26 +29,21 @@
 
 package csum.confluence.permissionmgmt.config;
 
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.spring.container.ContainerManager;
-
 import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
+import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
+import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
 import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
-import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
-import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
-import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * @author Gary S. Weaver

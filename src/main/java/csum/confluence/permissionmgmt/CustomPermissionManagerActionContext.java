@@ -29,11 +29,10 @@
 
 package csum.confluence.permissionmgmt;
 
+import com.atlassian.confluence.core.ConfluenceActionSupport;
 import csum.confluence.permissionmgmt.util.StringUtil;
 
 import java.util.List;
-
-import com.atlassian.confluence.core.ConfluenceActionSupport;
 
 /**
  * @author Gary S. Weaver

@@ -29,6 +29,18 @@
 
 package csum.confluence.permissionmgmt.util.ldap.osuser;
 
+import csum.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
+import csum.confluence.permissionmgmt.util.ldap.LDAPException;
+import csum.confluence.permissionmgmt.util.ldap.LDAPLookup;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -36,21 +48,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import csum.confluence.permissionmgmt.util.ldap.ILdapEnvironmentProvider;
-import csum.confluence.permissionmgmt.util.ldap.LDAPException;
-import csum.confluence.permissionmgmt.util.ldap.LDAPLookup;
 
 /**
  * Class to handle manipulation of the osuser.xml file, to allow the configuration for LDAP connections to be extractable

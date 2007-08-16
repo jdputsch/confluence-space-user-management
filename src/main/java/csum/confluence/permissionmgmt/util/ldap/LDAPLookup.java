@@ -1,8 +1,10 @@
 package csum.confluence.permissionmgmt.util.ldap;
 
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Map;
+import csum.confluence.permissionmgmt.util.ldap.atlassianuser.AUParser;
+import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.xml.sax.SAXException;
 
 import javax.naming.CommunicationException;
 import javax.naming.Context;
@@ -14,19 +16,9 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.digester.Digester;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.xml.sax.SAXException;
-
-import com.atlassian.user.util.ClassLoaderUtils;
-
-import csum.confluence.permissionmgmt.util.ldap.atlassianuser.AUParser;
-import csum.confluence.permissionmgmt.util.ldap.atlassianuser.AtlassianUserEl;
-import csum.confluence.permissionmgmt.util.ldap.atlassianuser.LdapEl;
-import csum.confluence.permissionmgmt.util.ldap.atlassianuser.RepositoryEl;
-import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
+import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Map;
 
 
 /** Common ldap accessor class, relies on other sources for ldap environment.

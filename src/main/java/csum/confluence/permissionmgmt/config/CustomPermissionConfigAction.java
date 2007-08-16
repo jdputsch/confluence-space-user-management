@@ -33,12 +33,12 @@ import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.setup.BootstrapManager;
 import com.opensymphony.webwork.ServletActionContext;
-import org.apache.log4j.Category;
 import csum.confluence.permissionmgmt.CustomPermissionConstants;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
+import org.apache.log4j.Category;
 
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Action to configure plugin

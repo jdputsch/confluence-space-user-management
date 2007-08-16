@@ -1,18 +1,16 @@
 package csum.confluence.permissionmgmt.util.ldap;
 
-import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfigurable;
 import csum.confluence.permissionmgmt.util.ldap.osuser.OSUserParser;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Iterator;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * (c) 2007 Duke University

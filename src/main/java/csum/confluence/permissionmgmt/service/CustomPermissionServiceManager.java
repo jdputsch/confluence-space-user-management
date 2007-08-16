@@ -29,13 +29,16 @@
 
 package csum.confluence.permissionmgmt.service;
 
+import com.atlassian.confluence.core.ConfluenceActionSupport;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
-import csum.confluence.permissionmgmt.service.impl.*;
 import csum.confluence.permissionmgmt.service.exception.ServiceException;
+import csum.confluence.permissionmgmt.service.impl.ConfluenceGroupManagementService;
+import csum.confluence.permissionmgmt.service.impl.ConfluenceUserManagementService;
+import csum.confluence.permissionmgmt.service.impl.JiraSoapGroupManagementService;
+import csum.confluence.permissionmgmt.service.impl.JiraSoapUserManagementService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.atlassian.confluence.core.ConfluenceActionSupport;
 
 /**
  * @author Gary S. Weaver

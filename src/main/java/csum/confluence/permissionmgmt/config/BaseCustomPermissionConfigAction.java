@@ -29,8 +29,8 @@
 
 package csum.confluence.permissionmgmt.config;
 
-import com.atlassian.confluence.core.ConfluenceActionSupport;
 import com.atlassian.confluence.core.Administrative;
+import com.atlassian.confluence.core.ConfluenceActionSupport;
 
 /**
  * @author Gary S. Weaver

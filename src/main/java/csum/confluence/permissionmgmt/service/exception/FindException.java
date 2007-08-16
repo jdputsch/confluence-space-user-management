@@ -29,8 +29,6 @@
 
 package csum.confluence.permissionmgmt.service.exception;
 
-import csum.confluence.permissionmgmt.service.exception.ServiceException;
-
 /**
  * @author Gary S. Weaver
  */

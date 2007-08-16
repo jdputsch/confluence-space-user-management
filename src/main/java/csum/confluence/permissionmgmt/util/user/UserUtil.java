@@ -32,9 +32,9 @@ package csum.confluence.permissionmgmt.util.user;
 import com.atlassian.user.User;
 import csum.confluence.permissionmgmt.util.StringUtil;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Gary S. Weaver

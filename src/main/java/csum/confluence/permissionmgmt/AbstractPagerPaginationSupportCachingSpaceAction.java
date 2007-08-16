@@ -29,18 +29,17 @@
 
 package csum.confluence.permissionmgmt;
 
+import bucket.core.actions.PagerPaginationSupport;
 import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.opensymphony.xwork.ActionContext;
-
-import java.util.Map;
-import java.util.Iterator;
-import java.util.List;
-
-import bucket.core.actions.PagerPaginationSupport;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Gary S. Weaver

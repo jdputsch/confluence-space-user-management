@@ -29,11 +29,11 @@
 
 package csum.confluence.permissionmgmt.util.ldap;
 
-import java.util.Enumeration;
-import java.util.Vector;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * @author Rajendra Kadam

@@ -29,10 +29,8 @@
 
 package csum.confluence.permissionmgmt.util.group;
 
-import csum.confluence.permissionmgmt.util.group.GroupComparator;
-
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Rajendra Kadam

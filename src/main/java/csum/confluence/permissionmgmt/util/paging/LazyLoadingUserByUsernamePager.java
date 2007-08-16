@@ -29,14 +29,14 @@
 
 package csum.confluence.permissionmgmt.util.paging;
 
+import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerException;
-import com.atlassian.user.User;
-import com.atlassian.confluence.user.UserAccessor;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author Gary S. Weaver
