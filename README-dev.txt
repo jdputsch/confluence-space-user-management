@@ -37,31 +37,44 @@ Before you make any changes to the project, please read and accept the following
 Releasing Plugin
 ----------------
 
-Before releasing check with team to make sure is ok and that they know you are releasing.
+1) Before releasing check with team to make sure is ok and that they know you are releasing.
 
-(where VERSION is the format major.minor like 2.0 or major.minor-alpha/beta-number like 2.0-alpha-1 and 2.0-beta-1. Please see http://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/tags/ )
+2) If you don't already have the whole plugin checked out (including all tags) you might want it to make this easier:
+ svn co https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/
 
-(if needed) svn co https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/
-cd custom-space-user-management
-cd trunk
-mvn -Dmaven.test.skip=true clean install
-ONLY PROCEED IF BUILD SUCCEEDS AND DO IT ONLY IMMEDIATELY AFTER A GOOD BUILD!
-svn copy --username yourusername https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/tags/VERSION -m "Tagging VERSION"
-(if needed) svn co https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/
-cd custom-space-user-management
-cd tags
-(if needed) svn up
-cd VERSION
-edit pom.xml (with unix EOL friendly text editor!)
-change <version>...</version> to <version>VERSION</version> (again where VERSION is the version like 2.0-beta-1 for example)
-save it
-mvn -Dmaven.test.skip=true clean install
-(if build didn't work, you are out of luck. start over and probably want to delete the TAG.)
-svn commit (from tag dir) comment should be "Updated pom.xml for version VERSION"
-cp target/(jar which should contain version in filename) ../releases/
-svn add ../releases/(jarname you just copied)
-svn commit ../releases
-edit the plugin page at http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin and change all references to point at latest jar release. Add comment to it to let people know there is a new release with a link to the built jar.
+3) svn up in trunk
+ cd trunk
+ svn up
 
-Notes:
-* Follow the process above and don't make substitutions. For example, the maven build should ensure Java backwards compatibility, but if you build with IDea or something else, it might not.
+4) Build trunk:
+ mvn -Dmaven.test.skip=true clean install
+
+5) Deploy plugin and make sure it works
+
+6) svn up in trunk and build again (it could have changed while you were testing)
+ svn up
+ mvn -Dmaven.test.skip=true clean install
+
+7) Immediately after successful build, tag it (replace instances of username and version with appropriate values):
+ svn copy --username (username) https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/tags/(version) -m "Tagging (version)"
+
+8) Get tag:
+ cd ../tags
+ svn up
+
+9) Change the pom.xml version element in the tag to (version) you just tagged
+
+10) Commit the tag.
+ svn commit
+
+11) Build the tag:
+ mvn -Dmaven.test.skip=true clean install
+
+12) Copy tag to releases, add and commit
+ cp target/...jar ../releases/
+ svn add ../releases/....jar
+ svn commit ../releases/
+
+13) Edit http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin and change all references to point at latest jar release. Add comment to it to let people know there is a new release with a link to the built jar.
+
+14) Follow the process above and don't make substitutions or changes. For example, the maven build should ensure Java backwards compatibility, but if you build with IDea or something else, it might not. Also, note that it is intentional that the tag's pom is changed and that it is not changed in trunk. Trunk's pom should always have SNAPSHOT in the version of the pom.
