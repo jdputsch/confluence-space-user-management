@@ -100,10 +100,10 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setJiraSoapUrl(config.getJiraSoapUrl());
         setJiraSoapUsername(config.getJiraSoapUsername());
 
-        String jiraSoapPassword = getJiraSoapPassword();
+        String jiraSoapPassword = config.getJiraSoapPassword();
         if (jiraSoapPassword!=null) {
             // only change password if it is set to a string (can be empty, but if null that indicates not to change)
-            config.setJiraSoapPassword(jiraSoapPassword);
+            setJiraSoapPassword(jiraSoapPassword);
         }
 
         setProviderType(config.getProviderType());
