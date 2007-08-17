@@ -35,32 +35,32 @@
 	</head>
 	<body>
 		<script language="javascript">
-		
+
+            // http://www.netlobo.com/comments/off_left_div_hiding
+            function showDiv ( elemID )
+            {
+                var elem = document.getElementById( elemID );
+                elem.style.display = 'block';
+            }
+
+            // screen-reader friendly method of hiding div
+            // http://www.netlobo.com/comments/off_left_div_hiding
+            function hideDiv ( elemID )
+            {
+                var elem = document.getElementById( elemID );
+                elem.style.display = 'none';
+            }
+
             function toggleLdapSettingsInput(e)
             {
                 //If ldapAuthUsed
                 if (e.value == 'YES')
                 {
-                    document.getElementById('providerType').disabled = false;
-                    document.getElementById('ldapUserIdAttribute').disabled = false;
-                    document.getElementById('ldapEmailAttribute').disabled = false;
-                    document.getElementById('ldapFirstNameAttribute').disabled = false;
-                    document.getElementById('ldapLastNameAttribute').disabled = false;                    
-                    document.getElementById('ldapProviderFullyQualifiedClassname').disabled = false;
+                    showDiv('ldap_deps');
                 }
                 else
                 {
-                    document.getElementById('providerType').disabled = true;
-                    document.getElementById('ldapUserIdAttribute').disabled = true;
-                    document.getElementById('ldapUserIdAttribute').value = '';
-                    document.getElementById('ldapEmailAttribute').disabled = true;
-                    document.getElementById('ldapEmailAttribute').value = '';
-                    document.getElementById('ldapFirstNameAttribute').disabled = true;
-                    document.getElementById('ldapFirstNameAttribute').value = '';
-                    document.getElementById('ldapLastNameAttribute').disabled = true;
-                    document.getElementById('ldapLastNameAttribute').value = '';
-                    document.getElementById('ldapProviderFullyQualifiedClassname').disabled = true;
-                    document.getElementById('ldapProviderFullyQualifiedClassname').value = '';
+                    hideDiv('ldap_deps');
                 }
             }
 
@@ -69,38 +69,11 @@
                 //If User Management delegated to jira then only ask user for jira URL and Jira JNDI values
                 if (e.value == 'JIRA')
                 {
-                    document.getElementById('jiraSoapUrl').disabled = false;
-                    document.getElementById('jiraSoapUsername').disabled = false;
-                    document.getElementById('jiraSoapPassword').disabled = false;
-                    document.getElementById('jiraSoapPasswordSet').disabled = false;
+                    showDiv('jira_deps');
                 }
                 else
                 {
-                    document.getElementById('jiraSoapUrl').disabled = true;
-                    document.getElementById('jiraSoapUrl').value = '';
-                    document.getElementById('jiraSoapUsername').disabled = true;
-                    document.getElementById('jiraSoapUsername').value = '';
-                    document.getElementById('jiraSoapPassword').disabled = true;
-                    document.getElementById('jiraSoapPassword').value = '';
-                    document.getElementById('jiraSoapPasswordSet').disabled = true;
-                    document.getElementById('jiraSoapPasswordSet').checked = false;
-                }
-            }
-            
-            function toggleGroupSettingsInput(e)
-            {
-                //If User Management delegated to jira then only ask user for jira URL and Jira JNDI values
-                if (e.value == 'YES')
-                {
-                    document.getElementById('newGroupNameCreationPrefixPattern').disabled = false;
-                    document.getElementById('newGroupNameCreationSuffixPattern').disabled = false;
-                }
-                else
-                {
-                    document.getElementById('newGroupNameCreationPrefixPattern').disabled = true;
-                    document.getElementById('newGroupNameCreationPrefixPattern').value = '';
-                    document.getElementById('newGroupNameCreationSuffixPattern').disabled = true;
-                    document.getElementById('newGroupNameCreationSuffixPattern').value = '';
+                    hideDiv('jira_deps');
                 }
             }
 		
@@ -111,241 +84,14 @@
 		#parse ( "/templates/permissionmgmt/action-messages.vm" )
 
         <table class="grid" width="80%">
-
-        <tr>
-            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("configure.heading")</td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("user.manager.location.label"):</td>
-            <td nowrap>
-                #if ($!action.customPermissionConfiguration.userManagerLocation)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.userManagerLocation</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("ldap.authentication.used.label"):</td>
-            <td nowrap>
-                    <span style="color: green; font-weight: bold">#if ($!action.customPermissionConfiguration.ldapAuthUsed == "YES") YES #else NO #end</span>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("provider.type.label"):</td>
-            <td nowrap>
-                #if ($!action.customPermissionConfiguration.providerType)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.providerType</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("ldap.user.id.attribute.label"):</td>
-            <td nowrap>
-                #if ($!action.customPermissionConfiguration.ldapUserIdAttribute)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.ldapUserIdAttribute</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("ldap.email.attribute.label"):</td>
-            <td nowrap>
-                #if ($!action.customPermissionConfiguration.ldapEmailAttribute)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.ldapEmailAttribute</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("ldap.firstName.attribute.label"):</td>
-            <td nowrap>
-                #if ($!action.customPermissionConfiguration.ldapFirstNameAttribute)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.ldapFirstNameAttribute</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("ldap.lastName.attribute.label"):</td>
-            <td nowrap>
-                #if ($!action.customPermissionConfiguration.ldapLastNameAttribute)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.ldapLastNameAttribute</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("ldap.provider.fully.qualified.classname.label"):</td>
-            <td nowrap>
-                #if ($!action.customPermissionConfiguration.ldapProviderFullyQualifiedClassname)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.ldapProviderFullyQualifiedClassname</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.jiraSoapUrl)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapUrl</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-        <tr>
-            <td class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.jiraSoapUsername)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.jiraSoapUsername</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-        <tr>
-            <td class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.jiraSoapPassword)
-                    <span style="color: green; font-weight: bold">(set)</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("usergroups.matching.pattern.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.userGroupsMatchingPattern)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.userGroupsMatchingPattern</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("group.actions.permitted.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.groupActionsPermitted)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.groupActionsPermitted</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("new.group.name.creation.pattern.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.newGroupNameCreationPrefixPattern)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.newGroupNameCreationPrefixPattern</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-
-                &nbsp;(group identifier)&nbsp;
-
-                #if ($action.customPermissionConfiguration.newGroupNameCreationSuffixPattern)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.newGroupNameCreationSuffixPattern</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("max.number.of.userids.to.act.on.at.once"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.maxUserIDsLimit)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.maxUserIDsLimit</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("max.number.of.groupids.to.act.on.at.once"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.maxGroupIDsLimit)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.maxGroupIDsLimit</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("user.search.enabled"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.userSearchEnabled)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.userSearchEnabled</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("personal.space.allowed"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.personalSpaceAllowed)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.personalSpaceAllowed</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-
-        <tr>
-            <td class="label" width="30%">$action.getText("plugin.deactivated.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.pluginDown)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.pluginDown</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-        
-        <tr>
-            <td class="label" width="30%">$action.getText("plugin.downtime.message.label"):</td>
-            <td nowrap>
-                #if ($action.customPermissionConfiguration.downTimeMessage)
-                    <span style="color: green; font-weight: bold">$!action.customPermissionConfiguration.downTimeMessage</span>
-                #else
-                    <span style="color: #900; font-weight: bold">-</span>
-                #end
-            </td>
-        </tr>
-        
-        <tr>
-            <td colspan="2">&nbsp;</td>
-        </tr>
         <tr>
             <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("configure.user.management.module.heading")</td>
         </tr>
+        </table>
 
        <form action="doconfig.action" method="POST" name="CustomUserManagementConfigForm">
+
+        <table class="grid" width="80%">
         <tr>
             <td valign="top" class="label" width="30%">$action.getText("user.manager.location.label"):</td>
             <td>
@@ -358,7 +104,48 @@
                 </font>
             </td>
         </tr>
+        </table>
 
+        <div id="jira_deps" style="padding-left: 80px; #if (!($action.userManagerLocation == "JIRA")) display: none; #else display: block #end">
+        <table class="grid" width="80%">
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
+            <td>
+                #fielderror ('jiraSoapUrl')
+                <input type="text" id="jiraSoapUrl" name="jiraSoapUrl" value="$!action.jiraSoapUrl" />
+                <p>
+                    <font size="1">$action.getText("jira.soap.url.note")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
+            <td>
+                #fielderror ('jiraSoapUsername')
+                <input type="text" id="jiraSoapUsername" name="jiraSoapUsername" value="$!action.jiraSoapUsername" />
+                <p>
+                    <font size="1">$action.getText("jira.soap.username.note")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
+            <td>
+                #fielderror ('jiraSoapPassword')
+                <input type="checkbox" value="y" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" />
+                $action.getText('jira.soap.password.set.label')
+                <input type="password" id="jiraSoapPassword" name="jiraSoapPassword" value="$!action.jiraSoapPassword" />
+                <p>
+                    <font size="1">$action.getText("jira.soap.password.note")</font>
+                </p>
+            </td>
+        </tr>
+        </table>
+        </div>
+
+        <table class="grid" width="80%">
         <tr>
             <td valign="top" class="label" width="30%">$action.getText("ldap.authentication.used.label"):</td>
             <td>
@@ -367,13 +154,16 @@
                 <input type="radio" name="ldapAuthUsed" value="NO" #if ($!action.ldapAuthUsed == "NO") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("no")
             </td>
         </tr>
+        </table>
 
+        <div id="ldap_deps" style="padding-left: 80px; #if (!($action.ldapAuthUsed == "YES")) display: none; #else display: block #end">
+        <table class="grid" width="80%">
         <tr>
             <td valign="top" class="label" width="30%">$action.getText("provider.type.label"):</td>
             <td>
 				#fielderror ('providerType')
-                <input type="radio" id="providerType" name="providerType" value="OSUSER" #if ($action.providerType == "OSUSER") checked="true" #end #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>OSUSER &nbsp;
-                <input type="radio" id="providerType" name="providerType" value="ATLASSIAN-USER" #if ($action.providerType == "ATLASSIAN-USER") checked="true" #end #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>ATLASSIAN-USER
+                <input type="radio" id="providerType" name="providerType" value="OSUSER" #if ($action.providerType == "OSUSER") checked="true" #end/>OSUSER &nbsp;
+                <input type="radio" id="providerType" name="providerType" value="ATLASSIAN-USER" #if ($action.providerType == "ATLASSIAN-USER") checked="true" #end/>ATLASSIAN-USER
                 <br>
                 <font size="1">
             	    $action.getText("provider.type.note")</li>
@@ -385,7 +175,7 @@
             <td class="label" width="30%">$action.getText("ldap.user.id.attribute.label"):</td>
             <td nowrap>
                 #fielderror ('ldapUserIdAttribute')
-                <input type="text" id="ldapUserIdAttribute" name="ldapUserIdAttribute" value="$!action.ldapUserIdAttribute" #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>
+                <input type="text" id="ldapUserIdAttribute" name="ldapUserIdAttribute" value="$!action.ldapUserIdAttribute" />
                 <p>
                     <font size="1">$action.getText("ldap.user.id.attribute.note")</font>
                 </p>
@@ -396,7 +186,7 @@
             <td class="label" width="30%">$action.getText("ldap.email.attribute.label"):</td>
             <td nowrap>
                 #fielderror ('ldapEmailAttribute')
-                <input type="text" id="ldapEmailAttribute" name="ldapEmailAttribute" value="$!action.ldapEmailAttribute" #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>
+                <input type="text" id="ldapEmailAttribute" name="ldapEmailAttribute" value="$!action.ldapEmailAttribute" />
                 <p>
                     <font size="1">$action.getText("ldap.email.attribute.note")</font>
                 </p>
@@ -407,7 +197,7 @@
             <td class="label" width="30%">$action.getText("ldap.firstName.attribute.label"):</td>
             <td nowrap>
                 #fielderror ('ldapFirstNameAttribute')
-                <input type="text" id="ldapFirstNameAttribute" name="ldapFirstNameAttribute" value="$!action.ldapFirstNameAttribute" #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>
+                <input type="text" id="ldapFirstNameAttribute" name="ldapFirstNameAttribute" value="$!action.ldapFirstNameAttribute" />
                 <p>
                     <font size="1">$action.getText("ldap.firstName.attribute.note")</font>
                 </p>
@@ -418,7 +208,7 @@
             <td class="label" width="30%">$action.getText("ldap.lastName.attribute.label"):</td>
             <td nowrap>
                 #fielderror ('ldapLastNameAttribute')
-                <input type="text" id="ldapLastNameAttribute" name="ldapLastNameAttribute" value="$!action.ldapLastNameAttribute" #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>
+                <input type="text" id="ldapLastNameAttribute" name="ldapLastNameAttribute" value="$!action.ldapLastNameAttribute" />
                 <p>
                     <font size="1">$action.getText("ldap.lastName.attribute.note")</font>
                 </p>
@@ -429,72 +219,22 @@
             <td class="label" width="30%">$action.getText("ldap.provider.fully.qualified.classname.label"):</td>
             <td nowrap>
                 #fielderror ('ldapProviderFullyQualifiedClassname')
-                <input type="text" id="ldapProviderFullyQualifiedClassname" name="ldapProviderFullyQualifiedClassname" value="$!action.ldapProviderFullyQualifiedClassname" #if (!($action.ldapAuthUsed == "YES")) disabled="true" #end/>
+                <input type="text" id="ldapProviderFullyQualifiedClassname" name="ldapProviderFullyQualifiedClassname" value="$!action.ldapProviderFullyQualifiedClassname" />
                 <p>
                     <font size="1">$action.getText("ldap.provider.fully.qualified.classname.note")</font>
                 </p>
             </td>
         </tr>
+        </table>
+        </div>
 
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
-            <td>
-                #fielderror ('jiraSoapUrl')
-                <input type="text" id="jiraSoapUrl" name="jiraSoapUrl" value="$!action.jiraSoapUrl" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
-                <p>
-                    <font size="1">$action.getText("jira.soap.url.note")</font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
-            <td>
-                #fielderror ('jiraSoapUsername')
-                <input type="text" id="jiraSoapUsername" name="jiraSoapUsername" value="$!action.jiraSoapUsername" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
-                <p>
-                    <font size="1">$action.getText("jira.soap.username.note")</font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
-            <td>
-                #fielderror ('jiraSoapPassword')
-                <input type="checkbox" value="y" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
-                $action.getText('jira.soap.password.set.label') 
-                <input type="password" id="jiraSoapPassword" name="jiraSoapPassword" value="$!action.jiraSoapPassword" #if (!($action.userManagerLocation == "JIRA")) disabled="true" #end/>
-                <p>
-                    <font size="1">$action.getText("jira.soap.password.note")</font>
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td valign="top" class="label" width="30%">$action.getText("usergroups.matching.pattern.label")</td>
-            <td>
-                #fielderror ('userGroupsMatchingPattern')
-                <input type="text" name="userGroupsMatchingPattern" value="$!action.userGroupsMatchingPattern" size="30" />
-                <p>
-                    <font size="1">
-                    $action.getText("configure.info.patternMatch")
-                    </font>
-                </p>
-                <p>
-                    <font size="1">
-                	$action.getText("configure.example.patternMatch")
-                    </font>
-                </p>
-            </td>
-        </tr>
-
+        <table class="grid" width="80%">
         <tr>
             <td valign="top" class="label" width="30%">$action.getText("group.actions.permitted.label"):</td>
             <td>
 				#fielderror ('groupActionsPermitted')
-                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end onclick="toggleGroupSettingsInput(this)" />$action.getText("yes") &nbsp;
-                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end onclick="toggleGroupSettingsInput(this)" />$action.getText("no")
+                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end/>$action.getText("yes") &nbsp;
+                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end/>$action.getText("no")
                 <p>
                     <font size="1">
                 	$action.getText("configure.groupAction.explanation")
@@ -511,14 +251,14 @@
 				    <tr style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				            #fielderror ('newGroupNameCreationPrefixPattern')
-				            <input type="text" name="newGroupNameCreationPrefixPattern" id="newGroupNameCreationPrefixPattern" value="$!action.newGroupNameCreationPrefixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
+				            <input type="text" name="newGroupNameCreationPrefixPattern" id="newGroupNameCreationPrefixPattern" value="$!action.newGroupNameCreationPrefixPattern" size="50" />
 				        </td>
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				            &nbsp;(group identifier)&nbsp;
 				        </td>
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				            #fielderror ('newGroupNameCreationSuffixPattern')
-				            <input type="text" name="newGroupNameCreationSuffixPattern" id="newGroupNameCreationSuffixPattern" value="$!action.newGroupNameCreationSuffixPattern" #if ($action.groupActionsPermitted == "NO") disabled="true" #end size="50" />
+				            <input type="text" name="newGroupNameCreationSuffixPattern" id="newGroupNameCreationSuffixPattern" value="$!action.newGroupNameCreationSuffixPattern" size="50" />
 				        </td>
 				    </tr>
 				</table>
@@ -552,7 +292,7 @@
                 #fielderror ('maxGroupIDsLimit')
                 <input type="text" name="maxGroupIDsLimit" value="$!action.maxGroupIDsLimit" />
                 <p>
-                    <font size="1">Must be an integer greater than 0.</font>
+                    <font size="1">$action.getText("configure.error.greaterThanZero")</font>
                 </p>
             </td>
         </tr>

@@ -35,7 +35,6 @@ import com.atlassian.confluence.setup.BootstrapManager;
 import com.opensymphony.webwork.ServletActionContext;
 import csum.confluence.permissionmgmt.CustomPermissionConstants;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
-import org.apache.log4j.Category;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -47,8 +46,6 @@ import java.util.Map;
  */
 public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction implements Administrative
 {
-    private static final Category log = Category.getInstance(CustomPermissionConfigAction.class);
-
     BandanaManager bandanaManager;
     BootstrapManager bootstrapManager;
     CustomPermissionConfiguration customPermissionConfiguration;
@@ -113,7 +110,6 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         // Set presets as config, trimming and using defaults if they make sense
         setMaxUserIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIdsLimit", getMaxUserIDsLimit(), 20));
         setMaxGroupIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxGroupIdsLimit", getMaxGroupIDsLimit(), 20));
-        setUserGroupsMatchingPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userGroupsMatchingPattern", getUserGroupsMatchingPattern(), CustomPermissionConstants.SPACEKEY_REGEXP));
         setNewGroupNameCreationPrefixPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("newGroupNameCreationPrefixPattern", getNewGroupNameCreationPrefixPattern(), CustomPermissionConstants.DEFAULT_NEW_GROUP_NAME_PREFIX));
         setNewGroupNameCreationSuffixPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("newGroupNameCreationSuffixPattern", getNewGroupNameCreationSuffixPattern(), CustomPermissionConstants.DEFAULT_NEW_GROUP_NAME_SUFFIX));
         setPluginDown(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("pluginDown", getPluginDown(), CustomPermissionConfigConstants.NO));

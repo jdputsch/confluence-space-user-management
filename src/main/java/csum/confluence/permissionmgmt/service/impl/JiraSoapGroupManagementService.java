@@ -34,13 +34,17 @@ import com.atlassian.confluence.spaces.Space;
 import com.atlassian.user.Group;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
+import csum.confluence.permissionmgmt.service.exception.ServiceAuthenticationException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.jira.JiraSoapUtil;
+import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -53,7 +57,7 @@ import java.util.regex.Pattern;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class JiraSoapGroupManagementService extends ConfluenceGroupManagementService {
+public class JiraSoapGroupManagementService extends BaseGroupManagementService {
 
     private Log log = LogFactory.getLog(this.getClass());
 
@@ -61,20 +65,19 @@ public class JiraSoapGroupManagementService extends ConfluenceGroupManagementSer
 
     // note: findGroups()... are in ConfluenceGroupManagementService, as Confluence has read-only access to JIRA
 
-    public void addGroups(List groupNames, ServiceContext context) throws AddException {
+    public void addGroups(List groupNames, ServiceContext context) throws AddException, ServiceAuthenticationException {
         log.debug("addGroups() called. groupName='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");
 
         Space space = context.getSpace();
-        JiraSoapService jiraSoapService = null;
-        String token = null;
+        JiraServiceAuthenticationContext authContext = null;
         List success = new ArrayList();
         List alreadyExisted = new ArrayList();
 
         try {
-            JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(context.getCustomPermissionConfigurable().getJiraSoapUrl());
-            jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(context.getCustomPermissionConfigurable().getJiraSoapUsername(), context.getCustomPermissionConfigurable().getJiraSoapPassword());
+            authContext = JiraSoapUtil.login(context);
+            JiraSoapService jiraSoapService = authContext.getJiraSoapService();
+            String token = authContext.getToken();
+
             RemoteUser remoteUser = null;
             for (int i = 0; i < groupNames.size(); i++) {
                 String groupName = (String) groupNames.get(i);
@@ -100,9 +103,9 @@ public class JiraSoapGroupManagementService extends ConfluenceGroupManagementSer
             throw new AddException(e.getMessage(), e);
         }
         finally {
-            if (token != null) {
+            if (authContext != null) {
                 try {
-                    jiraSoapService.logout(token);
+                    JiraSoapUtil.logout(authContext);
                 }
                 catch (Throwable t) {
                     log.error("Error in Jira logout", t);
@@ -130,30 +133,32 @@ public class JiraSoapGroupManagementService extends ConfluenceGroupManagementSer
     }
 
 
-    public void removeGroups(List groupNames, ServiceContext context) throws RemoveException {
+    public void removeGroups(List groupNames, ServiceContext context) throws RemoveException, ServiceAuthenticationException {
 
         log.debug("removeGroup() called. groupNames are " + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
 
-        JiraSoapService jiraSoapService = null;
-        String token = null;
+        JiraServiceAuthenticationContext authContext = null;
         List didNotExist = new ArrayList();
         List badGroupNames = new ArrayList();
         List success = new ArrayList();
 
         try {
-            JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(context.getCustomPermissionConfigurable().getJiraSoapUrl());
-            jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(context.getCustomPermissionConfigurable().getJiraSoapUsername(), context.getCustomPermissionConfigurable().getJiraSoapPassword());
+            authContext = JiraSoapUtil.login(context);
+            JiraSoapService jiraSoapService = authContext.getJiraSoapService();
+            String token = authContext.getToken();
+
+            CustomPermissionConfiguration config = getCustomPermissionConfiguration();
+            String spaceKey = context.getSpace().getKey();
+            String prefix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationPrefixPattern(), spaceKey);
+            String suffix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationSuffixPattern(), spaceKey);
 
             //Remove Selected Groups
             for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                 String grpName = (String) iterator.next();
-                Pattern pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), context.getSpace().getKey());
-                boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(grpName, pat);
+                boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(grpName, prefix, suffix);
 
                 // Space admin should not be able to delete any groups whose names begin with "confluence"
-                if (!grpName.startsWith("confluence") && isPatternMatch) {
+                if (!grpName.startsWith("confluence") && !grpName.startsWith("jira") && isPatternMatch) {
                     Group group = userAccessor.getGroup(grpName);
                     if (group != null) {
                         String swapGroupName = null;
@@ -163,7 +168,7 @@ public class JiraSoapGroupManagementService extends ConfluenceGroupManagementSer
                         didNotExist.add(grpName);
                     }
                 } else {
-                    log.debug("Not deleting group '" + grpName + "', as either it started with 'confluence' or didn't match pattern " + pat.pattern());
+                    log.debug("Not deleting group '" + grpName + "', as either it started with 'confluence', started with 'jira', didn't start with '" + prefix + "', or didn't end with '" + suffix + "'");
                     badGroupNames.add(grpName);
                 }
             }
@@ -173,9 +178,9 @@ public class JiraSoapGroupManagementService extends ConfluenceGroupManagementSer
             throw new RemoveException(e.getMessage(), e);
         }
         finally {
-            if (token != null) {
+            if (authContext != null) {
                 try {
-                    jiraSoapService.logout(token);
+                    JiraSoapUtil.logout(authContext);
                 }
                 catch (Throwable t) {
                     log.error("Error in Jira logout", t);

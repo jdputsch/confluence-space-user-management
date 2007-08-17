@@ -33,6 +33,7 @@ import com.atlassian.user.search.page.Pager;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.FindException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
+import csum.confluence.permissionmgmt.service.exception.ServiceAuthenticationException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public interface GroupManagementService {
 
     public boolean isAllowedToManageGroup( ServiceContext context, String groupName ) throws FindException;
 
-    public void addGroups( List groupNames, ServiceContext context ) throws AddException;
+    public void addGroups( List groupNames, ServiceContext context ) throws AddException, ServiceAuthenticationException;
 
-    public void removeGroups( List groupNames, ServiceContext context ) throws RemoveException;
+    public void removeGroups( List groupNames, ServiceContext context ) throws RemoveException, ServiceAuthenticationException;
 }

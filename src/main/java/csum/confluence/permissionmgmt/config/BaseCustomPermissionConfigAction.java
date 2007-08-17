@@ -44,7 +44,6 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String jiraSoapPassword;
     private String maxUserIDsLimit;
     private String maxGroupIDsLimit;
-    private String userGroupsMatchingPattern;
     private String pluginDown;
     private String downTimeMessage;
     private String groupActionsPermitted;
@@ -114,14 +113,6 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setMaxGroupIDsLimit(String maxGroupIDsLimit) {
         this.maxGroupIDsLimit = maxGroupIDsLimit;
-    }
-
-    public String getUserGroupsMatchingPattern() {
-        return userGroupsMatchingPattern;
-    }
-
-    public void setUserGroupsMatchingPattern(String userGroupsMatchingPattern) {
-        this.userGroupsMatchingPattern = userGroupsMatchingPattern;
     }
 
     public String getPluginDown() {

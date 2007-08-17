@@ -65,7 +65,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setUserManagerLocation(getUserManagerLocation());
         config.setMaxUserIDsLimit(getMaxUserIDsLimit());
         config.setMaxGroupIDsLimit(getMaxGroupIDsLimit());
-        config.setUserGroupsMatchingPattern(getUserGroupsMatchingPattern());
         config.setLdapAuthUsed(getLdapAuthUsed());
         config.setPluginDown(getPluginDown());
         config.setDownTimeMessage(getDownTimeMessage());
@@ -89,7 +88,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setUserManagerLocation(config.getUserManagerLocation());
         setMaxUserIDsLimit(config.getMaxUserIDsLimit());
         setMaxGroupIDsLimit(config.getMaxGroupIDsLimit());
-        setUserGroupsMatchingPattern(config.getUserGroupsMatchingPattern());
         setLdapAuthUsed(config.getLdapAuthUsed());
         setPluginDown(config.getPluginDown());
         setDownTimeMessage(config.getDownTimeMessage());
@@ -268,34 +266,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             result.setValid(false);
         }
 
-        String userGroupsMatchingPattern = config.getUserGroupsMatchingPattern();
-        if (ConfigUtil.isNullOrEmpty(userGroupsMatchingPattern)) {
-            result.addFieldError("userGroupsMatchingPattern", "Group matching pattern cannot be null or empty");
-            result.setValid(false);
-        }
-        else {
-            try {
-                //validate some patterns
-                //note: Space keys may only consist of ASCII letters or numbers (A-Z, a-z, 0-9) up to 255 chars
-                validatePattern(result, config, "tst", getValidationGroupName(config, "tst", "spongebob"));
-                validatePattern(result, config, "tst", getValidationGroupName(config, "tst", "spongebob").toUpperCase());
-                validatePattern(result, config, "tst", getValidationGroupName(config, "tst", "spongebob").toLowerCase());
-                validatePattern(result, config, "Demo10", getValidationGroupName(config, "Demo10", "Best-Group-Name-In-The-World"));
-                validatePattern(result, config, "Demo10", getValidationGroupName(config, "Demo10", "Best-Group-Name-In-The-World").toUpperCase());
-                validatePattern(result, config, "Demo10", getValidationGroupName(config, "Demo10", "Best-Group-Name-In-The-World").toLowerCase());
-                validatePattern(result, config, "ILoveBass", getValidationGroupName(config, "ILoveBass", "realbasslovers"));
-                validatePattern(result, config, "ILoveBass", getValidationGroupName(config, "ILoveBass", "realbasslovers").toUpperCase());
-                validatePattern(result, config, "ILoveBass", getValidationGroupName(config, "ILoveBass", "realbasslovers").toLowerCase());
-                validatePattern(result, config, "DS", getValidationGroupName(config, "DS", "FooBar"));
-                validatePattern(result, config, "DS", getValidationGroupName(config, "DS", "FooBar").toUpperCase());
-                validatePattern(result, config, "DS", getValidationGroupName(config, "DS", "FooBar").toLowerCase());                
-            }
-            catch (PatternSyntaxException pse) {
-                result.addFieldError("userGroupsMatchingPattern", "Group matching pattern was invalid: " + pse.getMessage());
-                result.setValid(false);
-            }
-        }
-
         String pluginInDown = config.getPluginDown();
         if (ConfigUtil.isNotNullAndIsYesOrNo(pluginInDown)) {
             if ("YES".equals(pluginInDown)) {
@@ -333,30 +303,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
         log.debug("CustomPermissionConfigAction - isValid=" + result + " fieldErrors=" + result.getFieldNameToErrorMessage());
         return result;
-    }
-
-    private static String getValidationGroupName(CustomPermissionConfigurable config, String aSpaceKey, String aGroupMiddle) {
-        String replacedPrefix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationPrefixPattern(), aSpaceKey);
-        String replacedSuffix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationSuffixPattern(), aSpaceKey);
-        String aGroupname = replacedPrefix + aGroupMiddle + replacedSuffix;
-        return aGroupname;
-    }
-
-    private static void validatePattern(ConfigValidationResponse result, CustomPermissionConfigurable config,
-                                        String aSpaceKey, String aGroupname) {
-        Pattern pattern = GroupNameUtil.createGroupMatchingPattern(config, aSpaceKey);
-        String groupsActionsPermitted = config.getGroupActionsPermitted();
-        if ( groupsActionsPermitted!= null && CustomPermissionConfigConstants.YES.equals(groupsActionsPermitted) ) {
-            if (!GroupNameUtil.doesGroupMatchPattern( aGroupname, pattern )) {
-                result.addFieldError("userGroupsMatchingPattern", "Based on current prefix and suffix, if spacekey were " +
-                        aSpaceKey +
-                        " this pattern should match groupname " + aGroupname.toLowerCase() + " but it did not. " +
-                        "Please modify the pattern so that it works or visit the " +
-                        "<a href=\"http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin\">" +
-                        "plugin homepage</a> for support.");
-                result.setValid(false);
-            }
-        }
     }
 
     public String getUserManagerLocation() {

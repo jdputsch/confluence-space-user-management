@@ -33,6 +33,7 @@ import com.atlassian.user.search.page.Pager;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.FindException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
+import csum.confluence.permissionmgmt.service.exception.ServiceAuthenticationException;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
@@ -50,9 +51,9 @@ public interface UserManagementService {
 
     public Pager findUsersWhoseNameStartsWith( String partialName, ServiceContext context ) throws FindException;
 
-    public void addUsersByUsernameToGroups( List userNames, List groupNames, ServiceContext context ) throws AddException;
+    public void addUsersByUsernameToGroups( List userNames, List groupNames, ServiceContext context ) throws AddException, ServiceAuthenticationException;
 
-    public void removeUsersByUsernameFromGroups( List userNames, List groupNames, ServiceContext context ) throws RemoveException;
+    public void removeUsersByUsernameFromGroups( List userNames, List groupNames, ServiceContext context ) throws RemoveException, ServiceAuthenticationException;
 
     public boolean isMemberOf(String userName, String groupName) throws FindException;
 }

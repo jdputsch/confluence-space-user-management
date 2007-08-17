@@ -46,9 +46,6 @@ public interface CustomPermissionConfigurable {
     public String getMaxGroupIDsLimit();
     public void setMaxGroupIDsLimit(String maxGroupIDsLimit);
 
-    public String getUserGroupsMatchingPattern();
-    public void setUserGroupsMatchingPattern(String userGroupsMatchingPattern);
-
     public String getPluginDown();
     public void setPluginDown(String pluginDown);
     

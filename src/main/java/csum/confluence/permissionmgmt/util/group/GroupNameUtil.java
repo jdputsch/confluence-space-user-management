@@ -57,33 +57,16 @@ public class GroupNameUtil {
         return groupPattern;
     }
 
-    public static Pattern createGroupMatchingPattern(CustomPermissionConfigurable config, String spaceKey)
-    {
-        //log.debug("createGroupMatchingPattern() called.");
-        String groupPattern = config.getUserGroupsMatchingPattern();
-        if (groupPattern == null || (groupPattern.trim().equals(""))) {
-            //This will only happen if we don't validate matching pattern during configuration.
-            groupPattern = CustomPermissionConstants.SPACEKEY_REGEXP;
-        }
-
-        // NOTE: spaceKey converted to lowercase here and it is expected that the groupPattern with the exception of
-        //       CustomPermissionConstants.SPACEKEY_REGEXP does not expect to match any groupname containing capital
-        //       letters (as stated in the config page).
-        groupPattern = replaceSpaceKey(groupPattern, spaceKey.toLowerCase());
-
-        //log.debug("group pattern -> " + groupPattern);
-
-        Pattern pat = Pattern.compile(groupPattern);
-
-        return pat;
-    }
-
-    public static boolean doesGroupMatchPattern(String grpName, Pattern pat) {
+    public static boolean doesGroupMatchPattern(String groupName,
+                                                String prefixWithReplacedSpaceKey,
+                                                String suffixWithReplacedSpaceKey) {
         boolean isMatch = false;
-        if (grpName != null) {
-            // NOTE: grpName converted to lowercase here. this means that 
-            Matcher matcher = pat.matcher(grpName.toLowerCase());
-            isMatch = matcher.matches();
+        if (groupName != null) {
+            String lowerCaseGroupName = groupName.toLowerCase();
+            if (lowerCaseGroupName.startsWith(prefixWithReplacedSpaceKey.toLowerCase()) && lowerCaseGroupName.endsWith(suffixWithReplacedSpaceKey.toLowerCase())) {
+                // NOTE: grpName converted to lowercase here. expecting
+                isMatch = true;
+            }
         }
 
         return isMatch;

@@ -33,6 +33,7 @@ import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
+import csum.confluence.permissionmgmt.service.exception.ServiceAuthenticationException;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
@@ -40,6 +41,8 @@ import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
+import csum.confluence.permissionmgmt.util.jira.JiraSoapUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,7 +57,7 @@ import java.util.TreeMap;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class JiraSoapUserManagementService extends ConfluenceUserManagementService {
+public class JiraSoapUserManagementService extends BaseUserManagementService {
 
     private Log log = LogFactory.getLog(this.getClass());
 
@@ -75,23 +78,20 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
         return result;
     }
 
-    public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws AddException {
+    public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws AddException, ServiceAuthenticationException {
         log.debug("addUsersByUsernameToGroupsByGroupname() called. " +
                 "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
                 ", groupnames=" + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
 
-        JiraSoapService jiraSoapService = null;
-        String token = null;
-
+        JiraServiceAuthenticationContext authContext = null;
         List usersNotFound = new ArrayList();
         // using map to get only unique groups. using treemap to keep groupnames in order
         Map groupsNotFoundMap = new TreeMap();
 
         try {
-            JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(context.getCustomPermissionConfigurable().getJiraSoapUrl());
-            jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(context.getCustomPermissionConfigurable().getJiraSoapUsername(), context.getCustomPermissionConfigurable().getJiraSoapPassword());
+            authContext = JiraSoapUtil.login(context);
+            JiraSoapService jiraSoapService = authContext.getJiraSoapService();
+            String token = authContext.getToken();
 
             CustomPermissionConfiguration config = getCustomPermissionConfiguration();
 
@@ -187,9 +187,9 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
             throw new AddException(e.getMessage(), e);
         }
         finally {
-            if (token != null) {
+            if (authContext != null) {
                 try {
-                    jiraSoapService.logout(token);
+                    JiraSoapUtil.logout(authContext);
                 }
                 catch (Throwable t) {
                     log.error("Error in Jira logout", t);
@@ -229,27 +229,25 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
         return vUser;
     }
 
-    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws RemoveException {
+    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws RemoveException, ServiceAuthenticationException {
         log.debug("removeUsersByUsernameFromGroups() called. " +
                 "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
                 ", groupnames=" + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
-        JiraSoapService jiraSoapService = null;
-        String token = null;
+        JiraServiceAuthenticationContext authContext = null;
 
         List usersNotFound = new ArrayList();
         // using map to get only unique groups. using treemap to keep groupnames in order
         Map groupsNotFoundMap = new TreeMap();
 
         try {
-            JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
-            jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(context.getCustomPermissionConfigurable().getJiraSoapUrl());
-            jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            token = jiraSoapService.login(context.getCustomPermissionConfigurable().getJiraSoapUsername(), context.getCustomPermissionConfigurable().getJiraSoapPassword());
+            authContext = JiraSoapUtil.login(context);
+            JiraSoapService jiraSoapService = authContext.getJiraSoapService();
+            String token = authContext.getToken();
 
             for (Iterator itr = userNames.iterator(); itr.hasNext();) {
                 String userid = (String) itr.next();
 
-                RemoteUser remoteUser = jiraSoapService.getUser(token, userid);
+                RemoteUser remoteUser = authContext.getJiraSoapService().getUser(token, userid);
                 if (remoteUser != null) {
                     for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                         String groupName = (String) iterator.next();
@@ -272,9 +270,9 @@ public class JiraSoapUserManagementService extends ConfluenceUserManagementServi
             throw new RemoveException(e.getMessage(), e);
         }
         finally {
-            if (token != null) {
+            if (authContext != null) {
                 try {
-                    jiraSoapService.logout(token);
+                    JiraSoapUtil.logout(authContext);
                 }
                 catch (Throwable t) {
                     log.error("Error in Jira logout", t);

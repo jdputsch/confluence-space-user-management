@@ -37,6 +37,7 @@ import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -100,11 +101,15 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
         List badGroupNames = new ArrayList();
         List success = new ArrayList();
 
+        CustomPermissionConfiguration config = getCustomPermissionConfiguration();
+        String spaceKey = context.getSpace().getKey();
+        String prefix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationPrefixPattern(), spaceKey);
+        String suffix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationSuffixPattern(), spaceKey);
+
         //Remove Selected Groups
         for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
             String grpName = (String) iterator.next();
-            Pattern pat = GroupNameUtil.createGroupMatchingPattern(getCustomPermissionConfiguration(), context.getSpace().getKey());
-            boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(grpName, pat);
+            boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(grpName, prefix, suffix);
 
             // Space admin should not be able to delete any groups whose names begin with "confluence"
             if (!grpName.startsWith("confluence") && isPatternMatch) {
@@ -116,7 +121,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                     didNotExist.add(grpName);
                 }
             } else {
-                log.debug("Not deleting group '" + grpName + "', as either it started with 'confluence' or didn't match pattern " + pat.pattern());
+                log.debug("Not deleting group '" + grpName + "', as either it started with 'confluence', didn't start with '" + prefix + "', or didn't end with '" + suffix + "'");
                 badGroupNames.add(grpName);
             }
         }
