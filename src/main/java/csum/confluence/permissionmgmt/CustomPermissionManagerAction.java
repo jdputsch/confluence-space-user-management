@@ -541,6 +541,22 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 		log.debug("CustomPermissionManagerAction.execute() called");
         log.debug("request uri: " + ServletActionContext.getRequest().getRequestURI());
         
+        if (getSpace()==null) {
+            log.warn("Space was null");
+            List resultList = new ArrayList();
+            resultList.add(getText("invalid.space.key"));
+            setActionErrors(resultList);
+            return ERROR;
+        }
+
+        if (getRemoteUser()==null) {
+            log.warn("RemoteUser was null");
+            List resultList = new ArrayList();
+            resultList.add(getText("invalid.user"));
+            setActionErrors(resultList);
+            return ERROR;
+        }
+
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
         log.debug("paramMap: " + paramMap);
@@ -1449,7 +1465,13 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public String getSpacePattern() {
-        return GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getUserGroupsMatchingPattern(), getSpace().getKey());
+        Space space = getSpace();
+        String result = null;
+        if (space != null) {
+            result = GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getUserGroupsMatchingPattern(), getSpace().getKey());
+        }
+
+        return result;
     }
 
     public String getActionName(String fullClassName)
