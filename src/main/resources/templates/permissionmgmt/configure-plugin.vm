@@ -335,6 +335,9 @@
             <td>
    	         #fielderror ('downTimeMessage')
    	         <textarea name="downTimeMessage" cols="60" rows="6" class="monospaceInput">$!action.downTimeMessage</textarea>
+   	         <p>
+                 <font size="1">$action.getText("default"): $action.getText("plugin.set.as.disabled.in.plugin.config.default.message")</font>
+             </p>
             </td>
         </tr>
         
