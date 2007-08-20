@@ -907,7 +907,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             }
 
                             groupManagementService.addGroups(fixedGroupNames, serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.groups") + " " + StringUtil.convertCollectionToCommaDelimitedString(fixedGroupNames) + getText("success.added") + " " + getText("success.successfully")+ "!</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.groups") + " " + StringUtil.convertCollectionToCommaDelimitedString(fixedGroupNames) + " " + getText("success.added") + " " + getText("success.successfully")+ "!</font>";
 
                             List specifiedUsers = context.getSpecifiedUsers();
                             if (specifiedUsers!=null && specifiedUsers.size()>0) {
