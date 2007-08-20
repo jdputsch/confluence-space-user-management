@@ -1010,11 +1010,24 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     //    return ((String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT));
 	//}
 
-	public String getIsPluginDown() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PLUGIN_STATUS);
-	}
+	public boolean isPluginDown() {
+        boolean isPluginDown = false;
+        String val = (String)bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PLUGIN_STATUS);
+        if (CustomPermissionConfigConstants.YES.equals(val)) {
+            isPluginDown = true;
+        }
+        return isPluginDown;
+    }
+
+    public String getPluginDownMessage() {
+        String result = (String)bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_DOWNTIME_MESSAGE);
+        if ( result == null || result.trim().equals("")) {
+            result = getText("plugin.set.as.disabled.in.plugin.config.default.message");
+        }
+        return result;
+    }
 	
-	//Validate user input. return false if data invalid.
+    //Validate user input. return false if data invalid.
     /*
     public boolean validateInput(CustomPermissionManagerActionContext context)
     {

@@ -362,7 +362,22 @@
 <div id="csum">
 
   #if($action.isNotAllowed())
+    <div class="warningPanel">
+
+    <img src="/images/icons/emoticons/warning.gif" align="absmiddle" width="16" height="16">
+
     $action.getText("not.allowed")
+
+    </div>
+  #elseif($action.isPluginDown())
+    ## this is either the message set in config, or is an i18n message if config message is empty
+    <div class="warningPanel">
+
+    <img src="/images/icons/emoticons/warning.gif" align="absmiddle" width="16" height="16">
+
+    $action.pluginDownMessage
+
+    </div>
   #else
     <div class="messages">
 		#parse ( "/templates/permissionmgmt/action-messages.vm" )
