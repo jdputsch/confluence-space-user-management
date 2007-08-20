@@ -831,7 +831,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         return ERROR;
                     }
 
-                    int usersSize = context.getSpecifiedGroups().size();
+                    int usersSize = context.getSpecifiedUsers().size();
                     int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
                     if (usersSize > maxUserIDsLimit) {
                         String msg = getText("error.maxUsersExceeded") + " " + maxUserIDsLimit + ".";
@@ -925,7 +925,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             List specifiedUsers = context.getSpecifiedUsers();
                             if (specifiedUsers!=null && specifiedUsers.size()>0) {
 
-                                int usersSize = context.getSpecifiedGroups().size();
+                                int usersSize = context.getSpecifiedUsers().size();
                                 int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
                                 if (usersSize > maxUserIDsLimit) {
                                     String msg = getText("error.maxUsersExceeded") + " " + maxUserIDsLimit + ".";
