@@ -615,7 +615,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 if (actionErrors==null) {
                     actionErrors = new ArrayList();
                 }
-                actionErrors.add(getText("error.bulkChange.actionTitle.not.chosen"));
+                actionErrors.add(getText("error.bulkedit.actionTitle.not.chosen"));
                 setActionErrors(actionErrors);
                 return ERROR;
             }
