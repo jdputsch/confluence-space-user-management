@@ -592,6 +592,19 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         handleUserSearch(context);
         setBulkEdit(getUrlDecodedCleanedTrimmedParameterValue(paramMap, "bulkEdit"));
 
+        //validate adminAction set if bulkedit submit
+        if (paramMap.get("bulkEditSubmit")!=null) {
+            if (context.getAdminAction()==null) {
+                Collection actionErrors = getActionErrors();
+                if (actionErrors==null) {
+                    actionErrors = new ArrayList();
+                }
+                actionErrors.add(getText("error.bulkChange.actionTitle.not.chosen"));
+                setActionErrors(actionErrors);
+                return ERROR;
+            }
+        }
+
         // handle refresh
         handleRefreshData(paramMap);
 

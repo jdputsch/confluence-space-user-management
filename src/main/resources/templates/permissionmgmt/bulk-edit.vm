@@ -102,7 +102,9 @@ function validateBulkForm( thisform )
                     </ul>
 
 					<label>4. $action.getText("bulkChange.form.label.commitTitle"):</label>
-					<input type="submit" value="Commit"></input>
+
+					## bulkEditSubmit is looked for in action because it indicates that we should validate that adminAction was set
+					<input type="submit" id="bulkEditSubmit" name="bulkEditSubmit" value="Commit"></input>
 				</fieldset>
 			</form>
             #else
