@@ -858,12 +858,13 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS))
                         {
                             userManagementService.addUsersByUsernameToGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.users") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " " + getText("success.addedToGroups") + " " +  StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " " + getText("success.successfully") + "</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.add.users.to.groups") + "</font>";
+
                         }
                         else if(adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS))
                         {
                             userManagementService.removeUsersByUsernameFromGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.users") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()) + " " + getText("success.removedFromGroups") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " " + getText("success.successfully") + "</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.remove.users.from.groups") + "</font>";
                         }
                     }
                     finally {
@@ -920,7 +921,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             }
 
                             groupManagementService.addGroups(fixedGroupNames, serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.groups") + " " + StringUtil.convertCollectionToCommaDelimitedString(fixedGroupNames) + " " + getText("success.added") + " " + getText("success.successfully")+ "!</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.add.groups") + "</font>";
 
                             List specifiedUsers = context.getSpecifiedUsers();
                             if (specifiedUsers!=null && specifiedUsers.size()>0) {
@@ -945,7 +946,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             List specifiedGroups = context.getSpecifiedGroups();
 
                             groupManagementService.removeGroups(specifiedGroups, serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.groups") + " " + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()) + " " + getText("success.removed") + " " + getText("success.successfully")+ "!</font>";
+                            opMessage = "<font color=\"green\">" + getText("success.remove.groups") + "</font>";
 
                             // groups no longer exist. remove cached group memberships if any.
                             this.clearUserCache(context.getKey(), specifiedGroups);
