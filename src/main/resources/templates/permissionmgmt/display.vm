@@ -362,27 +362,27 @@
 <div id="csum">
 
   #if($action.isNotAllowed())
-    <div class="warningPanel">
+    <div class="alertPanel">
 
-    <img src="/images/icons/emoticons/warning.gif" align="absmiddle" width="16" height="16">
+    <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
     $action.getText("not.allowed")
 
     </div>
   #elseif($action.isPluginDown())
     ## this is either the message set in config, or is an i18n message if config message is empty
-    <div class="warningPanel">
+    <div class="alertPanel">
 
-    <img src="/images/icons/emoticons/warning.gif" align="absmiddle" width="16" height="16">
+    <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
     $action.pluginDownMessage
 
     </div>
   #elseif(!$action.space)
     ## this happens whenever action.getSpace() returns null (as for a bad space key).
-    <div class="warningPanel">
+    <div class="alertPanel">
 
-    <img src="/images/icons/emoticons/warning.gif" align="absmiddle" width="16" height="16">
+    <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
     $action.getText("invalid.space.key")
 
@@ -390,9 +390,9 @@
   #elseif(!$action.remoteUser)
     ## this is not likely to happen since confluence security keeps you from viewing this page as anyone without
     ## rights to the space. It is included just in case for some reason a user gets through that security with a null user.
-    <div class="warningPanel">
+    <div class="alertPanel">
 
-    <img src="/images/icons/emoticons/warning.gif" align="absmiddle" width="16" height="16">
+    <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
     $action.getText("invalid.user")
 

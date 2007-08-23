@@ -85,7 +85,7 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("configure.user.management.module.heading")</td>
+            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("configure.section.title")</td>
         </tr>
         </table>
 
@@ -93,14 +93,14 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("user.manager.location.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.usermanagerlocation.label"):</td>
             <td>
 				#fielderror ('userManagerLocation')
                 <input type="radio" name="userManagerLocation" value="CONFLUENCE" #if ($action.userManagerLocation == "CONFLUENCE") checked="true" #end  onclick="toggleJiraSettingsInput(this)" />CONFLUENCE &nbsp;
                 <input type="radio" name="userManagerLocation" value="JIRA" #if ($action.userManagerLocation == "JIRA") checked="true" #end onclick="toggleJiraSettingsInput(this)" />JIRA
                 <br>
                 <font size="1">
-            	    $action.getText("configure.user.management.module.note")</li>
+            	    $action.getText("configure.usermanagerlocation.help")</li>
                 </font>
             </td>
         </tr>
@@ -109,36 +109,36 @@
         <div id="jira_deps" style="padding-left: 80px; #if (!($action.userManagerLocation == "JIRA")) display: none; #else display: block #end">
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.soap.url.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.jirasoapurl.label"):</td>
             <td>
                 #fielderror ('jiraSoapUrl')
                 <input type="text" id="jiraSoapUrl" name="jiraSoapUrl" value="$!action.jiraSoapUrl" />
                 <p>
-                    <font size="1">$action.getText("jira.soap.url.note")</font>
+                    <font size="1">$action.getText("configure.jirasoapurl.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.soap.username.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.jirasoapusername.label"):</td>
             <td>
                 #fielderror ('jiraSoapUsername')
                 <input type="text" id="jiraSoapUsername" name="jiraSoapUsername" value="$!action.jiraSoapUsername" />
                 <p>
-                    <font size="1">$action.getText("jira.soap.username.note")</font>
+                    <font size="1">$action.getText("configure.jirasoapusername.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("jira.soap.password.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.jirasoappassword.label"):</td>
             <td>
                 #fielderror ('jiraSoapPassword')
                 <input type="checkbox" value="y" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" />
                 $action.getText('jira.soap.password.set.label')
                 <input type="password" id="jiraSoapPassword" name="jiraSoapPassword" value="$!action.jiraSoapPassword" />
                 <p>
-                    <font size="1">$action.getText("jira.soap.password.note")</font>
+                    <font size="1">$action.getText("configure.jirasoappassword.help")</font>
                 </p>
             </td>
         </tr>
@@ -147,11 +147,14 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("ldap.authentication.used.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.ldapauthused.label"):</td>
             <td>
 				#fielderror ('ldapAuthUsed')
                 <input type="radio" name="ldapAuthUsed" value="YES" #if ($!action.ldapAuthUsed == "YES") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("yes") &nbsp;
                 <input type="radio" name="ldapAuthUsed" value="NO" #if ($!action.ldapAuthUsed == "NO") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("no")
+                <p>
+                    <font size="1">$action.getText("configure.ldapauthused.help")</font>
+                </p>
             </td>
         </tr>
         </table>
@@ -159,64 +162,64 @@
         <div id="ldap_deps" style="padding-left: 80px; #if (!($action.ldapAuthUsed == "YES")) display: none; #else display: block #end">
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("provider.type.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.providertype.label"):</td>
             <td>
 				#fielderror ('providerType')
                 <input type="radio" id="providerType" name="providerType" value="OSUSER" #if ($action.providerType == "OSUSER") checked="true" #end/>OSUSER &nbsp;
                 <input type="radio" id="providerType" name="providerType" value="ATLASSIAN-USER" #if ($action.providerType == "ATLASSIAN-USER") checked="true" #end/>ATLASSIAN-USER
                 <br>
                 <font size="1">
-            	    $action.getText("provider.type.note")</li>
+            	    $action.getText("configure.providertype.help")</li>
                 </font>
             </td>
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("ldap.user.id.attribute.label"):</td>
+            <td class="label" width="30%">$action.getText("configure.ldapuseridattribute.label"):</td>
             <td nowrap>
                 #fielderror ('ldapUserIdAttribute')
                 <input type="text" id="ldapUserIdAttribute" name="ldapUserIdAttribute" value="$!action.ldapUserIdAttribute" />
                 <p>
-                    <font size="1">$action.getText("ldap.user.id.attribute.note")</font>
+                    <font size="1">$action.getText("configure.ldapuseridattribute.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("ldap.email.attribute.label"):</td>
+            <td class="label" width="30%">$action.getText("configure.ldapemailattribute.label"):</td>
             <td nowrap>
                 #fielderror ('ldapEmailAttribute')
                 <input type="text" id="ldapEmailAttribute" name="ldapEmailAttribute" value="$!action.ldapEmailAttribute" />
                 <p>
-                    <font size="1">$action.getText("ldap.email.attribute.note")</font>
+                    <font size="1">$action.getText("configure.ldapemailattribute.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("ldap.firstName.attribute.label"):</td>
+            <td class="label" width="30%">$action.getText("configure.ldapfirstnameattribute.label"):</td>
             <td nowrap>
                 #fielderror ('ldapFirstNameAttribute')
                 <input type="text" id="ldapFirstNameAttribute" name="ldapFirstNameAttribute" value="$!action.ldapFirstNameAttribute" />
                 <p>
-                    <font size="1">$action.getText("ldap.firstName.attribute.note")</font>
+                    <font size="1">$action.getText("configure.ldapfirstnameattribute.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("ldap.lastName.attribute.label"):</td>
+            <td class="label" width="30%">$action.getText("configure.ldaplastnameattribute.label"):</td>
             <td nowrap>
                 #fielderror ('ldapLastNameAttribute')
                 <input type="text" id="ldapLastNameAttribute" name="ldapLastNameAttribute" value="$!action.ldapLastNameAttribute" />
                 <p>
-                    <font size="1">$action.getText("ldap.lastName.attribute.note")</font>
+                    <font size="1">$action.getText("configure.ldaplastnameattribute.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("ldap.provider.fully.qualified.classname.label"):</td>
+            <td class="label" width="30%">$action.getText("configure.ldapproviderfullyqualifiedclassname.label"):</td>
             <td nowrap>
                 #fielderror ('ldapProviderFullyQualifiedClassname')
                 <input type="text" id="ldapProviderFullyQualifiedClassname" name="ldapProviderFullyQualifiedClassname" value="$!action.ldapProviderFullyQualifiedClassname" />
@@ -230,21 +233,21 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("group.actions.permitted.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.groupactionspermitted.label"):</td>
             <td>
 				#fielderror ('groupActionsPermitted')
                 <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end/>$action.getText("yes") &nbsp;
                 <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end/>$action.getText("no")
                 <p>
                     <font size="1">
-                	$action.getText("configure.groupAction.explanation")
+                	$action.getText("configure.groupactionspermitted.help")
                     </font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("new.group.name.creation.pattern.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.groupnamepattern.label"):</td>
             <td>
                 <!-- TODO: Cleanup ugly table and CSS. -->
 				<table style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
@@ -254,7 +257,7 @@
 				            <input type="text" name="newGroupNameCreationPrefixPattern" id="newGroupNameCreationPrefixPattern" value="$!action.newGroupNameCreationPrefixPattern" size="50" />
 				        </td>
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				            &nbsp;(group identifier)&nbsp;
+				            &nbsp;$action.getText("configure.groupnamepattern.prefixandsuffixseparator")&nbsp;
 				        </td>
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				            #fielderror ('newGroupNameCreationSuffixPattern')
@@ -264,41 +267,41 @@
 				</table>
                 <p>
                     <font size="1">
-                    $action.getText("configure.spacekey.explanation")
+                    $action.getText("configure.groupnamepattern.help")
                     </font>
                 </p>
                 <p>
                     <font size="1">
-					$action.getText("configure.spacekey.example")
+					$action.getText("configure.groupnamepattern.help.example")
                     </font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("max.number.of.userids.to.act.on.at.once"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.maxuseridslimit.label"):</td>
             <td>
                 #fielderror ('maxUserIDsLimit')
                 <input type="text" name="maxUserIDsLimit" value="$!action.maxUserIDsLimit" />
                 <p>
-                    <font size="1">$action.getText("configure.error.greaterThanZero")</font>
+                    <font size="1">$action.getText("configure.maxuseridslimit.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("max.number.of.groupids.to.act.on.at.once"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.maxgroupidslimit.label"):</td>
             <td>
                 #fielderror ('maxGroupIDsLimit')
                 <input type="text" name="maxGroupIDsLimit" value="$!action.maxGroupIDsLimit" />
                 <p>
-                    <font size="1">$action.getText("configure.error.greaterThanZero")</font>
+                    <font size="1">$action.getText("configure.maxgroupidslimit.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("user.search.enabled"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.usersearchenabled.label"):</td>
             <td>
                 #fielderror ('userSearchEnabled')
                 <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />$action.getText("yes") &nbsp;
@@ -310,33 +313,36 @@
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("personal.space.allowed.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.personalspaceallowed.label"):</td>
             <td>
                 #fielderror ('personalSpaceAllowed')
                 <input type="radio" name="personalSpaceAllowed" value="YES" #if ($!action.personalSpaceAllowed == "YES") checked="true" #end />$action.getText("yes") &nbsp;
                 <input type="radio" name="personalSpaceAllowed" value="NO" #if ($!action.personalSpaceAllowed == "NO") checked="true" #end />$action.getText("no")
                 <p>
-                    <font size="1">$action.getText("personal.space.allowed.note")</font>
+                    <font size="1">$action.getText("configure.personalspaceallowed.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("plugin.deactivated.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.plugindeactivated.label"):</td>
             <td>
                 #fielderror ('pluginDown')
                 <input type="radio" name="pluginDown" value="YES" #if ($!action.pluginDown == "YES") checked="true" #end />$action.getText("yes") &nbsp;
                 <input type="radio" name="pluginDown" value="NO" #if ($!action.pluginDown == "NO") checked="true" #end />$action.getText("no")
+                <p>
+                    <font size="1">$action.getText("configure.plugindeactivated.help")</font>
+                </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("plugin.downtime.message.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.plugindowntimemessage.label"):</td>
             <td>
    	         #fielderror ('downTimeMessage')
    	         <textarea name="downTimeMessage" cols="60" rows="6" class="monospaceInput">$!action.downTimeMessage</textarea>
    	         <p>
-                 <font size="1">$action.getText("default"): $action.getText("plugin.set.as.disabled.in.plugin.config.default.message")</font>
+                 <font size="1">$action.getText("configure.plugindowntimemessage.help"): $action.getText("plugin.set.as.disabled.in.plugin.config.default.message")</font>
              </p>
             </td>
         </tr>

@@ -48,16 +48,16 @@ function validateBulkForm( thisform )
 {
     var valid = true;
 
-    if ( validateBulkChecked( document.bulkedit.adminAction ) )
+    if ( validateBulkChecked( document.bulkEdit.adminAction ) )
     {
         alert ( "Please choose an action" );
         valid = false;
     }
-    else if ( document.bulkedit.users.value == null || document.bulkedit.users.value == "" ) {
+    else if ( document.bulkEdit.users.value == null || document.bulkEdit.users.value == "" ) {
         alert ( "Please specify users" );
         valid = false;
     }
-    else if ( validateBulkChecked( document.bulkedit.groups ) )
+    else if ( validateBulkChecked( document.bulkEdit.groups ) )
     {
         alert ( "Please choose one or more groups" );
         valid = false;
@@ -68,9 +68,9 @@ function validateBulkForm( thisform )
 </script>
 
 
-			<div class="sectionHeader">
+			<div id="bulkEditSectionHeader" class="sectionHeader">
 				<h2>$action.getText("bulkedit.section.title")</h2>
-				<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">&laquo; $action.getText("normalView.link.title")</a>
+				<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">&laquo; $action.getText("bulkedit.normalview")</a>
 			</div>
 
             #set ($allGroups = $action.allGroups)
@@ -79,20 +79,20 @@ function validateBulkForm( thisform )
 				<fieldset>
                     <input type="hidden" name="bulkEdit" value="1"/>
 				    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
-					<label>1. $action.getText("bulkedit.form.label.actionTitle"):</label>
-					<input type="radio" value="addUsersToGroups" name="adminAction"></input> $action.getText("bulkedit.form.radio.addUser.text")<br />
-					<input type="radio" value="removeUsersFromGroups" name="adminAction"></input> $action.getText("bulkedit.form.radio.removeUser.text")
+					<label>1. $action.getText("bulkedit.adminaction.label"):</label>
+					<input type="radio" value="addUsersToGroups" name="adminAction"></input> $action.getText("bulkedit.adminaction.choice.adduserstogroups")<br />
+					<input type="radio" value="removeUsersFromGroups" name="adminAction"></input> $action.getText("bulkedit.adminaction.choice.removeusersfromgroups")
 					<br />
 
-					<label>2. $action.getText("bulkedit.form.label.userInputTitle"):</label>
+					<label>2. $action.getText("bulkedit.users.label"):</label>
 					<input type="text" style="width:100%;" id="users" name="users"></input>
 					<br />
 					<ul class="formHelp">
-						<li>$action.getText("form.example.commaSeparatedUsernames.text")</li>
-						<li>$action.getText("form.example.commaSeparatedUsernames")</li>
+						<li>$action.getText("bulkedit.users.help")</li>
+						<li>$action.getText("bulkedit.users.help.commaseparatedusernames")</li>
 					</ul>
 
-					<label>3. $action.getText("bulkedit.form.label.selectGroupsTitle"):</label>
+					<label>3. $action.getText("bulkedit.groups.label"):</label>
                     <ul>
                     #foreach ($group in $allGroups)
                         <li>
@@ -101,13 +101,13 @@ function validateBulkForm( thisform )
                     #end
                     </ul>
 
-					<label>4. $action.getText("bulkedit.form.label.commitTitle"):</label>
+					<label>4. $action.getText("bulkedit.commit.label"):</label>
 
 					## bulkEditSubmit is looked for in action because it indicates that we should validate that adminAction was set
-					<input type="submit" id="bulkEditSubmit" name="bulkEditSubmit" value="Commit"></input>
+					<input type="submit" id="bulkEditSubmit" name="bulkEditSubmit" value="$action.getText('bulkedit.commit')"></input>
 				</fieldset>
 			</form>
             #else
-            <p>$action.getText("error.noGroupsAvailable")</p>
+            <p>$action.getText("bulkedit.error.nogroupsavailable")</p>
             #end
             <!-- end bulk-edit -->

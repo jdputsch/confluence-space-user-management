@@ -58,8 +58,8 @@
                     <input type="text" style="width:100%;" id="users" name="users"/>
                     ##<div id="addUserOpts"></div>
 					<ul class="formHelp">
-						<li>$action.getText("form.example.commaSeparatedUsernames.text")</li>
-						<li>$action.getText("form.example.commaSeparatedUsernames")</li>
+						<li>$action.getText("bulkedit.users.help")</li>
+						<li>$action.getText("bulkedit.users.help.commaseparatedusernames")</li>
 					</ul>
                     ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...
                     ## var quotedCommaSpaceDelimitedUsers = [$action.findUsersWhoseNameStartsWith("whatever", 5)];
