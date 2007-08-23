@@ -404,8 +404,6 @@
 		##parse ( "/template/includes/actionerrors.vm" )
        <!-- Display result of operation if successful -->
 		#parse ( "/template/includes/actionmessages.vm" )
-
-		##parse ( "/templates/permissionmgmt/action-messages.vm" )
 	</div>
 
     #set($configValidationResponse=$action.configValidationResponse)
