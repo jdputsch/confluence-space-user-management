@@ -154,7 +154,13 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     value = URLDecoder.decode(value, "UTF-8");
                 }
                 catch (UnsupportedEncodingException e) {
-                    log.error("request parameter '" + param + "' had cleaned up value '" + value + "' which could not be URL decoded", e);
+                    // NOTE: this should allow legal groupnames to pass so just log and ignore
+                    log.debug("request parameter '" + param + "' had cleaned up value '" + value + "' which could not be URL decoded", e);
+                }
+                catch (IllegalArgumentException e) {
+                    //TODO: write test for groupname sdfaa#$%#$%$%&
+                    // NOTE: this should allow legal groupnames to pass so just log and ignore
+                    log.debug("request parameter '" + param + "' had cleaned up value '" + value + "' which could not be URL decoded", e);
                 }
             }
         }
@@ -544,7 +550,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         if (getSpace()==null) {
             log.warn("Space was null");
             List resultList = new ArrayList();
-            resultList.add(getText("invalid.space.key"));
+            resultList.add(getText("display.alert.invalidspacekey"));
             setActionErrors(resultList);
             return ERROR;
         }
@@ -552,7 +558,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         if (getRemoteUser()==null) {
             log.warn("RemoteUser was null");
             List resultList = new ArrayList();
-            resultList.add(getText("invalid.user"));
+            resultList.add(getText("display.alert.invaliduser"));
             setActionErrors(resultList);
             return ERROR;
         }
@@ -564,7 +570,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         if(isNotAllowed()) {
             log.warn("Action not allowed");
             List resultList = new ArrayList();
-            resultList.add(getText("not.allowed"));
+            resultList.add(getText("display.alert.notallowed"));
             setActionErrors(resultList);
             return ERROR;
         }
@@ -874,13 +880,13 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS))
                         {
                             userManagementService.addUsersByUsernameToGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.add.users.to.groups") + "</font>";
+                            opMessage = getText("success.add.users.to.groups");
 
                         }
                         else if(adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS))
                         {
                             userManagementService.removeUsersByUsernameFromGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.remove.users.from.groups") + "</font>";
+                            opMessage = getText("success.remove.users.from.groups");
                         }
                     }
                     finally {
@@ -937,7 +943,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             }
 
                             groupManagementService.addGroups(fixedGroupNames, serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.add.groups") + "</font>";
+                            opMessage = getText("success.add.groups");
 
                             List specifiedUsers = context.getSpecifiedUsers();
                             if (specifiedUsers!=null && specifiedUsers.size()>0) {
@@ -962,7 +968,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             List specifiedGroups = context.getSpecifiedGroups();
 
                             groupManagementService.removeGroups(specifiedGroups, serviceContext);
-                            opMessage = "<font color=\"green\">" + getText("success.remove.groups") + "</font>";
+                            opMessage = getText("success.remove.groups");
 
                             // groups no longer exist. remove cached group memberships if any.
                             this.clearUserCache(context.getKey(), specifiedGroups);

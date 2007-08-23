@@ -81,7 +81,7 @@
 
 		#parse ( "/template/includes/actionerrors.vm" )
        <!-- Display result of operation if successful -->
-		#parse ( "/templates/permissionmgmt/action-messages.vm" )
+		#parse ( "/template/includes/actionmessages.vm" )
 
         <table class="grid" width="80%">
         <tr>
@@ -135,7 +135,7 @@
             <td>
                 #fielderror ('jiraSoapPassword')
                 <input type="checkbox" value="y" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" />
-                $action.getText('jira.soap.password.set.label')
+                $action.getText("jira.soap.password.set.label")
                 <input type="password" id="jiraSoapPassword" name="jiraSoapPassword" value="$!action.jiraSoapPassword" />
                 <p>
                     <font size="1">$action.getText("configure.jirasoappassword.help")</font>
@@ -349,10 +349,10 @@
         
         <tr>
             <td class="label" width="100%" colspan="2">
-                    <input type="submit" value="$action.getText('configure.update')" />
+                    <input type="submit" value='$action.getText("configure.update")' />
 					<input id="cancelButton"  type="button" 
 					       name="Home of Admin Console"
-					       value="$action.getText('configure.cancel')"
+					       value='$action.getText("configure.cancel")'
 					       onclick="location.href='$req.contextPath/admin/console.action'" />
             </td>
         </tr>

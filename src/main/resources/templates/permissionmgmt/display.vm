@@ -366,7 +366,7 @@
 
     <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
-    $action.getText("not.allowed")
+    $action.getText("display.alert.notallowed")
 
     </div>
   #elseif($action.isPluginDown())
@@ -384,7 +384,7 @@
 
     <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
-    $action.getText("invalid.space.key")
+    $action.getText("display.alert.invalidspacekey")
 
     </div>
   #elseif(!$action.remoteUser)
@@ -394,12 +394,18 @@
 
     <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
-    $action.getText("invalid.user")
+    $action.getText("display.alert.invaliduser")
 
     </div>
   #else
     <div class="messages">
-		#parse ( "/templates/permissionmgmt/action-messages.vm" )
+		## Action errors are already displayed at top of page under tab because this is part of space management
+		## which already includes it
+		##parse ( "/template/includes/actionerrors.vm" )
+       <!-- Display result of operation if successful -->
+		#parse ( "/template/includes/actionmessages.vm" )
+
+		##parse ( "/templates/permissionmgmt/action-messages.vm" )
 	</div>
 
     #set($configValidationResponse=$action.configValidationResponse)
@@ -424,7 +430,7 @@
         <div id="footer">
 				<ul>
 				#if($groups && $groups.total>0)
-			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">$action.getText("bulkedit.link.title")</a> </li>
+			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">$action.getText("display.bulkedit")</a> </li>
 			        #*
 					#if($action.isUserSearchEnabled)
 					<li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">$action.getText("searchUsers.link.title")</a> </li>
@@ -439,16 +445,16 @@
 					#end
 					<a href="${req.contextPath}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">
 						#*<img src="${req.contextPath}/images/icons/lock_16.gif"/>*#
-						$action.getText("space.permissions.link.title")</a> </li>
+						$action.getText("display.spacepermissions")</a> </li>
 					#*<li>| <a href="${req.contextPath}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">
 						<img src="${req.contextPath}/images/icons/locked_pages_16.gif"/>
 						$action.getText("page.permissions.link.title")</a> </li>*#
 			    #end
 
                 #if($action.selectedGroup)
-                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($selectedGroup)&refresh=1">$action.getText("refresh.link.title")</a> </li>
+                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($selectedGroup)&refresh=1">$action.getText("display.refresh")</a> </li>
                 #else
-                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("refresh.link.title")</a> </li>
+                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("display.refresh")</a> </li>
                 #end
 			        
 				</ul>
@@ -457,13 +463,13 @@
 	            #if($availableSpaces && $availableSpaces.size()>1)
                 <form method="GET" action="docustompermissionsmanage.action" id="changeSpace" name="changeSpace">
 	                <fieldset>
-	                    <label>$action.getText("form.label.changeSpace"): </label>
+	                    <label>$action.getText("display.changespace.label"): </label>
 	                    <select name="key">
 	                        #foreach ($availableSpace in $availableSpaces)
 	                        <option value="$availableSpace.key" #if($availableSpace.key==$action.space.key)selected="true"#end>$generalUtil.htmlEncode($availableSpace.name) ($generalUtil.htmlEncode($availableSpace.key))</option>
 	                        #end
 	                    </select>
-	                	<input type="submit" value='$action.getText("form.button.changeSpace")' class="submitBttn"/>
+	                	<input type="submit" value='$action.getText("display.changespace")' class="submitBttn"/>
 	                </fieldset>
 	            </form>
 	            #end				
@@ -474,8 +480,8 @@
             <p class="infoMacro">${action.customPermissionConfiguration.downTimeMessage}</p>
 		#else
 		    <p class="noteMacro">
-		    <p>$action.getText("error.admin.reconfigure.text") <a href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">$action.getText("error.admin.reconfigure.link.text")</a>.</p>
-		    <p>$action.getText("error.admin.reconfigure.list.text"):</p>
+		    <p>$action.getText("display.error.adminmustconfigure") <a href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">$action.getText("display.error.adminmustconfigure.linktoconfigurator")</a>.</p>
+		    <p>$action.getText("display.error.adminmustconfigure.errormessages.title"):</p>
 			    #set($fieldNameToErrorMessage=$configValidationResponse.fieldNameToErrorMessage)
 				<ul>
 	            #foreach($configFieldName in $fieldNameToErrorMessage.keySet())

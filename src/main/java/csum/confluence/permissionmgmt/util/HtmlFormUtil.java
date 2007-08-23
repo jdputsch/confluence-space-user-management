@@ -73,7 +73,13 @@ public class HtmlFormUtil {
                     selectedUserGroupsList.add(decoded);
                 }
                 catch (UnsupportedEncodingException e) {
-                    log.error("Checkbox group name '" + checkboxGroupName + "' contained encoded param value '" + encoded + "' that could not be URL decoded", e);
+                    // NOTE: this should allow legal groupnames to pass so just log and ignore
+                    log.debug("Checkbox group name '" + checkboxGroupName + "' contained encoded param value '" + encoded + "' that could not be URL decoded", e);
+                }
+                catch (IllegalArgumentException e) {
+                    //TODO: write test for groupname sdfaa#$%#$%$%&
+                    // NOTE: this should allow legal groupnames to pass so just log and ignore
+                    log.debug("Checkbox group name '" + checkboxGroupName + "' contained encoded param value '" + encoded + "' that could not be URL decoded", e);
                 }
             }
         }

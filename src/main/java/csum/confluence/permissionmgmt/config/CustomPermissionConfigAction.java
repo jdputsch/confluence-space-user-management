@@ -38,6 +38,8 @@ import csum.confluence.permissionmgmt.util.ConfigUtil;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Action to configure plugin
@@ -83,15 +85,23 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionConfigAction - Inside execute ..");
-    	
-    	if(!validateConfiguration()) {
+    	List resultList = new ArrayList();
+
+        if(!validateConfiguration()) {
+            log.warn("Configuration was invalid");
+            resultList.add(getText("configure.error.configurationinvalid"));
+            setActionErrors(resultList);
+
             return ERROR;
         }
 
         fixFormValues();
 
         updatePersistedConfigWithFormValues();
-    	
+
+        resultList.add(getText("configure.success"));
+        setActionMessages(resultList);
+
         return SUCCESS;
     }
 
