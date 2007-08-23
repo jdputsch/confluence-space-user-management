@@ -34,17 +34,17 @@
 <div class="paging">
                     #if($action.hasPrev($searchResultUsers))
                     <span class="prev">
-                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1&pagerAction=prevPageSearchResultUsers">&laquo; $action.getText("grouppageractions.previous")</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1&pagerAction=prevPageSearchResultUsers">&laquo; $action.getText("searchresultuserpageractions.previous")</a>
                     </span>
                     #end
                     #if($action.hasNext($searchResultUsers))
                     <span class="next">
-                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1&pagerAction=nextPageSearchResultUsers">$action.getText("grouppageractions.next") &raquo;</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1&pagerAction=nextPageSearchResultUsers">$action.getText("searchresultuserpageractions.next") &raquo;</a>
                     </span>
                     #end
                     #if(${action.groups})
                     <span class="count">
-                        $action.getText("users") $!{action.firstRecordNum($searchResultUsers)}-$!{action.lastRecordNum($searchResultUsers)} $action.getText("of") $!{searchResultUsers.total}<br/>
+                        $action.getText("searchresultuserpageractions.pageindicator", ["$!{action.firstRecordNum($groups)}", "$!{action.lastRecordNum($groups)}", "$!{groups.total}"])<br/>
 
                         #if($searchResultUsers.total > $searchResultUsers.countOnEachPage)
                         <form class="pageSkip" action="docustompermissionsmanage.action">
@@ -53,9 +53,9 @@
 			                    <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
                                 <input type="hidden" name="userSearch" value="1"/>
 		                        <input type="hidden" name="pagerAction" value="skipToSearchResultUser"/>
-								<label>$action.getText("user.skip.byNum"): </label>
+								<label>$action.getText("searchresultuserpageractions.userskipbynumber.label"): </label>
 								<input type="text" name="recordNum"/>
-		                        <input type="submit" class="submitBttn" id="skipToUserBtn" name="skipToUserBtn" value="Go"/>
+		                        <input type="submit" class="submitBttn" id="skipToUserBtn" name="skipToUserBtn" value='$action.getText("searchresultuserpageractions.userskipbynumber")'/>
 	                        </fieldset>
                         </form>
                         #end

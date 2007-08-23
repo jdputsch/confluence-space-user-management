@@ -86,8 +86,14 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     // GROUP LIST AND GROUP LIST INDEX CACHING
 
     public PagerPaginationSupport getGroupsPps(String spaceKey) {
-        PagerPaginationSupport result = (PagerPaginationSupport)getSessionProperty( getGroupsPpsKey(spaceKey) );
-        log.debug("Got groups instance " + id(result) + " for spaceKey '" + spaceKey + "'");
+        PagerPaginationSupport result = null;
+        try {
+            result = (PagerPaginationSupport)getSessionProperty( getGroupsPpsKey(spaceKey) );
+            log.debug("Got groups instance " + id(result) + " for spaceKey '" + spaceKey + "'");
+        }
+        catch (java.lang.ClassCastException e) {
+            log.error("Invalid type stored in cache. Returning null", e);
+        }
         return result;
     }
 
@@ -101,8 +107,14 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     public Integer getGroupsIndex(String spaceKey) {
-        Integer result = (Integer)getSessionProperty( getGroupsIndexKey(spaceKey) );
-        log.debug("Got groups index instance " + id(result) + " for spaceKey '" + spaceKey + "'");
+        Integer result = null;
+        try {
+            result = (Integer)getSessionProperty( getGroupsIndexKey(spaceKey) );
+            log.debug("Got groups index instance " + id(result) + " for spaceKey '" + spaceKey + "'");
+        }
+        catch (java.lang.ClassCastException e) {
+            log.error("Invalid type stored in cache. Returning null", e);
+        }
         return result;
     }
 
@@ -118,8 +130,14 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     // USERS LIST AND GROUP LIST INDEX CACHING
 
     public PagerPaginationSupport getUsersPps(String spaceKey, String groupName) {
-        PagerPaginationSupport result = (PagerPaginationSupport)getSessionProperty( getUsersPpsKey(spaceKey, groupName) );
-        log.debug("Got users instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        PagerPaginationSupport result = null;
+        try {
+            result = (PagerPaginationSupport)getSessionProperty( getUsersPpsKey(spaceKey, groupName) );
+            log.debug("Got users instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        }
+        catch (java.lang.ClassCastException e) {
+            log.error("Invalid type stored in cache. Returning null", e);
+        }
         return result;
     }
 
@@ -133,8 +151,14 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     public Integer getUsersIndex(String spaceKey, String groupName) {
-        Integer result = (Integer)getSessionProperty( getUsersIndexKey(spaceKey, groupName) );
-        log.debug("Got users index instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        Integer result = null;
+        try {
+            result = (Integer)getSessionProperty( getUsersIndexKey(spaceKey, groupName) );
+            log.debug("Got users index instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        }
+        catch (java.lang.ClassCastException e) {
+            log.error("Invalid type stored in cache. Returning null", e);
+        }
         return result;
     }
 
@@ -150,8 +174,14 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     // USER SEARCH-RELATED CACHING
 
     public PagerPaginationSupport getSearchResultUsersPps(String spaceKey, String groupName) {
-        PagerPaginationSupport result = (PagerPaginationSupport)getSessionProperty( getSearchResultUsersPpsKey(spaceKey, groupName) );
-        log.debug("Got search result users instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        PagerPaginationSupport result = null;
+        try {
+            result = (PagerPaginationSupport)getSessionProperty( getSearchResultUsersPpsKey(spaceKey, groupName) );
+            log.debug("Got search result users instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        }
+        catch (java.lang.ClassCastException e) {
+            log.error("Invalid type stored in cache. Returning null", e);
+        }
         return result;
     }
 
@@ -165,8 +195,14 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     public Integer getSearchResultUsersIndex(String spaceKey, String groupName) {
-        Integer result = (Integer)getSessionProperty( getSearchResultUsersIndexKey(spaceKey, groupName) );
-        log.debug("Got search result users index instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        Integer result = null;
+        try {
+            result = (Integer)getSessionProperty( getSearchResultUsersIndexKey(spaceKey, groupName) );
+            log.debug("Got search result users index instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        }
+        catch (java.lang.ClassCastException e) {
+            log.error("Invalid type stored in cache. Returning null", e);
+        }
         return result;
     }
 
@@ -180,8 +216,14 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     }
 
     public AdvancedUserQuery getAdvancedUserQuery(String spaceKey, String groupName) {
-        AdvancedUserQuery result = (AdvancedUserQuery)getSessionProperty( getAdvancedUserQueryKey(spaceKey, groupName) );
-        log.debug("Got advanced user query instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        AdvancedUserQuery result = null;
+        try {
+            result = (AdvancedUserQuery)getSessionProperty( getAdvancedUserQueryKey(spaceKey, groupName) );
+            log.debug("Got advanced user query instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
+        }
+        catch (java.lang.ClassCastException e) {
+            log.error("Invalid type stored in cache. Returning null", e);
+        }
         return result;
     }
 
