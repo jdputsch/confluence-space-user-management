@@ -35,7 +35,7 @@
 				#*
                 <div class="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("refresh")</a></div>
                 *#
-				<h2>$generalUtil.htmlEncode(${action.space.name}) ($generalUtil.htmlEncode($action.space.key)) Groups:</h2>
+				<h2>$generalUtil.htmlEncode(${action.space.name}) ($generalUtil.htmlEncode($action.space.key)) $action.getText("grouplist.groups"):</h2>
             </div>
 
             #if($groups && $groups.total>0)
@@ -51,25 +51,24 @@
                 #parse ( "/templates/permissionmgmt/group-pager-actions.vm" )
             </div>
             #else
-                <p>There are currently no groups with rights to view space '$generalUtil.htmlEncode($key)' and matching the group name pattern '$generalUtil.htmlEncode($action.spacePattern)' defined for this space in the plugin configuration.</p>
-                <p>$action.getText("error.needToAddGroups")</p>
+                $action.getText("grouplist.error.nogroupsmatch", ["$generalUtil.htmlEncode($key)", "$generalUtil.htmlEncode($action.spacePattern)"])
             #end
 
             #if(${action.isGroupActionsPermitted})
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)$refreshbugworkaround" id="addGroupForm" name="AddGroupForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addGroups"/>
-                    <label for="addGroups">$action.getText("add") $action.getText("group")</label>
+                    <label for="groups">$action.getText("grouplist.groups.label")</label>
                     <input type="text" name="groups" id="groups" ></input>
 
                     <ul class="formHelp">
-                        <li>$action.getText("example.add.group.text") "$generalUtil.htmlEncode($action.newGroupPrefix)$action.getText("example.add.group.name")$generalUtil.htmlEncode($action.newGroupSuffix)"</li>
+                        <li>$action.getText("grouplist.groups.help", ["$generalUtil.htmlEncode($action.newGroupPrefix)", "$generalUtil.htmlEncode($action.newGroupSuffix)"])</li>
                     </ul>
 
-                    <label class="scndryInpt" for="addGroup">With Users (optional):</label>
+                    <label class="scndryInpt" for="users">$action.getText("grouplist.users.label"):</label>
                     <input id ="users" name="users" type="text" /></input>
 
-                    <input type="submit" class="submitBttn" value="Add Group(s)"></input>
+                    <input type="submit" class="submitBttn" value='$action.getText("grouplist.commit")'></input>
                 </fieldset>
             </form>
             #end
