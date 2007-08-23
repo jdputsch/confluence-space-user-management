@@ -349,10 +349,10 @@
         
         <tr>
             <td class="label" width="100%" colspan="2">
-                    <input type="submit" value="Update" />
+                    <input type="submit" value="$action.getText('configure.update')" />
 					<input id="cancelButton"  type="button" 
 					       name="Home of Admin Console"
-					       value="Cancel"
+					       value="$action.getText('configure.cancel')"
 					       onclick="location.href='$req.contextPath/admin/console.action'" />
             </td>
         </tr>
