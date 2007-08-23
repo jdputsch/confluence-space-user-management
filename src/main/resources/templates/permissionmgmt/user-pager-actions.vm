@@ -34,12 +34,12 @@
 <div class="paging">
                     #if($action.hasPrev($users))
                     <span class="prev">
-                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageUsers">&laquo; $action.getText("previous.abrv")</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageUsers">&laquo; $action.getText("grouppageractions.previous")</a>
                     </span>
                     #end
                     #if($action.hasNext($users))
                     <span class="next">
-                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageUsers">$action.getText("next.abrv") &raquo;</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageUsers">$action.getText("grouppageractions.next") &raquo;</a>
                     </span>
                     #end
                     #if(${action.groups})
