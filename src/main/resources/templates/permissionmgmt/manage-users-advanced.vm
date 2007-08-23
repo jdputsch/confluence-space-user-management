@@ -33,27 +33,27 @@
         #if($action.selectedGroup)
             #set ($searchResultUsers = $action.searchResultUsers)
             <div class="sectionHeader">
-				<h2>$action.getText("wiki.name") $action.getText("user.search")</h2>
+				<h2>$action.getText("manageusersadvanced.section.title")</h2>
 			</div>
 
             <div id="advancedUserSearchForm">
             #if(${action.selectedGroup})
-            <a id="hideAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)">&laquo; $action.getText("return.editing") ${action.selectedGroup}</a>
+            <a id="hideAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)">&laquo; $action.getText("manageusersadvanced.returntobasicedit", ["${action.selectedGroup}"])</a>
             #end
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1" id="groupManagement" name="ManageUsersForm">
                 <input type="hidden" name="adminAction" value="advancedFindUsers"/>
                 <fieldset>
                     #fielderror ('advancedSearch')
-                    <label>$action.getText("form.label.findUserWhere"): </label>
+                    <label>$action.getText("manageusersadvanced.finduser.label"): </label>
                     <select name="lookupType">
-                        <option value="$action.usernameLookupType" #if ($action.advancedUserQuery && $action.advancedUserQuery.lookupType == $action.usernameLookupType) selected="selected" #end>$action.getText("username")</option>
-                        <option value="$action.fullNameLookupType" #if ($action.advancedUserQuery && $action.advancedUserQuery.lookupType == $action.fullNameLookupType) selected="selected" #end>$action.getText("fullname")</option>
-                        <option value="$action.emailLookupType" #if ($action.advancedUserQuery && $action.advancedUserQuery.lookupType == $action.emailLookupType) selected="selected" #end>$action.getText("email")</option>
+                        <option value="$action.usernameLookupType" #if ($action.advancedUserQuery && $action.advancedUserQuery.lookupType == $action.usernameLookupType) selected="selected" #end>$action.getText("manageusersadvanced.lookuptype.choice.username")</option>
+                        <option value="$action.fullNameLookupType" #if ($action.advancedUserQuery && $action.advancedUserQuery.lookupType == $action.fullNameLookupType) selected="selected" #end>$action.getText("manageusersadvanced.lookuptype.choice.fullname")</option>
+                        <option value="$action.emailLookupType" #if ($action.advancedUserQuery && $action.advancedUserQuery.lookupType == $action.emailLookupType) selected="selected" #end>$action.getText("manageusersadvanced.lookuptype.choice.email")</option>
                     </select>
                     <select name="substringMatchType">
-                        <option value="$action.substringStartsWith" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringStartsWith) selected="selected" #end>$action.getText("startsWith")</option>
-                        <option value="$action.substringContains" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringContains) selected="selected" #end>$action.getText("contains")</option>
-                        <option value="$action.substringEndsWith" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringEndsWith) selected="selected" #end>$action.getText("endsWith")</option>
+                        <option value="$action.substringStartsWith" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringStartsWith) selected="selected" #end>$action.getText("manageusersadvanced.substringmatchyype.choice.startswith")</option>
+                        <option value="$action.substringContains" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringContains) selected="selected" #end>$action.getText("manageusersadvanced.substringmatchyype.choice.contains")</option>
+                        <option value="$action.substringEndsWith" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringEndsWith) selected="selected" #end>$action.getText("manageusersadvanced.substringmatchyype.choice.endswith")</option>
                     </select>
                     <input type="text" id="partialSearchTerm" #if ($action.advancedUserQuery) value="$!action.advancedUserQuery.partialSearchTerm" #end name="partialSearchTerm"/>
                 </fieldset>
@@ -66,11 +66,11 @@
                 <div class="srchResInfo">$searchResultUsers.total users found</div>
                 <table width="100%" cellspacing="0">
                     <tr>
-                        <th>$action.getText("fullname")</th>
-                        <th>$action.getText("username")</th>
-                        <th>$action.getText("email")</th>
+                        <th>$action.getText("manageusersadvanced.lookuptype.choice.fullname")</th>
+                        <th>$action.getText("manageusersadvanced.lookuptype.choice.username")</th>
+                        <th>$action.getText("manageusersadvanced.lookuptype.choice.email")</th>
                         #*<th>$action.getText("isMember")</th>*#
-                        <th>$action.getText("add") / $action.getText("remove") $action.getText("from") <br /> $action.selectedGroup</th>
+                        <th>$action.getText("manageusersadvanced.addremovefromselectedgroup", ["$action.selectedGroup"])</th>
                     </tr>
                 #foreach ($user in $searchResultUsers.page)
                     #set ($userFullName = $generalUtil.htmlEncode($user.getFullName()))
@@ -99,11 +99,13 @@
                 </table>
 
             #else
-                $action.getText("noUsersFound")
+                $action.getText("manageusersadvanced.nousersfound")
             #end
 			</div>
         #end
     #else
-        $action.getText("user.search.disabled.message")
+    <div class="alertPanel">
+        <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16"> $action.getText("manageusersadvanced.usersearchdisabled")
+    </div>
     #end
             <!-- end manage-users-advanced -->
