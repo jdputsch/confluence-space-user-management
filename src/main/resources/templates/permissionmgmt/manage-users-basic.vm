@@ -40,30 +40,30 @@
 						$action.getText("refresh")</a>
 			    </div>
 *#
-				<h2>$action.getText("editGroup.title") $generalUtil.htmlEncode(${action.selectedGroup})</h2>
+				<h2>$action.getText("manageusersbasic.section.title", ["$generalUtil.htmlEncode(${action.selectedGroup})"])</h2>
 				#if(${action.isGroupActionsPermitted})
-				<a id="trashGroup" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround"><img src="${req.contextPath}/images/icons/trash_16.gif" /> $action.getText("delGroup") ${action.selectedGroup}</a>
+				<a id="trashGroup" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround"><img src="${req.contextPath}/images/icons/trash_16.gif" /> $action.getText("manageusersbasic.deletegroup", ["${action.selectedGroup}"])</a>
 				#end
 			</div>
 
             #if($action.isUserSearchEnabled)
-            <a id="showAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1">&raquo; $action.getText("wiki.name") $action.getText("directorySearch")</a>
+            <a id="showAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1">&raquo; $action.getText("manageusersbasic.usersearch")</a>
             #end
 
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround" id="addUsersForm" name="ManageUsersForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addUsersToGroups"/>
                     <input type="hidden" name="groups" value="$action.selectedGroup"/>
-                    <label for="users">$action.getText("form.label.add.users") ${action.selectedGroup}:</label>
+                    <label for="users">$action.getText("manageusersbasic.users.label", ["${action.selectedGroup}"]):</label>
                     <input type="text" style="width:100%;" id="users" name="users"/>
                     ##<div id="addUserOpts"></div>
 					<ul class="formHelp">
-						<li>$action.getText("bulkedit.users.help")</li>
-						<li>$action.getText("bulkedit.users.help.commaseparatedusernames")</li>
+						<li>$action.getText("manageusersbasic.users.help")</li>
+						<li>$action.getText("manageusersbasic.users.help.commaseparatedusernames")</li>
 					</ul>
                     ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...
                     ## var quotedCommaSpaceDelimitedUsers = [$action.findUsersWhoseNameStartsWith("whatever", 5)];
-                    <input type="submit" value="Add User(s)" class="submitBttn"/>
+                    <input type="submit" value='$action.getText("manageusersbasic.addusers.commit")' class="submitBttn"/>
                 </fieldset>
             </form>
 
@@ -73,10 +73,10 @@
                 <table cellspacing="0">                
                     <thead>
 						<tr>
-							<th>$action.getText("fullname")</th>
-							<th>$action.getText("username")</th>
-							<th>$action.getText("email")</th>
-							<th align="center">$action.getText("remove")</th>
+							<th>$action.getText("manageusersbasic.fullname")</th>
+							<th>$action.getText("manageusersbasic.username")</th>
+							<th>$action.getText("manageusersbasic.email")</th>
+							<th align="center">$action.getText("manageusersbasic.remove")</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -90,8 +90,8 @@
                     <tr #if ($velocityCount % 2 == 0) class="even" #end>
                         <td><img class="icon" src="${req.contextPath}/images/icons/user_16.gif"/>$!userFullName</td>
                         <td>$!userName</td>
-                        <td><a href="mailto:$!userEmail" alt="Send email to $!userName">$!userEmail</a></td>
-                        <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$!userName$refreshbugworkaround"><img alt="Remove $!userName from group ${action.selectedGroup}" src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
+                        <td><a href="mailto:$!userEmail" alt='$action.getText("manageusersbasic.sendemailtouser", ["$!userName"])'">$!userEmail</a></td>
+                        <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$!userName$refreshbugworkaround"><img alt='$action.getText("manageusersbasic.removeuserfromgroup", ["$!userName", "${action.selectedGroup}"])' src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
                     </tbody>
@@ -99,7 +99,7 @@
 
                 #parse ( "/templates/permissionmgmt/user-pager-actions.vm" )
             #else
-                $action.getText("noUsersFoundInGroup")
+                $action.getText("manageusersbasic.nousersfoundingroup")
             #end
 
             </br>                        
