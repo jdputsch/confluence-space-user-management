@@ -307,7 +307,7 @@
                 <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />$action.getText("configure.yes") &nbsp;
                 <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />$action.getText("configure.no")
                 <p>
-                    <font size="1">$action.getText("configure.warn.largeUserNumber")</font>
+                    <font size="1">$action.getText("configure.usersearchenabled.help")</font>
                 </p>
             </td>
         </tr>

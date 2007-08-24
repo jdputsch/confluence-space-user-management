@@ -59,7 +59,7 @@ public class CustomPermissionServiceManager {
 
         if ( userManagerLocation==null )
         {
-            throw new ServiceException(action.getText("error.invalidUserManagerLocation"));
+            throw new ServiceException(action.getText("manager.error.invalidusermanager"));
         }
         else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
     	{
@@ -70,7 +70,7 @@ public class CustomPermissionServiceManager {
             return jiraSoapGroupManagementService;
         }
         else {
-            throw new ServiceException(action.getText("error.invalidUserManagerLocation"));
+            throw new ServiceException(action.getText("manager.error.invalidusermanager"));
         }
     }
 
@@ -80,7 +80,7 @@ public class CustomPermissionServiceManager {
 
         if ( userManagerLocation==null )
         {
-            throw new ServiceException(action.getText("error.invalidUserManagerLocation"));
+            throw new ServiceException(action.getText("manager.error.invalidusermanager"));
         }
         else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
     	{
@@ -91,7 +91,7 @@ public class CustomPermissionServiceManager {
             return jiraSoapUserManagementService;
         }
         else {
-            throw new ServiceException(action.getText("error.invalidUserManagerLocation"));
+            throw new ServiceException(action.getText("manager.error.invalidusermanager"));
         }
     }
 

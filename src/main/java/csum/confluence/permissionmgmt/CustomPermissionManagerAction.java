@@ -594,7 +594,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 if (actionErrors==null) {
                     actionErrors = new ArrayList();
                 }
-                actionErrors.add(getText("error.notAllowedToManageSelectedGroup") + ": " + selectedGroup);
+                actionErrors.add(getText("manager.error.notallowedtomanageselectedgroup") + ": " + selectedGroup);
                 setActionErrors(actionErrors);
 
                 // config or permissions have changed - blow away users/groups/search cache
@@ -621,7 +621,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 if (actionErrors==null) {
                     actionErrors = new ArrayList();
                 }
-                actionErrors.add(getText("error.bulkedit.actionTitle.not.chosen"));
+                actionErrors.add(getText("manager.error.bulkeditnoadminaction"));
                 setActionErrors(actionErrors);
                 return ERROR;
             }
@@ -841,14 +841,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     //validate
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedUsers())) {
                         log.warn("Failed action " + adminAction + ". users were null");
-                        resultList.add(getText("error.usersCannotBeNull"));
+                        resultList.add(getText("manager.error.usersnull"));
                         setActionErrors(resultList);
                         return ERROR;
                     }
 
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
                         log.warn("Failed action " + adminAction + ". groups were null");
-                        resultList.add(getText("error.groupsCannotBeNull"));
+                        resultList.add(getText("manager.error.groupsnull"));
                         setActionErrors(resultList);
                         return ERROR;
                     }
@@ -856,7 +856,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int usersSize = context.getSpecifiedUsers().size();
                     int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
                     if (usersSize > maxUserIDsLimit) {
-                        String msg = getText("error.maxUsersExceeded") + " " + maxUserIDsLimit + ".";
+                        String msg = getText("manager.error.maxnumusersexceeded") + " " + maxUserIDsLimit + ".";
                         log.warn("Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
                         resultList.add(msg);
                         setActionErrors(resultList);
@@ -866,7 +866,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int groupsSize = context.getSpecifiedGroups().size();
                     int maxGroupIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxGroupIDsLimit()).intValue();
                     if (groupsSize > maxGroupIDsLimit) {
-                        String msg = getText("error.maxGroupsExceeded") + " " + maxGroupIDsLimit + ".";
+                        String msg = getText("manager.error.maxnumgroupsexceeded") + " " + maxGroupIDsLimit + ".";
                         log.warn("Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
                         resultList.add(msg);
                         setActionErrors(resultList);
@@ -906,7 +906,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     //validate
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
                         log.warn("Failed action " + adminAction + ". groups were null");
-                        resultList.add(getText("error.groupsCannotBeNull"));
+                        resultList.add(getText("manager.error.groupsnull"));
                         setActionErrors(resultList);
                         return ERROR;
                     }
@@ -914,7 +914,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int groupsSize = context.getSpecifiedGroups().size();
                     int maxGroupIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxGroupIDsLimit()).intValue();
                     if (groupsSize > maxGroupIDsLimit) {
-                        String msg = getText("error.maxGroupsExceeded") + " " + maxGroupIDsLimit + ".";
+                        String msg = getText("manager.error.maxnumgroupsexceeded") + " " + maxGroupIDsLimit + ".";
                         log.warn("Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
                         resultList.add(msg);
                         setActionErrors(resultList);
@@ -951,7 +951,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                                 int usersSize = context.getSpecifiedUsers().size();
                                 int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
                                 if (usersSize > maxUserIDsLimit) {
-                                    String msg = getText("error.maxUsersExceeded") + " " + maxUserIDsLimit + ".";
+                                    String msg = getText("manager.error.maxnumusersexceeded") + " " + maxUserIDsLimit + ".";
                                     log.warn("Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
                                     resultList.add(msg);
                                     setActionErrors(resultList);

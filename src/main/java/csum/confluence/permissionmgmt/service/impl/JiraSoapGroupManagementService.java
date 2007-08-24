@@ -117,14 +117,14 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
             String msg = "";
             String concat = "";
             if (alreadyExisted.size() > 0) {
-                msg += context.getText("error.groupsalreadyexisted") + ": " +
+                msg += context.getText("manager.error.groupsalreadyexisted") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(alreadyExisted) + ".";
                 concat = " ";
             }
 
             if (success.size() > 0) {
                 msg += concat;
-                msg += context.getText("error.groupAddSuccess") + ": " +
+                msg += context.getText("manager.error.addgroupspartialsuccess") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(success) + ".";
             }
 
@@ -193,20 +193,20 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
             String msg = "";
             String concat = "";
             if (badGroupNames.size() > 0) {
-                msg += context.getText("error.badGroupNames") + ": " +
+                msg += context.getText("manager.error.badgroupnames") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(badGroupNames) + ".";
                 concat = " ";
             }
 
             if (didNotExist.size() > 0) {
                 msg += concat;
-                msg += context.getText("error.groupsDidNotExist") + ": " +
+                msg += context.getText("manager.error.groupsdidnotexist") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(didNotExist) + ".";
             }
 
             if (success.size() > 0) {
                 msg += concat;
-                msg += context.getText("error.groupRemoveSuccess") + ": " +
+                msg += context.getText("manager.error.removegroupspartialsuccess") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(success) + ".";
             }
             throw new RemoveException(msg);

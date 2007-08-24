@@ -154,14 +154,14 @@ public abstract class BaseUserManagementService implements UserManagementService
         String msg = "";
         String concat = "";
         if (usersNotFound.size() > 0) {
-            msg += context.getText("error.usersNotFound") + ": " +
+            msg += context.getText("manager.error.usersnotfound") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".";
             concat = " ";
         }
 
         if (groupsNotFound.size() > 0) {
             msg += concat;
-            msg += context.getText("error.groupsNotFound") + ": " +
+            msg += context.getText("manager.error.groupsdidnotexist") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(groupsNotFound) + ".";
         }
 
