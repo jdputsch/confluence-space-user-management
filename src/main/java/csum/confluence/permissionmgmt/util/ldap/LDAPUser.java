@@ -31,6 +31,7 @@ package csum.confluence.permissionmgmt.util.ldap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import csum.confluence.permissionmgmt.util.StringUtil;
 
 /**
  * Wrapper class for retrieved LDAP attributes and optional formatting of name
@@ -72,18 +73,30 @@ public class LDAPUser
     public String getFullName()
     {
     	String name=null;
-        switch (fullNameFormat)
-        {
-        	case LASTNAME_COMMA_FIRSTNAME:
-        		name=(lastName!=null?lastName:"?")+", "+(firstName!=null?firstName:"?");
-        		break;
-        	case FIRSTNAME_SPACE_LASTNAME:
-        		name=(lastName!=null?lastName:"?")+", "+(firstName!=null?firstName:"?");
-        		break;
-        	default:
-        		LOG.warn("Unknown format: "+fullNameFormat);
+
+        if (!StringUtil.isNullOrEmpty(firstName) && !StringUtil.isNullOrEmpty(lastName)) {
+            if (fullNameFormat==LASTNAME_COMMA_FIRSTNAME) {
+                name = lastName + ", " + firstName;
+            }
+            else if (fullNameFormat==FIRSTNAME_SPACE_LASTNAME) {
+                name = firstName + " " + lastName;
+            }
+            else {
+                LOG.warn("Invalid format: " + fullNameFormat + ". Using FIRSTNAME_SPACE_LASTNAME format.");
+                name = firstName + " " + lastName;
+            }
         }
-    	return name;
+        else if (!StringUtil.isNullOrEmpty(firstName) && StringUtil.isNullOrEmpty(lastName)) {
+            name = firstName;
+        }
+        else if (StringUtil.isNullOrEmpty(firstName) && !StringUtil.isNullOrEmpty(lastName)) {
+            name = lastName;
+        }
+        else {
+            name = userId;
+        }
+
+        return name;
     }
 
     public String getEmail() {

@@ -80,7 +80,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
             String msg = "";
             String concat = "";
             if (alreadyExisted.size() > 0) {
-                msg += context.getText("groups.already.existed") + ": " +
+                msg += context.getText("error.groupsalreadyexisted") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(alreadyExisted) + ".";
                 concat = " ";
             }

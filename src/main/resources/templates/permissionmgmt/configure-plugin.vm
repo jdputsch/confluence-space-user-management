@@ -135,7 +135,7 @@
             <td>
                 #fielderror ('jiraSoapPassword')
                 <input type="checkbox" value="y" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" />
-                $action.getText("jira.soap.password.set.label")
+                $action.getText("configure.jirasoappasswordset.label")
                 <input type="password" id="jiraSoapPassword" name="jiraSoapPassword" value="$!action.jiraSoapPassword" />
                 <p>
                     <font size="1">$action.getText("configure.jirasoappassword.help")</font>
@@ -150,8 +150,8 @@
             <td valign="top" class="label" width="30%">$action.getText("configure.ldapauthused.label"):</td>
             <td>
 				#fielderror ('ldapAuthUsed')
-                <input type="radio" name="ldapAuthUsed" value="YES" #if ($!action.ldapAuthUsed == "YES") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("yes") &nbsp;
-                <input type="radio" name="ldapAuthUsed" value="NO" #if ($!action.ldapAuthUsed == "NO") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("no")
+                <input type="radio" name="ldapAuthUsed" value="YES" #if ($!action.ldapAuthUsed == "YES") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("configure.yes") &nbsp;
+                <input type="radio" name="ldapAuthUsed" value="NO" #if ($!action.ldapAuthUsed == "NO") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("configure.no")
                 <p>
                     <font size="1">$action.getText("configure.ldapauthused.help")</font>
                 </p>
@@ -224,7 +224,7 @@
                 #fielderror ('ldapProviderFullyQualifiedClassname')
                 <input type="text" id="ldapProviderFullyQualifiedClassname" name="ldapProviderFullyQualifiedClassname" value="$!action.ldapProviderFullyQualifiedClassname" />
                 <p>
-                    <font size="1">$action.getText("ldap.provider.fully.qualified.classname.note")</font>
+                    <font size="1">$action.getText("configure.ldapproviderfullyqualifiedclassname.help")</font>
                 </p>
             </td>
         </tr>
@@ -236,8 +236,8 @@
             <td valign="top" class="label" width="30%">$action.getText("configure.groupactionspermitted.label"):</td>
             <td>
 				#fielderror ('groupActionsPermitted')
-                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end/>$action.getText("yes") &nbsp;
-                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end/>$action.getText("no")
+                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end/>$action.getText("configure.yes") &nbsp;
+                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end/>$action.getText("configure.no")
                 <p>
                     <font size="1">
                 	$action.getText("configure.groupactionspermitted.help")
@@ -304,8 +304,8 @@
             <td valign="top" class="label" width="30%">$action.getText("configure.usersearchenabled.label"):</td>
             <td>
                 #fielderror ('userSearchEnabled')
-                <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />$action.getText("yes") &nbsp;
-                <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />$action.getText("no")
+                <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />$action.getText("configure.yes") &nbsp;
+                <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />$action.getText("configure.no")
                 <p>
                     <font size="1">$action.getText("configure.warn.largeUserNumber")</font>
                 </p>
@@ -316,8 +316,8 @@
             <td valign="top" class="label" width="30%">$action.getText("configure.personalspaceallowed.label"):</td>
             <td>
                 #fielderror ('personalSpaceAllowed')
-                <input type="radio" name="personalSpaceAllowed" value="YES" #if ($!action.personalSpaceAllowed == "YES") checked="true" #end />$action.getText("yes") &nbsp;
-                <input type="radio" name="personalSpaceAllowed" value="NO" #if ($!action.personalSpaceAllowed == "NO") checked="true" #end />$action.getText("no")
+                <input type="radio" name="personalSpaceAllowed" value="YES" #if ($!action.personalSpaceAllowed == "YES") checked="true" #end />$action.getText("configure.yes") &nbsp;
+                <input type="radio" name="personalSpaceAllowed" value="NO" #if ($!action.personalSpaceAllowed == "NO") checked="true" #end />$action.getText("configure.no")
                 <p>
                     <font size="1">$action.getText("configure.personalspaceallowed.help")</font>
                 </p>
@@ -328,8 +328,8 @@
             <td valign="top" class="label" width="30%">$action.getText("configure.plugindeactivated.label"):</td>
             <td>
                 #fielderror ('pluginDown')
-                <input type="radio" name="pluginDown" value="YES" #if ($!action.pluginDown == "YES") checked="true" #end />$action.getText("yes") &nbsp;
-                <input type="radio" name="pluginDown" value="NO" #if ($!action.pluginDown == "NO") checked="true" #end />$action.getText("no")
+                <input type="radio" name="pluginDown" value="YES" #if ($!action.pluginDown == "YES") checked="true" #end />$action.getText("configure.yes") &nbsp;
+                <input type="radio" name="pluginDown" value="NO" #if ($!action.pluginDown == "NO") checked="true" #end />$action.getText("configure.no")
                 <p>
                     <font size="1">$action.getText("configure.plugindeactivated.help")</font>
                 </p>
@@ -342,7 +342,7 @@
    	         #fielderror ('downTimeMessage')
    	         <textarea name="downTimeMessage" cols="60" rows="6" class="monospaceInput">$!action.downTimeMessage</textarea>
    	         <p>
-                 <font size="1">$action.getText("configure.plugindowntimemessage.help"): $action.getText("plugin.set.as.disabled.in.plugin.config.default.message")</font>
+                 <font size="1">$action.getText("configure.plugindowntimemessage.help"): $action.getText("manager.downtimemessagedefault")</font>
              </p>
             </td>
         </tr>

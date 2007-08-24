@@ -880,13 +880,13 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS))
                         {
                             userManagementService.addUsersByUsernameToGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = getText("success.add.users.to.groups");
+                            opMessage = getText("manager.success.adduserstogroups");
 
                         }
                         else if(adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS))
                         {
                             userManagementService.removeUsersByUsernameFromGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
-                            opMessage = getText("success.remove.users.from.groups");
+                            opMessage = getText("manager.success.removeusersfromgroups");
                         }
                     }
                     finally {
@@ -943,7 +943,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             }
 
                             groupManagementService.addGroups(fixedGroupNames, serviceContext);
-                            opMessage = getText("success.add.groups");
+                            opMessage = getText("manager.success.addgroups");
 
                             List specifiedUsers = context.getSpecifiedUsers();
                             if (specifiedUsers!=null && specifiedUsers.size()>0) {
@@ -968,7 +968,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             List specifiedGroups = context.getSpecifiedGroups();
 
                             groupManagementService.removeGroups(specifiedGroups, serviceContext);
-                            opMessage = getText("success.remove.groups");
+                            opMessage = getText("manager.success.removegroups");
 
                             // groups no longer exist. remove cached group memberships if any.
                             this.clearUserCache(context.getKey(), specifiedGroups);
@@ -1058,7 +1058,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public String getPluginDownMessage() {
         String result = (String)bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_DOWNTIME_MESSAGE);
         if ( result == null || result.trim().equals("")) {
-            result = getText("plugin.set.as.disabled.in.plugin.config.default.message");
+            result = getText("manager.downtimemessagedefault");
         }
         return result;
     }
