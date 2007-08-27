@@ -58,6 +58,7 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_LDAP_FIRSTNAME_ATTRIBUTE = "ext.delegateusermgmt.ldap.firstname.attribute";
     public static final String DELEGATE_USER_MGMT_LDAP_LASTNAME_ATTRIBUTE = "ext.delegateusermgmt.ldap.lastname.attribute";    
     public static final String DELEGATE_USER_MGMT_LDAP_PROVIDER_FULLY_QUALIFIED_CLASSNAME = "ext.delegateusermgmt.ldap.provider.fully.qualified.classname";
+    public static final String DELEGATE_USER_MGMT_USER_FULL_NAME_FORMAT = "ext.delegateusermgmt.user.full.name.format";
     public static final String DELEGATE_USER_MGMT_PERSONAL_SPACE_ALLOWED = "ext.delegateusermgmt.personal.space.allowed";
 
     // static values
@@ -66,6 +67,10 @@ public interface CustomPermissionConfigConstants {
 
     public static final String PROVIDER_TYPE_OSUSER = "OSUSER";
     public static final String PROVIDER_TYPE_ATLASSIAN_USER = "ATLASSIAN-USER";
+
+    public static final String USER_FULL_NAME_FORMAT_TYPE_LASTNAME_COMMA_FIRSTNAME = "LASTNAME_COMMA_FIRSTNAME";
+    public static final String USER_FULL_NAME_FORMAT_TYPE_FIRSTNAME_LASTNAME = "FIRSTNAME_LASTNAME";
+    public static final String USER_FULL_NAME_FORMAT_TYPE_ID = "ID";
 
     public static final String YES = "YES";
     public static final String NO = "NO";

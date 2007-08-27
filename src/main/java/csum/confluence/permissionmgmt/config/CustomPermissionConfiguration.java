@@ -80,6 +80,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setLdapFirstNameAttribute(getLdapFirstNameAttribute());
         config.setLdapLastNameAttribute(getLdapLastNameAttribute());
         config.setLdapProviderFullyQualifiedClassname(getLdapProviderFullyQualifiedClassname());
+        config.setUserFullNameFormat(getUserFullNameFormat());
         config.setPersonalSpaceAllowed(getPersonalSpaceAllowed());
     }
 
@@ -109,6 +110,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setLdapFirstNameAttribute(config.getLdapFirstNameAttribute());
         setLdapLastNameAttribute(config.getLdapLastNameAttribute());
         setLdapProviderFullyQualifiedClassname(config.getLdapProviderFullyQualifiedClassname());
+        setUserFullNameFormat(config.getUserFullNameFormat());
         setPersonalSpaceAllowed(config.getPersonalSpaceAllowed());
 
         // config has changed. clear ALL cache including indexes!!!
@@ -129,10 +131,10 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
         ConfigValidationResponse result = new ConfigValidationResponse();
         result.setValid(true);
-
-        boolean isUserManagerLocationSet = true;
+        
 		String userMgrLocation = config.getUserManagerLocation();
-		boolean userManagerLocationIsConfluence = (userMgrLocation != null) && (userMgrLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE));
+		boolean isUserManagerLocationSet = (userMgrLocation != null);
+        boolean userManagerLocationIsConfluence = (userMgrLocation != null) && (userMgrLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE));
 		boolean userManagerLocationIsJira = (userMgrLocation != null) && (userMgrLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE));
 
 		//If userManagerLocation is not set as CONFLUENCE or JIRA, then it must be set to either value.
@@ -219,9 +221,26 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                     result.addFieldError("ldapFirstNameAttribute", "Please indicate the LDAP firstName attribute (e.g. givenName)");
                     result.setValid(false);
                 }
+
                 if (config.getLdapLastNameAttribute()==null) {
                     result.addFieldError("ldapLastNameAttribute", "Please indicate the LDAP lastName attribute (e.g. sn)");
                     result.setValid(false);
+                }
+
+                String userFullNameFormat = config.getUserFullNameFormat();
+                boolean lastCommaFirstFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_LASTNAME_COMMA_FIRSTNAME));
+                boolean firstLastFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_FIRSTNAME_LASTNAME));
+                boolean idFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_ID));
+
+                if (userFullNameFormat==null) {
+                    result.addFieldError("userFullNameFormat", "Please indicate the format of full name to use for new users");
+                    result.setValid(false);
+                }
+                else {
+                    if (!lastCommaFirstFormat && !firstLastFormat && !idFormat) {
+                        result.addFieldError("userFullNameFormat", "Unsupported full name format: " + userFullNameFormat);
+                        result.setValid(false);
+                    }
                 }
 
                 if (config.getLdapProviderFullyQualifiedClassname()==null) {
@@ -492,6 +511,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setLdapProviderFullyQualifiedClassname(String ldapProviderFullyQualifiedClassname) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_PROVIDER_FULLY_QUALIFIED_CLASSNAME, ldapProviderFullyQualifiedClassname);
+    }
+
+    public String getUserFullNameFormat() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_USER_FULL_NAME_FORMAT);
+    }
+
+    public void setUserFullNameFormat(String userFullNameFormat) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_USER_FULL_NAME_FORMAT, userFullNameFormat);
     }
 
     public String getPersonalSpaceAllowed() {

@@ -37,7 +37,20 @@ public class LDAPHelper {
         lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FIRST_NAME_ATTRIBUTE, config.getLdapFirstNameAttribute());
         lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_LAST_NAME_ATTRIBUTE, config.getLdapLastNameAttribute());
         lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NARROWING_FILTER_EXPRESSION, "(objectclass=user)");
+
+        String userFullNameFormat = config.getUserFullNameFormat();
+        //boolean lastCommaFirstFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_LASTNAME_COMMA_FIRSTNAME));
+        boolean firstLastFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_FIRSTNAME_LASTNAME));
+        boolean idFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_ID));
+
         lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "0");
+        if ( firstLastFormat ) {
+            lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "1");
+        }
+        else if ( idFormat ) {
+            lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "2");
+        }
+
         lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FORCE_USERID_CASE, "2");
         lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_CONTROL_SUBTREE_SCOPE, "2");
 
