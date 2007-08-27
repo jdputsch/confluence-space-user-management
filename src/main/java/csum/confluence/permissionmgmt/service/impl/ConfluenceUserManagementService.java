@@ -36,7 +36,7 @@ import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
-import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
+import com.dolby.confluence.net.ldap.LDAPUser;
 
 import java.util.ArrayList;
 import java.util.Iterator;

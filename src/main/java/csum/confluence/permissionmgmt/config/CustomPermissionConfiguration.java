@@ -36,14 +36,13 @@ import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpace
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
-import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
-import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
+import com.dolby.confluence.net.ldap.LDAPUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 /**
  * @author Gary S. Weaver
@@ -244,7 +243,13 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                         catch (Throwable t) {
                             log.error("Problem testing LDAP config in config UI", t);
                             result.addFieldError("ldapAuthUsed", t.getMessage());
-		                    result.setValid(false);
+
+                            StringWriter sw = new StringWriter();
+                            t.printStackTrace(new PrintWriter(sw));
+                            String stacktrace = sw.toString();
+                            result.addFieldError("ldapAuthUsed", t.getMessage() + "<br/>" + stacktrace);
+
+                            result.setValid(false);
                         }
                     }
                 }

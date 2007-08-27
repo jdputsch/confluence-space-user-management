@@ -43,7 +43,7 @@ import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
 import csum.confluence.permissionmgmt.util.jira.JiraSoapUtil;
-import csum.confluence.permissionmgmt.util.ldap.LDAPUser;
+import com.dolby.confluence.net.ldap.LDAPUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

@@ -112,7 +112,7 @@
             <td valign="top" class="label" width="30%">$action.getText("configure.jirasoapurl.label"):</td>
             <td>
                 #fielderror ('jiraSoapUrl')
-                <input type="text" id="jiraSoapUrl" name="jiraSoapUrl" value="$!action.jiraSoapUrl" />
+                <input type="text" id="jiraSoapUrl" name="jiraSoapUrl" value="$!action.jiraSoapUrl" size="120" />
                 <p>
                     <font size="1">$action.getText("configure.jirasoapurl.help")</font>
                 </p>
@@ -222,7 +222,7 @@
             <td class="label" width="30%">$action.getText("configure.ldapproviderfullyqualifiedclassname.label"):</td>
             <td nowrap>
                 #fielderror ('ldapProviderFullyQualifiedClassname')
-                <input type="text" id="ldapProviderFullyQualifiedClassname" name="ldapProviderFullyQualifiedClassname" value="$!action.ldapProviderFullyQualifiedClassname" />
+                <input type="text" id="ldapProviderFullyQualifiedClassname" name="ldapProviderFullyQualifiedClassname" value="$!action.ldapProviderFullyQualifiedClassname" size="120"/>
                 <p>
                     <font size="1">$action.getText("configure.ldapproviderfullyqualifiedclassname.help")</font>
                 </p>
