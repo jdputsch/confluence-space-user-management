@@ -487,6 +487,8 @@
 
     #parse ( "/admin/admin-breadcrumbs.vm" )
 
+    ## $action.cacheAsHtml
+
   #end
 
 <div style="clear:both"></div>

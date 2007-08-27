@@ -328,4 +328,35 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
             session.remove(sessionKey);
         }
     }
+
+    public String getCacheAsHtml() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<table><tr><td>Key</td><td>Data</td></tr>");
+        Map session = (Map) ActionContext.getContext().get("session");
+        Iterator iter = session.keySet().iterator();
+        while (iter.hasNext()) {
+
+            String key = (String)iter.next();
+
+            // intentionally not removing index here
+            if (key.startsWith(PLUGIN_SESSION_KEY_PREFIX + DELIMITER)) {
+                sb.append("<tr>");
+                sb.append("<td>" + key + "</td>");
+                Object val = session.get(key);
+                if (val instanceof PagerPaginationSupport) {
+                    sb.append("<td>total size: " + ((PagerPaginationSupport)val).getTotal() + "</td>");
+                }
+                else if (val instanceof Integer) {
+                    sb.append("<td>" + ((Integer)val).intValue() + "</td>");
+                }
+                else {
+                    sb.append("<td>" + val + "</td>");
+                }
+                sb.append("</tr>");
+            }
+
+        }
+        sb.append("</tr></table>");
+        return sb.toString();
+    }
 }
