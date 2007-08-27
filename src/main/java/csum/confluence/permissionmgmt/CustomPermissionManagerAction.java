@@ -1166,7 +1166,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public ConfigValidationResponse getConfigValidationResponse() {
         log.debug("getConfigValidationResponse() called");
 
-        ConfigValidationResponse resp = this.getCustomPermissionConfiguration().validate();
+        ConfigValidationResponse resp = this.getCustomPermissionConfiguration().validate(this);
         log.debug("getConfigValidationResponse.isValid = " + resp.isValid());
         return resp;
     }

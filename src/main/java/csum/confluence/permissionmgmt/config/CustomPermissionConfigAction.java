@@ -140,7 +140,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     public boolean validateConfiguration()
 	{
 		log.debug("CustomPermissionConfigAction - Inside validate Configuration ...");
-        ConfigValidationResponse validResp = CustomPermissionConfiguration.validate(this, getCustomPermissionConfiguration(), getRemoteUser().getName());
+        ConfigValidationResponse validResp = CustomPermissionConfiguration.validate(this, getCustomPermissionConfiguration(), getRemoteUser().getName(), this);
         Map fieldErrorMap = validResp.getFieldNameToErrorMessage();
         Iterator keys = fieldErrorMap.keySet().iterator();
         while (keys.hasNext()) {

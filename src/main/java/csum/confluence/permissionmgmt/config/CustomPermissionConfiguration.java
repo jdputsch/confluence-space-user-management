@@ -31,6 +31,7 @@ package csum.confluence.permissionmgmt.config;
 
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
+import com.atlassian.confluence.core.ConfluenceActionSupport;
 import com.atlassian.spring.container.ContainerManager;
 import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
@@ -123,11 +124,11 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
      *
      * @return ConfigValidationResponse
      */
-    public ConfigValidationResponse validate() {
-        return validate(this, null, null);
+    public ConfigValidationResponse validate(ConfluenceActionSupport cas) {
+        return validate(this, null, null, cas);
     }
 
-    public static ConfigValidationResponse validate(CustomPermissionConfigurable config, CustomPermissionConfigurable existingConfig, String remoteUser) {
+    public static ConfigValidationResponse validate(CustomPermissionConfigurable config, CustomPermissionConfigurable existingConfig, String remoteUser, ConfluenceActionSupport cas) {
 
         ConfigValidationResponse result = new ConfigValidationResponse();
         result.setValid(true);
@@ -140,7 +141,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 		//If userManagerLocation is not set as CONFLUENCE or JIRA, then it must be set to either value.
 		if( !(userManagerLocationIsConfluence || userManagerLocationIsJira) )
 		{
-            result.addFieldError("userManagerLocation", "Please indicate which application manages Wiki Users");
+            result.addFieldError("userManagerLocation", cas.getText("configure.error.usermanagerlocationnull"));
             result.setValid(false);
 		}
 
@@ -150,13 +151,13 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 			boolean testSoapService = true;
             if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUrl())) {
                 testSoapService = false;
-                result.addFieldError("jiraSoapUrl", "JIRA SOAP URL cannot be empty");
+                result.addFieldError("jiraSoapUrl", cas.getText("configure.error.jirasoapurlempty"));
                 result.setValid(false);
             }
 
             if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUsername())) {
                 testSoapService = false;
-                result.addFieldError("jiraSoapUsername", "JIRA SOAP username cannot be empty");
+                result.addFieldError("jiraSoapUsername", cas.getText("configure.error.jirasoapusernameempty"));
                 result.setValid(false);
             }
 
@@ -169,7 +170,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             }
             else {
                 testSoapService = false;
-                result.addFieldError("jiraSoapPassword", "JIRA SOAP password must be set");
+                result.addFieldError("jiraSoapPassword", cas.getText("configure.error.jirasoappasswordnull"));
                 result.setValid(false);
             }
 
@@ -186,14 +187,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 }
                 catch (Throwable t) {
                     log.error("Problem testing JIRA SOAP configuration by connecting to JIRA", t);
-                    result.addFieldError("jiraSoapUrl", "Problem logging in to JIRA SOAP service: " + t);
+                    result.addFieldError("jiraSoapUrl", cas.getText("configure.error.jirasoaptestconnectfailed") + ": " + t);
                     result.setValid(false);
                 }
             }
         }
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getLdapAuthUsed())) {
-            result.addFieldError("ldapAuthUsed", "Must be YES or NO");
+            result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldapauthusedinvalid"));
             result.setValid(false);
         }
         else {
@@ -203,27 +204,27 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                         (!providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER) &&
                        !providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER)))
                 {
-                    result.addFieldError("providerType", "Please indicate which provider type you are using");
+                    result.addFieldError("providerType", cas.getText("configure.error.providertypeinvalid"));
                     result.setValid(false);
                 }
 
                 if (config.getLdapUserIdAttribute()==null) {
-                    result.addFieldError("ldapUserIdAttribute", "Please indicate the LDAP user id attribute (e.g. sAMAccountName)");
+                    result.addFieldError("ldapUserIdAttribute", cas.getText("configure.error.ldapuseridattributenull"));
                     result.setValid(false);
                 }
 
                 if (config.getLdapEmailAttribute()==null) {
-                    result.addFieldError("ldapEmailAttribute", "Please indicate the LDAP email attribute (e.g. mail)");
+                    result.addFieldError("ldapEmailAttribute", cas.getText("configure.error.ldapemailattributenull"));
                     result.setValid(false);
                 }
 
                 if (config.getLdapFirstNameAttribute()==null) {
-                    result.addFieldError("ldapFirstNameAttribute", "Please indicate the LDAP firstName attribute (e.g. givenName)");
+                    result.addFieldError("ldapFirstNameAttribute", cas.getText("configure.error.ldapfirstnameattributenull"));
                     result.setValid(false);
                 }
 
                 if (config.getLdapLastNameAttribute()==null) {
-                    result.addFieldError("ldapLastNameAttribute", "Please indicate the LDAP lastName attribute (e.g. sn)");
+                    result.addFieldError("ldapLastNameAttribute", cas.getText("configure.error.ldaplastnameattributenull"));
                     result.setValid(false);
                 }
 
@@ -233,19 +234,19 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 boolean idFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_ID));
 
                 if (userFullNameFormat==null) {
-                    result.addFieldError("userFullNameFormat", "Please indicate the format of full name to use for new users");
+                    result.addFieldError("userFullNameFormat", cas.getText("configure.error.userfullnameformatnull"));
                     result.setValid(false);
                 }
                 else {
                     if (!lastCommaFirstFormat && !firstLastFormat && !idFormat) {
-                        result.addFieldError("userFullNameFormat", "Unsupported full name format: " + userFullNameFormat);
+                        result.addFieldError("userFullNameFormat", cas.getText("configure.error.userfullnameformatinvalid") + ": " + userFullNameFormat);
                         result.setValid(false);
                     }
                 }
 
                 if (config.getLdapProviderFullyQualifiedClassname()==null) {
                     // ok to be empty. is not used in user-atlassian provider implementation
-                    result.addFieldError("ldapProviderFullyQualifiedClassname", "Please indicate the LDAP provider fully qualified classname you are using");
+                    result.addFieldError("ldapProviderFullyQualifiedClassname", cas.getText("configure.error.ldapproviderfullyqualifiedclassnamenull"));
                     result.setValid(false);
                 }
                 else {
@@ -255,19 +256,13 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 							if(usr == null)
 							{
 								log.debug("Got null user back from LDAP for " + remoteUser);
-								result.addFieldError("ldapAuthUsed", "Could not retrieve LDAP user for currently logged in user: " + remoteUser);
+								result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldaptestreturnednullcurrentuser") + ": " + remoteUser);
 			                    result.setValid(false);
 							}
                         }
                         catch (Throwable t) {
                             log.error("Problem testing LDAP config in config UI", t);
-                            result.addFieldError("ldapAuthUsed", t.getMessage());
-
-                            StringWriter sw = new StringWriter();
-                            t.printStackTrace(new PrintWriter(sw));
-                            String stacktrace = sw.toString();
-                            result.addFieldError("ldapAuthUsed", t.getMessage() + "<br/>" + stacktrace);
-
+                            result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldaptestconnectfailed") + ": " + t.getMessage());
                             result.setValid(false);
                         }
                     }
@@ -276,17 +271,17 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         }
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getUserSearchEnabled())) {
-            result.addFieldError("userSearchEnabled", "Must be YES or NO");
+            result.addFieldError("userSearchEnabled", cas.getText("configure.error.usersearchenabledinvalid"));
             result.setValid(false);
         }
 
         if (config.getMaxUserIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(config.getMaxUserIDsLimit())) {
-            result.addFieldError("maxUserIDsLimit", "Can only be empty or an integer greater than zero");
+            result.addFieldError("maxUserIDsLimit", cas.getText("configure.error.maxuseridslimitinvalid"));
             result.setValid(false);
         }
 
         if (config.getMaxGroupIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(config.getMaxGroupIDsLimit())) {
-            result.addFieldError("maxGroupIDsLimit", "Can only be empty or an integer greater than zero");
+            result.addFieldError("maxGroupIDsLimit", cas.getText("configure.error.maxgroupidslimitinvalid"));
             result.setValid(false);
         }
 
@@ -295,13 +290,13 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             if ("YES".equals(pluginInDown)) {
                 // is ok to be empty
                 if (config.getDownTimeMessage() == null) {
-                    result.addFieldError("pluginInDown", "Downtime message must be specified if plugin is down");
+                    result.addFieldError("pluginInDown", cas.getText("configure.error.downtimemessagenull"));
                     result.setValid(false);
                 }
             }
         }
         else {
-            result.addFieldError("pluginInDown", "Must be YES or NO");
+            result.addFieldError("pluginInDown", cas.getText("configure.error.plugindowninvalid"));
             result.setValid(false);
         }
 
@@ -309,19 +304,24 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         if (ConfigUtil.isNotNullAndIsYesOrNo(groupActionsPermitted)) {
             if ("YES".equals(groupActionsPermitted)) {
                 // these are ok to be empty
-                if (config.getNewGroupNameCreationPrefixPattern() == null || config.getNewGroupNameCreationSuffixPattern() == null) {
-                    result.addFieldError("groupActionsPermitted", "If group actions permitted, must specify prefix and suffix (even if they are just empty). They should fit with the group name pattern specified.");
+                if (config.getNewGroupNameCreationPrefixPattern() == null) {
+                    result.addFieldError("groupActionsPermitted", cas.getText("configure.error.newgroupnamecreationprefixpatterninvalid"));
+                    result.setValid(false);
+                }
+
+                if (config.getNewGroupNameCreationSuffixPattern() == null) {
+                    result.addFieldError("groupActionsPermitted", cas.getText("configure.error.newgroupnamecreationsuffixpatterninvalid"));
                     result.setValid(false);
                 }
             }
         }
         else {
-            result.addFieldError("groupActionsPermitted", "Must be YES or NO");
+            result.addFieldError("groupActionsPermitted", cas.getText("configure.error.groupactionspermittedinvalid"));
             result.setValid(false);
         }
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getPersonalSpaceAllowed())) {
-            result.addFieldError("personalSpaceAllowed", "Must be YES or NO");
+            result.addFieldError("personalSpaceAllowed", cas.getText("configure.error.personalspaceallowedinvalid"));
             result.setValid(false);
         }
 
