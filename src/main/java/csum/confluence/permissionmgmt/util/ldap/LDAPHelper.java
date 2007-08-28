@@ -13,111 +13,93 @@ import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Hashtable;
+import java.util.Properties;
 import java.io.IOException;
 
 /**
- * (c) 2007 Duke University
- * User: gary.weaver@duke.edu
- * Date: Aug 9, 2007
- * Time: 1:10:45 PM
+ * (c) 2007 Duke University User: gary.weaver@duke.edu Date: Aug 9, 2007 Time: 1:10:45 PM
  */
-public class LDAPHelper {
+public class LDAPHelper
+{
 
-    private static final Log log = LogFactory.getLog(LDAPHelper.class);
+	private static final Log log = LogFactory.getLog(LDAPHelper.class);
 
-    public static LDAPUser getLDAPUser(CustomPermissionConfigurable config, String userid) throws ParserConfigurationException, LDAPException, IOException, SAXException {
+	public static LDAPUser getLDAPUser(CustomPermissionConfigurable config, String userid) throws ParserConfigurationException,
+			LDAPException
+	{		
+		Properties builtConfig=buildConfig(config);
+		LDAPLookupUtil lookup = new LDAPLookupUtil(builtConfig);
+		LDAPUser u = lookup.getUserDetails(userid);
+		return u;
+	}
+	
+	private static Properties buildConfig(CustomPermissionConfigurable config)
+	{
+		Properties p=new Properties();
 
-        LDAPLookupUtil lookup = new LDAPLookupUtil();
+		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_ID_ATTRIBUTE, config.getLdapUserIdAttribute());
+		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_EMAIL_ATTRIBUTE, config.getLdapEmailAttribute());
+		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FIRST_NAME_ATTRIBUTE, config.getLdapFirstNameAttribute());
+		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_LAST_NAME_ATTRIBUTE, config.getLdapLastNameAttribute());
+		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NARROWING_FILTER_EXPRESSION, "(objectclass=user)");
 
-        //users would setup the exact attributes containing the relavent information,
-        //for AD (my test environment, the following attribute values work
+		String userFullNameFormat = config.getUserFullNameFormat();
+		boolean lastCommaFirstFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_LASTNAME_COMMA_FIRSTNAME));
+		boolean firstLastFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_FIRSTNAME_LASTNAME));
+		boolean idFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_ID));
 
-        //http://svn.atlassian.com/svn/public/contrib/confluence/libraries/ldaputil/tags/1.0/src/main/resources/ldaputil.properties
-        log.debug("Setting ldap userid attribute to " + config.getLdapUserIdAttribute());
-        lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_ID_ATTRIBUTE, config.getLdapUserIdAttribute());
-        log.debug("Setting ldap email attribute to " + config.getLdapEmailAttribute());
-        lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_EMAIL_ATTRIBUTE, config.getLdapEmailAttribute());
-        log.debug("Setting ldap firstname attribute to " + config.getLdapFirstNameAttribute());
-        lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FIRST_NAME_ATTRIBUTE, config.getLdapFirstNameAttribute());
-        log.debug("Setting ldap lastname attribute to " + config.getLdapLastNameAttribute());
-        lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_LAST_NAME_ATTRIBUTE, config.getLdapLastNameAttribute());
-        log.debug("Setting narrowing filter to (objectclass=user)");
-        lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NARROWING_FILTER_EXPRESSION, "(objectclass=user)");
+		if (lastCommaFirstFormat)
+		{
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "0");
+		}
+		else if (firstLastFormat)
+		{
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "1");
+		}
+		else if (idFormat)
+		{
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "2");
+		}
+		else
+		{
+			log.warn("Unknown user fullname format '" + userFullNameFormat + "'. Setting fullname format to 2");
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "2");
+		}
 
-        String userFullNameFormat = config.getUserFullNameFormat();
-        boolean lastCommaFirstFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_LASTNAME_COMMA_FIRSTNAME));
-        boolean firstLastFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_FIRSTNAME_LASTNAME));
-        boolean idFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_ID));
+		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FORCE_USERID_CASE, "2");
+		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_CONTROL_SUBTREE_SCOPE, "2");
 
-        if ( lastCommaFirstFormat ) {
-            log.debug("Setting fullname format to 0");
-            lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "0");
-        }
-        else if ( firstLastFormat ) {
-            log.debug("Setting fullname format to 1");
-            lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "1");
-        }
-        else if ( idFormat ) {
-            log.debug("Setting fullname format to 2");
-            lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "2");
-        }
-        else {
-            log.debug("Unknown user fullname format '" + userFullNameFormat + "'. Setting fullname format to 2");
-        }
+		// User selection would choose either LDAPLookup.OSUSER_PROVIDER or LDAPLookup.ATLASSIAN_USER_PROVIDER
+		String providerType = config.getProviderType();
+		if (CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER.equals(providerType))
+		{
+			log.debug("Using atlassian-user as provider type for LDAP config. Provider type from config was " + providerType);
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_PROVIDER_TYPE, LDAPLookupUtil.LDAPUTIL_PROVIDER_ATLASSIAN_USER);
+		}
+		else
+		{
+			log.debug("Using osuser as provider type for LDAP config since it didn't match " +
+					CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER + ". Provider type from config was " +
+					providerType);
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_PROVIDER_TYPE, LDAPLookupUtil.LDAPUTIL_PROVIDER_OSUSER);
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_OSUSER_PROVIDERCLASS, config.getLdapProviderFullyQualifiedClassname());
+		}
+		
+		if (log.isInfoEnabled())
+		{
+			Enumeration e = p.keys();
+			do
+			{
+				String key=(String)e.nextElement();
+				log.info("LDAP Env: "+key+" = "+p.getProperty(key));
+			} while (e.hasMoreElements());
+		}
 
-        log.debug("Setting force userid case to 2");
-        lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FORCE_USERID_CASE, "2");
-        log.debug("Setting subtree scope to 2");
-        lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_CONTROL_SUBTREE_SCOPE, "2");
-
-        //User selection would choose either LDAPLookup.OSUSER_PROVIDER or LDAPLookup.ATLASSIAN_USER_PROVIDER, that value is passed into the constructor
-
-        String providerType = config.getProviderType();
-        Hashtable ldapEnvironment = null;
-        if (CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER.equals(providerType)) {
-            log.debug("Using atlassian-user as provider type for LDAP config. Provider type from config was " + providerType);
-            lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_PROVIDER_TYPE, LDAPLookupUtil.LDAPUTIL_PROVIDER_ATLASSIAN_USER);
-
-            AUParser aup = AUParser.getInstance();
-            aup.parse();
-            ldapEnvironment = aup.getLdapEnvironment();
-            
-        } else {
-            log.debug("Using osuser as provider type for LDAP config since it didn't match " +
-                    CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER +
-                    ". Provider type from config was " + providerType);
-
-            OSUserParser osp = OSUserParser.getInstance();
-
-            //dont forget to parse the content so we can get the initial list of providerClasses
-            osp.parse();
-            ldapEnvironment = osp.getLdapEnvironment();
-
-            //this list to put in the UI somehow if OSUSer provider is required
-            List providers = osp.getProviderClasses();
-            for (Iterator iterator = providers.iterator(); iterator.hasNext();) {
-                String providerClass = (String) iterator.next();
-                log.info("Found provider class: " + providerClass);
-                if (providerClass.equalsIgnoreCase(config.getLdapProviderFullyQualifiedClassname())) {
-                    log.info("Match found, setting required provider");
-                    //userSelection would be set like this
-                    osp.setRequiredProvider(providerClass);
-                    break;
-                }
-            }
-
-            lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_PROVIDER_TYPE, LDAPLookupUtil.LDAPUTIL_PROVIDER_OSUSER);
-        }
-
-        String searchBase = (String)ldapEnvironment.get(LDAPLookupUtil.LDAPUTIL_LDAP_SEARCH_BASE);
-        log.debug("Setting searchBase to " + searchBase);
-        lookup.setLDAPEnvProperty(LDAPLookupUtil.LDAPUTIL_LDAP_SEARCH_BASE, searchBase);
-
-        //actually do the lookup
-        LDAPUser u = lookup.getUserDetails(userid);
-        return u;
-    }
+		return p;
+	}
 }
