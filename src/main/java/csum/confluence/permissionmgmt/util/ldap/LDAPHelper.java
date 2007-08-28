@@ -1,27 +1,19 @@
 package csum.confluence.permissionmgmt.util.ldap;
 
-import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
-import csum.confluence.permissionmgmt.config.CustomPermissionConfigurable;
-import csum.confluence.permissionmgmt.util.StringUtil;
-
-import com.dolby.confluence.net.ldap.osuser.OSUserParser;
-import com.dolby.confluence.net.ldap.LDAPUser;
-import com.dolby.confluence.net.ldap.LDAPException;
-import com.dolby.confluence.net.ldap.LDAPLookupUtil;
-import com.dolby.confluence.net.ldap.ILdapEnvironmentProvider;
-import com.dolby.confluence.net.ldap.atlassianuser.AUParser;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.xml.sax.SAXException;
+import java.util.Enumeration;
+import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Hashtable;
-import java.util.Properties;
-import java.io.IOException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.dolby.confluence.net.ldap.LDAPException;
+import com.dolby.confluence.net.ldap.LDAPLookupUtil;
+import com.dolby.confluence.net.ldap.LDAPUser;
+
+import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfigurable;
 
 /**
  * (c) 2007 Duke University User: gary.weaver@duke.edu Date: Aug 9, 2007 Time: 1:10:45 PM
