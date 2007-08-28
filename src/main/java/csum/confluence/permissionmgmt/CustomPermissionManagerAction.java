@@ -111,6 +111,31 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 	{
 		log.debug("CustomPermissionManagerAction instance created");
     }
+
+    public String getActionDebug() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("isUserSearchEnabled=" + getIsUserSearchEnabled() + "<br/>");
+        sb.append("selectedGroup=" + getSelectedGroup() + "<br/>");
+        if (getSearchResultUsers()!=null) {
+            sb.append("groups size=" + getGroups().getTotal() + "<br/>");
+        }
+        else {
+            sb.append("groups=null<br/>");
+        }
+        if (getSearchResultUsers()!=null) {
+            sb.append("users size=" + getUsers().getTotal() + "<br/>");
+        }
+        else {
+            sb.append("users=null<br/>");
+        }
+        if (getSearchResultUsers()!=null) {
+            sb.append("searchResultUsers size=" + getSearchResultUsers().getTotal() + "<br/>");
+        }
+        else {
+            sb.append("searchResultUsers=null<br/>");
+        }
+        return sb.toString();
+    }
     
     public void setBandanaManager(BandanaManager bandanaManager)
     {
@@ -364,6 +389,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private void doUserSearch() {
         AdvancedUserQuery advancedUserQuery = createAdvancedUserQuery();
+        if (!advancedUserQuery.isValid()) {
+            advancedUserQuery = getAdvancedUserQuery();
+        }
+
         setAdvancedUserQuery(advancedUserQuery);
         setUserSearchFormFilled(advancedUserQuery.isValid());
         if (getUserSearchFormFilled()) {

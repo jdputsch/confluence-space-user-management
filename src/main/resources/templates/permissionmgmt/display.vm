@@ -487,7 +487,9 @@
 
     #parse ( "/admin/admin-breadcrumbs.vm" )
 
-    ## $action.cacheAsHtml
+    $action.actionDebug
+
+    $action.cacheAsHtml
 
   #end
 

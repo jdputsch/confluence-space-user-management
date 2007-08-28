@@ -53,7 +53,7 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
         spacePermissionManager = (SpacePermissionManager) ContainerManager.getComponent("spacePermissionManager");
         userAccessor = (UserAccessor) ContainerManager.getComponent("userAccessor");
         //customPermissionConfiguration = (CustomPermissionConfiguration) ConfluenceUtil.loadComponentWithRetry("customPermissionConfiguration");
-        log.debug("ConfluenceGroupManagementService end cosntructor");
+        log.debug("ConfluenceGroupManagementService end constructor");
     }
 
     public Pager findGroups(ServiceContext context) throws FindException {

@@ -40,6 +40,7 @@ import org.apache.commons.logging.LogFactory;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Gary S. Weaver
@@ -332,15 +333,22 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends A
     public String getCacheAsHtml() {
         StringBuffer sb = new StringBuffer();
         sb.append("<table><tr><td>Key</td><td>Data</td></tr>");
-        Map session = (Map) ActionContext.getContext().get("session");
+        TreeMap session = new TreeMap((Map) ActionContext.getContext().get("session"));
         Iterator iter = session.keySet().iterator();
+        boolean flag = false;
         while (iter.hasNext()) {
 
             String key = (String)iter.next();
 
             // intentionally not removing index here
             if (key.startsWith(PLUGIN_SESSION_KEY_PREFIX + DELIMITER)) {
-                sb.append("<tr>");
+                flag = !flag;
+                if ( flag ) {
+                    sb.append("<tr>");
+                }
+                else {
+                    sb.append("<tr class=\"even\">");
+                }
                 sb.append("<td>" + key + "</td>");
                 Object val = session.get(key);
                 if (val instanceof PagerPaginationSupport) {

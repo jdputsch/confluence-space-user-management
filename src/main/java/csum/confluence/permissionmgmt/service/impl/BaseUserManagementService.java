@@ -25,10 +25,12 @@ import com.dolby.confluence.net.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.util.paging.LazyLoadingUserByUsernamePager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 
 /**
  * (c) 2007 Duke University
@@ -49,7 +51,7 @@ public abstract class BaseUserManagementService implements UserManagementService
         log.debug("BaseUserManagementService end constructor");
     }
 
-    protected LDAPUser getLDAPUser(String userid) throws ParserConfigurationException, LDAPException {
+    protected LDAPUser getLDAPUser(String userid) throws ParserConfigurationException, LDAPException, IOException, SAXException {
         return LDAPHelper.getLDAPUser(getCustomPermissionConfiguration(), userid);
     }
 
