@@ -333,36 +333,42 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
     public String getCacheAsHtml() {
         StringBuffer sb = new StringBuffer();
         sb.append("<table><tr><td>Key</td><td>Data</td></tr>");
-        TreeMap session = new TreeMap((Map) ActionContext.getContext().get("session"));
-        Iterator iter = session.keySet().iterator();
-        boolean flag = false;
-        while (iter.hasNext()) {
+        try {
+            TreeMap session = new TreeMap((Map) ActionContext.getContext().get("session"));
+            Iterator iter = session.keySet().iterator();
+            boolean flag = false;
+            while (iter.hasNext()) {
 
-            String key = (String)iter.next();
+                String key = (String)iter.next();
 
-            // intentionally not removing index here
-            if (key.startsWith(PLUGIN_SESSION_KEY_PREFIX + DELIMITER)) {
-                flag = !flag;
-                if ( flag ) {
-                    sb.append("<tr>");
+                // intentionally not removing index here
+                if (key.startsWith(PLUGIN_SESSION_KEY_PREFIX + DELIMITER)) {
+                    if ( flag ) {
+                        sb.append("<tr>");
+                    }
+                    else {
+                        sb.append("<tr class=\"even\">");
+                    }
+                    sb.append("<td>" + key + "</td>");
+                    Object val = session.get(key);
+                    if (val instanceof PagerPaginationSupport) {
+                        sb.append("<td>total size: " + ((PagerPaginationSupport)val).getTotal() + "</td>");
+                    }
+                    else if (val instanceof Integer) {
+                        sb.append("<td>" + ((Integer)val).intValue() + "</td>");
+                    }
+                    else {
+                        sb.append("<td>" + val + "</td>");
+                    }
+                    sb.append("</tr>");
+
+                    flag = !flag;
                 }
-                else {
-                    sb.append("<tr class=\"even\">");
-                }
-                sb.append("<td>" + key + "</td>");
-                Object val = session.get(key);
-                if (val instanceof PagerPaginationSupport) {
-                    sb.append("<td>total size: " + ((PagerPaginationSupport)val).getTotal() + "</td>");
-                }
-                else if (val instanceof Integer) {
-                    sb.append("<td>" + ((Integer)val).intValue() + "</td>");
-                }
-                else {
-                    sb.append("<td>" + val + "</td>");
-                }
-                sb.append("</tr>");
+
             }
-
+        }
+        catch (Throwable t) {
+            log.error("Problem debugging action", t);
         }
         sb.append("</tr></table>");
         return sb.toString();

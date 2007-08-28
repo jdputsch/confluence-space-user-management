@@ -106,6 +106,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public static final String ACTION_REMOVE_USERS_FROM_GROUPS = "removeUsersFromGroups";
     public static final String ACTION_ADVANCED_FIND_USERS = "advancedFindUsers";
     public static final String REFRESH_BUG_SECOND_REQUEST_PARAMNAME = "conf9035";
+    public static final String DEBUG = "debug";
 
     public CustomPermissionManagerAction()
 	{
@@ -113,34 +114,50 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public String getActionDebug() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("isUserSearchEnabled=" + getIsUserSearchEnabled() + "<br/>");
-        sb.append("selectedGroup=" + getSelectedGroup() + "<br/>");
-        if (getGroups()!=null) {
-            sb.append("groups size=" + getGroups().getTotal() + "<br/>");
-            sb.append("groups current page first record =" + this.firstRecordNum(getGroups()) + "<br/>");
-            sb.append("groups current page last record =" + this.lastRecordNum(getGroups()) + "<br/>");
+        String result = null;
+
+        if (this.getFromPluginCache(DEBUG)!=null) {
+
+            try {
+                StringBuffer sb = new StringBuffer();
+
+                sb.append("isUserSearchEnabled=" + getIsUserSearchEnabled() + "<br/>");
+                sb.append("selectedGroup=" + getSelectedGroup() + "<br/>");
+                if (getGroups()!=null) {
+                    sb.append("groups size=" + getGroups().getTotal() + "<br/>");
+                    sb.append("groups current page first record=" + this.firstRecordNum(getGroups()) + "<br/>");
+                    sb.append("groups current page last record=" + this.lastRecordNum(getGroups()) + "<br/>");
+                }
+                else {
+                    sb.append("groups=null<br/>");
+                }
+                if (getUsers()!=null) {
+                    sb.append("users size=" + getUsers().getTotal() + "<br/>");
+                    sb.append("users current page first record=" + this.firstRecordNum(getUsers()) + "<br/>");
+                    sb.append("users current page last record=" + this.lastRecordNum(getUsers()) + "<br/>");
+                }
+                else {
+                    sb.append("users=null<br/>");
+                }
+                if (getSearchResultUsers()!=null) {
+                    sb.append("searchResultUsers size=" + getSearchResultUsers().getTotal() + "<br/>");
+                    sb.append("searchResultUsers current page first record=" + this.firstRecordNum(getSearchResultUsers()) + "<br/>");
+                    sb.append("searchResultUsers current page last record=" + this.lastRecordNum(getSearchResultUsers()) + "<br/>");
+                }
+                else {
+                    sb.append("searchResultUsers=null<br/>");
+                }
+
+                sb.append(getCacheAsHtml());
+
+                result = sb.toString();
+            }
+            catch (Throwable t) {
+                log.error("Problem debugging action", t);
+            }
         }
-        else {
-            sb.append("groups=null<br/>");
-        }
-        if (getUsers()!=null) {
-            sb.append("users size=" + getUsers().getTotal() + "<br/>");
-            sb.append("users current page first record =" + this.firstRecordNum(getUsers()) + "<br/>");
-            sb.append("users current page last record =" + this.lastRecordNum(getUsers()) + "<br/>");
-        }
-        else {
-            sb.append("users=null<br/>");
-        }
-        if (getSearchResultUsers()!=null) {
-            sb.append("searchResultUsers size=" + getSearchResultUsers().getTotal() + "<br/>");
-            sb.append("searchResultUsers current page first record =" + this.firstRecordNum(getSearchResultUsers()) + "<br/>");
-            sb.append("searchResultUsers current page last record =" + this.lastRecordNum(getSearchResultUsers()) + "<br/>");
-        }
-        else {
-            sb.append("searchResultUsers=null<br/>");
-        }
-        return sb.toString();
+
+        return result;
     }
     
     public void setBandanaManager(BandanaManager bandanaManager)
@@ -603,6 +620,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
         log.debug("paramMap: " + paramMap);
+
+
+        if (paramMap != null && paramMap.get(DEBUG)!=null) {
+            storeInPluginCache(DEBUG, paramMap.get(DEBUG));
+        }
 
         if(isNotAllowed()) {
             log.warn("Action not allowed");

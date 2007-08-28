@@ -487,9 +487,11 @@
 
     #parse ( "/admin/admin-breadcrumbs.vm" )
 
-    $action.actionDebug
-
-    $action.cacheAsHtml
+    ## show action info, cache for debugging using request param &debug once (have to kill session after that to stop debugging)
+    #set($actionDebug=$action.actionDebug)
+    #if($actionDebug)
+        $actionDebug
+    #end
 
   #end
 
