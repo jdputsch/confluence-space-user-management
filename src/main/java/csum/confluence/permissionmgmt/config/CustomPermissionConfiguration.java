@@ -262,17 +262,17 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 if (result.isValid())
                 {
                     try {
-                        LDAPUser usr = LDAPHelper.getLDAPUser(config, remoteUser);
+                        LDAPUser usr = LDAPHelper.getLDAPUser(config, ldapConfigTestUsername);
                         if(usr == null)
                         {
-                            log.debug("Got null user back from LDAP for " + remoteUser);
-                            result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldaptestreturnednullcurrentuser") + ": " + remoteUser);
+                            log.debug("Got null user back from LDAP for " + ldapConfigTestUsername);
+                            result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldapconfigtestreturnednull") + ": " + ldapConfigTestUsername);
                             result.setValid(false);
                         }
                     }
                     catch (Throwable t) {
                         log.error("Problem testing LDAP config in config UI", t);
-                        result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldaptestconnectfailed") + ": " + t.getMessage());
+                        result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldapconfigtestfailure") + ": " + t.getMessage());
                         result.setValid(false);
                     }
                 }
