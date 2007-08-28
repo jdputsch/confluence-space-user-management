@@ -118,18 +118,24 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         sb.append("selectedGroup=" + getSelectedGroup() + "<br/>");
         if (getGroups()!=null) {
             sb.append("groups size=" + getGroups().getTotal() + "<br/>");
+            sb.append("groups current page first record =" + this.firstRecordNum(getGroups()) + "<br/>");
+            sb.append("groups current page last record =" + this.lastRecordNum(getGroups()) + "<br/>");
         }
         else {
             sb.append("groups=null<br/>");
         }
         if (getUsers()!=null) {
             sb.append("users size=" + getUsers().getTotal() + "<br/>");
+            sb.append("users current page first record =" + this.firstRecordNum(getUsers()) + "<br/>");
+            sb.append("users current page last record =" + this.lastRecordNum(getUsers()) + "<br/>");
         }
         else {
             sb.append("users=null<br/>");
         }
         if (getSearchResultUsers()!=null) {
             sb.append("searchResultUsers size=" + getSearchResultUsers().getTotal() + "<br/>");
+            sb.append("searchResultUsers current page first record =" + this.firstRecordNum(getSearchResultUsers()) + "<br/>");
+            sb.append("searchResultUsers current page last record =" + this.lastRecordNum(getSearchResultUsers()) + "<br/>");
         }
         else {
             sb.append("searchResultUsers=null<br/>");

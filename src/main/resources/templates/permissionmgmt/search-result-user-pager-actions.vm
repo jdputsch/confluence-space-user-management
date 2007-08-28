@@ -44,7 +44,7 @@
                     #end
                     #if(${action.groups})
                     <span class="count">
-                        $action.getText("searchresultuserpageractions.pageindicator", ["$!{action.firstRecordNum($groups)}", "$!{action.lastRecordNum($groups)}", "$!{groups.total}"])<br/>
+                        $action.getText("searchresultuserpageractions.pageindicator", ["$!{action.firstRecordNum($searchResultUsers)}", "$!{action.lastRecordNum($searchResultUsers)}", "$!{searchResultUsers.total}"])<br/>
 
                         #if($searchResultUsers.total > $searchResultUsers.countOnEachPage)
                         <form class="pageSkip" action="docustompermissionsmanage.action">
