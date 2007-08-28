@@ -47,14 +47,14 @@
 
     <body>
 
-		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+		<script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/yahoo-dom-event.js"></script>
+        <script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/container-min.js"></script>
 
-		<!-- JS Source files -->
-		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.0/build/container/container-min.js"></script>
 		<!--
-		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.0/build/animation/animation-min.js"></script>
-		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.0/build/dragdrop/dragdrop-min.js"></script>
+		<script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/animation-min.js"></script>
+		<script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/dragdrop-min.js"></script>
 		-->
+
 		<script>
 			YAHOO.namespace("ifs");
 

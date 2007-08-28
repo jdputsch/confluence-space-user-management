@@ -31,11 +31,12 @@ package csum.confluence.permissionmgmt.config;
 
 import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.core.ConfluenceActionSupport;
+import csum.confluence.permissionmgmt.CsumConfluenceActionSupport;
 
 /**
  * @author Gary S. Weaver
  */
-public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements Administrative, CustomPermissionConfigurable {
+public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSupport implements Administrative, CustomPermissionConfigurable {
 
     private String userManagerLocation;
     private String ldapAuthUsed;

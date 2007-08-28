@@ -39,7 +39,8 @@
     </plugin-info>
     
     <!-- Modules here -->
-	<resource type="download" name="customusermanagement.css" location="templates/css/customusermanagement.css"/>        
+	<resource type="download" name="css/" location="templates/css/"/>
+    <resource type="download" name="js/" location="templates/js/"/>
 
     <resource type="i18n" name="i18n" location="csum/confluence/permissionmgmt/AtlassianPlugin" />
 

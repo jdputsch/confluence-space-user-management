@@ -45,7 +45,7 @@ import java.util.TreeMap;
 /**
  * @author Gary S. Weaver
  */
-public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends AbstractSpaceAction implements SpaceAdministrative {
+public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends CsumAbstractSpaceAction implements SpaceAdministrative {
 
     private static final Log staticlog = LogFactory.getLog(AbstractPagerPaginationSupportCachingSpaceAction.class);
 

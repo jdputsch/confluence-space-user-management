@@ -48,6 +48,7 @@
     <properties>
         <!-- The plugin key. This will be injected into the atlassian-plugins.xml file when built. -->
         <!-- NOTE: because we needed to make sure this would be backwards compatible with earlier versions, we left raju kadam in the key name. -->
+        <!-- if you ever change this, be sure to change constant(s) in the code.  -->
         <atlassian.plugin.key>raju.kadam.confluence.permissionmgmt</atlassian.plugin.key>
     </properties>
 

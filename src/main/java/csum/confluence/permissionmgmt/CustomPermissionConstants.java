@@ -38,4 +38,5 @@ public interface CustomPermissionConstants {
     public static final String SPACEKEY = "SPACEKEY";
     public static final String DEFAULT_NEW_GROUP_NAME_PREFIX = SPACEKEY + "-";
     public static final String DEFAULT_NEW_GROUP_NAME_SUFFIX = "";
+    public static final String PLUGIN_KEY = "raju.kadam.confluence.permissionmgmt";
 }
