@@ -2,6 +2,8 @@ package csum.confluence.permissionmgmt.util.ldap;
 
 import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfigurable;
+import csum.confluence.permissionmgmt.util.StringUtil;
+
 import com.dolby.confluence.net.ldap.osuser.OSUserParser;
 import com.dolby.confluence.net.ldap.LDAPUser;
 import com.dolby.confluence.net.ldap.LDAPException;
@@ -42,10 +44,6 @@ public class LDAPHelper
 	{
 		Properties p=new Properties();
 
-		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_ID_ATTRIBUTE, config.getLdapUserIdAttribute());
-		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_EMAIL_ATTRIBUTE, config.getLdapEmailAttribute());
-		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FIRST_NAME_ATTRIBUTE, config.getLdapFirstNameAttribute());
-		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_LAST_NAME_ATTRIBUTE, config.getLdapLastNameAttribute());
 		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NARROWING_FILTER_EXPRESSION, "(objectclass=user)");
 
 		String userFullNameFormat = config.getUserFullNameFormat();
@@ -88,6 +86,10 @@ public class LDAPHelper
 					providerType);
 			p.setProperty(LDAPLookupUtil.LDAPUTIL_PROVIDER_TYPE, LDAPLookupUtil.LDAPUTIL_PROVIDER_OSUSER);
 			p.setProperty(LDAPLookupUtil.LDAPUTIL_OSUSER_PROVIDERCLASS, config.getLdapProviderFullyQualifiedClassname());
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_ID_ATTRIBUTE, config.getLdapUserIdAttribute());
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_EMAIL_ATTRIBUTE, config.getLdapEmailAttribute());
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FIRST_NAME_ATTRIBUTE, config.getLdapFirstNameAttribute());
+			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_LAST_NAME_ATTRIBUTE, config.getLdapLastNameAttribute());
 		}
 		
 		if (log.isInfoEnabled())
