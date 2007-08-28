@@ -389,6 +389,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private void doUserSearch() {
         AdvancedUserQuery advancedUserQuery = createAdvancedUserQuery();
+
+        // get last good query so we can requery and show the users again. 
         if (!advancedUserQuery.isValid()) {
             advancedUserQuery = getAdvancedUserQuery();
         }
