@@ -37,6 +37,7 @@ import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpace
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
+import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
 import com.dolby.confluence.net.ldap.LDAPUser;
 import org.apache.commons.logging.Log;
@@ -82,6 +83,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setLdapLastNameAttribute(getLdapLastNameAttribute());
         config.setLdapProviderFullyQualifiedClassname(getLdapProviderFullyQualifiedClassname());
         config.setUserFullNameFormat(getUserFullNameFormat());
+        config.setLdapConfigTestUsername(getLdapConfigTestUsername());
         config.setPersonalSpaceAllowed(getPersonalSpaceAllowed());
     }
 
@@ -112,6 +114,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setLdapLastNameAttribute(config.getLdapLastNameAttribute());
         setLdapProviderFullyQualifiedClassname(config.getLdapProviderFullyQualifiedClassname());
         setUserFullNameFormat(config.getUserFullNameFormat());
+        setLdapConfigTestUsername(config.getLdapConfigTestUsername());
         setPersonalSpaceAllowed(config.getPersonalSpaceAllowed());
 
         // config has changed. clear ALL cache including indexes!!!
@@ -249,22 +252,28 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                     result.addFieldError("ldapProviderFullyQualifiedClassname", cas.getText("configure.error.ldapproviderfullyqualifiedclassnamenull"));
                     result.setValid(false);
                 }
-                else {
-                    if (remoteUser!=null) {
-                        try {
-                            LDAPUser usr = LDAPHelper.getLDAPUser(config, remoteUser);
-							if(usr == null)
-							{
-								log.debug("Got null user back from LDAP for " + remoteUser);
-								result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldaptestreturnednullcurrentuser") + ": " + remoteUser);
-			                    result.setValid(false);
-							}
-                        }
-                        catch (Throwable t) {
-                            log.error("Problem testing LDAP config in config UI", t);
-                            result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldaptestconnectfailed") + ": " + t.getMessage());
+
+                String ldapConfigTestUsername = config.getLdapConfigTestUsername();
+                if (StringUtil.isNullOrEmpty(ldapConfigTestUsername)) {
+                    result.addFieldError("ldapConfigTestUsername", cas.getText("configure.error.ldapconfigtestusernameempty"));
+                    result.setValid(false);
+                }
+
+                if (result.isValid())
+                {
+                    try {
+                        LDAPUser usr = LDAPHelper.getLDAPUser(config, remoteUser);
+                        if(usr == null)
+                        {
+                            log.debug("Got null user back from LDAP for " + remoteUser);
+                            result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldaptestreturnednullcurrentuser") + ": " + remoteUser);
                             result.setValid(false);
                         }
+                    }
+                    catch (Throwable t) {
+                        log.error("Problem testing LDAP config in config UI", t);
+                        result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldaptestconnectfailed") + ": " + t.getMessage());
+                        result.setValid(false);
                     }
                 }
             }
@@ -519,6 +528,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setUserFullNameFormat(String userFullNameFormat) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_USER_FULL_NAME_FORMAT, userFullNameFormat);
+    }
+
+    public String getLdapConfigTestUsername() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_CONFIG_TEST_USERNAME);
+    }
+
+    public void setLdapConfigTestUsername(String ldapConfigTestUsername) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_CONFIG_TEST_USERNAME, ldapConfigTestUsername);
     }
 
     public String getPersonalSpaceAllowed() {

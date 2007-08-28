@@ -58,7 +58,8 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
     private String ldapLastNameAttribute;
     private String ldapProviderFullyQualifiedClassname;
     private String userFullNameFormat;
-    private String personalSpaceAllowed;    
+    private String ldapConfigTestUsername;
+    private String personalSpaceAllowed;
 
 
     public String getUserManagerLocation() {
@@ -219,6 +220,14 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
 
     public void setUserFullNameFormat(String userFullNameFormat) {
         this.userFullNameFormat = userFullNameFormat;
+    }
+
+    public String getLdapConfigTestUsername() {
+        return ldapConfigTestUsername;
+    }
+
+    public void setLdapConfigTestUsername(String ldapConfigTestUsername) {
+        this.ldapConfigTestUsername = ldapConfigTestUsername;
     }
 
     public String getPersonalSpaceAllowed() {

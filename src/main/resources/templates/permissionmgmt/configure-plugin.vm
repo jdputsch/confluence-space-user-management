@@ -230,6 +230,17 @@
         </tr>
 
         <tr>
+            <td class="label" width="30%">$action.getText("configure.ldapconfigtestuser.label"):</td>
+            <td nowrap>
+                #fielderror ('ldapConfigTestUsername')
+                <input type="text" id="ldapConfigTestUsername" name="ldapConfigTestUsername" value="$!action.ldapConfigTestUsername" />
+                <p>
+                    <font size="1">$action.getText("configure.ldapconfigtestuser.help")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
             <td valign="top" class="label" width="30%">$action.getText("configure.userfullnameformat.label"):</td>
             <td>
 				#fielderror ('userFullNameFormat')

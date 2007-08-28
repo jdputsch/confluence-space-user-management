@@ -94,6 +94,9 @@ public interface CustomPermissionConfigurable {
     public String getUserFullNameFormat();
     public void setUserFullNameFormat(String userFullNameFormat);
 
+    public String getLdapConfigTestUsername();
+    public void setLdapConfigTestUsername(String ldapConfigTestUsername);
+
     public String getPersonalSpaceAllowed();
     public void setPersonalSpaceAllowed(String personalSpaceAllowed);
     
