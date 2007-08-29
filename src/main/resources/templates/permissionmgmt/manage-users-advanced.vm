@@ -55,13 +55,16 @@
                         <option value="$action.substringContains" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringContains) selected="selected" #end>$action.getText("manageusersadvanced.substringmatchyype.choice.contains")</option>
                         <option value="$action.substringEndsWith" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringEndsWith) selected="selected" #end>$action.getText("manageusersadvanced.substringmatchyype.choice.endswith")</option>
                     </select>
-                    <input type="text" id="partialSearchTerm" #if ($action.advancedUserQuery) value="$!action.advancedUserQuery.partialSearchTerm" #end name="partialSearchTerm"/>
+                    <input type="text" id="partialSearchTerm" #if ($action.advancedUserQuery) value="$!action.advancedUserQuery.partialSearchTerm" #end name="partialSearchTerm" required/>
                 </fieldset>
                 <fieldset>
                     <input type="submit" value="Find Users" class="submitBttn"/>
                 </fieldset>
             </form>
-
+			<script type="text/javascript">
+				var groupManagementForm = new YAHOO.util.Element('groupManagement');
+				groupManagementForm.addListener('submit', validateForm, groupManagementForm);
+			</script>
             #if($searchResultUsers && $searchResultUsers.total > 0)
                 <div class="srchResInfo">$searchResultUsers.total users found</div>
                 <table width="100%" cellspacing="0">

@@ -59,18 +59,22 @@
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addGroups"/>
                     <label for="groups">$action.getText("grouplist.groups.label")</label>
-                    <input type="text" name="groups" id="groups" ></input>
+                    <input type="text" name="groups" id="groupsToAdd" required></input>
 
                     <ul class="formHelp">
                         <li>$action.getText("grouplist.groups.help", ["$generalUtil.htmlEncode($action.newGroupPrefix)", "$generalUtil.htmlEncode($action.newGroupSuffix)"])</li>
                     </ul>
 
                     <label class="scndryInpt" for="users">$action.getText("grouplist.users.label"):</label>
-                    <input id ="users" name="users" type="text" /></input>
+                    <input id ="usersToAdd" name="users" type="text" /></input>
 
                     <input type="submit" class="submitBttn" value='$action.getText("grouplist.commit")'></input>
                 </fieldset>
             </form>
+			<script type="text/javascript">
+				var addGroupForm = new YAHOO.util.Element('addGroupForm');
+				addGroupForm.addListener('submit', validateForm, addGroupForm);
+			</script>
             #end
 
 ##START TEST ONLY!

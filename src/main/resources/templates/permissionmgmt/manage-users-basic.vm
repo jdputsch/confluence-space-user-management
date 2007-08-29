@@ -55,7 +55,7 @@
                     <input type="hidden" name="adminAction" value="addUsersToGroups"/>
                     <input type="hidden" name="groups" value="$action.selectedGroup"/>
                     <label for="users">$action.getText("manageusersbasic.users.label", ["${action.selectedGroup}"]):</label>
-                    <input type="text" style="width:100%;" id="users" name="users"/>
+                    <input type="text" style="width:100%;" id="addUsersToGroup" name="users" required />
                     ##<div id="addUserOpts"></div>
 					<ul class="formHelp">
 						<li>$action.getText("manageusersbasic.users.help")</li>
@@ -66,7 +66,12 @@
                     <input type="submit" value='$action.getText("manageusersbasic.addusers.commit")' class="submitBttn"/>
                 </fieldset>
             </form>
-
+			
+			<script type="text/javascript">
+				var addUsersForm = new YAHOO.util.Element('addUsersForm');
+				addUsersForm.addListener('submit', validateForm, addUsersForm);
+			</script>
+			
             #set ($users = $action.users)
 
             #if($users && $users.total > 0)

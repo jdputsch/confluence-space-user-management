@@ -30,42 +30,6 @@
 
 			<!-- start bulk-edit -->
 
-<script type="text/javascript">
-function validateBulkChecked( thisfield )
-{
-    var valid = false;
-    for ( var i = 0; i < thisfield.length; i++ )
-    {
-       if ( thisfield[i].checked ) {
-           valid = true;
-       }
-    }
-
-    return valid;
-}
-
-function validateBulkForm( thisform )
-{
-    var valid = true;
-
-    if ( validateBulkChecked( document.bulkEdit.adminAction ) )
-    {
-        alert ( "Please choose an action" );
-        valid = false;
-    }
-    else if ( document.bulkEdit.users.value == null || document.bulkEdit.users.value == "" ) {
-        alert ( "Please specify users" );
-        valid = false;
-    }
-    else if ( validateBulkChecked( document.bulkEdit.groups ) )
-    {
-        alert ( "Please choose one or more groups" );
-        valid = false;
-    }
-
-    return valid;
-}
-</script>
 
 
 			<div id="bulkEditSectionHeader" class="sectionHeader">
@@ -75,7 +39,7 @@ function validateBulkForm( thisform )
 
             #set ($allGroups = $action.allGroups)
             #if($allGroups && $allGroups.size() > 0)
-			<form id="bulkEdit" onsubmit="return validateBulkForm(this)" action="docustompermissionsmanage.action">
+			<form id="bulkEdit" action="docustompermissionsmanage.action">
 				<fieldset>
                     <input type="hidden" name="bulkEdit" value="1"/>
 				    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
@@ -85,7 +49,7 @@ function validateBulkForm( thisform )
 					<br />
 
 					<label>2. $action.getText("bulkedit.users.label"):</label>
-					<input type="text" style="width:100%;" id="users" name="users"></input>
+					<input type="text" style="width:100%;" id="bulkUserEntry" name="users" required></input>
 					<br />
 					<ul class="formHelp">
 						<li>$action.getText("bulkedit.users.help")</li>
@@ -107,6 +71,10 @@ function validateBulkForm( thisform )
 					<input type="submit" id="bulkEditSubmit" name="bulkEditSubmit" value='$action.getText("bulkedit.commit")'></input>
 				</fieldset>
 			</form>
+			<script type="text/javascript">
+				var bulkEditForm = new YAHOO.util.Element('bulkEdit');
+				bulkEditForm.addListener('submit', validateForm, bulkEditForm);
+			</script>			
             #else
             <p>$action.getText("bulkedit.error.nogroupsavailable")</p>
             #end
