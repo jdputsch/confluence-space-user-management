@@ -93,26 +93,64 @@
 			function validateForm(e, form)
 			{
 				var valid = true;
-				
 				var fields = form.getElementsByTagName("input");
-				
+
+
+				// Check text input				
 				for ( var i = 0; i < fields.length; i++ ){
-					if (fields[i].hasAttribute("required") && fields[i].getAttribute("type") === "text" && fields[i].value == "") {
+					if (fields[i].getAttribute("required") == "true" && fields[i].getAttribute("type") === "text" && fields[i].value == "" && fields[i].id != "") {
 						var field = new YAHOO.util.Element(fields[i].id);
 						field.addClass("attention");
-						valid = false;
-					} else if (fields[i].hasAttribute("required")) {
+						valid = false;		
+					} else if (fields[i].hasAttribute("required") && fields[i].id != "") {
 						var field = new YAHOO.util.Element(fields[i].id);
 						field.removeClass("attention");
 					}
 				}
-				
+
+				var isBulkForm;
+				for ( var i = 0; i < fields.length; i++ ){
+					if (fields[i].getAttribute("type") === "radio") {
+						isBulkForm = true;
+					}
+				}
+
+				if (isBulkForm === true){
+					// Handle bulk form radio buttons
+					var bcl = new YAHOO.util.Element('bulkChooseWrap');
+					if(!document.forms['bulkEdit'].elements[2].checked || !document.forms['bulkEdit'].elements[3].checked){
+						valid = false;					
+						bcl.addClass("attention");
+						bcl.innerHTML = "Here";
+					} else {
+						bcl.removeClass("attention");
+					}
+
+					// Handle bulk check boxes
+					var listSelected;
+					for ( var i = 0; i < fields.length; i++ ){
+						if (fields[i].getAttribute("type") === "checkbox" && fields[i].checked === true) {
+							listSelected = true;
+						}
+					}
+
+					var cbl = new YAHOO.util.Element('bulkCheckboxWrap');
+					if(listSelected != true){					
+						cbl.addClass("attention");
+					} else {
+						cbl.removeClass("attention");
+					}
+
+				} //End extra bulk checks
+
+
+				// If all tests have passed continue form submission
 				if (valid !== true) {
 					alert("Please correct the fields with an orange background.");
 					YAHOO.util.Event.preventDefault(e);
 				}
 			}
-
+			
 			YAHOO.util.Event.addListener(window, "load", YAHOO.ifs.init);
 		</script>
 

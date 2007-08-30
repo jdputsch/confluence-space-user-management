@@ -55,7 +55,7 @@
                     <input type="hidden" name="adminAction" value="addUsersToGroups"/>
                     <input type="hidden" name="groups" value="$action.selectedGroup"/>
                     <label for="users">$action.getText("manageusersbasic.users.label", ["${action.selectedGroup}"]):</label>
-                    <input type="text" style="width:100%;" id="addUsersToGroup" name="users" required />
+                    <input type="text" style="width:100%;" id="addUsersToGroup" name="users" required="true" />
                     ##<div id="addUserOpts"></div>
 					<ul class="formHelp">
 						<li>$action.getText("manageusersbasic.users.help")</li>

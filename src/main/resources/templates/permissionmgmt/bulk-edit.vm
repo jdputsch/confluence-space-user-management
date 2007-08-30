@@ -43,28 +43,31 @@
 				<fieldset>
                     <input type="hidden" name="bulkEdit" value="1"/>
 				    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
-					<label>1. $action.getText("bulkedit.adminaction.label"):</label>
-					<input type="radio" value="addUsersToGroups" name="adminAction"></input> $action.getText("bulkedit.adminaction.choice.adduserstogroups")<br />
-					<input type="radio" value="removeUsersFromGroups" name="adminAction"></input> $action.getText("bulkedit.adminaction.choice.removeusersfromgroups")
+					<div id="bulkChooseWrap">
+						<label>1. $action.getText("bulkedit.adminaction.label"):</label>
+						<input type="radio" value="addUsersToGroups" name="adminAction" required="true"></input> $action.getText("bulkedit.adminaction.choice.adduserstogroups")<br />
+						<input type="radio" value="removeUsersFromGroups" name="adminAction"></input> $action.getText("bulkedit.adminaction.choice.removeusersfromgroups")
+					</div>
 					<br />
 
 					<label>2. $action.getText("bulkedit.users.label"):</label>
-					<input type="text" style="width:100%;" id="bulkUserEntry" name="users" required></input>
+					<input type="text" style="width:100%;" id="bulkUserEntry" name="users" required="true"></input>
 					<br />
 					<ul class="formHelp">
 						<li>$action.getText("bulkedit.users.help")</li>
 						<li>$action.getText("bulkedit.users.help.commaseparatedusernames")</li>
 					</ul>
-
-					<label>3. $action.getText("bulkedit.groups.label"):</label>
-                    <ul>
-                    #foreach ($group in $allGroups)
-                        <li>
-                            <input type="checkbox" id="groups" name="groups" value="$!group.name"> $generalUtil.htmlEncode($!group.name)</input> (<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($group.name)">Edit $generalUtil.htmlEncode($!group.name)</a>)
-                        </li>
-                    #end
-                    </ul>
-
+					
+					<div id="bulkCheckboxWrap">
+						<label>3. $action.getText("bulkedit.groups.label"):</label>
+	                    <ul>
+	                    #foreach ($group in $allGroups)
+	                        <li>
+	                            <input type="checkbox" id="groups" name="groups" value="$!group.name"> $generalUtil.htmlEncode($!group.name)</input> (<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($group.name)">Edit $generalUtil.htmlEncode($!group.name)</a>)
+	                        </li>
+	                    #end
+	                    </ul>
+					</div>
 					<label>4. $action.getText("bulkedit.commit.label"):</label>
 
 					## bulkEditSubmit is looked for in action because it indicates that we should validate that adminAction was set

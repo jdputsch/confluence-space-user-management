@@ -55,7 +55,7 @@
                         <option value="$action.substringContains" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringContains) selected="selected" #end>$action.getText("manageusersadvanced.substringmatchyype.choice.contains")</option>
                         <option value="$action.substringEndsWith" #if ($action.advancedUserQuery && $action.advancedUserQuery.substringMatchType == $action.substringEndsWith) selected="selected" #end>$action.getText("manageusersadvanced.substringmatchyype.choice.endswith")</option>
                     </select>
-                    <input type="text" id="partialSearchTerm" #if ($action.advancedUserQuery) value="$!action.advancedUserQuery.partialSearchTerm" #end name="partialSearchTerm" required/>
+                    <input type="text" id="partialSearchTerm" #if ($action.advancedUserQuery) value="$!action.advancedUserQuery.partialSearchTerm" #end name="partialSearchTerm" required="true"/>
                 </fieldset>
                 <fieldset>
                     <input type="submit" value="Find Users" class="submitBttn"/>

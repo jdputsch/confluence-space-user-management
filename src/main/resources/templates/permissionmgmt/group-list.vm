@@ -59,7 +59,7 @@
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addGroups"/>
                     <label for="groups">$action.getText("grouplist.groups.label")</label>
-                    <input type="text" name="groups" id="groupsToAdd" required></input>
+                    <input type="text" name="groups" id="groupsToAdd" required="true"></input>
 
                     <ul class="formHelp">
                         <li>$action.getText("grouplist.groups.help", ["$generalUtil.htmlEncode($action.newGroupPrefix)", "$generalUtil.htmlEncode($action.newGroupSuffix)"])</li>
