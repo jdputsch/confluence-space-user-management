@@ -59,6 +59,7 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
     private String ldapProviderFullyQualifiedClassname;
     private String userFullNameFormat;
     private String ldapConfigTestUsername;
+    private String ldapNarrowingFilterExpression;
     private String personalSpaceAllowed;
 
 
@@ -228,6 +229,14 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
 
     public void setLdapConfigTestUsername(String ldapConfigTestUsername) {
         this.ldapConfigTestUsername = ldapConfigTestUsername;
+    }
+
+    public String getLdapNarrowingFilterExpression() {
+        return ldapNarrowingFilterExpression;
+    }
+
+    public void setLdapNarrowingFilterExpression(String ldapNarrowingFilterExpression) {
+        this.ldapNarrowingFilterExpression = ldapNarrowingFilterExpression;
     }
 
     public String getPersonalSpaceAllowed() {

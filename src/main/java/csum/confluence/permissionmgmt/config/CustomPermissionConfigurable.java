@@ -97,6 +97,9 @@ public interface CustomPermissionConfigurable {
     public String getLdapConfigTestUsername();
     public void setLdapConfigTestUsername(String ldapConfigTestUsername);
 
+    public String getLdapNarrowingFilterExpression();
+    public void setLdapNarrowingFilterExpression(String ldapNarrowingFilterExpression);
+
     public String getPersonalSpaceAllowed();
     public void setPersonalSpaceAllowed(String personalSpaceAllowed);
     

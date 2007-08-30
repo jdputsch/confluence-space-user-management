@@ -36,7 +36,11 @@ public class LDAPHelper
 	{
 		Properties p=new Properties();
 
-		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NARROWING_FILTER_EXPRESSION, "(objectclass=user)");
+		String narrowingFilterExpression = config.getLdapNarrowingFilterExpression();
+        if ( narrowingFilterExpression != null && !"".equals(narrowingFilterExpression.trim())) {
+            // example "(objectclass=user)"
+            p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NARROWING_FILTER_EXPRESSION, narrowingFilterExpression);
+        }                
 
 		String userFullNameFormat = config.getUserFullNameFormat();
 		boolean lastCommaFirstFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_LASTNAME_COMMA_FIRSTNAME));

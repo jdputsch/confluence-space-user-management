@@ -241,6 +241,17 @@
         </tr>
 
         <tr>
+            <td class="label" width="30%">$action.getText("configure.ldapnarrowingfilterexpression.label"):</td>
+            <td nowrap>
+                #fielderror ('ldapNarrowingFilterExpression')
+                <input type="text" id="ldapNarrowingFilterExpression" name="ldapNarrowingFilterExpression" value="$!action.ldapNarrowingFilterExpression" />
+                <p>
+                    <font size="1">$action.getText("configure.ldapnarrowingfilterexpression.help")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
             <td valign="top" class="label" width="30%">$action.getText("configure.userfullnameformat.label"):</td>
             <td>
 				#fielderror ('userFullNameFormat')

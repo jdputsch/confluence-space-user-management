@@ -84,6 +84,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setLdapProviderFullyQualifiedClassname(getLdapProviderFullyQualifiedClassname());
         config.setUserFullNameFormat(getUserFullNameFormat());
         config.setLdapConfigTestUsername(getLdapConfigTestUsername());
+        config.setLdapNarrowingFilterExpression(getLdapNarrowingFilterExpression());
         config.setPersonalSpaceAllowed(getPersonalSpaceAllowed());
     }
 
@@ -115,6 +116,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setLdapProviderFullyQualifiedClassname(config.getLdapProviderFullyQualifiedClassname());
         setUserFullNameFormat(config.getUserFullNameFormat());
         setLdapConfigTestUsername(config.getLdapConfigTestUsername());
+        setLdapNarrowingFilterExpression(config.getLdapNarrowingFilterExpression());
         setPersonalSpaceAllowed(config.getPersonalSpaceAllowed());
 
         // config has changed. clear ALL cache including indexes!!!
@@ -258,6 +260,8 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                     result.addFieldError("ldapConfigTestUsername", cas.getText("configure.error.ldapconfigtestusernameempty"));
                     result.setValid(false);
                 }
+
+                // narrowing filter expression is configurable but is optional and don't even care if it is null or empty
 
                 if (result.isValid())
                 {
@@ -536,6 +540,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setLdapConfigTestUsername(String ldapConfigTestUsername) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_CONFIG_TEST_USERNAME, ldapConfigTestUsername);
+    }
+
+    public String getLdapNarrowingFilterExpression() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_NARROWING_FILTER_EXPRESSION);
+    }
+
+    public void setLdapNarrowingFilterExpression(String ldapNarrowingFilterExpression) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_NARROWING_FILTER_EXPRESSION, ldapNarrowingFilterExpression);
     }
 
     public String getPersonalSpaceAllowed() {
