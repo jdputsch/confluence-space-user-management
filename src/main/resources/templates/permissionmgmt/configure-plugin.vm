@@ -189,7 +189,7 @@
         <div id="ldap_osuser_deps" style="padding-left: 80px; #if (!($action.providerType == "OSUSER")) display: none; #else display: block #end">
         <table class="grid" width="80%">
         <tr>
-            <td class="label" width="30%">$action.getText("configure.ldapuseridattribute.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.ldapuseridattribute.label"):</td>
             <td>
                 #fielderror ('ldapUserIdAttribute')
                 <input type="text" id="ldapUserIdAttribute" name="ldapUserIdAttribute" value="$!action.ldapUserIdAttribute" />
@@ -200,7 +200,7 @@
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("configure.ldapemailattribute.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.ldapemailattribute.label"):</td>
             <td>
                 #fielderror ('ldapEmailAttribute')
                 <input type="text" id="ldapEmailAttribute" name="ldapEmailAttribute" value="$!action.ldapEmailAttribute" />
@@ -211,7 +211,7 @@
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("configure.ldapfirstnameattribute.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.ldapfirstnameattribute.label"):</td>
             <td>
                 #fielderror ('ldapFirstNameAttribute')
                 <input type="text" id="ldapFirstNameAttribute" name="ldapFirstNameAttribute" value="$!action.ldapFirstNameAttribute" />
@@ -222,7 +222,7 @@
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("configure.ldaplastnameattribute.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.ldaplastnameattribute.label"):</td>
             <td>
                 #fielderror ('ldapLastNameAttribute')
                 <input type="text" id="ldapLastNameAttribute" name="ldapLastNameAttribute" value="$!action.ldapLastNameAttribute" />
@@ -233,7 +233,7 @@
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("configure.ldapproviderfullyqualifiedclassname.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.ldapproviderfullyqualifiedclassname.label"):</td>
             <td>
                 #fielderror ('ldapProviderFullyQualifiedClassname')
                 <input type="text" id="ldapProviderFullyQualifiedClassname" name="ldapProviderFullyQualifiedClassname" value="$!action.ldapProviderFullyQualifiedClassname" size="120"/>
@@ -247,7 +247,7 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td class="label" width="30%">$action.getText("configure.ldapconfigtestuser.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.ldapconfigtestuser.label"):</td>
             <td>
                 #fielderror ('ldapConfigTestUsername')
                 <input type="text" id="ldapConfigTestUsername" name="ldapConfigTestUsername" value="$!action.ldapConfigTestUsername" />
@@ -258,7 +258,7 @@
         </tr>
 
         <tr>
-            <td class="label" width="30%">$action.getText("configure.ldapnarrowingfilterexpression.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("configure.ldapnarrowingfilterexpression.label"):</td>
             <td>
                 #fielderror ('ldapNarrowingFilterExpression')
                 <input type="text" id="ldapNarrowingFilterExpression" name="ldapNarrowingFilterExpression" value="$!action.ldapNarrowingFilterExpression" size="120"/>
@@ -391,7 +391,7 @@
         </tr>
         
         <tr>
-            <td class="label" width="100%" colspan="2">
+            <td valign="top" class="label" width="100%" colspan="2">
                     <input type="submit" value='$action.getText("configure.update")' />
 					<input id="cancelButton"  type="button" 
 					       name="Home of Admin Console"
