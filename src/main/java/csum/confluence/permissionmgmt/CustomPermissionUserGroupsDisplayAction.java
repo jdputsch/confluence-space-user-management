@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * @author Rajendra Kadam
  */
-public class CustomPermissionUserDisplayAction extends AbstractSpaceAction
+public class CustomPermissionUserGroupsDisplayAction extends AbstractSpaceAction
 {
 	private String selectedGroupName = null;
 	
