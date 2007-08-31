@@ -64,6 +64,19 @@
                 }
             }
 
+            function toggleLdapOSUSERSettingsInput(e)
+            {
+                //If providerType is OSUSER
+                if (e.value == 'OSUSER')
+                {
+                    showDiv('ldap_osuser_deps');
+                }
+                else
+                {
+                    hideDiv('ldap_osuser_deps');
+                }
+            }
+
             function toggleJiraSettingsInput(e)
             {
                 //If User Management delegated to jira then only ask user for jira URL and Jira JNDI values
@@ -165,15 +178,18 @@
             <td valign="top" class="label" width="30%">$action.getText("configure.providertype.label"):</td>
             <td>
 				#fielderror ('providerType')
-                <input type="radio" id="providerType" name="providerType" value="OSUSER" #if ($action.providerType == "OSUSER") checked="true" #end/>OSUSER &nbsp;
-                <input type="radio" id="providerType" name="providerType" value="ATLASSIAN-USER" #if ($action.providerType == "ATLASSIAN-USER") checked="true" #end/>ATLASSIAN-USER
+                <input type="radio" id="providerType" name="providerType" value="OSUSER" #if ($action.providerType == "OSUSER") checked="true" #end onclick="toggleLdapOSUSERSettingsInput(this)" />OSUSER &nbsp;
+                <input type="radio" id="providerType" name="providerType" value="ATLASSIAN-USER" #if ($action.providerType == "ATLASSIAN-USER") checked="true" #end onclick="toggleLdapOSUSERSettingsInput(this)" />ATLASSIAN-USER
                 <br>
                 <font size="1">
             	    $action.getText("configure.providertype.help")</li>
                 </font>
             </td>
         </tr>
+        </table>
 
+        <div id="ldap_osuser_deps" style="padding-left: 80px; #if (!($action.providerType == "OSUSER")) display: none; #else display: block #end">
+        <table class="grid" width="80%">
         <tr>
             <td class="label" width="30%">$action.getText("configure.ldapuseridattribute.label"):</td>
             <td nowrap>
@@ -228,7 +244,10 @@
                 </p>
             </td>
         </tr>
+        </table>
+        </div>
 
+        <table class="grid" width="80%">
         <tr>
             <td class="label" width="30%">$action.getText("configure.ldapconfigtestuser.label"):</td>
             <td nowrap>

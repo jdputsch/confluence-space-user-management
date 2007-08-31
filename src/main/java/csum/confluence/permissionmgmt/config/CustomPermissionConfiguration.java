@@ -212,25 +212,32 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                     result.addFieldError("providerType", cas.getText("configure.error.providertypeinvalid"));
                     result.setValid(false);
                 }
+                else if (providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER)) {
+                    if (config.getLdapUserIdAttribute()==null) {
+                        result.addFieldError("ldapUserIdAttribute", cas.getText("configure.error.ldapuseridattributenull"));
+                        result.setValid(false);
+                    }
 
-                if (config.getLdapUserIdAttribute()==null) {
-                    result.addFieldError("ldapUserIdAttribute", cas.getText("configure.error.ldapuseridattributenull"));
-                    result.setValid(false);
-                }
+                    if (config.getLdapEmailAttribute()==null) {
+                        result.addFieldError("ldapEmailAttribute", cas.getText("configure.error.ldapemailattributenull"));
+                        result.setValid(false);
+                    }
 
-                if (config.getLdapEmailAttribute()==null) {
-                    result.addFieldError("ldapEmailAttribute", cas.getText("configure.error.ldapemailattributenull"));
-                    result.setValid(false);
-                }
+                    if (config.getLdapFirstNameAttribute()==null) {
+                        result.addFieldError("ldapFirstNameAttribute", cas.getText("configure.error.ldapfirstnameattributenull"));
+                        result.setValid(false);
+                    }
 
-                if (config.getLdapFirstNameAttribute()==null) {
-                    result.addFieldError("ldapFirstNameAttribute", cas.getText("configure.error.ldapfirstnameattributenull"));
-                    result.setValid(false);
-                }
+                    if (config.getLdapLastNameAttribute()==null) {
+                        result.addFieldError("ldapLastNameAttribute", cas.getText("configure.error.ldaplastnameattributenull"));
+                        result.setValid(false);
+                    }
 
-                if (config.getLdapLastNameAttribute()==null) {
-                    result.addFieldError("ldapLastNameAttribute", cas.getText("configure.error.ldaplastnameattributenull"));
-                    result.setValid(false);
+                    if (config.getLdapProviderFullyQualifiedClassname()==null) {
+                        // ok to be empty. is not used in user-atlassian provider implementation
+                        result.addFieldError("ldapProviderFullyQualifiedClassname", cas.getText("configure.error.ldapproviderfullyqualifiedclassnamenull"));
+                        result.setValid(false);
+                    }
                 }
 
                 String userFullNameFormat = config.getUserFullNameFormat();
@@ -247,12 +254,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                         result.addFieldError("userFullNameFormat", cas.getText("configure.error.userfullnameformatinvalid") + ": " + userFullNameFormat);
                         result.setValid(false);
                     }
-                }
-
-                if (config.getLdapProviderFullyQualifiedClassname()==null) {
-                    // ok to be empty. is not used in user-atlassian provider implementation
-                    result.addFieldError("ldapProviderFullyQualifiedClassname", cas.getText("configure.error.ldapproviderfullyqualifiedclassnamenull"));
-                    result.setValid(false);
                 }
 
                 String ldapConfigTestUsername = config.getLdapConfigTestUsername();

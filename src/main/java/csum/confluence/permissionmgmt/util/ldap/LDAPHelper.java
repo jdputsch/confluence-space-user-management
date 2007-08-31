@@ -34,7 +34,10 @@ public class LDAPHelper
 	
 	private static Properties buildConfig(CustomPermissionConfigurable config)
 	{
-		Properties p=new Properties();
+		// time to party
+        java.util.logging.LogManager.getLogManager().getLogger("javax.naming.directory.InitialDirContext").setLevel(java.util.logging.Level.ALL);
+
+        Properties p=new Properties();
 
 		String narrowingFilterExpression = config.getLdapNarrowingFilterExpression();
         if ( narrowingFilterExpression != null && !"".equals(narrowingFilterExpression.trim())) {
@@ -65,8 +68,10 @@ public class LDAPHelper
 			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_NAME_FORMAT, "2");
 		}
 
-		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FORCE_USERID_CASE, "2");
-		p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_CONTROL_SUBTREE_SCOPE, "2");
+		// make all userids lowercase (the Confluence API seems to enforce lowercase for usernames and groupnames)
+        p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FORCE_USERID_CASE, "0");
+        // no need yet to make this configurable
+        p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_CONTROL_SUBTREE_SCOPE, "2");
 
 		// User selection would choose either LDAPLookup.OSUSER_PROVIDER or LDAPLookup.ATLASSIAN_USER_PROVIDER
 		String providerType = config.getProviderType();
