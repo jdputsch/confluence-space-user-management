@@ -88,8 +88,8 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
         log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
         List groupNames = new ArrayList();
 
-        ArrayList notAllowedUserGroups = new ArrayList();
-        notAllowedUserGroups.add("confluence-administrators");
+        ArrayList notAllowedUser = new ArrayList();
+        notAllowedUser.add("confluence-administrators");
 
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
         String spaceKey = context.getSpace().getKey();
@@ -98,15 +98,15 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
 
         for (Iterator iterator = mapWithGroupnamesAsKeys.keySet().iterator(); iterator.hasNext();) {
             String groupName = (String) iterator.next();
-            //If notAllowedUserGroups doesn't contain this group name
+            //If notAllowedUser doesn't contain this group name
             //and group name matches the pattern, then only add this user-group for display.
             //log.debug("Selected Groups .....");
             boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(groupName, prefix, suffix);
-            if ((!notAllowedUserGroups.contains(groupName)) && isPatternMatch) {
+            if ((!notAllowedUser.contains(groupName)) && isPatternMatch) {
                 //log.debug("Group '" + grpName + "' allowed and matched pattern " + pat.pattern() );
                 groupNames.add(groupName);
             } else {
-                //log.debug("Group '" + grpName + "' not allowed or didn't match pattern. notAllowedUserGroups=" + StringUtil.convertCollectionToCommaDelimitedString(notAllowedUserGroups) + " isPatternMatch=" + isPatternMatch + " pattern=" + pat.pattern());
+                //log.debug("Group '" + grpName + "' not allowed or didn't match pattern. notAllowedUser=" + StringUtil.convertCollectionToCommaDelimitedString(notAllowedUser) + " isPatternMatch=" + isPatternMatch + " pattern=" + pat.pattern());
             }
             //log.debug("-------End of Groups---------");
 

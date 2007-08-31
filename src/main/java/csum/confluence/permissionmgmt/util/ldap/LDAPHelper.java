@@ -34,10 +34,7 @@ public class LDAPHelper
 	
 	private static Properties buildConfig(CustomPermissionConfigurable config)
 	{
-		// time to party
-        java.util.logging.LogManager.getLogManager().getLogger("javax.naming.directory.InitialDirContext").setLevel(java.util.logging.Level.ALL);
-
-        Properties p=new Properties();
+		Properties p=new Properties();
 
 		String narrowingFilterExpression = config.getLdapNarrowingFilterExpression();
         if ( narrowingFilterExpression != null && !"".equals(narrowingFilterExpression.trim())) {

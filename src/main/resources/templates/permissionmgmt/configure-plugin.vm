@@ -1,4 +1,4 @@
-## Copyright (c) 2007, Custom Space Usergroups Manager Development Team
+## Copyright (c) 2007, Custom Space User Management Plugin Development Team
 ## All rights reserved.
 ##
 ## Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
 ##     * Redistributions in binary form must reproduce the above copyright
 ##       notice, this list of conditions and the following disclaimer in the
 ##       documentation and/or other materials provided with the distribution.
-##     * Neither the name of the Custom Space Usergroups Manager Development Team
+##     * Neither the name of the Custom Space User Management Plugin Development Team
 ##       nor the names of its contributors may be used to endorse or promote
 ##       products derived from this software without specific prior written permission.
 ##
@@ -111,10 +111,9 @@
 				#fielderror ('userManagerLocation')
                 <input type="radio" name="userManagerLocation" value="CONFLUENCE" #if ($action.userManagerLocation == "CONFLUENCE") checked="true" #end  onclick="toggleJiraSettingsInput(this)" />CONFLUENCE &nbsp;
                 <input type="radio" name="userManagerLocation" value="JIRA" #if ($action.userManagerLocation == "JIRA") checked="true" #end onclick="toggleJiraSettingsInput(this)" />JIRA
-                <br>
-                <font size="1">
-            	    $action.getText("configure.usermanagerlocation.help")</li>
-                </font>
+                <p>
+                    <font size="1">$action.getText("configure.usermanagerlocation.help")</font>
+                </p>
             </td>
         </tr>
         </table>
@@ -180,10 +179,9 @@
 				#fielderror ('providerType')
                 <input type="radio" id="providerType" name="providerType" value="OSUSER" #if ($action.providerType == "OSUSER") checked="true" #end onclick="toggleLdapOSUSERSettingsInput(this)" />OSUSER &nbsp;
                 <input type="radio" id="providerType" name="providerType" value="ATLASSIAN-USER" #if ($action.providerType == "ATLASSIAN-USER") checked="true" #end onclick="toggleLdapOSUSERSettingsInput(this)" />ATLASSIAN-USER
-                <br>
-                <font size="1">
-            	    $action.getText("configure.providertype.help")</li>
-                </font>
+                <p>
+                    <font size="1">$action.getText("configure.providertype.help")</font>
+                </p>
             </td>
         </tr>
         </table>
@@ -192,7 +190,7 @@
         <table class="grid" width="80%">
         <tr>
             <td class="label" width="30%">$action.getText("configure.ldapuseridattribute.label"):</td>
-            <td nowrap>
+            <td>
                 #fielderror ('ldapUserIdAttribute')
                 <input type="text" id="ldapUserIdAttribute" name="ldapUserIdAttribute" value="$!action.ldapUserIdAttribute" />
                 <p>
@@ -203,7 +201,7 @@
 
         <tr>
             <td class="label" width="30%">$action.getText("configure.ldapemailattribute.label"):</td>
-            <td nowrap>
+            <td>
                 #fielderror ('ldapEmailAttribute')
                 <input type="text" id="ldapEmailAttribute" name="ldapEmailAttribute" value="$!action.ldapEmailAttribute" />
                 <p>
@@ -214,7 +212,7 @@
 
         <tr>
             <td class="label" width="30%">$action.getText("configure.ldapfirstnameattribute.label"):</td>
-            <td nowrap>
+            <td>
                 #fielderror ('ldapFirstNameAttribute')
                 <input type="text" id="ldapFirstNameAttribute" name="ldapFirstNameAttribute" value="$!action.ldapFirstNameAttribute" />
                 <p>
@@ -225,7 +223,7 @@
 
         <tr>
             <td class="label" width="30%">$action.getText("configure.ldaplastnameattribute.label"):</td>
-            <td nowrap>
+            <td>
                 #fielderror ('ldapLastNameAttribute')
                 <input type="text" id="ldapLastNameAttribute" name="ldapLastNameAttribute" value="$!action.ldapLastNameAttribute" />
                 <p>
@@ -236,7 +234,7 @@
 
         <tr>
             <td class="label" width="30%">$action.getText("configure.ldapproviderfullyqualifiedclassname.label"):</td>
-            <td nowrap>
+            <td>
                 #fielderror ('ldapProviderFullyQualifiedClassname')
                 <input type="text" id="ldapProviderFullyQualifiedClassname" name="ldapProviderFullyQualifiedClassname" value="$!action.ldapProviderFullyQualifiedClassname" size="120"/>
                 <p>
@@ -250,7 +248,7 @@
         <table class="grid" width="80%">
         <tr>
             <td class="label" width="30%">$action.getText("configure.ldapconfigtestuser.label"):</td>
-            <td nowrap>
+            <td>
                 #fielderror ('ldapConfigTestUsername')
                 <input type="text" id="ldapConfigTestUsername" name="ldapConfigTestUsername" value="$!action.ldapConfigTestUsername" />
                 <p>
@@ -261,9 +259,9 @@
 
         <tr>
             <td class="label" width="30%">$action.getText("configure.ldapnarrowingfilterexpression.label"):</td>
-            <td nowrap>
+            <td>
                 #fielderror ('ldapNarrowingFilterExpression')
-                <input type="text" id="ldapNarrowingFilterExpression" name="ldapNarrowingFilterExpression" value="$!action.ldapNarrowingFilterExpression" />
+                <input type="text" id="ldapNarrowingFilterExpression" name="ldapNarrowingFilterExpression" value="$!action.ldapNarrowingFilterExpression" size="120"/>
                 <p>
                     <font size="1">$action.getText("configure.ldapnarrowingfilterexpression.help")</font>
                 </p>
@@ -277,10 +275,9 @@
                 <input type="radio" name="userFullNameFormat" value="LASTNAME_COMMA_FIRSTNAME" #if ($action.userFullNameFormat == "LASTNAME_COMMA_FIRSTNAME") checked="true" #end />Lastname, Firstname &nbsp;
                 <input type="radio" name="userFullNameFormat" value="FIRSTNAME_LASTNAME" #if ($action.userFullNameFormat == "FIRSTNAME_LASTNAME") checked="true" #end />Firstname Lastname &nbsp;
                 <input type="radio" name="userFullNameFormat" value="ID" #if ($action.userFullNameFormat == "ID") checked="true" #end />Username
-                <br>
-                <font size="1">
-            	    $action.getText("configure.userfullnameformat.help")</li>
-                </font>
+                <p>
+                    <font size="1">$action.getText("configure.userfullnameformat.help")</font>
+                </p>
             </td>
         </tr>
         </table>
@@ -294,9 +291,7 @@
                 <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end/>$action.getText("configure.yes") &nbsp;
                 <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end/>$action.getText("configure.no")
                 <p>
-                    <font size="1">
-                	$action.getText("configure.groupactionspermitted.help")
-                    </font>
+                    <font size="1">$action.getText("configure.groupactionspermitted.help")</font>
                 </p>
             </td>
         </tr>
@@ -321,14 +316,7 @@
 				    </tr>
 				</table>
                 <p>
-                    <font size="1">
-                    $action.getText("configure.groupnamepattern.help")
-                    </font>
-                </p>
-                <p>
-                    <font size="1">
-					$action.getText("configure.groupnamepattern.help.example")
-                    </font>
+                    <font size="1">$action.getText("configure.groupnamepattern.help")</font>
                 </p>
             </td>
         </tr>

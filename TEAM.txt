@@ -1,4 +1,4 @@
-Custom Space Usergroups Manager Development Team:
+Custom Space User Management Plugin Development Team:
 
     Rajendra Kadam - raju.kadam@gmail.com | http://adyamarathon.wordpress.com
     Gary S. Weaver - gary.weaver@duke.edu

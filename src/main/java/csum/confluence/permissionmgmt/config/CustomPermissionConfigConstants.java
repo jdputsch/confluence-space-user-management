@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, Custom Space Usergroups Manager Development Team
+ * Copyright (c) 2007, Custom Space User Management Plugin Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Custom Space Usergroups Manager Development Team
+ *     * Neither the name of the Custom Space User Management Plugin Development Team
  *       nor the names of its contributors may be used to endorse or promote
  *       products derived from this software without specific prior written permission.
  *
@@ -43,7 +43,7 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT = "ext.delegateusermgmt.maxuserids.limit.value";
     public static final String DELEGATE_USER_MGMT_MAXGROUPIDS_LIMIT = "ext.delegateusermgmt.maxgroupids.limit.value";
     public static final String DELEGATE_USER_MGMT_PLUGIN_STATUS = "ext.delegateusermgmt.plugin.status";
-    public static final String DELEGATE_USER_MGMT_USERGROUPS_MATCHING_PATTERN = "ext.delegateusermgmt.usergroups.matching.pattern";
+    public static final String DELEGATE_USER_MGMT_User_MATCHING_PATTERN = "ext.delegateusermgmt.User.matching.pattern";
     public static final String DELEGATE_USER_MGMT_DOWNTIME_MESSAGE = "ext.delegateusermgmt.downtime.message.value";
     public static final String DELEGATE_USER_MGMT_GROUP_ACTIONS_PERMITTED = "ext.delegateusermgmt.group.actions.permitted.value";
     public static final String DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_PREFIX_PATTERN = "ext.delegateusermgmt.new.group.name.creation.prefix.pattern";

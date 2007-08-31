@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, Custom Space Usergroups Manager Development Team
+ * Copyright (c) 2007, Custom Space User Management Plugin Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Custom Space Usergroups Manager Development Team
+ *     * Neither the name of the Custom Space User Management Plugin Development Team
  *       nor the names of its contributors may be used to endorse or promote
  *       products derived from this software without specific prior written permission.
  *
@@ -52,7 +52,7 @@ public class HtmlFormUtil {
      */
     // TODO: Finish v2 plugin and determine whether these will be used. If not, remove.
 
-    //Helps to retrieve usergroups selected by User - removed "groups_" from selected checkbox name
+    //Helps to retrieve User selected by User - removed "groups_" from selected checkbox name
     public static String getCheckboxValueFromParamName(String checkboxName) {
         String[] splitUpCheckboxName = checkboxName.split("_", 2);
         return splitUpCheckboxName[1];
@@ -60,7 +60,7 @@ public class HtmlFormUtil {
 
     //Get the list of user groups that user has selected
     public static List retrieveListOfCheckedCheckboxValues(Map paramMap, String checkboxGroupName) {
-        List selectedUserGroupsList = new ArrayList(4);
+        List selectedUserList = new ArrayList(4);
 
         //Get all groups that user has selected.
         for (Iterator iterator = paramMap.keySet().iterator(); iterator.hasNext();) {
@@ -70,7 +70,7 @@ public class HtmlFormUtil {
                 String encoded = getCheckboxValueFromParamName(paramKey);
                 try {
                     String decoded = URLDecoder.decode(encoded, "UTF-8");
-                    selectedUserGroupsList.add(decoded);
+                    selectedUserList.add(decoded);
                 }
                 catch (UnsupportedEncodingException e) {
                     // NOTE: this should allow legal groupnames to pass so just log and ignore
@@ -84,7 +84,7 @@ public class HtmlFormUtil {
             }
         }
 
-        return selectedUserGroupsList;
+        return selectedUserList;
     }
 
     private boolean isGroupSelected(Map paramMap) {

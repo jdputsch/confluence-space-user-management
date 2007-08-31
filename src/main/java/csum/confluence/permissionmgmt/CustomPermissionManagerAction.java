@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007, Custom Space Usergroups Manager Development Team
+ * Copyright (c) 2007, Custom Space User Management Plugin Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Custom Space Usergroups Manager Development Team
+ *     * Neither the name of the Custom Space User Management Plugin Development Team
  *       nor the names of its contributors may be used to endorse or promote
  *       products derived from this software without specific prior written permission.
  *
@@ -709,11 +709,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         //}
 
         // TODO: rewrite validation and include errors in display.vm
-        //String userGroupsValidationMessage = validateUserGroupWikiSpaceAssociation(context.getSelectedGroups());
-    	//if(userGroupsValidationMessage != null)
+        //String UserValidationMessage = validateUserGroupWikiSpaceAssociation(context.getSelectedGroups());
+    	//if(UserValidationMessage != null)
     	//{
-        //    log.debug("There are no groups this user can currently administer. message=" + userGroupsValidationMessage);
-        //    addFieldError("NotPermittedUserGroupsErrorMessage", userGroupsValidationMessage);
+        //    log.debug("There are no groups this user can currently administer. message=" + UserValidationMessage);
+        //    addFieldError("NotPermittedUserErrorMessage", UserValidationMessage);
     	//	return ERROR;
     	//}
 
@@ -1533,7 +1533,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         Space space = getSpace();
         String result = null;
         if (space != null) {
-            result = GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getUserGroupsMatchingPattern(), getSpace().getKey());
+            result = GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getUserMatchingPattern(), getSpace().getKey());
         }
 
         return result;
