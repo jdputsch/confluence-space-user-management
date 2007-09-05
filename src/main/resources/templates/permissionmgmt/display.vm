@@ -118,7 +118,7 @@
 				if (isBulkForm === true){
 					// Handle bulk form radio buttons
 					var bcl = new YAHOO.util.Element('bulkChooseWrap');
-					if(!document.forms['bulkEdit'].elements[2].checked || !document.forms['bulkEdit'].elements[3].checked){
+					if(!document.forms['bulkEdit'].elements[3].checked && !document.forms['bulkEdit'].elements[4].checked){
 						valid = false;					
 						bcl.addClass("attention");
 						bcl.innerHTML = "Here";
