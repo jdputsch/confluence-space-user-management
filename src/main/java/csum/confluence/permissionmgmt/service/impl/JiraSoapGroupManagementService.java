@@ -41,6 +41,7 @@ import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.jira.JiraSoapUtil;
 import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
@@ -99,7 +100,7 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
             }
         }
         catch (Throwable e) {
-            log.error(e);
+            LogUtil.errorWithRemoteUserInfo(log, "Failed while adding groups!", e);
             throw new AddException(e.getMessage(), e);
         }
         finally {
@@ -108,7 +109,7 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
                     JiraSoapUtil.logout(authContext);
                 }
                 catch (Throwable t) {
-                    log.error("Error in Jira logout", t);
+                    LogUtil.errorWithRemoteUserInfo(log, "Error in Jira logout", t);
                 }
             }
         }
@@ -174,7 +175,7 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
             }
         }
         catch (Throwable e) {
-            log.error(e);
+            LogUtil.errorWithRemoteUserInfo(log, "Failed while removing groups!", e);
             throw new RemoveException(e.getMessage(), e);
         }
         finally {
@@ -183,7 +184,7 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
                     JiraSoapUtil.logout(authContext);
                 }
                 catch (Throwable t) {
-                    log.error("Error in Jira logout", t);
+                    LogUtil.errorWithRemoteUserInfo(log, "Error in Jira logout", t);
                 }
             }
         }

@@ -27,12 +27,68 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csum.confluence.permissionmgmt.util.paging;
+package csum.confluence.permissionmgmt.util;
+
+import com.opensymphony.xwork.ActionContext;
+
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Gary S. Weaver
  */
-public interface PagingConstants {
+public class SessionUtil {
 
-    public static final int DEFAULT_OBJECTS_PER_PAGE = 20;
+    private static final Log log = LogFactory.getLog(SessionUtil.class);
+
+    public static Map getSession() {
+        Map session = null;
+        ActionContext context = ActionContext.getContext();
+        if ( context != null ) {
+            session = (Map) context.get("session");
+        }
+        else {
+            log.warn("ActionContext was null!");
+        }
+        return session;
+    }
+
+    public static Object getSessionProperty(String key) {
+        Object value = null;
+        Map session = getSession();
+        if (session!=null) {
+            value = session.get(key);
+        }
+        else {
+            log.warn("Session was null!");
+        }
+
+        return value;
+    }
+
+    public static void setSessionProperty(String key, Object value) {
+        Map session = getSession();
+        if (session != null) {
+            if (value != null) {
+                session.put(key, value);
+            } else {
+                session.remove(key);
+            }
+        }
+        else {
+            log.warn("Session was null!");
+        }
+    }
+
+    public static void removeSessionProperty(String key) {
+        Map session = getSession();
+        if (session!=null) {
+            session.remove(key);
+        }
+        else {
+            log.warn("Session was null!");
+        }
+    }
 }

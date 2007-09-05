@@ -41,6 +41,7 @@ import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
 import csum.confluence.permissionmgmt.util.jira.JiraSoapUtil;
 import com.dolby.confluence.net.ldap.LDAPUser;
@@ -183,7 +184,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
             }
         }
         catch (Throwable e) {
-            log.error(e);
+            LogUtil.errorWithRemoteUserInfo(log, "Failed adding users to groups!", e);
             throw new AddException(e.getMessage(), e);
         }
         finally {
@@ -192,7 +193,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     JiraSoapUtil.logout(authContext);
                 }
                 catch (Throwable t) {
-                    log.error("Error in Jira logout", t);
+                    LogUtil.errorWithRemoteUserInfo(log, "Error in Jira logout", t);
                 }
             }
         }
@@ -223,7 +224,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 }
             }
         } catch (Throwable e) {
-            log.error("Error creating Jira user", e);
+            LogUtil.errorWithRemoteUserInfo(log, "Error creating Jira user", e);
         }
 
         return vUser;
@@ -266,7 +267,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
             }
         }
         catch (Throwable e) {
-            log.error(e);
+            LogUtil.errorWithRemoteUserInfo(log, "Failed removing users from groups!", e);
             throw new RemoveException(e.getMessage(), e);
         }
         finally {
@@ -275,7 +276,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     JiraSoapUtil.logout(authContext);
                 }
                 catch (Throwable t) {
-                    log.error("Error in Jira logout", t);
+                    LogUtil.errorWithRemoteUserInfo(log, "Error in Jira logout", t);
                 }
             }
         }

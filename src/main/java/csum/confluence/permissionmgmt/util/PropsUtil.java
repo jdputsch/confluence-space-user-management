@@ -36,6 +36,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
+
 /**
  * @author Gary S. Weaver
  */
@@ -64,7 +66,7 @@ public class PropsUtil {
                 log.debug("Loaded property " + propertyName );
             }
             else {
-                log.warn("Failed to load property " + propertyName + " from properties file " + PROPS_FILENAME + " (was assuming it should be somewhere on classpath and property would be defined. see documentation for details)");
+                LogUtil.warnWithRemoteUserInfo(log, "Failed to load property " + propertyName + " from properties file " + PROPS_FILENAME + " (was assuming it should be somewhere on classpath and property would be defined. see documentation for details)");
             }
         }
         finally {
@@ -73,7 +75,7 @@ public class PropsUtil {
                     in.close();
                 }
                 catch (Throwable t) {
-                    log.error("Error closing props file input stream", t);
+                    LogUtil.errorWithRemoteUserInfo(log, "Error closing props file input stream", t);
                 }
             }
         }

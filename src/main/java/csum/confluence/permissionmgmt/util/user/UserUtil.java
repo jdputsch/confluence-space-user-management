@@ -61,6 +61,17 @@ public class UserUtil {
         return result;
     }
 
+    public static String getUserInfoAsString(User user) {
+        String result = null;
+        if (user != null) {
+            result = "" + user.getName() + "," + user.getFullName() + "," + user.getEmail();
+        }
+        else {
+            result = "(null user)";
+        }
+        return result;
+    }
+
     public static List findIntersectionOfUsers(List list1, List list2)
     {
         HashMap resultMap = new HashMap();

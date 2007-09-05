@@ -35,6 +35,8 @@ import com.atlassian.confluence.setup.BootstrapManager;
 import com.opensymphony.webwork.ServletActionContext;
 import csum.confluence.permissionmgmt.CustomPermissionConstants;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
+import csum.confluence.permissionmgmt.util.cache.CacheUtil;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 
 /**
  * Action to configure plugin
+ * 
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
@@ -87,10 +90,14 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionConfigAction - Inside execute ..");
-    	List resultList = new ArrayList();
+
+        // this is for logging logged in user info when logging error, fatal, warn
+        CacheUtil.setRemoteUser(getRemoteUser());
+
+        List resultList = new ArrayList();
 
         if(!validateConfiguration()) {
-            log.warn("Configuration was invalid");
+            LogUtil.warnWithRemoteUserInfo(log, "Configuration was invalid");
             resultList.add(getText("configure.error.configurationinvalid"));
             setActionErrors(resultList);
 

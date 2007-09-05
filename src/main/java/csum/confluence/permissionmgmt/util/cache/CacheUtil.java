@@ -27,17 +27,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package csum.confluence.permissionmgmt;
+package csum.confluence.permissionmgmt.util.cache;
 
-import com.atlassian.confluence.core.ConfluenceActionSupport;
+import com.opensymphony.xwork.ActionContext;
+import com.atlassian.user.User;
+
+import java.util.Map;
+
+import csum.confluence.permissionmgmt.CacheConstants;
+import csum.confluence.permissionmgmt.util.SessionUtil;
 
 /**
  * @author Gary S. Weaver
  */
-public abstract class CsumConfluenceActionSupport extends ConfluenceActionSupport {
+public class CacheUtil implements CacheConstants {
 
-    public String getPluginKey()
-    {
-        return CustomPermissionConstants.PLUGIN_KEY;
+    // generic
+
+    public static void storeInPluginCache( String key, Object o ) {
+        SessionUtil.setSessionProperty(PLUGIN_SESSION_KEY_PREFIX + DELIMITER + key, o);
+    }
+
+    public static Object getFromPluginCache( String key ) {
+        return SessionUtil.getSessionProperty(PLUGIN_SESSION_KEY_PREFIX + DELIMITER + key);
+    }
+
+    public static void removeFromPluginCache( String key ) {
+        SessionUtil.removeSessionProperty(PLUGIN_SESSION_KEY_PREFIX + DELIMITER + key);
+    }
+
+    // specific
+
+    public static void setRemoteUser( User user ) {
+        storeInPluginCache(REMOTE_USER_KEY, user);
+    }
+
+    public static User getRemoteUser() {
+        return (User)getFromPluginCache(REMOTE_USER_KEY);
     }
 }

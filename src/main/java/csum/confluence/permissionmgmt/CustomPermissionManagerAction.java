@@ -58,6 +58,8 @@ import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.ListUtil;
 import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
+import csum.confluence.permissionmgmt.util.cache.CacheUtil;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csum.confluence.permissionmgmt.util.group.GroupUtil;
 import csum.confluence.permissionmgmt.util.paging.PagerPaginationSupportUtil;
@@ -153,7 +155,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 result = sb.toString();
             }
             catch (Throwable t) {
-                log.error("Problem debugging action", t);
+                LogUtil.errorWithRemoteUserInfo(log, "Problem debugging action", t);
             }
         }
 
@@ -394,7 +396,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 result = new Integer(val);
             }
             catch (NumberFormatException nfe) {
-                log.warn("bad recordNum '" + val + "'", nfe);
+                LogUtil.warnWithRemoteUserInfo(log, "bad recordNum '" + val + "'", nfe);
             }
         }
         return result;
@@ -449,7 +451,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             result = URLEncoder.encode(s,"UTF-8");
         }
         catch (Throwable t) {
-            log.error("Failed to URLEncode '" + s + "'", t);
+            LogUtil.errorWithRemoteUserInfo(log, "Failed to URLEncode '" + s + "'", t);
         }
         return result;
     }
@@ -525,7 +527,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 resp.sendRedirect( url );
             }
             catch (IOException e) {
-                log.error(e);
+                LogUtil.errorWithRemoteUserInfo(log, "Redirect failed!", e);
             }
         }
     }
@@ -617,6 +619,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             return ERROR;
         }
 
+        CacheUtil.setRemoteUser(getRemoteUser());
+
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
         log.debug("paramMap: " + paramMap);
@@ -627,7 +631,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
 
         if(isNotAllowed()) {
-            log.warn("Action not allowed");
+            LogUtil.warnWithRemoteUserInfo(log, "Action not allowed");
             List resultList = new ArrayList();
             resultList.add(getText("display.alert.notallowed"));
             setActionErrors(resultList);
@@ -780,7 +784,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         }
         catch(Throwable t)
         {
-            log.warn("Failed creating test groups/users", t);
+            LogUtil.warnWithRemoteUserInfo(log, "Failed creating test groups/users", t);
         }
 
     }
@@ -899,14 +903,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                     //validate
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedUsers())) {
-                        log.warn("Failed action " + adminAction + ". users were null");
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed action " + adminAction + ". users were null");
                         resultList.add(getText("manager.error.usersnull"));
                         setActionErrors(resultList);
                         return ERROR;
                     }
 
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
-                        log.warn("Failed action " + adminAction + ". groups were null");
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed action " + adminAction + ". groups were null");
                         resultList.add(getText("manager.error.groupsnull"));
                         setActionErrors(resultList);
                         return ERROR;
@@ -916,7 +920,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
                     if (usersSize > maxUserIDsLimit) {
                         String msg = getText("manager.error.maxnumusersexceeded") + " " + maxUserIDsLimit + ".";
-                        log.warn("Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
                         resultList.add(msg);
                         setActionErrors(resultList);
                         return ERROR;
@@ -926,7 +930,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int maxGroupIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxGroupIDsLimit()).intValue();
                     if (groupsSize > maxGroupIDsLimit) {
                         String msg = getText("manager.error.maxnumgroupsexceeded") + " " + maxGroupIDsLimit + ".";
-                        log.warn("Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
                         resultList.add(msg);
                         setActionErrors(resultList);
                         return ERROR;
@@ -964,7 +968,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                     //validate
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
-                        log.warn("Failed action " + adminAction + ". groups were null");
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed action " + adminAction + ". groups were null");
                         resultList.add(getText("manager.error.groupsnull"));
                         setActionErrors(resultList);
                         return ERROR;
@@ -974,7 +978,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     int maxGroupIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxGroupIDsLimit()).intValue();
                     if (groupsSize > maxGroupIDsLimit) {
                         String msg = getText("manager.error.maxnumgroupsexceeded") + " " + maxGroupIDsLimit + ".";
-                        log.warn("Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed action " + adminAction + ". groups.size() = " + groupsSize + " > configured maxGroupIDsLimit " + maxGroupIDsLimit);
                         resultList.add(msg);
                         setActionErrors(resultList);
                         return ERROR;
@@ -1011,7 +1015,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                                 int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
                                 if (usersSize > maxUserIDsLimit) {
                                     String msg = getText("manager.error.maxnumusersexceeded") + " " + maxUserIDsLimit + ".";
-                                    log.warn("Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
+                                    LogUtil.warnWithRemoteUserInfo(log, "Failed action " + adminAction + ". users.size() = " + usersSize + " > configured maxUserIDsLimit " + maxUserIDsLimit);
                                     resultList.add(msg);
                                     setActionErrors(resultList);
                                     return ERROR;
@@ -1049,21 +1053,21 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     }
                 }
                 else {
-                    log.warn("Unrecognized adminAction='" + adminAction + "'");
+                    LogUtil.warnWithRemoteUserInfo(log, "Unrecognized adminAction='" + adminAction + "'");
                 }
             }
 
             // note: is normal at times not to have an action (selecting group for example)
         }
         catch (ServiceException e) {
-            log.error("Service exception", e);
+            LogUtil.errorWithRemoteUserInfo(log, "Service exception", e);
             resultList.add(e.getMessage());
             setActionErrors(resultList);
             return ERROR;
         }
         catch(Throwable t)
         {
-            log.error("Failed action", t);
+            LogUtil.errorWithRemoteUserInfo(log, "Failed action", t);
             resultList.add(t.getMessage());
             setActionErrors(resultList);
             return ERROR;
@@ -1297,7 +1301,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 debug(pager);
             }
         } catch (Throwable t) {
-            log.error("Failed attempting to find groups", t);
+            LogUtil.errorWithRemoteUserInfo(log, "Failed attempting to find groups", t);
         }
 
         setGroups(createPagerPaginationSupport(pager));
@@ -1350,7 +1354,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 ServiceContext serviceContext = createServiceContext();
                 pager = this.getUserManagementService().findUsersForGroup(groupName, serviceContext);
             } catch (Throwable t) {
-                log.error("Failed finding users", t);
+                LogUtil.errorWithRemoteUserInfo(log, "Failed finding users", t);
             }
 
             setUsers(createPagerPaginationSupport(pager));
@@ -1395,7 +1399,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             }
 
         } catch (Throwable t) {
-            log.error("Failed finding users that start with " + partialName, t);
+            LogUtil.errorWithRemoteUserInfo(log, "Failed finding users that start with " + partialName, t);
         }
 
         return sb.toString();
@@ -1489,7 +1493,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private void addFieldErrorIfMessageNotNull(String nameOfField, String error) {
         if (error!=null) {
-            log.warn("setting fieldError " + error + " on " + nameOfField);
+            LogUtil.warnWithRemoteUserInfo(log, "setting fieldError " + error + " on " + nameOfField);
             addFieldError(nameOfField, error);
         }
     }
@@ -1508,7 +1512,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
             pager = results.getUsers();
         } catch (Throwable t) {
-            log.warn("Failed creating test groups/users", t);
+            LogUtil.warnWithRemoteUserInfo(log, "Failed creating test groups/users", t);
         }
 
         setSearchResultUsers(createPagerPaginationSupport(pager));
@@ -1523,7 +1527,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         try {
             result = this.getUserManagementService().isMemberOf(userName, this.getSelectedGroup());
         } catch (Throwable t) {
-            log.warn("Failed checking to see if user was member of group", t);
+            LogUtil.warnWithRemoteUserInfo(log, "Failed checking to see if user was member of group", t);
         }
 
         return result;

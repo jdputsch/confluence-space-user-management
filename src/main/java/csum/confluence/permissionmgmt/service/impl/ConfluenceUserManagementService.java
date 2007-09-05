@@ -36,6 +36,7 @@ import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import com.dolby.confluence.net.ldap.LDAPUser;
 
 import java.util.ArrayList;
@@ -142,7 +143,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                 }
             }
         } catch (Exception e) {
-            log.error("Error creating confluence user " + creationUserName, e);
+            LogUtil.errorWithRemoteUserInfo(log, "Error creating confluence user " + creationUserName, e);
         }
 
         return vUser;

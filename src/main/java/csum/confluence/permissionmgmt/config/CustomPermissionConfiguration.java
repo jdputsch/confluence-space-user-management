@@ -38,6 +38,7 @@ import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
 import com.dolby.confluence.net.ldap.LDAPUser;
 import org.apache.commons.logging.Log;
@@ -191,7 +192,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                     jiraSoapService.logout(token);
                 }
                 catch (Throwable t) {
-                    log.error("Problem testing JIRA SOAP configuration by connecting to JIRA", t);
+                    LogUtil.errorWithRemoteUserInfo(log, "Problem testing JIRA SOAP configuration by connecting to JIRA", t);
                     result.addFieldError("jiraSoapUrl", cas.getText("configure.error.jirasoaptestconnectfailed") + ": " + t);
                     result.setValid(false);
                 }
@@ -276,7 +277,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                         }
                     }
                     catch (Throwable t) {
-                        log.error("Problem testing LDAP config in config UI", t);
+                        LogUtil.errorWithRemoteUserInfo(log, "Problem testing LDAP config in config UI", t);
                         result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldapconfigtestfailure") + ": " + t.getMessage());
                         result.setValid(false);
                     }

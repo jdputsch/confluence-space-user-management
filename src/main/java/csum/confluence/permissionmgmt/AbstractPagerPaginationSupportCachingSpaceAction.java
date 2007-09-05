@@ -34,6 +34,8 @@ import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.opensymphony.xwork.ActionContext;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
+import csum.confluence.permissionmgmt.util.SessionUtil;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,36 +47,11 @@ import java.util.TreeMap;
 /**
  * @author Gary S. Weaver
  */
-public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends CsumAbstractSpaceAction implements SpaceAdministrative {
+public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends CsumAbstractSpaceAction implements SpaceAdministrative, CacheConstants {
 
     private static final Log staticlog = LogFactory.getLog(AbstractPagerPaginationSupportCachingSpaceAction.class);
 
-    private static final String PLUGIN_SESSION_KEY_PREFIX = "SUSR";
-    private static final String DELIMITER = ":";
-    private static final String GROUPS_SESSION_KEY_SUFFIX = "groups";
-    private static final String USERS_SESSION_KEY_SUFFIX = "users";
-    private static final String SEARCH_RESULT_USERS_SESSION_KEY_SUFFIX = "searchresultusers";
-    private static final String INDEX_SUFFIX = "-index";
 
-    private static final String GROUPS_INDEX_SESSION_KEY_SUFFIX = GROUPS_SESSION_KEY_SUFFIX + INDEX_SUFFIX;
-    private static final String USERS_INDEX_SESSION_KEY_SUFFIX = USERS_SESSION_KEY_SUFFIX + INDEX_SUFFIX;
-    private static final String SEARCH_RESULT_USERS_INDEX_SESSION_KEY_SUFFIX = SEARCH_RESULT_USERS_SESSION_KEY_SUFFIX + INDEX_SUFFIX;
-    private static final String ADVANCED_USER_QUERY_SESSION_KEY_SUFFIX = "advanceduserquery";
-
-    private Object getSessionProperty(String key) {
-        Map session = (Map) ActionContext.getContext().get("session");
-        return session.get(key);
-    }
-
-    private void setSessionProperty(String key, Object value) {
-        Map session = (Map) ActionContext.getContext().get("session");
-        if ( value != null ) {
-            session.put(key, value);
-        }
-        else {
-            session.remove(key);
-        }
-    }
 
     private String id(Object o) {
         if (o!=null) {
@@ -89,17 +66,17 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
     public PagerPaginationSupport getGroupsPps(String spaceKey) {
         PagerPaginationSupport result = null;
         try {
-            result = (PagerPaginationSupport)getSessionProperty( getGroupsPpsKey(spaceKey) );
+            result = (PagerPaginationSupport) SessionUtil.getSessionProperty( getGroupsPpsKey(spaceKey) );
             log.debug("Got groups instance " + id(result) + " for spaceKey '" + spaceKey + "'");
         }
         catch (java.lang.ClassCastException e) {
-            log.error("Invalid type stored in cache. Returning null", e);
+            LogUtil.errorWithRemoteUserInfo(log, "Invalid type stored in cache. Returning null", e);
         }
         return result;
     }
 
     public void setGroupsPps(String spaceKey, PagerPaginationSupport groupsPps) {
-        setSessionProperty( getGroupsPpsKey(spaceKey), groupsPps);
+        SessionUtil.setSessionProperty( getGroupsPpsKey(spaceKey), groupsPps);
         log.debug("Set groups instance " + id(groupsPps) + " for spaceKey '" + spaceKey + "'");
     }
 
@@ -110,17 +87,17 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
     public Integer getGroupsIndex(String spaceKey) {
         Integer result = null;
         try {
-            result = (Integer)getSessionProperty( getGroupsIndexKey(spaceKey) );
+            result = (Integer)SessionUtil.getSessionProperty( getGroupsIndexKey(spaceKey) );
             log.debug("Got groups index instance " + id(result) + " for spaceKey '" + spaceKey + "'");
         }
         catch (java.lang.ClassCastException e) {
-            log.error("Invalid type stored in cache. Returning null", e);
+            LogUtil.errorWithRemoteUserInfo(log, "Invalid type stored in cache. Returning null", e);
         }
         return result;
     }
 
     public void setGroupsIndex(String spaceKey, Integer index) {
-        setSessionProperty( getGroupsIndexKey(spaceKey), index);
+        SessionUtil.setSessionProperty( getGroupsIndexKey(spaceKey), index);
         log.debug("Set groups index instance " + id(index) + " for spaceKey '" + spaceKey + "'");
     }
 
@@ -133,17 +110,17 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
     public PagerPaginationSupport getUsersPps(String spaceKey, String groupName) {
         PagerPaginationSupport result = null;
         try {
-            result = (PagerPaginationSupport)getSessionProperty( getUsersPpsKey(spaceKey, groupName) );
+            result = (PagerPaginationSupport)SessionUtil.getSessionProperty( getUsersPpsKey(spaceKey, groupName) );
             log.debug("Got users instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
         }
         catch (java.lang.ClassCastException e) {
-            log.error("Invalid type stored in cache. Returning null", e);
+            LogUtil.errorWithRemoteUserInfo(log, "Invalid type stored in cache. Returning null", e);
         }
         return result;
     }
 
     public void setUsersPps(String spaceKey, String groupName, PagerPaginationSupport usersPps) {
-        setSessionProperty( getUsersPpsKey(spaceKey, groupName), usersPps);
+        SessionUtil.setSessionProperty( getUsersPpsKey(spaceKey, groupName), usersPps);
         log.debug("Set users instance " + id(usersPps) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
     }
 
@@ -154,17 +131,17 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
     public Integer getUsersIndex(String spaceKey, String groupName) {
         Integer result = null;
         try {
-            result = (Integer)getSessionProperty( getUsersIndexKey(spaceKey, groupName) );
+            result = (Integer)SessionUtil.getSessionProperty( getUsersIndexKey(spaceKey, groupName) );
             log.debug("Got users index instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
         }
         catch (java.lang.ClassCastException e) {
-            log.error("Invalid type stored in cache. Returning null", e);
+            LogUtil.errorWithRemoteUserInfo(log, "Invalid type stored in cache. Returning null", e);
         }
         return result;
     }
 
     public void setUsersIndex(String spaceKey, String groupName, Integer index) {
-        setSessionProperty( getUsersIndexKey(spaceKey, groupName), index);
+        SessionUtil.setSessionProperty( getUsersIndexKey(spaceKey, groupName), index);
         log.debug("Set users index instance " + id(index) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
     }
 
@@ -177,17 +154,17 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
     public PagerPaginationSupport getSearchResultUsersPps(String spaceKey, String groupName) {
         PagerPaginationSupport result = null;
         try {
-            result = (PagerPaginationSupport)getSessionProperty( getSearchResultUsersPpsKey(spaceKey, groupName) );
+            result = (PagerPaginationSupport)SessionUtil.getSessionProperty( getSearchResultUsersPpsKey(spaceKey, groupName) );
             log.debug("Got search result users instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
         }
         catch (java.lang.ClassCastException e) {
-            log.error("Invalid type stored in cache. Returning null", e);
+            LogUtil.errorWithRemoteUserInfo(log, "Invalid type stored in cache. Returning null", e);
         }
         return result;
     }
 
     public void setSearchResultUsersPps(String spaceKey, String groupName, PagerPaginationSupport searchResultUsersPps) {
-        setSessionProperty( getSearchResultUsersPpsKey(spaceKey, groupName), searchResultUsersPps);
+        SessionUtil.setSessionProperty( getSearchResultUsersPpsKey(spaceKey, groupName), searchResultUsersPps);
         log.debug("Set search result users instance " + id(searchResultUsersPps) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
     }
 
@@ -198,17 +175,17 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
     public Integer getSearchResultUsersIndex(String spaceKey, String groupName) {
         Integer result = null;
         try {
-            result = (Integer)getSessionProperty( getSearchResultUsersIndexKey(spaceKey, groupName) );
+            result = (Integer)SessionUtil.getSessionProperty( getSearchResultUsersIndexKey(spaceKey, groupName) );
             log.debug("Got search result users index instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
         }
         catch (java.lang.ClassCastException e) {
-            log.error("Invalid type stored in cache. Returning null", e);
+            LogUtil.errorWithRemoteUserInfo(log, "Invalid type stored in cache. Returning null", e);
         }
         return result;
     }
 
     public void setSearchResultUsersIndex(String spaceKey, String groupName, Integer index) {
-        setSessionProperty( getSearchResultUsersIndexKey(spaceKey, groupName), index);
+        SessionUtil.setSessionProperty( getSearchResultUsersIndexKey(spaceKey, groupName), index);
         log.debug("Set search result users index instance " + id(index) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
     }
 
@@ -219,17 +196,17 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
     public AdvancedUserQuery getAdvancedUserQuery(String spaceKey, String groupName) {
         AdvancedUserQuery result = null;
         try {
-            result = (AdvancedUserQuery)getSessionProperty( getAdvancedUserQueryKey(spaceKey, groupName) );
+            result = (AdvancedUserQuery)SessionUtil.getSessionProperty( getAdvancedUserQueryKey(spaceKey, groupName) );
             log.debug("Got advanced user query instance " + id(result) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
         }
         catch (java.lang.ClassCastException e) {
-            log.error("Invalid type stored in cache. Returning null", e);
+            LogUtil.errorWithRemoteUserInfo(log, "Invalid type stored in cache. Returning null", e);
         }
         return result;
     }
 
     public void setAdvancedUserQuery(String spaceKey, String groupName, AdvancedUserQuery advancedUserQuery) {
-        setSessionProperty( getAdvancedUserQueryKey(spaceKey, groupName), advancedUserQuery);
+        SessionUtil.setSessionProperty( getAdvancedUserQueryKey(spaceKey, groupName), advancedUserQuery);
         log.debug("Set advanced user query instance " + id(advancedUserQuery) + " for spaceKey '" + spaceKey + "' and groupName '" + groupName + "'");
     }
 
@@ -242,7 +219,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
 
 
     public void storeInPluginCache( String key, Object o ) {
-        setSessionProperty(PLUGIN_SESSION_KEY_PREFIX + DELIMITER + key, o);
+        SessionUtil.setSessionProperty(PLUGIN_SESSION_KEY_PREFIX + DELIMITER + key, o);
     }
 
     public Object getFromPluginCache( String key ) {
@@ -261,10 +238,10 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
 
     // Note: this is a little dangerous as it makes an assumption that we want to cache every index for every pps
     private void cachePpsIndexIfSupported(String key) {
-        Object o = getSessionProperty(key);
+        Object o = SessionUtil.getSessionProperty(key);
         if (o instanceof PagerPaginationSupport) {
             PagerPaginationSupport pps = (PagerPaginationSupport)o;
-            setSessionProperty(key + INDEX_SUFFIX, new Integer(pps.getStartIndex()));
+            SessionUtil.setSessionProperty(key + INDEX_SUFFIX, new Integer(pps.getStartIndex()));
         }
     }        
 
@@ -299,16 +276,15 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
 
     // Note: intentionally not clearing index cache. That is used to find out where you were in result set.
     public void clearGroupCache(String spaceKey) {
-        Map session = (Map) ActionContext.getContext().get("session");
         String sessionKey = getGroupsPpsKey(spaceKey);
         log.debug("Clearing all groups cache for spacekey '" + spaceKey + "' (removing session data for '" + sessionKey + ")");
         cachePpsIndexIfSupported(sessionKey);
-        session.remove(sessionKey);
+        SessionUtil.removeSessionProperty(sessionKey);
     }
 
     // Note: intentionally not clearing index cache. That is used to find out where you were in result set.
     public void clearUserCache(String spaceKey, List groupNames) {        
-        Map session = (Map) ActionContext.getContext().get("session");
+        Map session = SessionUtil.getSession();
         for (int i=0; i<groupNames.size(); i++) {
             String groupName = (String)groupNames.get(i);
             String sessionKey = getUsersPpsKey(spaceKey, groupName);
@@ -320,7 +296,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
 
     // Note: intentionally not clearing index cache. That is used to find out where you were in result set.
     public void clearSearchResultUserCache(String spaceKey, List groupNames) {
-        Map session = (Map) ActionContext.getContext().get("session");
+        Map session = SessionUtil.getSession();
         for (int i=0; i<groupNames.size(); i++) {
             String groupName = (String)groupNames.get(i);
             String sessionKey = getSearchResultUsersPpsKey(spaceKey, groupName);
@@ -334,7 +310,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
         StringBuffer sb = new StringBuffer();
         sb.append("<table><tr><td>Key</td><td>Data</td></tr>");
         try {
-            TreeMap session = new TreeMap((Map) ActionContext.getContext().get("session"));
+            TreeMap session = new TreeMap(SessionUtil.getSession());
             Iterator iter = session.keySet().iterator();
             boolean flag = false;
             while (iter.hasNext()) {
@@ -368,7 +344,7 @@ public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends C
             }
         }
         catch (Throwable t) {
-            log.error("Problem debugging action", t);
+            LogUtil.errorWithRemoteUserInfo(log, "Problem debugging action", t);
         }
         sb.append("</tr></table>");
         return sb.toString();

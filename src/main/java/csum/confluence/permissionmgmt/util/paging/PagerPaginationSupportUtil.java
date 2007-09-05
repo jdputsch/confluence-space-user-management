@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
+
 /**
  * @author Gary S. Weaver
  */
@@ -91,7 +93,7 @@ public class PagerPaginationSupportUtil {
 
             result = new ArrayList(itemsAsKeysMap.keySet());;
             if ( result.size() != pps.getTotal()) {
-                log.warn("Got incorrect number of items in toList()! Expected " + pps.getTotal() + " but got " + result.size());
+                LogUtil.warnWithRemoteUserInfo(log, "Got incorrect number of items in toList()! Expected " + pps.getTotal() + " but got " + result.size());
             }
             else {
                 log.debug("Got " + result.size() + " items from pps. This was same as pps.getTotal() so hopefully all is ok.");                            
@@ -348,7 +350,7 @@ public class PagerPaginationSupportUtil {
             }
             catch (Throwable t) {
                 sb.append("failed at this point");
-                log.error("Failed to debug PPS", t);
+                LogUtil.errorWithRemoteUserInfo(log, "Failed to debug PPS", t);
             }
         }
         else {

@@ -29,15 +29,19 @@
 
 package csum.confluence.permissionmgmt;
 
-import com.atlassian.confluence.core.ConfluenceActionSupport;
-
 /**
  * @author Gary S. Weaver
  */
-public abstract class CsumConfluenceActionSupport extends ConfluenceActionSupport {
-
-    public String getPluginKey()
-    {
-        return CustomPermissionConstants.PLUGIN_KEY;
-    }
+public interface CacheConstants {
+    public static final String PLUGIN_SESSION_KEY_PREFIX = "SUSR";
+    public static final String DELIMITER = ":";
+    public static final String GROUPS_SESSION_KEY_SUFFIX = "groups";
+    public static final String USERS_SESSION_KEY_SUFFIX = "users";
+    public static final String SEARCH_RESULT_USERS_SESSION_KEY_SUFFIX = "searchresultusers";
+    public static final String INDEX_SUFFIX = "-index";
+    public static final String GROUPS_INDEX_SESSION_KEY_SUFFIX = GROUPS_SESSION_KEY_SUFFIX + INDEX_SUFFIX;
+    public static final String USERS_INDEX_SESSION_KEY_SUFFIX = USERS_SESSION_KEY_SUFFIX + INDEX_SUFFIX;
+    public static final String SEARCH_RESULT_USERS_INDEX_SESSION_KEY_SUFFIX = SEARCH_RESULT_USERS_SESSION_KEY_SUFFIX + INDEX_SUFFIX;
+    public static final String ADVANCED_USER_QUERY_SESSION_KEY_SUFFIX = "advanceduserquery";
+    public static final String REMOTE_USER_KEY = "remoteUser";
 }
