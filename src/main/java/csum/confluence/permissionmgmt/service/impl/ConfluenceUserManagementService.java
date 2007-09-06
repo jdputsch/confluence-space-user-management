@@ -29,7 +29,9 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import com.atlassian.user.Group;
 import com.atlassian.user.User;
+import com.dolby.confluence.net.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.exception.AddException;
@@ -37,7 +39,6 @@ import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
-import com.dolby.confluence.net.ldap.LDAPUser;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,6 +59,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
 
         List usersNotFound = new ArrayList();
+        Map userIdToGroupNameMapForMembershipAdditionProblems = new TreeMap();
         // using map to get only unique groups. using treemap to keep groupnames in order
         Map groupsNotFoundMap = new TreeMap();
 
@@ -67,8 +69,8 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
         for (Iterator itr = userNames.iterator(); itr.hasNext();) {
             //First check if given user is present or not
             String userid = (String) itr.next();
-            User currUser = userAccessor.getUser(userid);
-            if (currUser == null) {
+            User user = userAccessor.getUser(userid);
+            if (user == null) {
                 //create an user
                 //userid doesn't exists, if LDAP present then we will create User if it exists in LDAP.
                 if (isLDAPPresent) {
@@ -78,11 +80,11 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
 
                     // TODO: consider adding option and ability to create users if they don't exist, even if LDAP not used
 
-                    currUser = createConfUser(userid, isLDAPPresent);
+                    user = createConfUser(userid, isLDAPPresent);
                 }
 
                 //if user details not found in LDAP too, then retun userid in errorids
-                if (currUser == null) {
+                if (user == null) {
 
                     //for some reason we are unable to create user.
                     //add it to our notCreatedUser List.
@@ -92,28 +94,16 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
 
                 } else {
                     //Add this user to default group confluence-users
-                    userAccessor.addMembership(ServiceConstants.CONFLUENCE_USERS_GROUP_NAME, userid);
+                    addMembershipPassivelyAndTrackingErrors(ServiceConstants.CONFLUENCE_USERS_GROUP_NAME, user, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
                 }
             }
 
-            //If user exists then associate him/her to all selected User
-            if (currUser != null) {
+            //If user exists then associate him/her to all specified groups
+            if (user != null) {
                 //Associate this user to all selected user-groups
                 for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                     String groupName = (String) iterator.next();
-                    if (groupsNotFoundMap.get(groupName) == null) {
-                        // Am thoroughly confounded that the groupname here has to be lowercase. have backup check for
-                        // regular (mixed-case) lookup, just in case that is a bug.
-                        // TODO: test this and submit bug as needed
-                        String lowercaseGroupName = groupName.toLowerCase();
-                        if (userAccessor.getGroup(lowercaseGroupName) != null) {
-                            userAccessor.addMembership(lowercaseGroupName, userid);
-                        } else if (userAccessor.getGroup(groupName) != null) {
-                            userAccessor.addMembership(groupName, userid);
-                        } else {
-                            groupsNotFoundMap.put("" + groupName, "");
-                        }
-                    }
+                    addMembershipPassivelyAndTrackingErrors(groupName, user, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
                 }
             }
         }
@@ -121,7 +111,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
         // If we failed, throw exception
         List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
         if (usersNotFound.size() > 0 || groupsNotFound.size() > 0) {
-            throw new AddException(getErrorMessage(usersNotFound, groupsNotFound, context));
+            throw new AddException(getAddUsersByUsernameToGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipAdditionProblems, context));
         }
     }
 
@@ -149,26 +139,62 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
         return vUser;
     }
 
+    private void addMembershipPassivelyAndTrackingErrors(String groupName, User user, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipAdditionProblems) {
+        if (groupsNotFoundMap.get(groupName) == null && user != null) {
+            try {
+                Group group = userAccessor.getGroup(groupName);
+                if (group == null) {
+
+                    String lowercaseGroupName = groupName.toLowerCase();
+                    if (lowercaseGroupName.equals(groupName)) {
+                        // group name was already lowercase
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + user.getName() + " to " + groupName + ". Group didn't exist");
+                        groupsNotFoundMap.put("" + groupName, "");
+                        return;
+                    } else {
+                        // There is a bug where groupname must be lowercase but we handle both
+                        // scenarios just in case it gets fixed: http://jira.atlassian.com/browse/CONF-9224
+
+                        log.debug("No group exists for groupname " + groupName + " so will try lowercase groupName");
+                        group = userAccessor.getGroup(lowercaseGroupName);
+                        if (group == null) {
+                            LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + user.getName() + " to " + groupName + ". Group didn't exist (tried regular case and lowercase groupname)");
+                            // make sure to use regular case here since it is checked against in calling method
+                            groupsNotFoundMap.put("" + groupName, "");
+                        }
+                    }
+                }
+
+                if (group != null) {
+                    log.debug("Adding " + user.getName() + " to group " + groupName);
+                    userAccessor.addMembership(group, user);
+                }
+            }
+            catch (Throwable t) {
+                LogUtil.errorWithRemoteUserInfo(log, "Failed adding " + user.getName() + " to " + groupName);
+                // using "" + to guard against nulls
+                userIdToGroupNameMapForMembershipAdditionProblems.put("" + user.getName(), "" + groupName);
+            }
+        }
+    }
+
     public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws RemoveException {
         log.debug("removeUsersByUsernameFromGroups() called. " +
                 "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
                 ", groupnames=" + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
 
         List usersNotFound = new ArrayList();
+        Map userIdToGroupNameMapForMembershipRemovalProblems = new TreeMap();
         // using map to get only unique groups. using treemap to keep groupnames in order
         Map groupsNotFoundMap = new TreeMap();
 
         for (Iterator itr = userNames.iterator(); itr.hasNext();) {
             String userid = (String) itr.next();
-
-            if (userAccessor.getUser(userid) != null) {
+            User user = userAccessor.getUser(userid);
+            if (user != null) {
                 for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                     String groupName = (String) iterator.next();
-                    if (groupsNotFoundMap.get(groupName) == null && userAccessor.getGroup(groupName) != null) {
-                        userAccessor.removeMembership(groupName, userid);
-                    } else {
-                        groupsNotFoundMap.put("" + groupName, "");
-                    }
+                    removeMembershipPassivelyAndTrackingErrors(groupName, user, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipRemovalProblems);
                 }
             } else {
                 usersNotFound.add(userid);
@@ -178,7 +204,46 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
         // If we failed, throw exception
         List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
         if (usersNotFound.size() > 0 || groupsNotFound.size() > 0) {
-            throw new RemoveException(getErrorMessage(usersNotFound, groupsNotFound, context));
+            throw new RemoveException(getRemoveUsersByUsernameFromGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipRemovalProblems, context));
+        }
+    }
+
+    private void removeMembershipPassivelyAndTrackingErrors(String groupName, User user, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipAdditionProblems) {
+        if (groupsNotFoundMap.get(groupName) == null && user != null) {
+            try {
+                Group group = userAccessor.getGroup(groupName);
+                if (group == null) {
+
+                    String lowercaseGroupName = groupName.toLowerCase();
+                    if (lowercaseGroupName.equals(groupName)) {
+                        // group name was already lowercase
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + user.getName() + " to " + groupName + ". Group didn't exist");
+                        groupsNotFoundMap.put("" + groupName, "");
+                        return;
+                    } else {
+                        // There is a bug where groupname must be lowercase but we handle both
+                        // scenarios just in case it gets fixed: http://jira.atlassian.com/browse/CONF-9224
+
+                        log.debug("No group exists for groupname " + groupName + " so will try lowercase groupName");
+                        group = userAccessor.getGroup(lowercaseGroupName);
+                        if (group == null) {
+                            LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + user.getName() + " to " + groupName + ". Group didn't exist (tried regular case and lowercase groupname)");
+                            // make sure to use regular case here since it is checked against in calling method
+                            groupsNotFoundMap.put("" + groupName, "");
+                        }
+                    }
+                }
+
+                if (group != null) {
+                    log.debug("Removing " + user.getName() + " from " + groupName);
+                    userAccessor.removeMembership(group, user);
+                }
+            }
+            catch (Throwable t) {
+                LogUtil.errorWithRemoteUserInfo(log, "Failed removing " + user.getName() + " from " + groupName);
+                // using "" + to guard against nulls
+                userIdToGroupNameMapForMembershipAdditionProblems.put("" + user.getName(), "" + groupName);
+            }
         }
     }
 }

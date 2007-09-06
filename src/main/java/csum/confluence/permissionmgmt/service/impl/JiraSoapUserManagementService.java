@@ -29,22 +29,20 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import com.dolby.confluence.net.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.exception.ServiceAuthenticationException;
-import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
-import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csum.confluence.permissionmgmt.util.StringUtil;
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
 import csum.confluence.permissionmgmt.util.jira.JiraSoapUtil;
-import com.dolby.confluence.net.ldap.LDAPUser;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -62,23 +60,6 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
 
     private Log log = LogFactory.getLog(this.getClass());
 
-    private boolean matches(String value, String searchValue, String type) {
-        log.debug("matches() called.");
-        boolean result = false;
-        if (value != null && searchValue != null && type != null) {
-            if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH && value.startsWith(searchValue)) {
-                result = true;
-            } else
-            if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS && value.indexOf(searchValue) != -1) {
-                result = true;
-            } else if (type == AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH && value.endsWith(searchValue)) {
-                result = true;
-            }
-        }
-
-        return result;
-    }
-
     public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws AddException, ServiceAuthenticationException {
         log.debug("addUsersByUsernameToGroupsByGroupname() called. " +
                 "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
@@ -86,6 +67,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
 
         JiraServiceAuthenticationContext authContext = null;
         List usersNotFound = new ArrayList();
+        Map userIdToGroupNameMapForMembershipAdditionProblems = new TreeMap();
         // using map to get only unique groups. using treemap to keep groupnames in order
         Map groupsNotFoundMap = new TreeMap();
 
@@ -102,82 +84,36 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
             for (Iterator itr = userNames.iterator(); itr.hasNext();) {
                 //First check if given user is present or not
                 String userid = (String) itr.next();
-                RemoteUser currUser = jiraSoapService.getUser(token, userid);
-                if (currUser == null) {
-                    //create an user
-                    //userid doesn't exists, if LDAP present then we will create User if it exists in LDAP.
-                    if (isLDAPPresent) {
-                        //create an user.
 
-                        // TODO: the option to create users if they don't exist using LDAP info should be in config
-
-                        // TODO: consider adding option and ability to create users if they don't exist, even if LDAP not used
-
-                        currUser = createJiraUser(token, jiraSoapService, userid, isLDAPPresent);
-                    }
-
-                    //if user details not found in LDAP too, then retun userid in errorids
-                    if (currUser == null) {
-
-                        //for some reason we are unable to create user.
-                        //add it to our notCreatedUser List.
-                        usersNotFound.add(userid);
-
-                        continue;
-
-                    } else {
-                        RemoteUser remoteUser = jiraSoapService.getUser(token, userid);
-                        if (remoteUser != null) {
-
-                            //Add this user to default group confluence-users
-                            if (groupsNotFoundMap.get(ServiceConstants.CONFLUENCE_USERS_GROUP_NAME)==null) {
-                                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, ServiceConstants.CONFLUENCE_USERS_GROUP_NAME);
-                                if (remoteGroup!=null) {
-                                    jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
-                                }
-                                else {
-                                    groupsNotFoundMap.put(ServiceConstants.CONFLUENCE_USERS_GROUP_NAME, "");
-                                }
-                            }
-
-                            if (groupsNotFoundMap.get(ServiceConstants.JIRA_USERS_GROUP_NAME)==null) {
-                                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, ServiceConstants.JIRA_USERS_GROUP_NAME);
-                                if (remoteGroup!=null) {
-                                    jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
-                                }
-                                else {
-                                    groupsNotFoundMap.put(ServiceConstants.JIRA_USERS_GROUP_NAME, "");
-                                }
-                            }
+                if (!usersNotFound.contains(userid)) {
+                    RemoteUser remoteUser = jiraSoapService.getUser(token, userid);
+                    if (remoteUser == null) {
+                        //userid doesn't exist, but if LDAP present then we will create user if it exists in LDAP.
+                        if (isLDAPPresent) {
+                            remoteUser = createJiraUser(token, jiraSoapService, userid, isLDAPPresent);
                         }
-                        else {
+
+                        //if user details not found in LDAP too, then return userid in errorids
+                        if (remoteUser == null) {
+
+                            //for some reason we are unable to create user.
+                            //add it to our notCreatedUser List.
                             usersNotFound.add(userid);
+
+                            continue;
+
+                        } else {
+                            addMembershipToJiraPassivelyAndTrackingErrors(jiraSoapService, token, ServiceConstants.CONFLUENCE_USERS_GROUP_NAME, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
+                            addMembershipToJiraPassivelyAndTrackingErrors(jiraSoapService, token, ServiceConstants.JIRA_USERS_GROUP_NAME, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
                         }
                     }
-                }
 
-                //If user exists then associate him/her to all selected User
-                if (currUser != null) {
-                    //Associate this user to all selected user-groups
-                    for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
-                        String groupName = (String) iterator.next();
-                        if (groupsNotFoundMap.get(groupName) == null) {
-                            // Am thoroughly confounded that the groupname here has to be lowercase. have backup check for
-                            // regular (mixed-case) lookup, just in case that is a bug.
-                            // TODO: test this and submit bug as needed
-                            String lowercaseGroupName = groupName.toLowerCase();
-
-                            RemoteGroup remoteGroup = jiraSoapService.getGroup(token, lowercaseGroupName);
-                            RemoteUser remoteUser = jiraSoapService.getUser(token, userid);
-
-                            if (userAccessor.getGroup(lowercaseGroupName) != null && remoteGroup != null) {
-                                userAccessor.addMembership(lowercaseGroupName, userid);
-                                jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
-                            } else if (userAccessor.getGroup(groupName) != null) {
-                                userAccessor.addMembership(groupName, userid);
-                            } else {
-                                groupsNotFoundMap.put("" + groupName, "");
-                            }
+                    //If user exists then associate him/her to all selected User
+                    if (remoteUser != null) {
+                        //Associate this user to all selected user-groups
+                        for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
+                            String groupName = (String) iterator.next();
+                            addMembershipToJiraPassivelyAndTrackingErrors(jiraSoapService, token, groupName, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipAdditionProblems);
                         }
                     }
                 }
@@ -201,7 +137,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
         // If we failed, throw exception
         List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
         if (usersNotFound.size() > 0 || groupsNotFound.size() > 0) {
-            throw new AddException(getErrorMessage(usersNotFound, groupsNotFound, context));
+            throw new AddException(getAddUsersByUsernameToGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipAdditionProblems, context));
         }
     }
 
@@ -230,6 +166,45 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
         return vUser;
     }
 
+    private void addMembershipToJiraPassivelyAndTrackingErrors(JiraSoapService jiraSoapService, String token, String groupName, RemoteUser remoteUser, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipAdditionProblems) {
+        if (groupsNotFoundMap.get(groupName) == null && remoteUser != null) {
+            try {
+                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
+                if (remoteGroup == null) {
+
+                    String lowercaseGroupName = groupName.toLowerCase();
+                    if (lowercaseGroupName.equals(groupName)) {
+                        // group name was already lowercase
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + remoteUser.getName() + " to " + groupName + " in Jira. Jira group didn't exist");
+                        groupsNotFoundMap.put("" + groupName, "");
+                        return;
+                    } else {
+                        // There is a bug where groupname must be lowercase but we handle both
+                        // scenarios just in case it gets fixed: http://jira.atlassian.com/browse/CONF-9224
+
+                        log.debug("No Jira group exists for groupname " + groupName + " so will try lowercase groupName");
+                        remoteGroup = jiraSoapService.getGroup(token, lowercaseGroupName);
+                        if (remoteGroup == null) {
+                            LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + remoteUser.getName() + " to " + groupName + " in Jira. Jira group didn't exist (tried regular case and lowercase groupname)");
+                            // make sure to use regular case here since it is checked against in calling method
+                            groupsNotFoundMap.put("" + groupName, "");
+                        }
+                    }
+                }
+
+                if (remoteGroup != null) {
+                    log.debug("Adding " + remoteUser.getName() + " to Jira group " + groupName);
+                    jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                }
+            }
+            catch (Throwable t) {
+                LogUtil.errorWithRemoteUserInfo(log, "Failed adding " + remoteUser.getName() + " to " + groupName);
+                // using "" + to guard against nulls
+                userIdToGroupNameMapForMembershipAdditionProblems.put("" + remoteUser.getName(), "" + groupName);
+            }
+        }
+    }
+
     public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws RemoveException, ServiceAuthenticationException {
         log.debug("removeUsersByUsernameFromGroups() called. " +
                 "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
@@ -237,6 +212,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
         JiraServiceAuthenticationContext authContext = null;
 
         List usersNotFound = new ArrayList();
+        Map userIdToGroupNameMapForMembershipRemovalProblems = new TreeMap();
         // using map to get only unique groups. using treemap to keep groupnames in order
         Map groupsNotFoundMap = new TreeMap();
 
@@ -252,14 +228,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 if (remoteUser != null) {
                     for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                         String groupName = (String) iterator.next();
-                        if (groupsNotFoundMap.get(groupName) == null) {
-                            RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
-                            if (remoteGroup != null) {
-                                jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
-                            }
-                        } else {
-                            groupsNotFoundMap.put("" + groupName, "");
-                        }
+                        removeMembershipFromJiraPassivelyAndTrackingErrors(jiraSoapService, token, groupName, remoteUser, groupsNotFoundMap, usersNotFound, userIdToGroupNameMapForMembershipRemovalProblems);
                     }
                 } else {
                     usersNotFound.add(userid);
@@ -284,7 +253,46 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
         // If we failed, throw exception
         List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
         if (usersNotFound.size() > 0 || groupsNotFound.size() > 0) {
-            throw new RemoveException(getErrorMessage(usersNotFound, groupsNotFound, context));
+            throw new RemoveException(getRemoveUsersByUsernameFromGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipRemovalProblems, context));
+        }
+    }
+
+    private void removeMembershipFromJiraPassivelyAndTrackingErrors(JiraSoapService jiraSoapService, String token, String groupName, RemoteUser remoteUser, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipRemovalProblems) {
+        if (groupsNotFoundMap.get(groupName) == null && remoteUser != null) {
+            try {
+                RemoteGroup remoteGroup = jiraSoapService.getGroup(token, groupName);
+                if (remoteGroup == null) {
+
+                    String lowercaseGroupName = groupName.toLowerCase();
+                    if (lowercaseGroupName.equals(groupName)) {
+                        // group name was already lowercase
+                        LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + remoteUser.getName() + " to " + groupName + " in Jira. Jira group didn't exist");
+                        groupsNotFoundMap.put("" + groupName, "");
+                        return;
+                    } else {
+                        // There is a bug where groupname must be lowercase but we handle both
+                        // scenarios just in case it gets fixed: http://jira.atlassian.com/browse/CONF-9224
+
+                        log.debug("No Jira group exists for groupname " + groupName + " so will try lowercase groupName");
+                        remoteGroup = jiraSoapService.getGroup(token, lowercaseGroupName);
+                        if (remoteGroup == null) {
+                            LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + remoteUser.getName() + " to " + groupName + " in Jira. Jira group didn't exist (tried regular case and lowercase groupname)");
+                            // make sure to use regular case here since it is checked against in calling method
+                            groupsNotFoundMap.put("" + groupName, "");
+                        }
+                    }
+                }
+
+                if (remoteGroup != null) {
+                    log.debug("Removing " + remoteUser.getName() + " from Jira group " + groupName);
+                    jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
+                }
+            }
+            catch (Throwable t) {
+                LogUtil.errorWithRemoteUserInfo(log, "Failed removing " + remoteUser.getName() + " from Jira group " + groupName);
+                // using "" + to guard against nulls
+                userIdToGroupNameMapForMembershipRemovalProblems.put("" + remoteUser.getName(), "" + groupName);
+            }
         }
     }
 }

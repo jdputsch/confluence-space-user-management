@@ -83,4 +83,23 @@ public class ServiceContext {
 
         return result;
     }
+
+    /**
+     *
+     * Convenience method to getText from i18n resource backing the action, assuming it exists
+     *
+     * @param key - key
+     * @param values - values
+     * @return i18n message string if confluenceActionSupport set on context.
+     */
+    public String getText(String key, String[] values) {
+        String result = key;
+
+        ConfluenceActionSupport cas = getConfluenceActionSupport();
+        if (cas!=null) {
+            result = cas.getText(key, values);
+        }
+
+        return result;
+    }
 }

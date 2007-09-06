@@ -60,6 +60,8 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Iterator;
 import java.io.IOException;
 
 /**
@@ -180,7 +182,7 @@ public abstract class BaseUserManagementService implements UserManagementService
         return pager;
     }
 
-    protected String getErrorMessage(List usersNotFound, List groupsNotFound, ServiceContext context) {
+    protected String getAddUsersByUsernameToGroupsErrorMessage(List usersNotFound, List groupsNotFound, Map userIdToGroupNameMapForMembershipAdditionProblems, ServiceContext context) {
         String msg = "";
         String concat = "";
         if (usersNotFound.size() > 0) {
@@ -193,6 +195,47 @@ public abstract class BaseUserManagementService implements UserManagementService
             msg += concat;
             msg += context.getText("manager.error.groupsdidnotexist") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(groupsNotFound) + ".";
+            concat = " ";
+        }
+
+        if (userIdToGroupNameMapForMembershipAdditionProblems.size() > 0) {
+            Iterator iter = userIdToGroupNameMapForMembershipAdditionProblems.keySet().iterator();
+            while(iter.hasNext()) {
+                String groupName = (String)iter.next();
+                String userid = (String)userIdToGroupNameMapForMembershipAdditionProblems.get(groupName);
+                msg += concat;
+                msg += context.getText("manager.error.problemaddingusertogroup", new String[] {userid, groupName});
+                concat = " ";
+            }
+        }
+
+        return msg;
+    }
+
+    protected String getRemoveUsersByUsernameFromGroupsErrorMessage(List usersNotFound, List groupsNotFound, Map userIdToGroupNameMapForMembershipRemovalProblems, ServiceContext context) {
+        String msg = "";
+        String concat = "";
+        if (usersNotFound.size() > 0) {
+            msg += context.getText("manager.error.usersnotfound") + ": " +
+                    StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".";
+            concat = " ";
+        }
+
+        if (groupsNotFound.size() > 0) {
+            msg += concat;
+            msg += context.getText("manager.error.groupsdidnotexist") + ": " +
+                    StringUtil.convertCollectionToCommaDelimitedString(groupsNotFound) + ".";
+        }
+
+        if (userIdToGroupNameMapForMembershipRemovalProblems.size() > 0) {
+            Iterator iter = userIdToGroupNameMapForMembershipRemovalProblems.keySet().iterator();
+            while(iter.hasNext()) {
+                String groupName = (String)iter.next();
+                String userid = (String)userIdToGroupNameMapForMembershipRemovalProblems.get(groupName);
+                msg += concat;
+                msg += context.getText("manager.error.problemremovinguserfromgroup", new String[] {userid, groupName});
+                concat = " ";
+            }
         }
 
         return msg;
