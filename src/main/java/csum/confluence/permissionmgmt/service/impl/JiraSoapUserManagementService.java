@@ -90,6 +90,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     if (remoteUser == null) {
                         //userid doesn't exist, but if LDAP present then we will create user if it exists in LDAP.
                         if (isLDAPPresent) {
+							System.out.println("Getting user from LDAP ...");
                             remoteUser = createJiraUser(token, jiraSoapService, userid, isLDAPPresent);
                         }
 
