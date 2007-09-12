@@ -154,7 +154,6 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 //log.debug("LDAP Lookup available");
                 //Get user details from LDAP.
                 lUser = getLDAPUser(creationUserName);
-				System.out.println( "User Details found: ->" + lUser.getEmail() + " " + lUser.getFirstName() + " " + lUser.getLastName());
 
                 if (lUser != null) {
                     //createUser(String token, String username, String password, String fullName, String email)
