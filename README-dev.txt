@@ -46,22 +46,8 @@ src/main/resources/csum/confluence/permissionmgmt/AtlassianPlugin.properties
 and
 src/main/resources/csum/confluence/permissionmgmt/AtlassianPlugin_en.properties
 
-Here are the rules for changing/adding/removing properties (note: used some of the Sakai wiki page Best Practices)
-
-* Always use AtlassianPlugin.properties file for user interface text. Never include displayable text in java, jsp or velocity templates, etc.
-* Use properties files only for user interface text. Configuration values (like URLs, usernames, passwords, etc.) belong in configuration settings.
-* Use a proper naming schema for the keys. The name of the keys should provide some information about the context of the displayed text. This helps the translators during the translation process. A naming schema could be <view>.<type>.<name>. Examples: edit.button.save, edit.label.title or list.action.addnew
-* Group keys by view (first part of key refers to view).
-* Never use displayable text when executing comparisons within the logic of the tool (separate codified values from displayable text)
-* All dynamically constructed phrases must be sensitive to locale specific subject/verb/object ordering.
-* Simple i18n messages (not containing variables) can be gotten with getText("keyname").
-* Compound i18n messages (containing variables) can be gotten with getText("keyname", list) where list is the ordered list of variables. See: http://java.sun.com/docs/books/tutorial/i18n/format/messageFormat.html
-* All keys must consist of lowercase letters, numbers, and periods only (to be consistent!)
-* Any changes to property names in a release need to be communicated to the plugin users via comment to http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin
-
-See also:
-
-* http://bugs.sakaiproject.org/confluence/display/I18N/How+to+write+Internationalized+Tools+in+Sakai
+See:
+* http://confluence.atlassian.com/display/DISC/i18n+in+Confluence+Plugin+Development
 * http://java.sun.com/docs/books/tutorial/i18n/format/messageFormat.html
 * http://java.sun.com/docs/books/tutorial/i18n/index.html
 * http://java.sun.com/docs/books/tutorial/i18n/intro/checklist.html
