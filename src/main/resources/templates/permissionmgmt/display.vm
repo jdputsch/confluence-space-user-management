@@ -121,7 +121,6 @@
 					if(!document.forms['bulkEdit'].elements[3].checked && !document.forms['bulkEdit'].elements[4].checked){
 						valid = false;					
 						bcl.addClass("attention");
-						bcl.innerHTML = "Here";
 					} else {
 						bcl.removeClass("attention");
 					}
@@ -151,6 +150,7 @@
 				}
 			}
 			
+			YAHOO.util.Event.addListener("trashGroup", "click", trashLinkInterception);
 			YAHOO.util.Event.addListener(window, "load", YAHOO.ifs.init);
 		</script>
 
