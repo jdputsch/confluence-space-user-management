@@ -53,12 +53,26 @@ public class LazyLoadingUserByUsernamePager implements Pager {
     private UserAccessor userAccessor;
 
     public boolean isEmpty() {
+        Pager usernamePager = getUsernamePager();
+        if (usernamePager != null) {
+            usernamePager.nextPage();
+        }
+
         return getUsernamePager().isEmpty();
     }
 
-    //TODO: Warning! This is not currently implemented to return User instead of username, so I think PagerUtils may not work...
     public Iterator iterator() {
-        return getUsernamePager().iterator();
+        Pager usernamePager = getUsernamePager();
+        if (usernamePager != null) {
+            LazyLoadingUserByUsernamePagerIterator iterator = new LazyLoadingUserByUsernamePagerIterator();
+
+            iterator.setUserAccessor(getUserAccessor());
+            iterator.setUsernamePagerIterator(getUsernamePager().iterator());
+                        
+            return iterator;
+        }
+
+        return new ArrayList().iterator();
     }
 
     public List getCurrentPage() {
@@ -85,23 +99,44 @@ public class LazyLoadingUserByUsernamePager implements Pager {
     }
 
     public void nextPage() {
-        getUsernamePager().nextPage();
+        Pager usernamePager = getUsernamePager();
+        if (usernamePager != null) {
+            usernamePager.nextPage();
+        }
     }
 
     public boolean onLastPage() {
-        return getUsernamePager().onLastPage();
+        Pager usernamePager = getUsernamePager();
+        if (usernamePager != null) {
+            return usernamePager.onLastPage();
+        }
+
+        return true;
     }
 
     public void skipTo(int i) throws PagerException {
-        getUsernamePager().skipTo(i);
+        Pager usernamePager = getUsernamePager();
+        if (usernamePager != null) {
+            usernamePager.skipTo(i);
+        }
     }
 
     public int getIndex() {
-        return getUsernamePager().getIndex();
+        Pager usernamePager = getUsernamePager();
+        if (usernamePager != null) {
+            return usernamePager.getIndex();
+        }
+
+        return 0;
     }
 
     public int getIndexOfFirstItemInCurrentPage() {
-        return getUsernamePager().getIndexOfFirstItemInCurrentPage();
+        Pager usernamePager = getUsernamePager();
+        if (usernamePager != null) {
+            return usernamePager.getIndexOfFirstItemInCurrentPage();
+        }
+
+        return 0;
     }
 
     public Pager getUsernamePager() {

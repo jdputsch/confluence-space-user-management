@@ -1367,7 +1367,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 ServiceContext serviceContext = createServiceContext();
                 pager = this.getUserManagementService().findUsersForGroup(groupName, serviceContext);
             } catch (Throwable t) {
-                LogUtil.errorWithRemoteUserInfo(log, "Failed finding users", t);
+                addActionError(getText("manager.error.usersnotfound"));
+                LogUtil.errorWithRemoteUserInfo(log, "Failed finding users for groupName '" + groupName + "'", t);
             }
 
             setUsers(createPagerPaginationSupport(pager));

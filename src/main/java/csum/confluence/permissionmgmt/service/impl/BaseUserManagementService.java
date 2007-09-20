@@ -151,15 +151,24 @@ public abstract class BaseUserManagementService implements UserManagementService
         return results;
     }
 
-    public Pager findUsersForGroup(String groupName, ServiceContext context) {
+    public Pager findUsersForGroup(String groupName, ServiceContext context) throws FindException {
         log.debug("findUsersForGroup(groupName) called. groupName='" + groupName + "'");
         Group group = userAccessor.getGroup(groupName);
+        if (group == null) {
+            throw new FindException("Group '" + groupName + "' not found");
+        }
         return findUsersForGroup(group);
     }
 
-    private Pager findUsersForGroup(Group group) {
+    private Pager findUsersForGroup(Group group) throws FindException {
         log.debug("findUsersForGroup(Group) called.");
+        if (group == null) {
+            throw new FindException("Group was null");
+        }
         Pager usernamePager = userAccessor.getMemberNames(group);
+        if (usernamePager == null) {
+            throw new FindException("Did not find users for group '" + group.getName() + "'");
+        }
         LazyLoadingUserByUsernamePager userPager = new LazyLoadingUserByUsernamePager();
         userPager.setUsernamePager(usernamePager);
         userPager.setUserAccessor(this.userAccessor);
