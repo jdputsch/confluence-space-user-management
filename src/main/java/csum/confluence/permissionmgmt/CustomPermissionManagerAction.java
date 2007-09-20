@@ -50,6 +50,7 @@ import csum.confluence.permissionmgmt.service.CustomPermissionServiceManager;
 import csum.confluence.permissionmgmt.service.GroupManagementService;
 import csum.confluence.permissionmgmt.service.UserManagementService;
 import csum.confluence.permissionmgmt.service.exception.ServiceException;
+import csum.confluence.permissionmgmt.service.exception.UsersNotFoundException;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryLookupType;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
@@ -665,8 +666,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             }
         }
 
-        log.debug("Starting execute() users");
-        debug(getUsers());
+        if (log.isDebugEnabled()) {
+            log.debug("Starting execute() users");
+            debug(getUsers());
+        }
 
         populateDataUnlessCached();
 
@@ -725,8 +728,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             result = this.manage(context, serviceContext);
         }
 
-        log.debug("Ending execute() users");
-        debug(getUsers());
+        if (log.isDebugEnabled()) {
+            log.debug("Ending execute() users");
+            debug(getUsers());
+        }
 
         // note: data needs to get updated even if was error, because could have been partially updated
         if (paramMap.get(ADMIN_ACTION_PARAMNAME) != null) {
@@ -1059,6 +1064,12 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
             // note: is normal at times not to have an action (selecting group for example)
         }
+        catch (UsersNotFoundException e) {
+            LogUtil.debugWithRemoteUserInfo(log, "User(s) not found", e);
+            resultList.add(e.getMessage());
+            setActionErrors(resultList);
+            return ERROR;
+        }
         catch (ServiceException e) {
             LogUtil.errorWithRemoteUserInfo(log, "Service exception", e);
             resultList.add(e.getMessage());
@@ -1323,7 +1334,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void debug(PagerPaginationSupport pps) {
-        if (pps!=null) {
+        if (log.isDebugEnabled() && pps!=null) {
             log.debug( "pps hashCode=" + pps.hashCode());
             log.debug( "pps.getTotal()=" + pps.getTotal() );
             //log.debug( "pps.getItems() (following lines)" );
@@ -1332,16 +1343,18 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void debug(Pager pager) {
-        if (pager!=null) {
-            log.debug( "pager hashCode=" + pager.hashCode());
-            log.debug( "PagerUtils.count(pager)=" + PagerUtils.count(pager));
-            //log.debug( "pager.getIndex()=" + pager.getIndex());
-            //log.debug( "pager.getIndexOfFirstItemInCurrentPage()=" + pager.getIndexOfFirstItemInCurrentPage());
-            //log.debug( "pager.isEmpty()=" + pager.isEmpty());
-            //log.debug( "pager.onLastPage()=" + pager.onLastPage());
-        }
-        else {
-            log.debug("pager was null");
+        if (log.isDebugEnabled()) {
+            if (pager!=null) {
+                log.debug( "pager hashCode=" + pager.hashCode());
+                log.debug( "PagerUtils.count(pager)=" + PagerUtils.count(pager));
+                //log.debug( "pager.getIndex()=" + pager.getIndex());
+                //log.debug( "pager.getIndexOfFirstItemInCurrentPage()=" + pager.getIndexOfFirstItemInCurrentPage());
+                //log.debug( "pager.isEmpty()=" + pager.isEmpty());
+                //log.debug( "pager.onLastPage()=" + pager.onLastPage());
+            }
+            else {
+                log.debug("pager was null");
+            }
         }
     }
 
@@ -1659,7 +1672,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public void logPps(PagerPaginationSupport pps) {
-        if (pps!=null) {
+        if (log.isDebugEnabled() && pps!=null) {
             log.debug("VELOCITY SHOWING USERS " + pps.hashCode());
             debug(pps);
         }

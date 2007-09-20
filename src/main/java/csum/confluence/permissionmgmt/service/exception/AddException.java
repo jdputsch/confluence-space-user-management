@@ -35,18 +35,18 @@ package csum.confluence.permissionmgmt.service.exception;
 public class AddException extends ServiceException {
 
     public AddException() {
-        super();    //To change body of overridden methods use File | Settings | File Templates.
+        super();
     }
 
     public AddException(String string) {
-        super(string);    //To change body of overridden methods use File | Settings | File Templates.
+        super(string);
     }
 
     public AddException(String string, Throwable throwable) {
-        super(string, throwable);    //To change body of overridden methods use File | Settings | File Templates.
+        super(string, throwable);
     }
 
     public AddException(Throwable throwable) {
-        super(throwable);    //To change body of overridden methods use File | Settings | File Templates.
+        super(throwable);
     }
 }

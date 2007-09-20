@@ -35,6 +35,7 @@ import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.exception.ServiceAuthenticationException;
+import csum.confluence.permissionmgmt.service.exception.UsersNotFoundException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
@@ -60,7 +61,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
 
     private Log log = LogFactory.getLog(this.getClass());
 
-    public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws AddException, ServiceAuthenticationException {
+    public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws UsersNotFoundException, AddException, ServiceAuthenticationException {
         log.debug("addUsersByUsernameToGroupsByGroupname() called. " +
                 "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
                 ", groupnames=" + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
@@ -137,8 +138,13 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
 
         // If we failed, throw exception
         List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
-        if (usersNotFound.size() > 0 || groupsNotFound.size() > 0) {
-            throw new AddException(getAddUsersByUsernameToGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipAdditionProblems, context));
+        if (usersNotFound.size() > 0 && groupsNotFound.size() == 0 && userIdToGroupNameMapForMembershipAdditionProblems.size() == 0) {
+            // a less critical error that we don't want to log the same way
+            throw new UsersNotFoundException(context.getText("manager.error.usersnotfound") + ": " +
+                    StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".");
+        }
+        else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipAdditionProblems.size() > 0) {
+            throw new AddException(getRemoveUsersByUsernameFromGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipAdditionProblems, context));
         }
     }
 
@@ -206,7 +212,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
         }
     }
 
-    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws RemoveException, ServiceAuthenticationException {
+    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws UsersNotFoundException, RemoveException, ServiceAuthenticationException {
         log.debug("removeUsersByUsernameFromGroups() called. " +
                 "usernames=" + StringUtil.convertCollectionToCommaDelimitedString(userNames) +
                 ", groupnames=" + StringUtil.convertCollectionToCommaDelimitedString(groupNames));
@@ -253,7 +259,12 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
 
         // If we failed, throw exception
         List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
-        if (usersNotFound.size() > 0 || groupsNotFound.size() > 0) {
+        if (usersNotFound.size() > 0 && groupsNotFound.size() == 0 && userIdToGroupNameMapForMembershipRemovalProblems.size() == 0) {
+            // a less critical error that we don't want to log the same way
+            throw new UsersNotFoundException(context.getText("manager.error.usersnotfound") + ": " +
+                    StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".");
+        }
+        else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipRemovalProblems.size() > 0) {
             throw new RemoveException(getRemoveUsersByUsernameFromGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipRemovalProblems, context));
         }
     }

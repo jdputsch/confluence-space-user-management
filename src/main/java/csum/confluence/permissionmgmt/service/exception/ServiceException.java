@@ -41,19 +41,19 @@ public class ServiceException extends Exception {
     List throwables = new ArrayList();
 
     public ServiceException() {
-        super();    //To change body of overridden methods use File | Settings | File Templates.
+        super();
     }
 
     public ServiceException(String string) {
-        super(string);    //To change body of overridden methods use File | Settings | File Templates.
+        super(string);
     }
 
     public ServiceException(String string, Throwable throwable) {
-        super(string, throwable);    //To change body of overridden methods use File | Settings | File Templates.
+        super(string, throwable);
     }
 
     public ServiceException(Throwable throwable) {
-        super(throwable);    //To change body of overridden methods use File | Settings | File Templates.
+        super(throwable);
     }
 
 

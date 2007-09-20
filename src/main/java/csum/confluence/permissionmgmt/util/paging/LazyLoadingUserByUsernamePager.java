@@ -38,10 +38,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
+
 /**
  * @author Gary S. Weaver
  */
 public class LazyLoadingUserByUsernamePager implements Pager {
+
+    public final Log log = LogFactory.getLog(this.getClass());
 
     private Pager usernamePager;
     private UserAccessor userAccessor;
@@ -57,13 +63,23 @@ public class LazyLoadingUserByUsernamePager implements Pager {
 
     public List getCurrentPage() {
         List results = new ArrayList();
-        List usernames = getUsernamePager().getCurrentPage();
-        if (usernames!=null) {
-            for (int i=0; i<usernames.size(); i++) {
-                String username = (String)usernames.get(i);
-                User user = getUserAccessor().getUser(username);
-                results.add(user);
+        Pager usernamePager = getUsernamePager();
+        // must check for null here! (SUSR-54)
+        if ( usernamePager != null ) {
+            List usernames = usernamePager.getCurrentPage();
+            if (usernames!=null) {
+                for (int i=0; i<usernames.size(); i++) {
+                    String username = (String)usernames.get(i);
+                    User user = getUserAccessor().getUser(username);
+                    results.add(user);
+                }
             }
+            else {
+                log.debug("usernamePager.getCurrentPage() returned null. This may just be an empty group.");
+            }
+        }
+        else {
+            LogUtil.warnWithRemoteUserInfo(log, "usernamePager was null. Either was an empty group or an API issue. Look in debug logging for the groupname to look it up and be sure.");
         }
         return results;
     }

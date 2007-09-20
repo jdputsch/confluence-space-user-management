@@ -69,6 +69,22 @@ public class LogUtil {
         log.warn(message + getUserInfoString(), t);
     }
 
+    public static void infoWithRemoteUserInfo(Category log, String message) {
+        log.info(message + getUserInfoString());
+    }
+
+    public static void infoWithRemoteUserInfo(Category log, String message, Throwable t) {
+        log.info(message + getUserInfoString(), t);
+    }
+
+    public static void debugWithRemoteUserInfo(Category log, String message) {
+        log.info(message + getUserInfoString());
+    }
+
+    public static void debugWithRemoteUserInfo(Category log, String message, Throwable t) {
+        log.info(message + getUserInfoString(), t);
+    }
+
     // commons logging methods
 
     public static void fatalWithRemoteUserInfo(Log log, String message) {
@@ -93,5 +109,21 @@ public class LogUtil {
 
     public static void warnWithRemoteUserInfo(Log log, String message, Throwable t) {
         log.warn(message + getUserInfoString(), t);
+    }
+
+    public static void infoWithRemoteUserInfo(Log log, String message) {
+        log.info(message + getUserInfoString());
+    }
+
+    public static void infoWithRemoteUserInfo(Log log, String message, Throwable t) {
+        log.info(message + getUserInfoString(), t);
+    }
+
+    public static void debugWithRemoteUserInfo(Log log, String message) {
+        log.debug(message + getUserInfoString());
+    }
+
+    public static void debugWithRemoteUserInfo(Log log, String message, Throwable t) {
+        log.debug(message + getUserInfoString(), t);
     }
 }
