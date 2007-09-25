@@ -85,11 +85,40 @@ public abstract class BaseUserManagementService implements UserManagementService
         return LDAPHelper.getLDAPUser(getCustomPermissionConfiguration(), userid);
     }
 
+    private static boolean isAlphanumeric(String s) {
+        if (s!=null) {
+            char[] chars = s.toCharArray();
+
+            for(int i=0; i<chars.length; i++)
+            {
+                if(  (chars[i] < 'a' || chars[i] > 'z') &&
+                        (chars[i] < 'A' || chars[i] > 'Z') &&
+                        (chars[i] < '0' || chars[i] > '9') )
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private void checkSearchForUnsupportedTerms(String searchString, AdvancedUserQueryResults results, ServiceContext context) {
+        if (searchString!=null && results!=null) {
+            // assume non-alphanumeric covers operators, conditions, multiple terms, quotes, ...
+            if (!isAlphanumeric(searchString)) {
+                results.setMessage(context.getText("manageusersadvanced.warning.unsupportedterm"));
+            }
+        }
+    }
+
     public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException {
         log.debug("findUsers() called.");
         AdvancedUserQueryResults results = new AdvancedUserQueryResults();
 
         //TODO: this is really slow with osuser search. must use http://confluence.atlassian.com/display/DOC/How+to+Improve+User+Search+Performance
+
+        checkSearchForUnsupportedTerms(advancedUserQuery.getPartialSearchTerm(), results, context);
 
         Pager pager = new DefaultPager(new ArrayList());
         if (advancedUserQuery.isUsernameSearchDefined()) {
