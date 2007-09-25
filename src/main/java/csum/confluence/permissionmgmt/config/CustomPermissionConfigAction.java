@@ -75,14 +75,14 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
         configureFormValuesWithPersistedConfig();
 
+        fixFormValues();
+
         // NOTE: the main reason for doing this and showing errors even though it might be your first time to the page
         // is that people that have already configured the plugin once before will expect errors to show up on the page
         // when they visit it, even if they didn't post to it yet.
         if(!validateConfiguration()) {
             return ERROR;
         }
-
-        fixFormValues();
 
         return super.doDefault();
     }
@@ -96,6 +96,8 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
         List resultList = new ArrayList();
 
+        fixFormValues();
+                
         if(!validateConfiguration()) {
             LogUtil.warnWithRemoteUserInfo(log, "Configuration was invalid");
             resultList.add(getText("configure.error.configurationinvalid"));
@@ -103,8 +105,6 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
             return ERROR;
         }
-
-        fixFormValues();
 
         updatePersistedConfigWithFormValues();
 
@@ -127,13 +127,15 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     public void fixFormValues()
     {
         // Set presets as config, trimming and using defaults if they make sense
-        setMaxUserIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIdsLimit", getMaxUserIDsLimit(), 20));
+        setDownTimeMessage(ConfigUtil.getTrimmedStringOrNull(getDownTimeMessage()));
+        setGroupActionsPermitted(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("groupActionsPermitted", getGroupActionsPermitted(), CustomPermissionConfigConstants.YES));
         setMaxGroupIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxGroupIdsLimit", getMaxGroupIDsLimit(), 20));
         setNewGroupNameCreationPrefixPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("newGroupNameCreationPrefixPattern", getNewGroupNameCreationPrefixPattern(), CustomPermissionConstants.DEFAULT_NEW_GROUP_NAME_PREFIX));
         setNewGroupNameCreationSuffixPattern(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("newGroupNameCreationSuffixPattern", getNewGroupNameCreationSuffixPattern(), CustomPermissionConstants.DEFAULT_NEW_GROUP_NAME_SUFFIX));
-        setPluginDown(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("pluginDown", getPluginDown(), CustomPermissionConfigConstants.NO));
-        setDownTimeMessage(ConfigUtil.getTrimmedStringOrNull(getDownTimeMessage()));
+        setMaxUserIDsLimit("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger("maxUserIdsLimit", getMaxUserIDsLimit(), 20));
         setPersonalSpaceAllowed(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("personalSpaceAllowed", getPersonalSpaceAllowed(), CustomPermissionConfigConstants.NO));
+        setPluginDown(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("pluginDown", getPluginDown(), CustomPermissionConfigConstants.NO));
+        setUserSearchEnabled(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userSearchEnabled", getUserSearchEnabled(), CustomPermissionConfigConstants.YES));
 
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
