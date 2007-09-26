@@ -30,8 +30,8 @@
 package csum.confluence.permissionmgmt.config;
 
 import com.atlassian.bandana.BandanaManager;
-import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.confluence.core.ConfluenceActionSupport;
+import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.spring.container.ContainerManager;
 import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
@@ -43,9 +43,6 @@ import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
 import com.dolby.confluence.net.ldap.LDAPUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.io.StringWriter;
-import java.io.PrintWriter;
 
 /**
  * @author Gary S. Weaver
@@ -128,15 +125,15 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
      * Validatation for configuration from manager area instead of config area. Otherwise, use
      * validate(config,existingConfig).
      *
-     * @return ConfigValidationResponse
+     * @return CsumConfigValidationResponse
      */
-    public ConfigValidationResponse validate(ConfluenceActionSupport cas) {
-        return validate(this, null, null, cas);
+    public CsumConfigValidationResponse validate(ConfluenceActionSupport cas) {
+        return validate(this, null, null, cas, false);
     }
 
-    public static ConfigValidationResponse validate(CustomPermissionConfigurable config, CustomPermissionConfigurable existingConfig, String remoteUser, ConfluenceActionSupport cas) {
+    public static CsumConfigValidationResponse validate(CustomPermissionConfigurable config, CustomPermissionConfigurable existingConfig, String remoteUser, ConfluenceActionSupport cas, boolean shouldTestExternalServices) {
 
-        ConfigValidationResponse result = new ConfigValidationResponse();
+        CsumConfigValidationResponse result = new CsumConfigValidationResponse();
         result.setValid(true);
         
 		String userMgrLocation = config.getUserManagerLocation();
@@ -154,15 +151,12 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 		//Following information needs to be check only if Wiki User Management is delegated to Jira
 		if(isUserManagerLocationSet && userManagerLocationIsJira)
 		{
-			boolean testSoapService = true;
-            if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUrl())) {
-                testSoapService = false;
+			if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUrl())) {
                 result.addFieldError("jiraSoapUrl", cas.getText("configure.error.jirasoapurlempty"));
                 result.setValid(false);
             }
 
             if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUsername())) {
-                testSoapService = false;
                 result.addFieldError("jiraSoapUsername", cas.getText("configure.error.jirasoapusernameempty"));
                 result.setValid(false);
             }
@@ -175,13 +169,12 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 jiraSoapPassword = existingConfig.getJiraSoapPassword();
             }
             else {
-                testSoapService = false;
                 result.addFieldError("jiraSoapPassword", cas.getText("configure.error.jirasoappasswordnull"));
                 result.setValid(false);
             }
 
             // test connection
-            if (testSoapService) {
+            if (shouldTestExternalServices && result.isValid()) {
                 try {
                     JiraSoapServiceServiceLocator jiraSoapServiceGetter = new JiraSoapServiceServiceLocator();
                     jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(config.getJiraSoapUrl());
@@ -265,7 +258,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
                 // narrowing filter expression is configurable but is optional and don't even care if it is null or empty
 
-                if (result.isValid())
+                if (shouldTestExternalServices && result.isValid())
                 {
                     try {
                         LDAPUser usr = LDAPHelper.getLDAPUser(config, ldapConfigTestUsername);

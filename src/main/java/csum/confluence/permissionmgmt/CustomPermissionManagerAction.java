@@ -43,7 +43,7 @@ import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
 import com.opensymphony.webwork.ServletActionContext;
-import csum.confluence.permissionmgmt.config.ConfigValidationResponse;
+import csum.confluence.permissionmgmt.config.CsumConfigValidationResponse;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.CustomPermissionServiceManager;
@@ -1237,10 +1237,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     //	return PagerUtils.count(userAccessor.getMemberNames(userAccessor.getGroup(grpName)));
     //}
 
-    public ConfigValidationResponse getConfigValidationResponse() {
+    public CsumConfigValidationResponse getConfigValidationResponse() {
         log.debug("getConfigValidationResponse() called");
 
-        ConfigValidationResponse resp = this.getCustomPermissionConfiguration().validate(this);
+        CsumConfigValidationResponse resp = this.getCustomPermissionConfiguration().validate(this);
         log.debug("getConfigValidationResponse.isValid = " + resp.isValid());
         return resp;
     }

@@ -35,7 +35,7 @@ import java.util.TreeMap;
 /**
  * @author Gary S. Weaver
  */
-public class ConfigValidationResponse {
+public class CsumConfigValidationResponse {
 
     private boolean isValid;
 
