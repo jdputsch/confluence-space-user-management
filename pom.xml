@@ -158,7 +158,13 @@
             <version>2.5.3</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+           <groupId>ofbcore</groupId>
+           <artifactId>ofbcore-entity</artifactId>
+           <version>2.1.1-atlassian-16Oct06</version>
+           <scope>provided</scope>
+       </dependency> 
+        
         <!-- NOT NEEDED, left for info
         <dependency>
             <groupId>com.atlassian.config</groupId>
@@ -221,7 +227,7 @@
         <dependency>
             <groupId>com.dolby.confluence.net</groupId>
             <artifactId>ldaputil</artifactId>
-            <version>1.0.7</version>
+            <version>1.0.6</version>
         </dependency> 
 
         <dependency>

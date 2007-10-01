@@ -56,8 +56,16 @@ public class LDAPHelper
 			LDAPException
 	{
         Properties builtConfig=buildConfig(config);
-        LDAPLookupUtil lookup = new LDAPLookupUtil(builtConfig);
-        LDAPUser u = lookup.getUserDetails(userid);
+        LDAPUser u = null;
+
+        // this lock is on a static object (this class, not the instance) so that it is JVM-wide
+        // error this is intended to fix: "SAX problem: FWK005 parse may not be called while parsing."
+        // error case: http://developer.atlassian.com/jira/browse/SUSR-58
+        // TODO: ldaputil or the libraries it uses need to be fixed to avoid locking like this
+        synchronized (LDAPHelper.class) {
+            LDAPLookupUtil lookup = new LDAPLookupUtil(builtConfig);
+            u = lookup.getUserDetails(userid);
+        }
         return u;
 	}
 	

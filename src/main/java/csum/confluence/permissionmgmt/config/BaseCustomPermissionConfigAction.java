@@ -32,11 +32,15 @@ package csum.confluence.permissionmgmt.config;
 import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.core.ConfluenceActionSupport;
 import csum.confluence.permissionmgmt.CsumConfluenceActionSupport;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Gary S. Weaver
  */
 public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSupport implements Administrative, CustomPermissionConfigurable {
+
+    private Log log = LogFactory.getLog(this.getClass());
 
     private String userManagerLocation;
     private String ldapAuthUsed;

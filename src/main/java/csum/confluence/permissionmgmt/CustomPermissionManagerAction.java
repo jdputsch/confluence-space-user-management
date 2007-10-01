@@ -79,6 +79,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * The action that most of the work for the plugin centers around.
  *
@@ -87,6 +90,8 @@ import java.util.TreeMap;
  */
 public class CustomPermissionManagerAction extends AbstractPagerPaginationSupportCachingSpaceAction implements SpaceAdministrative
 {
+    private Log log = LogFactory.getLog(this.getClass());
+
     private BandanaManager bandanaManager;
     private SpaceDao spaceDao;
     private CustomPermissionServiceManager customPermissionServiceManager;

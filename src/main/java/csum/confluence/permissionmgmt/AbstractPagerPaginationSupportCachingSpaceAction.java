@@ -49,9 +49,8 @@ import java.util.TreeMap;
  */
 public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends CsumAbstractSpaceAction implements SpaceAdministrative, CacheConstants {
 
+    private Log log = LogFactory.getLog(this.getClass());
     private static final Log staticlog = LogFactory.getLog(AbstractPagerPaginationSupportCachingSpaceAction.class);
-
-
 
     private String id(Object o) {
         if (o!=null) {

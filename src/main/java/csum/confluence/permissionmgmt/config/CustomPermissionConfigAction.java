@@ -43,6 +43,9 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Action to configure plugin
  * 
@@ -51,6 +54,8 @@ import java.util.ArrayList;
  */
 public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction implements Administrative
 {
+    private Log log = LogFactory.getLog(this.getClass());
+
     BandanaManager bandanaManager;
     BootstrapManager bootstrapManager;
     CustomPermissionConfiguration customPermissionConfiguration;
