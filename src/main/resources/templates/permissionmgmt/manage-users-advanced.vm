@@ -79,13 +79,10 @@
                         <th>$action.getText("manageusersadvanced.addremovefromselectedgroup", ["$action.selectedGroup"])</th>
                     </tr>
                 #foreach ($user in $searchResultUsers.page)
-                    #set ($userFullName = $generalUtil.htmlEncode($user.getFullName()))
-                    #set ($userName = $generalUtil.htmlEncode($user.getName()))
-                    #set ($userEmail = $generalUtil.maskEmail($user.getEmail()))
-                    <tr style=" #if ($velocityCount % 2 == 0) background: #f0f0f0; #end">
-                        <td><img class="icon" src="${req.contextPath}/images/icons/user_16.gif">$!userFullName</td>
-                        <td>$!userName</td>
-                        <td>$!userEmail</td>
+                    <tr #if ($velocityCount % 2 == 0) class="even" #end>
+                        <td>#if($user.fullName)<img class="icon" src="${req.contextPath}/images/icons/user_16.gif"/>$generalUtil.htmlEncode($user.fullName)#else&nbsp;#end</td>
+                        <td>#if($user.name)$generalUtil.htmlEncode($user.name)#else&nbsp;#end</td>
+                        <td>#if($user.email)<a href="mailto:$generalUtil.maskEmail($user.email)" alt='$action.getText("manageusersbasic.sendemailtouser", ["$generalUtil.maskEmail($user.email)"])'>$generalUtil.maskEmail($user.email)</a>#else&nbsp;#end</td>
                     #if($action.isMemberOfSelectedGroup($!userName))
                         #*<td><img alt="$!userName is a member of group $!{action.selectedGroup}" src="${req.contextPath}/images/icons/emoticons/check.gif"/></td>*#
                         <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!{action.selectedGroup}&users=$!userName&userSearch=1$refreshbugworkaround"><img border="0" alt="Remove $!userName from group ${action.selectedGroup}" src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
