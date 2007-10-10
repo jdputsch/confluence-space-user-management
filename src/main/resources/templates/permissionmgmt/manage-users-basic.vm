@@ -93,7 +93,7 @@
                         <td>#if($user.fullName)<img class="icon" src="${req.contextPath}/images/icons/user_16.gif"/>$generalUtil.htmlEncode($user.fullName)#else&nbsp;#end</td>
                         <td>#if($user.name)$generalUtil.htmlEncode($user.name)#else&nbsp;#end</td>
                         <td>#if($user.email)<a href="mailto:$generalUtil.maskEmail($user.email)" alt='$action.getText("manageusersbasic.sendemailtouser", ["$generalUtil.maskEmail($user.email)"])'>$generalUtil.maskEmail($user.email)</a>#else&nbsp;#end</td>
-                        <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$!userName$refreshbugworkaround"><img alt='$action.getText("manageusersbasic.removeuserfromgroup", ["$!userName", "${action.selectedGroup}"])' src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
+                        <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$user.name$refreshbugworkaround"><img alt='$action.getText("manageusersbasic.removeuserfromgroup", ["$user.name", "${action.selectedGroup}"])' src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
                     </tbody>
