@@ -82,7 +82,7 @@
 	div#csum form.pageSkip input {width:3em; display:inline;}
 	div#csum form.pageSkip input.submitBttn {width:auto; display:inline;}
 
-	div#csum form .attention {background-color:#FF7045;}
+	div#csum form .attention {background-color:#FFCCCC;}
 
 	.yui-overlay,
 	.yui-panel-container {visibility:hidden; position:absolute; z-index: 1;}

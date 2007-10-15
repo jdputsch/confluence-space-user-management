@@ -54,104 +54,103 @@
 		<link rel="stylesheet" href="$req.contextPath/download/resources/$action.pluginKey/css/csum.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
 		<script>
-			YAHOO.namespace("ifs");
+		YAHOO.namespace("ifs");
 
-			var trashLinkInterception = function(e) {
+		var trashLinkInterception = function(e) {
+			YAHOO.util.Event.preventDefault(e);
+			var targetLink = e.currentTarget;
+
+			groupTrashDialog = new YAHOO.widget.SimpleDialog("dlg", { 
+				width: "25em", 
+				//effect:[{effect:YAHOO.widget.ContainerEffect.FADE, 
+				//		duration:0.25}],
+				fixedcenter:true,
+				modal:true,
+				draggable:false } );
+			groupTrashDialog.setHeader("Confirm Group Deletion");
+			groupTrashDialog.setBody("Are you sure you want to delete this group?");
+
+			var handleYes = function() {
+			 window.location = targetLink;
+			 this.hide();
+			};
+
+			var handleNo = function() {
+			 //user cancels item deletion
+			 this.hide();
+			};
+
+			var trashButtons = [ { text:"Yes", handler:handleYes },
+							  { text:"Cancel", handler:handleNo, isDefault:true } 
+							];
+
+			groupTrashDialog.cfg.queueProperty("buttons", trashButtons);
+			groupTrashDialog.render(document.body);
+		};
+		
+		function validateForm(e, form)
+		{
+			var valid = true;
+			var fields = form.getElementsByTagName("input");
+
+
+			// Check text input				
+			for ( var i = 0; i < fields.length; i++ ){
+				if (fields[i].getAttribute("required") === "true" && fields[i].getAttribute("type") === "text" && fields[i].value == "" && fields[i].id !== "") {
+					var field = new YAHOO.util.Element(fields[i].id);
+					field.addClass("attention");
+					valid = false;		
+				} else if (fields[i].hasAttribute("required") && fields[i].id !== "") {
+					var field = new YAHOO.util.Element(fields[i].id);
+					field.removeClass("attention");
+				}
+			}
+
+			var isBulkForm;
+			for ( var i = 0; i < fields.length; i++ ){
+				if (fields[i].getAttribute("type") === "radio") {
+					isBulkForm = true;
+				}
+			}
+
+			if (isBulkForm === true){
+				// Handle bulk form radio buttons
+				var bcl = new YAHOO.util.Element('bulkChooseWrap');
+				if(!document.forms['bulkEdit'].elements[3].checked && !document.forms['bulkEdit'].elements[4].checked){
+					valid = false;					
+					bcl.addClass("attention");
+				} else {
+					bcl.removeClass("attention");
+				}
+
+				// Handle bulk check boxes
+				var listSelected;
+				for ( var i = 0; i < fields.length; i++ ){
+					if (fields[i].getAttribute("type") === "checkbox" && fields[i].checked === true) {
+						listSelected = true;
+					}
+				}
+
+				var cbl = new YAHOO.util.Element('bulkCheckboxWrap');
+				if(listSelected !== true){
+					valid = false;					
+					cbl.addClass("attention");
+				} else {
+					cbl.removeClass("attention");
+				}
+
+			} //End extra bulk checks
+
+
+			// If all tests have passed continue form submission
+			if (valid !== true) {
+				alert("Please correct the fields with an red background.");
 				YAHOO.util.Event.preventDefault(e);
-				var targetLink = e.currentTarget;
-
-				groupTrashDialog = new YAHOO.widget.SimpleDialog("dlg", { 
-					width: "25em", 
-					//effect:[{effect:YAHOO.widget.ContainerEffect.FADE, 
-					//		duration:0.25}],
-					fixedcenter:true,
-					modal:true,
-					draggable:false } );
-				groupTrashDialog.setHeader("Confirm Group Deletion");
-				groupTrashDialog.setBody("Are you sure you want to delete this group?");
-
-				var handleYes = function() {
-				 window.location = targetLink;
-				 this.hide();
-				}
-
-				var handleNo = function() {
-				 //user cancels item deletion; this method
-				 //would handle the cancellation of the
-				 //process.
-				 this.hide();
-				}
-
-				var trashButtons = [ { text:"Yes", handler:handleYes },
-								  { text:"Cancel", handler:handleNo, isDefault:true } 
-								];
-
-				groupTrashDialog.cfg.queueProperty("buttons", trashButtons);
-				groupTrashDialog.render(document.body);
 			}
-			
-			function validateForm(e, form)
-			{
-				var valid = true;
-				var fields = form.getElementsByTagName("input");
-
-
-				// Check text input				
-				for ( var i = 0; i < fields.length; i++ ){
-					if (fields[i].getAttribute("required") == "true" && fields[i].getAttribute("type") === "text" && fields[i].value == "" && fields[i].id != "") {
-						var field = new YAHOO.util.Element(fields[i].id);
-						field.addClass("attention");
-						valid = false;		
-					} else if (fields[i].hasAttribute("required") && fields[i].id != "") {
-						var field = new YAHOO.util.Element(fields[i].id);
-						field.removeClass("attention");
-					}
-				}
-
-				var isBulkForm;
-				for ( var i = 0; i < fields.length; i++ ){
-					if (fields[i].getAttribute("type") === "radio") {
-						isBulkForm = true;
-					}
-				}
-
-				if (isBulkForm === true){
-					// Handle bulk form radio buttons
-					var bcl = new YAHOO.util.Element('bulkChooseWrap');
-					if(!document.forms['bulkEdit'].elements[3].checked && !document.forms['bulkEdit'].elements[4].checked){
-						valid = false;					
-						bcl.addClass("attention");
-					} else {
-						bcl.removeClass("attention");
-					}
-
-					// Handle bulk check boxes
-					var listSelected;
-					for ( var i = 0; i < fields.length; i++ ){
-						if (fields[i].getAttribute("type") === "checkbox" && fields[i].checked === true) {
-							listSelected = true;
-						}
-					}
-
-					var cbl = new YAHOO.util.Element('bulkCheckboxWrap');
-					if(listSelected != true){					
-						cbl.addClass("attention");
-					} else {
-						cbl.removeClass("attention");
-					}
-
-				} //End extra bulk checks
-
-
-				// If all tests have passed continue form submission
-				if (valid !== true) {
-					alert("Please correct the fields with an orange background.");
-					YAHOO.util.Event.preventDefault(e);
-				}
-			}
-			
-			YAHOO.util.Event.addListener("trashGroup", "click", trashLinkInterception);
-			YAHOO.util.Event.addListener(window, "load", YAHOO.ifs.init);
+		}
+		
+		YAHOO.util.Event.addListener("trashGroup", "click", trashLinkInterception);
+		YAHOO.util.Event.addListener(window, "load", YAHOO.ifs.init);
 		</script>
 
 		<!--[if IE]>
