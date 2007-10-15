@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Maven">
 	<bannerLeft>
-		<name>Maven</name>
+		<name>C.S.U.M. Plugin</name>
 		<src>
-			http://maven.apache.org/maven2/images/apache-maven-project-2.png
+			http://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk/src/site/resources/images/csum_logo.jpg
 		</src>
-		<href>http://maven.apache.org/</href>
+		<href>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</href>
 	</bannerLeft>
-	<bannerRight>
-		<src>
-			http://maven.apache.org/maven2/images/maven-logo-2.gif
-		</src>
-	</bannerRight>
+        <bannerRight>
+                <src>
+                        http://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk/src/site/resources/images/csum_logo.jpg
+                </src>
+        </bannerRight>
 	<body>
 		<menu name="Custom Space User Management">
 			<item name="Dependency Graph" href="/graphs/csum-depgraph.png"/>
 		</menu>
 		
 		${reports}
-
 	</body>
 </project>
