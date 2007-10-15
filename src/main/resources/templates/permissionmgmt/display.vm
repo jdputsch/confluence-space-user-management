@@ -204,7 +204,8 @@
 		## which already includes it
 		##parse ( "/template/includes/actionerrors.vm" )
        <!-- Display result of operation if successful -->
-		#parse ( "/template/includes/actionmessages.vm" )
+        ## NOTE: This template is required for Confluence 2.3.x compatibility. (In later versions, Confluence implemented it.)
+		#parse ( "/templates/permissionmgmt/actionmessages.vm" )
 	</div>
 
     #set($configValidationResponse=$action.configValidationResponse)
