@@ -33,8 +33,7 @@
 
 		#set ($messages = $stack.findValue("actionMessages"))
 		#if($messages && ($messages.size() > 0) )
-		    ## In later versions of Confluence the div class was successBpx
-		    <div class="success">
+		    <div class="successBox">
 		    <ul>
 		        #foreach($message in $messages)
 		         	#if(!($!message == "") ) ## We will display message only if it's not null or empty string.

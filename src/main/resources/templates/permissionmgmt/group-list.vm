@@ -50,6 +50,8 @@
             <div style="text-align: center">
                 #parse ( "/templates/permissionmgmt/group-pager-actions.vm" )
             </div>
+            <br/>
+            <div id="groupnamenote" class="smalltext">$action.getText("manager.groupnamenote", ["$generalUtil.htmlEncode($key)", "$generalUtil.htmlEncode($action.spacePattern)"])</div>
             #else
                 $action.getText("grouplist.error.nogroupsmatch", ["$generalUtil.htmlEncode($key)", "$generalUtil.htmlEncode($action.spacePattern)"])
             #end

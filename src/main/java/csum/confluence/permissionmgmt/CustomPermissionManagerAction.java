@@ -1556,7 +1556,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         Space space = getSpace();
         String result = null;
         if (space != null) {
-            result = GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getUserMatchingPattern(), getSpace().getKey());
+            String lowercaseSpaceKey = getSpace().getKey().toLowerCase();
+            result = GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), lowercaseSpaceKey) +
+                    "*" +
+                    GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), lowercaseSpaceKey);
         }
 
         return result;

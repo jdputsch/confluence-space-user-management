@@ -43,7 +43,6 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT = "ext.delegateusermgmt.maxuserids.limit.value";
     public static final String DELEGATE_USER_MGMT_MAXGROUPIDS_LIMIT = "ext.delegateusermgmt.maxgroupids.limit.value";
     public static final String DELEGATE_USER_MGMT_PLUGIN_STATUS = "ext.delegateusermgmt.plugin.status";
-    public static final String DELEGATE_USER_MGMT_User_MATCHING_PATTERN = "ext.delegateusermgmt.User.matching.pattern";
     public static final String DELEGATE_USER_MGMT_DOWNTIME_MESSAGE = "ext.delegateusermgmt.downtime.message.value";
     public static final String DELEGATE_USER_MGMT_GROUP_ACTIONS_PERMITTED = "ext.delegateusermgmt.group.actions.permitted.value";
     public static final String DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_PREFIX_PATTERN = "ext.delegateusermgmt.new.group.name.creation.prefix.pattern";

@@ -393,14 +393,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXGROUPIDS_LIMIT, maxGroupIDsLimit);
     }
 
-    public String getUserMatchingPattern() {
-        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_User_MATCHING_PATTERN);
-    }
-
-    public void setUserMatchingPattern(String UserMatchingPattern) {
-        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_User_MATCHING_PATTERN, UserMatchingPattern);
-    }
-
     public String getPluginDown() {
         return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PLUGIN_STATUS);
     }
