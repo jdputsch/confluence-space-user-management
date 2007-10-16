@@ -8,10 +8,11 @@
 		<href>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</href>
 	</bannerLeft>
 	<body>
-		<menu name="Custom Space User Management">
+                <!-- commenting because can't get this to work
+                <menu name="Custom Space User Management">
 			<item name="Dependency Graph" href="/graphs/csum-depgraph.png"/>
 		</menu>
-		
+                -->
 		${reports}
 	</body>
 </project>

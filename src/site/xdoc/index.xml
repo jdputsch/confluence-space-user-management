@@ -2,19 +2,14 @@
 <document>
 	<properties>
 		<title>Welcome to the Custom Space User Management project</title>
-		<author email="raju.kadam@gmail.com">Rajendra Kadam</author>
-		<author email="gary.weaver@duke.edu">Gary S. Weaver</author>
-		<author email="renald.provey@duke.edu">Peter R.</author>
-		<author email="axb@dolby.co.uk">Andy Brook</author>
 	</properties>
 	<body>
 		<section name="Welcome to the Custom Space User Management project">
 			<h3>Introduction</h3>
+			Welcome to the C.S.U.M. Confluence plugin project maven documentation. This contains technical details about the plugin project itself for those interested. You are probably more interested in the <a href="http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin">main project page</a>. Rajendra also took a really great <a href="images/csum_team.jpg">team picture</a> if you're interested in seeing our ugly mugs.
 			
 			<h3>Description</h3>
-			<P>
-			stuff
-			</P>
+			This plugin gives Space Administrators ability to manage users and user-groups associated to their Wiki Spaces.
 			
 			<H3>Bugs/Issues</H3>
 			Current bugs/issues can be found and new ones reported through the main Atlassian Developer JIRA <A HREF="http://developer.atlassian.com/jira/browse/SUSR">SUSR</A> project.			
