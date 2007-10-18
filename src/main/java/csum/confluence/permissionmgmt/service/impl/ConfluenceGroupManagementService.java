@@ -30,25 +30,33 @@
 package csum.confluence.permissionmgmt.service.impl;
 
 import com.atlassian.confluence.security.SpacePermission;
+import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.user.Group;
+import com.atlassian.bandana.BandanaManager;
+import com.atlassian.spring.container.ContainerManager;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
-import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
 public class ConfluenceGroupManagementService extends BaseGroupManagementService {
+
+    private SpacePermissionManager spacePermissionManager;
+
+    public ConfluenceGroupManagementService() {
+        setSpacePermissionManager((SpacePermissionManager) ContainerManager.getComponent("spacePermissionManager"));
+    }
 
     public void addGroups(List groupNames, ServiceContext context) throws AddException {
         log.debug("addGroups() called. groupName='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");
@@ -115,7 +123,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
             if (!grpName.startsWith("confluence") && isPatternMatch) {
                 Group group = userAccessor.getGroup(grpName);
                 if (group != null) {
-                    userAccessor.removeGroup(group);
+                    removeGroup_Confluence2_6_0Compatible(group);
                     success.add(grpName);
                 } else {
                     didNotExist.add(grpName);
@@ -149,5 +157,34 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
             }
             throw new RemoveException(msg);
         }
+    }
+
+    private void removeGroup_Confluence2_6_0Compatible(Group group) {
+        if (group!=null) {
+            // Workaround for http://jira.atlassian.com/browse/CONF-9623
+            // Confluence 2.6.0 has a bug where removeGroup fails if space permissions are not removed for the group
+            // prior to deletion of the group. This was not a problem in Confluence 2.5.x
+
+            log.debug("Removing space permissions from group " + group.getName() + " as (workaround for CONF-9623)");
+            log.debug("Calling spacePermissionManager.getAllPermissionsForGroup(" + group.getName() + ")");
+            List perms = spacePermissionManager.getAllPermissionsForGroup(group.getName());
+            if (perms!=null) {
+                for (int i=0; i<perms.size(); i++) {
+                    SpacePermission perm = (SpacePermission)perms.get(i);
+                    log.debug("Calling spacePermissionManager.removePermission(" + perm + ")");
+                    spacePermissionManager.removePermission(perm);
+                }
+            }
+            log.debug("Calling userAccessor.removeGroup(...)");
+            userAccessor.removeGroup(group);
+        }
+    }
+
+    public SpacePermissionManager getSpacePermissionManager() {
+        return spacePermissionManager;
+    }
+
+    public void setSpacePermissionManager(SpacePermissionManager spacePermissionManager) {
+        this.spacePermissionManager = spacePermissionManager;
     }
 }
