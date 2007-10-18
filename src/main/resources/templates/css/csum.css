@@ -49,7 +49,8 @@
     div#csum table tr.even {background-color:#EEE;}
     div#csum table tr th {font-weight:bold; color:#036; text-align:left; border-bottom:2px solid #036;}
     div#csum table tr td {padding:1px 2px;}
-    div#csum table tr td.delete {width:4em; text-align:center;}
+    div#csum table tr td.delete {width:4em; text-align:left;}
+	div#csum table tr td.delete img {margin-left:1.5em;}
 
     div#csum div#bulkEdit {}
     div#csum form#bulkEdit fieldset label {display: block; margin: 1em 0 0 0;}
