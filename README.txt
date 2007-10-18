@@ -41,6 +41,7 @@ mvn idea:idea
 
 To generate an Eclipse project:
 mvn eclipse:eclipse
+(but David Peterson recommends Codehaus M2 Eclipse plugin because it includes all dependencies in single library and updates jars when pom.xml is changed)
 
 To build in Netbeans:
 mvn netbeans-freeform:generate-netbeans-project
