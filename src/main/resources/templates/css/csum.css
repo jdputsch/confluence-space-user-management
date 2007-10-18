@@ -1,4 +1,4 @@
-	div#csum {width:800px; margin:0 10px;}
+	div#csum {margin:0 10px;}
     div#csum h2 {background:none; font-size: 1.1em; font-weight: bold; color:#036; border-bottom:1px solid #036;}
     div#csum a img {border:none;}
 
@@ -21,7 +21,7 @@
 
 	div#csum div#header {margin:0 0 20px 0;}
 
-    div#csum div#groups {display:block; float:left; margin:0; padding:0; width:250px;}
+    div#csum div#groups {display:block; float:left; margin:0; padding:0; width:25%;}
     div#csum div#groups ul {margin:0; padding:0;}
     div#csum div#groups ul li {list-style:none;}
     div#csum div#groups ul li a {display:block; background:url(${req.contextPath}/images/icons/group_16.gif) no-repeat 3px 3px; clear:both; line-height:1.5; padding:4px 0 4px 25px; color:#036; text-decoration:underline;}
@@ -30,12 +30,15 @@
     div#csum div#groups ul li a:hover {background-color:#F0F0F0;}
     div#csum div#groups ul li a:active {background-color:#DDD;}
 
+	div#csum div#groupnamenote ul {margin:0 0 1em 2em;}
+	div#csum div#groupnamenote ul li {list-style: disc outside;}
+
     div.mode {float:right; padding:3px 3px 0 0;}
     div.mode a {text-decoration:none;}
     div.mode a:hover {color:#333;}
     div.mode a.selected {font-weight:bold;}
 
-    div#csum div#groupEditor {float:right; width:520px; padding:0 10px;}
+    div#csum div#groupEditor {float:right; width:73%; padding:0;}
 
     div#csum div.groupOpts {text-align:right;}
     div#csum div.groupOpts a {text-decoration:none;}
