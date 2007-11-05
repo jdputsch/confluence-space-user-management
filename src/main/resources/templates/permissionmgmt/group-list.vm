@@ -33,9 +33,9 @@
             #set ($groups = ${action.groups})
             <div class="sectionHeader">
 				#*
-                <div class="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("refresh")</a></div>
+                <div class="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("csum.refresh")</a></div>
                 *#
-				<h2>$generalUtil.htmlEncode(${action.space.name}) ($generalUtil.htmlEncode($action.space.key)) $action.getText("grouplist.groups"):</h2>
+				<h2>$generalUtil.htmlEncode(${action.space.name}) ($generalUtil.htmlEncode($action.space.key)) $action.getText("csum.grouplist.groups"):</h2>
             </div>
 
             #if($groups && $groups.total>0)
@@ -52,34 +52,34 @@
             </div>
 
             #else
-                $action.getText("grouplist.error.nogroupsmatch", ["$generalUtil.htmlEncode($key)", "$generalUtil.htmlEncode($action.spacePattern)"])
+                $action.getText("csum.grouplist.error.nogroupsmatch", ["$generalUtil.htmlEncode($key)", "$generalUtil.htmlEncode($action.spacePattern)"])
             #end
 
             #if(${action.isGroupActionsPermitted})
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)$refreshbugworkaround" id="addGroupForm" name="AddGroupForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addGroups"/>
-                    <label for="groups">$action.getText("grouplist.groups.label")</label>
+                    <label for="groups">$action.getText("csum.grouplist.groups.label")</label>
                     <input type="text" name="groups" id="groupsToAdd" required="true"></input>
 
                     <ul class="formHelp">
-                        <li>$action.getText("grouplist.groups.help", ["$generalUtil.htmlEncode($action.newGroupPrefix)", "$generalUtil.htmlEncode($action.newGroupSuffix)"])</li>
+                        <li>$action.getText("csum.grouplist.groups.help", ["$generalUtil.htmlEncode($action.newGroupPrefix)", "$generalUtil.htmlEncode($action.newGroupSuffix)"])</li>
                     </ul>
 
                     <br/>
 
-                    <label class="scndryInpt" for="users">$action.getText("grouplist.users.label"):</label>
+                    <label class="scndryInpt" for="users">$action.getText("csum.grouplist.users.label"):</label>
 
                     <input id ="usersToAdd" name="users" type="text" /></input>
 
-                    <input type="submit" class="submitBttn" value='$action.getText("grouplist.commit")'></input>
+                    <input type="submit" class="submitBttn" value='$action.getText("csum.grouplist.commit")'></input>
                 </fieldset>
             </form>
 			<script type="text/javascript">
 				var addGroupForm = new YAHOO.util.Element('addGroupForm');
 				addGroupForm.addListener('submit', validateForm, addGroupForm);
 			</script>
-			<div id="groupnamenote" class="smalltext">$action.getText("manager.groupnamenote", ["$generalUtil.htmlEncode($key)", "$generalUtil.htmlEncode($action.spacePattern)"])</div>
+			<div id="groupnamenote" class="smalltext">$action.getText("csum.manager.groupnamenote", ["$generalUtil.htmlEncode($key)", "$generalUtil.htmlEncode($action.spacePattern)"])</div>
             #end
 
 ##START TEST ONLY!

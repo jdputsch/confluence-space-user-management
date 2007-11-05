@@ -166,7 +166,7 @@
 
     <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
-    $action.getText("display.alert.notallowed")
+    $action.getText("csum.display.alert.notallowed")
 
     </div>
   #elseif($action.isPluginDown())
@@ -184,7 +184,7 @@
 
     <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
-    $action.getText("display.alert.invalidspacekey")
+    $action.getText("csum.display.alert.invalidspacekey")
 
     </div>
   #elseif(!$action.remoteUser)
@@ -194,7 +194,7 @@
 
     <img src="/images/icons/emoticons/forbidden.gif" align="absmiddle" width="16" height="16">
 
-    $action.getText("display.alert.invaliduser")
+    $action.getText("csum.display.alert.invaliduser")
 
     </div>
   #else
@@ -229,10 +229,10 @@
         <div id="footer">
 				<ul>
 				#if($groups && $groups.total>0)
-			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">$action.getText("display.bulkedit")</a> </li>
+			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">$action.getText("csum.display.bulkedit")</a> </li>
 			        #*
 					#if($action.isUserSearchEnabled)
-					<li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">$action.getText("searchUsers.link.title")</a> </li>
+					<li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">$action.getText("csum.searchUsers.link.title")</a> </li>
 					#end
 					*#
 			    #end
@@ -244,16 +244,16 @@
 					#end
 					<a href="${req.contextPath}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">
 						#*<img src="${req.contextPath}/images/icons/lock_16.gif"/>*#
-						$action.getText("display.spacepermissions")</a> </li>
+						$action.getText("csum.display.spacepermissions")</a> </li>
 					#*<li>| <a href="${req.contextPath}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">
 						<img src="${req.contextPath}/images/icons/locked_pages_16.gif"/>
-						$action.getText("page.permissions.link.title")</a> </li>*#
+						$action.getText("csum.page.permissions.link.title")</a> </li>*#
 			    #end
 
                 #if($action.selectedGroup)
-                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($selectedGroup)&refresh=1">$action.getText("display.refresh")</a> </li>
+                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($selectedGroup)&refresh=1">$action.getText("csum.display.refresh")</a> </li>
                 #else
-                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("display.refresh")</a> </li>
+                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("csum.display.refresh")</a> </li>
                 #end
 			        
 				</ul>
@@ -262,21 +262,21 @@
 	            #if($availableSpaces && $availableSpaces.size()>1)
                 <form method="GET" action="docustompermissionsmanage.action" id="changeSpace" name="changeSpace">
 	                <fieldset>
-	                    <label>$action.getText("display.changespace.label"): </label>
+	                    <label>$action.getText("csum.display.changespace.label"): </label>
 	                    <select name="key">
 	                        #foreach ($availableSpace in $availableSpaces)
 	                        <option value="$availableSpace.key" #if($availableSpace.key==$action.space.key)selected="true"#end>$generalUtil.htmlEncode($availableSpace.name) ($generalUtil.htmlEncode($availableSpace.key))</option>
 	                        #end
 	                    </select>
-	                	<input type="submit" value='$action.getText("display.changespace")' class="submitBttn"/>
+	                	<input type="submit" value='$action.getText("csum.display.changespace")' class="submitBttn"/>
 	                </fieldset>
 	            </form>
 	            #end				
 		</div>
     #else
         <p class="noteMacro">
-        <p>$action.getText("display.error.adminmustconfigure") <a href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">$action.getText("display.error.adminmustconfigure.linktoconfigurator")</a>.</p>
-        <p>$action.getText("display.error.adminmustconfigure.errormessages.title"):</p>
+        <p>$action.getText("csum.display.error.adminmustconfigure") <a href="$req.contextPath/admin/plugins/custompermissionsconfig/config.action">$action.getText("csum.display.error.adminmustconfigure.linktoconfigurator")</a>.</p>
+        <p>$action.getText("csum.display.error.adminmustconfigure.errormessages.title"):</p>
             #set($fieldNameToErrorMessage=$configValidationResponse.fieldNameToErrorMessage)
             <ul>
             #foreach($configFieldName in $fieldNameToErrorMessage.keySet())

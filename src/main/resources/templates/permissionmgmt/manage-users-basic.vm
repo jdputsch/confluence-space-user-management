@@ -37,33 +37,33 @@
 #*
 				<div class="mode">
 					<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&refresh=1">
-						$action.getText("refresh")</a>
+						$action.getText("csum.refresh")</a>
 			    </div>
 *#
-				<h2>$action.getText("manageusersbasic.section.title", ["$generalUtil.htmlEncode(${action.selectedGroup})"])</h2>
+				<h2>$action.getText("csum.manageusersbasic.section.title", ["$generalUtil.htmlEncode(${action.selectedGroup})"])</h2>
 				#if(${action.isGroupActionsPermitted})
-				<a id="trashGroup" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround"><img src="${req.contextPath}/images/icons/trash_16.gif" /> $action.getText("manageusersbasic.deletegroup", ["${action.selectedGroup}"])</a>
+				<a id="trashGroup" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround"><img src="${req.contextPath}/images/icons/trash_16.gif" /> $action.getText("csum.manageusersbasic.deletegroup", ["${action.selectedGroup}"])</a>
 				#end
 			</div>
 
             #if($action.isUserSearchEnabled)
-            <a id="showAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1">&raquo; $action.getText("manageusersbasic.usersearch")</a>
+            <a id="showAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1">&raquo; $action.getText("csum.manageusersbasic.usersearch")</a>
             #end
 
             <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround" id="addUsersForm" name="ManageUsersForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addUsersToGroups"/>
                     <input type="hidden" name="groups" value="$action.selectedGroup"/>
-                    <label for="users">$action.getText("manageusersbasic.users.label", ["${action.selectedGroup}"]):</label>
+                    <label for="users">$action.getText("csum.manageusersbasic.users.label", ["${action.selectedGroup}"]):</label>
                     <input type="text" style="width:100%;" id="addUsersToGroup" name="users" required="true" />
                     ##<div id="addUserOpts"></div>
 					<ul class="formHelp">
-						<li>$action.getText("manageusersbasic.users.help")</li>
-						<li>$action.getText("manageusersbasic.users.help.commaseparatedusernames")</li>
+						<li>$action.getText("csum.manageusersbasic.users.help")</li>
+						<li>$action.getText("csum.manageusersbasic.users.help.commaseparatedusernames")</li>
 					</ul>
                     ## TODO: use Ajax and $action.findUsersWhoseNameStartsWith(partialName) to prepopulate as you type...
                     ## var quotedCommaSpaceDelimitedUsers = [$action.findUsersWhoseNameStartsWith("whatever", 5)];
-                    <input type="submit" value='$action.getText("manageusersbasic.addusers.commit")' class="submitBttn"/>
+                    <input type="submit" value='$action.getText("csum.manageusersbasic.addusers.commit")' class="submitBttn"/>
                 </fieldset>
             </form>
 			
@@ -78,10 +78,10 @@
                 <table cellspacing="0">                
                     <thead>
 						<tr>
-							<th>$action.getText("manageusersbasic.fullname")</th>
-							<th>$action.getText("manageusersbasic.username")</th>
-							<th>$action.getText("manageusersbasic.email")</th>
-							<th align="center">$action.getText("manageusersbasic.remove")</th>
+							<th>$action.getText("csum.manageusersbasic.fullname")</th>
+							<th>$action.getText("csum.manageusersbasic.username")</th>
+							<th>$action.getText("csum.manageusersbasic.email")</th>
+							<th align="center">$action.getText("csum.manageusersbasic.remove")</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -92,8 +92,8 @@
                     <tr #if ($velocityCount % 2 == 0) class="even" #end>
                         <td>#if($user.fullName)<img class="icon" src="${req.contextPath}/images/icons/user_16.gif"/>$generalUtil.htmlEncode($user.fullName)#else&nbsp;#end</td>
                         <td>#if($user.name)$generalUtil.htmlEncode($user.name)#else&nbsp;#end</td>
-                        <td>#if($user.email)<a href="mailto:$generalUtil.maskEmail($user.email)" alt='$action.getText("manageusersbasic.sendemailtouser", ["$generalUtil.maskEmail($user.email)"])'>$generalUtil.maskEmail($user.email)</a>#else&nbsp;#end</td>
-                        <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$user.name$refreshbugworkaround"><img alt='$action.getText("manageusersbasic.removeuserfromgroup", ["$user.name", "${action.selectedGroup}"])' src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
+                        <td>#if($user.email)<a href="mailto:$generalUtil.maskEmail($user.email)" alt='$action.getText("csum.manageusersbasic.sendemailtouser", ["$generalUtil.maskEmail($user.email)"])'>$generalUtil.maskEmail($user.email)</a>#else&nbsp;#end</td>
+                        <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$user.name$refreshbugworkaround"><img alt='$action.getText("csum.manageusersbasic.removeuserfromgroup", ["$user.name", "${action.selectedGroup}"])' src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
                     </tbody>
@@ -101,7 +101,7 @@
 
                 #parse ( "/templates/permissionmgmt/user-pager-actions.vm" )
             #else
-                $action.getText("manageusersbasic.nousersfoundingroup")
+                $action.getText("csum.manageusersbasic.nousersfoundingroup")
             #end
 
             </br>                        

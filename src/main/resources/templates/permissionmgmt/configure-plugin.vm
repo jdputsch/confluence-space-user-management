@@ -99,7 +99,7 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("configure.section.title")</td>
+            <td class="label" bgcolor="#f0f0f0" width="100%" colspan="2">$action.getText("csum.configure.section.title")</td>
         </tr>
         </table>
 
@@ -107,13 +107,13 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.usermanagerlocation.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.usermanagerlocation.label"):</td>
             <td>
 				#fielderror ('userManagerLocation')
                 <input type="radio" name="userManagerLocation" value="CONFLUENCE" #if ($action.userManagerLocation == "CONFLUENCE") checked="true" #end  onclick="toggleJiraSettingsInput(this)" />CONFLUENCE &nbsp;
                 <input type="radio" name="userManagerLocation" value="JIRA" #if ($action.userManagerLocation == "JIRA") checked="true" #end onclick="toggleJiraSettingsInput(this)" />JIRA
                 <p>
-                    <font size="1">$action.getText("configure.usermanagerlocation.help")</font>
+                    <font size="1">$action.getText("csum.configure.usermanagerlocation.help")</font>
                 </p>
             </td>
         </tr>
@@ -122,36 +122,36 @@
         <div id="jira_deps" style="padding-left: 80px; #if (!($action.userManagerLocation == "JIRA")) display: none; #else display: block #end">
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.jirasoapurl.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.jirasoapurl.label"):</td>
             <td>
                 #fielderror ('jiraSoapUrl')
                 <input type="text" id="jiraSoapUrl" name="jiraSoapUrl" value="$!action.jiraSoapUrl" size="120" />
                 <p>
-                    <font size="1">$action.getText("configure.jirasoapurl.help")</font>
+                    <font size="1">$action.getText("csum.configure.jirasoapurl.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.jirasoapusername.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.jirasoapusername.label"):</td>
             <td>
                 #fielderror ('jiraSoapUsername')
                 <input type="text" id="jiraSoapUsername" name="jiraSoapUsername" value="$!action.jiraSoapUsername" />
                 <p>
-                    <font size="1">$action.getText("configure.jirasoapusername.help")</font>
+                    <font size="1">$action.getText("csum.configure.jirasoapusername.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.jirasoappassword.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.jirasoappassword.label"):</td>
             <td>
                 #fielderror ('jiraSoapPassword')
                 <input type="checkbox" value="y" id="jiraSoapPasswordSet" name="jiraSoapPasswordSet" />
-                $action.getText("configure.jirasoappasswordset.label")
+                $action.getText("csum.configure.jirasoappasswordset.label")
                 <input type="password" id="jiraSoapPassword" name="jiraSoapPassword" value="$!action.jiraSoapPassword" />
                 <p>
-                    <font size="1">$action.getText("configure.jirasoappassword.help")</font>
+                    <font size="1">$action.getText("csum.configure.jirasoappassword.help")</font>
                 </p>
             </td>
         </tr>
@@ -160,13 +160,13 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.ldapauthused.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.ldapauthused.label"):</td>
             <td>
 				#fielderror ('ldapAuthUsed')
-                <input type="radio" name="ldapAuthUsed" value="YES" #if ($!action.ldapAuthUsed == "YES") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("configure.yes") &nbsp;
-                <input type="radio" name="ldapAuthUsed" value="NO" #if ($!action.ldapAuthUsed == "NO") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("configure.no")
+                <input type="radio" name="ldapAuthUsed" value="YES" #if ($!action.ldapAuthUsed == "YES") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("csum.configure.yes") &nbsp;
+                <input type="radio" name="ldapAuthUsed" value="NO" #if ($!action.ldapAuthUsed == "NO") checked="true" #end onclick="toggleLdapSettingsInput(this)" />$action.getText("csum.configure.no")
                 <p>
-                    <font size="1">$action.getText("configure.ldapauthused.help")</font>
+                    <font size="1">$action.getText("csum.configure.ldapauthused.help")</font>
                 </p>
             </td>
         </tr>
@@ -175,13 +175,13 @@
         <div id="ldap_deps" style="padding-left: 80px; #if (!($action.ldapAuthUsed == "YES")) display: none; #else display: block #end">
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.providertype.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.providertype.label"):</td>
             <td>
 				#fielderror ('providerType')
                 <input type="radio" id="providerType" name="providerType" value="OSUSER" #if ($action.providerType == "OSUSER") checked="true" #end onclick="toggleLdapOSUSERSettingsInput(this)" />OSUSER &nbsp;
                 <input type="radio" id="providerType" name="providerType" value="ATLASSIAN-USER" #if ($action.providerType == "ATLASSIAN-USER") checked="true" #end onclick="toggleLdapOSUSERSettingsInput(this)" />ATLASSIAN-USER
                 <p>
-                    <font size="1">$action.getText("configure.providertype.help")</font>
+                    <font size="1">$action.getText("csum.configure.providertype.help")</font>
                 </p>
             </td>
         </tr>
@@ -190,56 +190,56 @@
         <div id="ldap_osuser_deps" style="padding-left: 80px; #if (!($action.providerType == "OSUSER")) display: none; #else display: block #end">
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.ldapuseridattribute.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.ldapuseridattribute.label"):</td>
             <td>
                 #fielderror ('ldapUserIdAttribute')
                 <input type="text" id="ldapUserIdAttribute" name="ldapUserIdAttribute" value="$!action.ldapUserIdAttribute" />
                 <p>
-                    <font size="1">$action.getText("configure.ldapuseridattribute.help")</font>
+                    <font size="1">$action.getText("csum.configure.ldapuseridattribute.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.ldapemailattribute.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.ldapemailattribute.label"):</td>
             <td>
                 #fielderror ('ldapEmailAttribute')
                 <input type="text" id="ldapEmailAttribute" name="ldapEmailAttribute" value="$!action.ldapEmailAttribute" />
                 <p>
-                    <font size="1">$action.getText("configure.ldapemailattribute.help")</font>
+                    <font size="1">$action.getText("csum.configure.ldapemailattribute.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.ldapfirstnameattribute.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.ldapfirstnameattribute.label"):</td>
             <td>
                 #fielderror ('ldapFirstNameAttribute')
                 <input type="text" id="ldapFirstNameAttribute" name="ldapFirstNameAttribute" value="$!action.ldapFirstNameAttribute" />
                 <p>
-                    <font size="1">$action.getText("configure.ldapfirstnameattribute.help")</font>
+                    <font size="1">$action.getText("csum.configure.ldapfirstnameattribute.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.ldaplastnameattribute.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.ldaplastnameattribute.label"):</td>
             <td>
                 #fielderror ('ldapLastNameAttribute')
                 <input type="text" id="ldapLastNameAttribute" name="ldapLastNameAttribute" value="$!action.ldapLastNameAttribute" />
                 <p>
-                    <font size="1">$action.getText("configure.ldaplastnameattribute.help")</font>
+                    <font size="1">$action.getText("csum.configure.ldaplastnameattribute.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.ldapproviderfullyqualifiedclassname.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.ldapproviderfullyqualifiedclassname.label"):</td>
             <td>
                 #fielderror ('ldapProviderFullyQualifiedClassname')
                 <input type="text" id="ldapProviderFullyQualifiedClassname" name="ldapProviderFullyQualifiedClassname" value="$!action.ldapProviderFullyQualifiedClassname" size="120"/>
                 <p>
-                    <font size="1">$action.getText("configure.ldapproviderfullyqualifiedclassname.help")</font>
+                    <font size="1">$action.getText("csum.configure.ldapproviderfullyqualifiedclassname.help")</font>
                 </p>
             </td>
         </tr>
@@ -248,36 +248,36 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.ldapconfigtestuser.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.ldapconfigtestuser.label"):</td>
             <td>
                 #fielderror ('ldapConfigTestUsername')
                 <input type="text" id="ldapConfigTestUsername" name="ldapConfigTestUsername" value="$!action.ldapConfigTestUsername" />
                 <p>
-                    <font size="1">$action.getText("configure.ldapconfigtestuser.help")</font>
+                    <font size="1">$action.getText("csum.configure.ldapconfigtestuser.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.ldapnarrowingfilterexpression.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.ldapnarrowingfilterexpression.label"):</td>
             <td>
                 #fielderror ('ldapNarrowingFilterExpression')
                 <input type="text" id="ldapNarrowingFilterExpression" name="ldapNarrowingFilterExpression" value="$!action.ldapNarrowingFilterExpression" size="120"/>
                 <p>
-                    <font size="1">$action.getText("configure.ldapnarrowingfilterexpression.help")</font>
+                    <font size="1">$action.getText("csum.configure.ldapnarrowingfilterexpression.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.userfullnameformat.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.userfullnameformat.label"):</td>
             <td>
 				#fielderror ('userFullNameFormat')
                 <input type="radio" name="userFullNameFormat" value="LASTNAME_COMMA_FIRSTNAME" #if ($action.userFullNameFormat == "LASTNAME_COMMA_FIRSTNAME") checked="true" #end />Lastname, Firstname &nbsp;
                 <input type="radio" name="userFullNameFormat" value="FIRSTNAME_LASTNAME" #if ($action.userFullNameFormat == "FIRSTNAME_LASTNAME") checked="true" #end />Firstname Lastname &nbsp;
                 <input type="radio" name="userFullNameFormat" value="ID" #if ($action.userFullNameFormat == "ID") checked="true" #end />Username
                 <p>
-                    <font size="1">$action.getText("configure.userfullnameformat.help")</font>
+                    <font size="1">$action.getText("csum.configure.userfullnameformat.help")</font>
                 </p>
             </td>
         </tr>
@@ -286,19 +286,19 @@
 
         <table class="grid" width="80%">
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.groupactionspermitted.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.groupactionspermitted.label"):</td>
             <td>
 				#fielderror ('groupActionsPermitted')
-                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end/>$action.getText("configure.yes") &nbsp;
-                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end/>$action.getText("configure.no")
+                <input type="radio" name="groupActionsPermitted" value="YES" #if ($!action.groupActionsPermitted == "YES") checked="true" #end/>$action.getText("csum.configure.yes") &nbsp;
+                <input type="radio" name="groupActionsPermitted" value="NO" #if ($!action.groupActionsPermitted == "NO") checked="true" #end/>$action.getText("csum.configure.no")
                 <p>
-                    <font size="1">$action.getText("configure.groupactionspermitted.help")</font>
+                    <font size="1">$action.getText("csum.configure.groupactionspermitted.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.groupnamepattern.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.groupnamepattern.label"):</td>
             <td>
                 <!-- TODO: Cleanup ugly table and CSS. -->
 				<table style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
@@ -308,7 +308,7 @@
 				            <input type="text" name="newGroupNameCreationPrefixPattern" id="newGroupNameCreationPrefixPattern" value="$!action.newGroupNameCreationPrefixPattern" size="50" />
 				        </td>
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
-				            &nbsp;$action.getText("configure.groupnamepattern.prefixandsuffixseparator")&nbsp;
+				            &nbsp;$action.getText("csum.configure.groupnamepattern.prefixandsuffixseparator")&nbsp;
 				        </td>
 				        <td style="border-width: 0px 0px 0px 0px; border-spacing: 0px;	border-style: none none none none; border-collapse: separate;">
 				            #fielderror ('newGroupNameCreationSuffixPattern')
@@ -317,86 +317,86 @@
 				    </tr>
 				</table>
                 <p>
-                    <font size="1">$action.getText("configure.groupnamepattern.help")</font>
+                    <font size="1">$action.getText("csum.configure.groupnamepattern.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.maxuseridslimit.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.maxuseridslimit.label"):</td>
             <td>
                 #fielderror ('maxUserIDsLimit')
                 <input type="text" name="maxUserIDsLimit" value="$!action.maxUserIDsLimit" />
                 <p>
-                    <font size="1">$action.getText("configure.maxuseridslimit.help")</font>
+                    <font size="1">$action.getText("csum.configure.maxuseridslimit.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.maxgroupidslimit.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.maxgroupidslimit.label"):</td>
             <td>
                 #fielderror ('maxGroupIDsLimit')
                 <input type="text" name="maxGroupIDsLimit" value="$!action.maxGroupIDsLimit" />
                 <p>
-                    <font size="1">$action.getText("configure.maxgroupidslimit.help")</font>
+                    <font size="1">$action.getText("csum.configure.maxgroupidslimit.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.usersearchenabled.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.usersearchenabled.label"):</td>
             <td>
                 #fielderror ('userSearchEnabled')
-                <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />$action.getText("configure.yes") &nbsp;
-                <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />$action.getText("configure.no")
+                <input type="radio" name="userSearchEnabled" value="YES" #if ($!action.userSearchEnabled == "YES") checked="true" #end />$action.getText("csum.configure.yes") &nbsp;
+                <input type="radio" name="userSearchEnabled" value="NO" #if ($!action.userSearchEnabled == "NO") checked="true" #end />$action.getText("csum.configure.no")
                 <p>
-                    <font size="1">$action.getText("configure.usersearchenabled.help")</font>
+                    <font size="1">$action.getText("csum.configure.usersearchenabled.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.personalspaceallowed.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.personalspaceallowed.label"):</td>
             <td>
                 #fielderror ('personalSpaceAllowed')
-                <input type="radio" name="personalSpaceAllowed" value="YES" #if ($!action.personalSpaceAllowed == "YES") checked="true" #end />$action.getText("configure.yes") &nbsp;
-                <input type="radio" name="personalSpaceAllowed" value="NO" #if ($!action.personalSpaceAllowed == "NO") checked="true" #end />$action.getText("configure.no")
+                <input type="radio" name="personalSpaceAllowed" value="YES" #if ($!action.personalSpaceAllowed == "YES") checked="true" #end />$action.getText("csum.configure.yes") &nbsp;
+                <input type="radio" name="personalSpaceAllowed" value="NO" #if ($!action.personalSpaceAllowed == "NO") checked="true" #end />$action.getText("csum.configure.no")
                 <p>
-                    <font size="1">$action.getText("configure.personalspaceallowed.help")</font>
+                    <font size="1">$action.getText("csum.configure.personalspaceallowed.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.plugindeactivated.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.plugindeactivated.label"):</td>
             <td>
                 #fielderror ('pluginDown')
-                <input type="radio" name="pluginDown" value="YES" #if ($!action.pluginDown == "YES") checked="true" #end />$action.getText("configure.yes") &nbsp;
-                <input type="radio" name="pluginDown" value="NO" #if ($!action.pluginDown == "NO") checked="true" #end />$action.getText("configure.no")
+                <input type="radio" name="pluginDown" value="YES" #if ($!action.pluginDown == "YES") checked="true" #end />$action.getText("csum.configure.yes") &nbsp;
+                <input type="radio" name="pluginDown" value="NO" #if ($!action.pluginDown == "NO") checked="true" #end />$action.getText("csum.configure.no")
                 <p>
-                    <font size="1">$action.getText("configure.plugindeactivated.help")</font>
+                    <font size="1">$action.getText("csum.configure.plugindeactivated.help")</font>
                 </p>
             </td>
         </tr>
 
         <tr>
-            <td valign="top" class="label" width="30%">$action.getText("configure.plugindowntimemessage.label"):</td>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.plugindowntimemessage.label"):</td>
             <td>
    	         #fielderror ('downTimeMessage')
    	         <textarea name="downTimeMessage" cols="60" rows="6" class="monospaceInput">$!action.downTimeMessage</textarea>
    	         <p>
-                 <font size="1">$action.getText("configure.plugindowntimemessage.help"): $action.getText("manager.downtimemessagedefault")</font>
+                 <font size="1">$action.getText("csum.configure.plugindowntimemessage.help"): $action.getText("csum.manager.downtimemessagedefault")</font>
              </p>
             </td>
         </tr>
         
         <tr>
             <td valign="top" class="label" width="100%" colspan="2">
-                    <input type="submit" value='$action.getText("configure.update")' />
+                    <input type="submit" value='$action.getText("csum.configure.update")' />
 					<input id="cancelButton"  type="button" 
 					       name="Home of Admin Console"
-					       value='$action.getText("configure.cancel")'
+					       value='$action.getText("csum.configure.cancel")'
 					       onclick="location.href='$req.contextPath/admin/console.action'" />
             </td>
         </tr>

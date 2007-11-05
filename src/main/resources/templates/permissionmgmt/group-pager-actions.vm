@@ -34,19 +34,19 @@
                 #if ($action.selectedGroup)
 	                    #if($action.hasPrev($groups))
 	                    <span class="prev">
-	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageGroups">&laquo; $action.getText("grouppageractions.previous")</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=prevPageGroups">&laquo; $action.getText("csum.grouppageractions.previous")</a>
 	                    </span>
 	                    #end
 
 	                    #if($action.hasNext($groups))
 	                    <span class="next">
-	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageGroups">$action.getText("grouppageractions.next") &raquo;</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&pagerAction=nextPageGroups">$action.getText("csum.grouppageractions.next") &raquo;</a>
 	                    </span>
 	                    #end
 
 	                    #if(${action.groups})
 	                    <span class="count">
-	                        $action.getText("grouppageractions.pageindicator", ["$!{action.firstRecordNum($groups)}", "$!{action.lastRecordNum($groups)}", "$!{groups.total}"])<br/>
+	                        $action.getText("csum.grouppageractions.pageindicator", ["$!{action.firstRecordNum($groups)}", "$!{action.lastRecordNum($groups)}", "$!{groups.total}"])<br/>
 
 #*
 	                        #if($groups.total > $groups.countOnEachPage)
@@ -55,7 +55,7 @@
 		                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
 		                        <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
 		                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
-								<label>$action.getText("skip.byNum"):</label>
+								<label>$action.getText("csum.skip.byNum"):</label>
 								<input type="text" name="recordNum"/>
 		                        <input type="submit" class="submitBttn" id="skipToGrpBtn" name="skipToGrpBtn" value="Go"/>
 		                        </fieldset>
@@ -68,26 +68,26 @@
 
 	                    #if($action.hasPrev($groups))
 	                    <span class="prev">
-	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=prevPageGroups">&laquo; $action.getText("grouppageractions.previous")</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=prevPageGroups">&laquo; $action.getText("csum.grouppageractions.previous")</a>
 	                    </span>
 	                    #end
 
 	                    #if($action.hasNext($groups))
 	                    <span class="next">
-	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=nextPageGroups">$action.getText("grouppageractions.next") &raquo;</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&pagerAction=nextPageGroups">$action.getText("csum.grouppageractions.next") &raquo;</a>
 	                    </span>
 	                    #end
 
 	                    #if(${action.groups})
 	                    <span class="count">
-	                        $action.getText("grouppageractions.pageindicator", ["$!{action.firstRecordNum($groups)}", "$!{action.lastRecordNum($groups)}", "$!{groups.total}"])<br/>
+	                        $action.getText("csum.grouppageractions.pageindicator", ["$!{action.firstRecordNum($groups)}", "$!{action.lastRecordNum($groups)}", "$!{groups.total}"])<br/>
 #*
 	                        #if($groups.total > $groups.countOnEachPage)
 	                        <form action="docustompermissionsmanage.action" class="pageSkip">
 		                        <fieldset>
 			                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
 			                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
-									<label>$action.getText("skip.byNum"):</label>
+									<label>$action.getText("csum.skip.byNum"):</label>
 			                    	<input type="text" name="recordNum"/>
 									<input type="submit" class="submitBttn" id="skipToGrpBtn" name="skipToGrpBtn" value="Go"/>
 		                        </fieldset>
