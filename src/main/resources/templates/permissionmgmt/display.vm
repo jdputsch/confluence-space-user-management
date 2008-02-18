@@ -58,7 +58,7 @@
 
 		var trashLinkInterception = function(e) {
 			YAHOO.util.Event.preventDefault(e);
-			var targetLink = e.currentTarget;
+                        var targetLink = document.getElementById("trashGroup").href
 
 			groupTrashDialog = new YAHOO.widget.SimpleDialog("dlg", { 
 				width: "25em", 
