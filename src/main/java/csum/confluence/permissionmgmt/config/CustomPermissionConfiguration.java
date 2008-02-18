@@ -144,7 +144,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 		//If userManagerLocation is not set as CONFLUENCE or JIRA, then it must be set to either value.
 		if( !(userManagerLocationIsConfluence || userManagerLocationIsJira) )
 		{
-            result.addFieldError("userManagerLocation", cas.getText("configure.error.usermanagerlocationnull"));
+            result.addFieldError("userManagerLocation", cas.getText("csum.configure.error.usermanagerlocationnull"));
             result.setValid(false);
 		}
 
@@ -152,12 +152,12 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 		if(isUserManagerLocationSet && userManagerLocationIsJira)
 		{
 			if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUrl())) {
-                result.addFieldError("jiraSoapUrl", cas.getText("configure.error.jirasoapurlempty"));
+                result.addFieldError("jiraSoapUrl", cas.getText("csum.configure.error.jirasoapurlempty"));
                 result.setValid(false);
             }
 
             if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUsername())) {
-                result.addFieldError("jiraSoapUsername", cas.getText("configure.error.jirasoapusernameempty"));
+                result.addFieldError("jiraSoapUsername", cas.getText("csum.configure.error.jirasoapusernameempty"));
                 result.setValid(false);
             }
 
@@ -169,7 +169,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 jiraSoapPassword = existingConfig.getJiraSoapPassword();
             }
             else {
-                result.addFieldError("jiraSoapPassword", cas.getText("configure.error.jirasoappasswordnull"));
+                result.addFieldError("jiraSoapPassword", cas.getText("csum.configure.error.jirasoappasswordnull"));
                 result.setValid(false);
             }
 
@@ -186,14 +186,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 }
                 catch (Throwable t) {
                     LogUtil.errorWithRemoteUserInfo(log, "Problem testing JIRA SOAP configuration by connecting to JIRA", t);
-                    result.addFieldError("jiraSoapUrl", cas.getText("configure.error.jirasoaptestconnectfailed") + ": " + t);
+                    result.addFieldError("jiraSoapUrl", cas.getText("csum.configure.error.jirasoaptestconnectfailed") + ": " + t);
                     result.setValid(false);
                 }
             }
         }
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getLdapAuthUsed())) {
-            result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldapauthusedinvalid"));
+            result.addFieldError("ldapAuthUsed", cas.getText("csum.configure.error.ldapauthusedinvalid"));
             result.setValid(false);
         }
         else {
@@ -203,33 +203,33 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                         (!providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER) &&
                        !providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER)))
                 {
-                    result.addFieldError("providerType", cas.getText("configure.error.providertypeinvalid"));
+                    result.addFieldError("providerType", cas.getText("csum.configure.error.providertypeinvalid"));
                     result.setValid(false);
                 }
                 else if (providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER)) {
                     if (config.getLdapUserIdAttribute()==null) {
-                        result.addFieldError("ldapUserIdAttribute", cas.getText("configure.error.ldapuseridattributenull"));
+                        result.addFieldError("ldapUserIdAttribute", cas.getText("csum.configure.error.ldapuseridattributenull"));
                         result.setValid(false);
                     }
 
                     if (config.getLdapEmailAttribute()==null) {
-                        result.addFieldError("ldapEmailAttribute", cas.getText("configure.error.ldapemailattributenull"));
+                        result.addFieldError("ldapEmailAttribute", cas.getText("csum.configure.error.ldapemailattributenull"));
                         result.setValid(false);
                     }
 
                     if (config.getLdapFirstNameAttribute()==null) {
-                        result.addFieldError("ldapFirstNameAttribute", cas.getText("configure.error.ldapfirstnameattributenull"));
+                        result.addFieldError("ldapFirstNameAttribute", cas.getText("csum.configure.error.ldapfirstnameattributenull"));
                         result.setValid(false);
                     }
 
                     if (config.getLdapLastNameAttribute()==null) {
-                        result.addFieldError("ldapLastNameAttribute", cas.getText("configure.error.ldaplastnameattributenull"));
+                        result.addFieldError("ldapLastNameAttribute", cas.getText("csum.configure.error.ldaplastnameattributenull"));
                         result.setValid(false);
                     }
 
                     if (config.getLdapProviderFullyQualifiedClassname()==null) {
                         // ok to be empty. is not used in user-atlassian provider implementation
-                        result.addFieldError("ldapProviderFullyQualifiedClassname", cas.getText("configure.error.ldapproviderfullyqualifiedclassnamenull"));
+                        result.addFieldError("ldapProviderFullyQualifiedClassname", cas.getText("csum.configure.error.ldapproviderfullyqualifiedclassnamenull"));
                         result.setValid(false);
                     }
                 }
@@ -240,19 +240,19 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 boolean idFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_ID));
 
                 if (userFullNameFormat==null) {
-                    result.addFieldError("userFullNameFormat", cas.getText("configure.error.userfullnameformatnull"));
+                    result.addFieldError("userFullNameFormat", cas.getText("csum.configure.error.userfullnameformatnull"));
                     result.setValid(false);
                 }
                 else {
                     if (!lastCommaFirstFormat && !firstLastFormat && !idFormat) {
-                        result.addFieldError("userFullNameFormat", cas.getText("configure.error.userfullnameformatinvalid") + ": " + userFullNameFormat);
+                        result.addFieldError("userFullNameFormat", cas.getText("csum.configure.error.userfullnameformatinvalid") + ": " + userFullNameFormat);
                         result.setValid(false);
                     }
                 }
 
                 String ldapConfigTestUsername = config.getLdapConfigTestUsername();
                 if (StringUtil.isNullOrEmpty(ldapConfigTestUsername)) {
-                    result.addFieldError("ldapConfigTestUsername", cas.getText("configure.error.ldapconfigtestusernameempty"));
+                    result.addFieldError("ldapConfigTestUsername", cas.getText("csum.configure.error.ldapconfigtestusernameempty"));
                     result.setValid(false);
                 }
 
@@ -265,13 +265,13 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                         if(usr == null)
                         {
                             log.debug("Got null user back from LDAP for " + ldapConfigTestUsername);
-                            result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldapconfigtestreturnednull") + ": " + ldapConfigTestUsername);
+                            result.addFieldError("ldapAuthUsed", cas.getText("csum.configure.error.ldapconfigtestreturnednull") + ": " + ldapConfigTestUsername);
                             result.setValid(false);
                         }
                     }
                     catch (Throwable t) {
                         LogUtil.errorWithRemoteUserInfo(log, "Problem testing LDAP config in config UI", t);
-                        result.addFieldError("ldapAuthUsed", cas.getText("configure.error.ldapconfigtestfailure") + ": " + t.getMessage());
+                        result.addFieldError("ldapAuthUsed", cas.getText("csum.configure.error.ldapconfigtestfailure") + ": " + t.getMessage());
                         result.setValid(false);
                     }
                 }
@@ -279,17 +279,17 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         }
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getUserSearchEnabled())) {
-            result.addFieldError("userSearchEnabled", cas.getText("configure.error.usersearchenabledinvalid"));
+            result.addFieldError("userSearchEnabled", cas.getText("csum.configure.error.usersearchenabledinvalid"));
             result.setValid(false);
         }
 
         if (config.getMaxUserIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(config.getMaxUserIDsLimit())) {
-            result.addFieldError("maxUserIDsLimit", cas.getText("configure.error.maxuseridslimitinvalid"));
+            result.addFieldError("maxUserIDsLimit", cas.getText("csum.configure.error.maxuseridslimitinvalid"));
             result.setValid(false);
         }
 
         if (config.getMaxGroupIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(config.getMaxGroupIDsLimit())) {
-            result.addFieldError("maxGroupIDsLimit", cas.getText("configure.error.maxgroupidslimitinvalid"));
+            result.addFieldError("maxGroupIDsLimit", cas.getText("csum.configure.error.maxgroupidslimitinvalid"));
             result.setValid(false);
         }
 
@@ -298,13 +298,13 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             if ("YES".equals(pluginInDown)) {
                 // is ok to be empty
                 if (config.getDownTimeMessage() == null) {
-                    result.addFieldError("pluginInDown", cas.getText("configure.error.downtimemessagenull"));
+                    result.addFieldError("pluginInDown", cas.getText("csum.configure.error.downtimemessagenull"));
                     result.setValid(false);
                 }
             }
         }
         else {
-            result.addFieldError("pluginInDown", cas.getText("configure.error.plugindowninvalid"));
+            result.addFieldError("pluginInDown", cas.getText("csum.configure.error.plugindowninvalid"));
             result.setValid(false);
         }
 
@@ -313,23 +313,23 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             if ("YES".equals(groupActionsPermitted)) {
                 // these are ok to be empty
                 if (config.getNewGroupNameCreationPrefixPattern() == null) {
-                    result.addFieldError("groupActionsPermitted", cas.getText("configure.error.newgroupnamecreationprefixpatterninvalid"));
+                    result.addFieldError("groupActionsPermitted", cas.getText("csum.configure.error.newgroupnamecreationprefixpatterninvalid"));
                     result.setValid(false);
                 }
 
                 if (config.getNewGroupNameCreationSuffixPattern() == null) {
-                    result.addFieldError("groupActionsPermitted", cas.getText("configure.error.newgroupnamecreationsuffixpatterninvalid"));
+                    result.addFieldError("groupActionsPermitted", cas.getText("csum.configure.error.newgroupnamecreationsuffixpatterninvalid"));
                     result.setValid(false);
                 }
             }
         }
         else {
-            result.addFieldError("groupActionsPermitted", cas.getText("configure.error.groupactionspermittedinvalid"));
+            result.addFieldError("groupActionsPermitted", cas.getText("csum.configure.error.groupactionspermittedinvalid"));
             result.setValid(false);
         }
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getPersonalSpaceAllowed())) {
-            result.addFieldError("personalSpaceAllowed", cas.getText("configure.error.personalspaceallowedinvalid"));
+            result.addFieldError("personalSpaceAllowed", cas.getText("csum.configure.error.personalspaceallowedinvalid"));
             result.setValid(false);
         }
 

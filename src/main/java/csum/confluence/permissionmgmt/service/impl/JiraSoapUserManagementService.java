@@ -140,7 +140,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
         List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
         if (usersNotFound.size() > 0 && groupsNotFound.size() == 0 && userIdToGroupNameMapForMembershipAdditionProblems.size() == 0) {
             // a less critical error that we don't want to log the same way
-            throw new UsersNotFoundException(context.getText("manager.error.usersnotfound") + ": " +
+            throw new UsersNotFoundException(context.getText("csum.manager.error.usersnotfound") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".");
         }
         else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipAdditionProblems.size() > 0) {
@@ -261,7 +261,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
         List groupsNotFound = new ArrayList(groupsNotFoundMap.keySet());
         if (usersNotFound.size() > 0 && groupsNotFound.size() == 0 && userIdToGroupNameMapForMembershipRemovalProblems.size() == 0) {
             // a less critical error that we don't want to log the same way
-            throw new UsersNotFoundException(context.getText("manager.error.usersnotfound") + ": " +
+            throw new UsersNotFoundException(context.getText("csum.manager.error.usersnotfound") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".");
         }
         else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipRemovalProblems.size() > 0) {

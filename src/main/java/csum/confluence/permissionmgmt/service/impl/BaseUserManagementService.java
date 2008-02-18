@@ -107,7 +107,7 @@ public abstract class BaseUserManagementService implements UserManagementService
         if (searchString!=null && results!=null) {
             // assume non-alphanumeric covers operators, conditions, multiple terms, quotes, ...
             if (!isAlphanumeric(searchString)) {
-                results.setMessage(context.getText("manageusersadvanced.warning.unsupportedterm"));
+                results.setMessage(context.getText("csum.manageusersadvanced.warning.unsupportedterm"));
             }
         }
     }
@@ -224,14 +224,14 @@ public abstract class BaseUserManagementService implements UserManagementService
         String msg = "";
         String concat = "";
         if (usersNotFound.size() > 0) {
-            msg += context.getText("manager.error.usersnotfound") + ": " +
+            msg += context.getText("csum.manager.error.usersnotfound") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".";
             concat = " ";
         }
 
         if (groupsNotFound.size() > 0) {
             msg += concat;
-            msg += context.getText("manager.error.groupsdidnotexist") + ": " +
+            msg += context.getText("csum.manager.error.groupsdidnotexist") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(groupsNotFound) + ".";
             concat = " ";
         }
@@ -242,7 +242,7 @@ public abstract class BaseUserManagementService implements UserManagementService
                 String groupName = (String)iter.next();
                 String userid = (String)userIdToGroupNameMapForMembershipAdditionProblems.get(groupName);
                 msg += concat;
-                msg += context.getText("manager.error.problemaddingusertogroup", new String[] {userid, groupName});
+                msg += context.getText("csum.manager.error.problemaddingusertogroup", new String[] {userid, groupName});
                 concat = " ";
             }
         }
@@ -254,14 +254,14 @@ public abstract class BaseUserManagementService implements UserManagementService
         String msg = "";
         String concat = "";
         if (usersNotFound.size() > 0) {
-            msg += context.getText("manager.error.usersnotfound") + ": " +
+            msg += context.getText("csum.manager.error.usersnotfound") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".";
             concat = " ";
         }
 
         if (groupsNotFound.size() > 0) {
             msg += concat;
-            msg += context.getText("manager.error.groupsdidnotexist") + ": " +
+            msg += context.getText("csum.manager.error.groupsdidnotexist") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(groupsNotFound) + ".";
         }
 
@@ -271,7 +271,7 @@ public abstract class BaseUserManagementService implements UserManagementService
                 String groupName = (String)iter.next();
                 String userid = (String)userIdToGroupNameMapForMembershipRemovalProblems.get(groupName);
                 msg += concat;
-                msg += context.getText("manager.error.problemremovinguserfromgroup", new String[] {userid, groupName});
+                msg += context.getText("csum.manager.error.problemremovinguserfromgroup", new String[] {userid, groupName});
                 concat = " ";
             }
         }

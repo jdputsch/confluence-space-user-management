@@ -118,14 +118,14 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
             String msg = "";
             String concat = "";
             if (alreadyExisted.size() > 0) {
-                msg += context.getText("manager.error.groupsalreadyexisted") + ": " +
+                msg += context.getText("csum.manager.error.groupsalreadyexisted") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(alreadyExisted) + ".";
                 concat = " ";
             }
 
             if (success.size() > 0) {
                 msg += concat;
-                msg += context.getText("manager.error.addgroupspartialsuccess") + ": " +
+                msg += context.getText("csum.manager.error.addgroupspartialsuccess") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(success) + ".";
             }
 
@@ -194,20 +194,20 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
             String msg = "";
             String concat = "";
             if (badGroupNames.size() > 0) {
-                msg += context.getText("manager.error.badgroupnames") + ": " +
+                msg += context.getText("csum.manager.error.badgroupnames") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(badGroupNames) + ".";
                 concat = " ";
             }
 
             if (didNotExist.size() > 0) {
                 msg += concat;
-                msg += context.getText("manager.error.groupsdidnotexist") + ": " +
+                msg += context.getText("csum.manager.error.groupsdidnotexist") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(didNotExist) + ".";
             }
 
             if (success.size() > 0) {
                 msg += concat;
-                msg += context.getText("manager.error.removegroupspartialsuccess") + ": " +
+                msg += context.getText("csum.manager.error.removegroupspartialsuccess") + ": " +
                         StringUtil.convertCollectionToCommaDelimitedString(success) + ".";
             }
             throw new RemoveException(msg);

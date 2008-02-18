@@ -121,7 +121,7 @@
     </xwork>
 
     <web-item key="space-custom-usermanagement" name="Custom User Delegation Manager" section="system.space" weight="90">
-        <label key="customusermanagement.tab.name" />
+        <label key="csum.customusermanagement.tab.name" />
         <link>/customspacemgmt/permissions/custompermissionsmanage.action?key=$generalUtil.urlEncode($helper.spaceKey)</link>
         <condition class="com.atlassian.confluence.plugin.descriptor.web.conditions.SpacePermissionCondition">
             <param name="permission">administer</param>

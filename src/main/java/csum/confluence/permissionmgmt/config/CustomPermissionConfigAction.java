@@ -105,7 +105,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
                 
         if(!validateConfiguration()) {
             LogUtil.warnWithRemoteUserInfo(log, "Configuration was invalid");
-            resultList.add(getText("configure.error.configurationinvalid"));
+            resultList.add(getText("csum.configure.error.configurationinvalid"));
             setActionErrors(resultList);
 
             return ERROR;
@@ -113,7 +113,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
         updatePersistedConfigWithFormValues();
 
-        resultList.add(getText("configure.success"));
+        resultList.add(getText("csum.configure.success"));
         setActionMessages(resultList);
 
         return SUCCESS;
