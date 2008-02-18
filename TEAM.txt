@@ -4,6 +4,7 @@ Custom Space User Management Plugin Development Team:
     Gary S. Weaver - gary.weaver@duke.edu
     Ren Provey - renald.provey@duke.edu
     Andy Brook - axb@dolby.co.uk
+    Igor Minar
 
 ---
 
