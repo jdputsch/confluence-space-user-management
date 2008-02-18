@@ -40,7 +40,7 @@
     <packaging>atlassian-plugin</packaging>
 
     <name>Custom Space User Management Plugin</name>
-    <version>2.0-SNAPSHOT</version>
+    <version>2.0.1-SNAPSHOT</version>
     <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
     <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces
     </description>
@@ -142,6 +142,13 @@
                 <role>Developer - v2 LDAP Integration</role>
             </roles>
             <timezone>0</timezone>
+        </developer>
+
+        <developer>
+            <name>Igor Minar</name>
+            <roles>
+                <role>Developer - v2 bug fixes for key names in i18n properties, fix for delete group in IE</role>
+            </roles>
         </developer>
     </developers>
 
