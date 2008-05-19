@@ -1,5 +1,4 @@
-/*
-Copyright (c) 2006, Rajendra Kadam
+/* Copyright (c) 2006, Rajendra Kadam
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -51,11 +50,11 @@ import javax.naming.NameNotFoundException;
 import javax.sql.DataSource;
 
 import org.apache.xmlrpc.XmlRpcClient;
+import org.apache.log4j.Category;
 
 import raju.kadam.util.LDAP.LDAPUser;
 import raju.kadam.util.LDAP.LDAPUtil;
 import bucket.container.ContainerManager;
-
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.setup.BootstrapManager;
@@ -82,6 +81,7 @@ import com.opensymphony.webwork.ServletActionContext;
 public class CustomPermissionManagerAction extends AbstractSpaceAction implements SpaceAdministrative
 {
     public static final String RPC_PATH  = "/rpc/xmlrpc";
+    private static final Category log = Category.getInstance(CustomPermissionManagerAction.class);
 
     private BootstrapManager bootStrapManager;
     private BandanaManager bandanaManager;
