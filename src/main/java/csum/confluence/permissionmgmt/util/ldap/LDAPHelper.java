@@ -55,7 +55,7 @@ public class LDAPHelper
 	public static LDAPUser getLDAPUser(CustomPermissionConfigurable config, String userid) throws ParserConfigurationException,
 			LDAPException
 	{
-        Properties builtConfig=buildConfig(config);
+        Properties builtConfig=buildConfig(config, userid);
         LDAPUser u = null;
 
         // this lock is on a static object (this class, not the instance) so that it is JVM-wide
@@ -69,7 +69,7 @@ public class LDAPHelper
         return u;
 	}
 	
-	private static Properties buildConfig(CustomPermissionConfigurable config)
+	private static Properties buildConfig(CustomPermissionConfigurable config, String userid)
 	{
 		Properties p=new Properties();
 
@@ -126,8 +126,10 @@ public class LDAPHelper
 			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_FIRST_NAME_ATTRIBUTE, config.getLdapFirstNameAttribute());
 			p.setProperty(LDAPLookupUtil.LDAPUTIL_LDAP_LAST_NAME_ATTRIBUTE, config.getLdapLastNameAttribute());
 		}
-		
-		if (log.isInfoEnabled())
+
+        p.setProperty(LDAPLookupUtil.LDAPUTIL_INITIAL_CONTEXT_VALIDATION_LOOKUP_USER, userid);
+
+        if (log.isInfoEnabled())
 		{
 			Enumeration e = p.keys();
 			do
