@@ -40,7 +40,7 @@
     <packaging>atlassian-plugin</packaging>
 
     <name>Custom Space User Management Plugin</name>
-    <version>2.0.1</version>
+    <version>2.0.1-SNAPSHOT</version>
     <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
     <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces
     </description>
@@ -162,7 +162,7 @@
         <dependency>
             <groupId>com.atlassian.confluence</groupId>
             <artifactId>confluence</artifactId>
-            <version>2.5.3</version>
+            <version>2.7.3</version>
             <scope>provided</scope>
         </dependency>        
         
@@ -177,7 +177,7 @@
         <dependency>
             <groupId>com.dolby.confluence.net</groupId>
             <artifactId>ldaputil</artifactId>
-            <version>1.0.9</version>
+            <version>1.0.11</version>
         </dependency> 
 
         <dependency>
