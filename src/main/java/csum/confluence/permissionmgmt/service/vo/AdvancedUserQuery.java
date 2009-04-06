@@ -70,8 +70,8 @@ public class AdvancedUserQuery {
 
     public boolean isDefined() {
         boolean result = false;
-        if ( this.getLookupType() != null ||
-                this.getSubstringMatchType() != null ||
+        if ( this.getLookupType() != null &&
+                this.getSubstringMatchType() != null &&
                 !ConfigUtil.isNullOrEmpty(this.getPartialSearchTerm())) {
             result = true;
         }

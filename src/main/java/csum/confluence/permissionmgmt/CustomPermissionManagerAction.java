@@ -1531,7 +1531,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
             pager = results.getUsers();
         } catch (Throwable t) {
-            LogUtil.warnWithRemoteUserInfo(log, "Failed creating test groups/users", t);
+            LogUtil.warnWithRemoteUserInfo(log, "Failed advanced find users", t);
         }
 
         setSearchResultUsers(createPagerPaginationSupport(pager));
