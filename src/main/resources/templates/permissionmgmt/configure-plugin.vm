@@ -369,6 +369,18 @@
         </tr>
 
         <tr>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.groupmembershiprefreshfixenabled.label"):</td>
+            <td>
+                #fielderror ('groupMembershipRefreshFixEnabled')
+                <input type="radio" name="groupMembershipRefreshFixEnabled" value="YES" #if ($!action.groupMembershipRefreshFixEnabled == "YES") checked="true" #end />$action.getText("csum.configure.yes") &nbsp;
+                <input type="radio" name="groupMembershipRefreshFixEnabled" value="NO" #if ($!action.groupMembershipRefreshFixEnabled == "NO") checked="true" #end />$action.getText("csum.configure.no")
+                <p>
+                    <font size="1">$action.getText("csum.configure.groupmembershiprefreshfixenabled.help")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
             <td valign="top" class="label" width="30%">$action.getText("csum.configure.plugindeactivated.label"):</td>
             <td>
                 #fielderror ('pluginDown')

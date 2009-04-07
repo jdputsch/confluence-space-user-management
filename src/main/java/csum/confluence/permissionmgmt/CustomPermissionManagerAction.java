@@ -32,7 +32,6 @@ package csum.confluence.permissionmgmt;
 import bucket.core.actions.PagerPaginationSupport;
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
-import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
@@ -44,7 +43,6 @@ import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
 import com.opensymphony.webwork.ServletActionContext;
 import csum.confluence.permissionmgmt.config.CsumConfigValidationResponse;
-import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.CustomPermissionServiceManager;
 import csum.confluence.permissionmgmt.service.GroupManagementService;
@@ -472,68 +470,71 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     // this helps get around bug in atlassian's API CSP-10371/CONF-9035 to be fixed in confluence 2.6
     private void handleRefreshBugFirstRequest(String result) {
-        HttpServletRequest req = ServletActionContext.getRequest();
-        // note: wrapping with TreeMap so it will sort params by name, otherwise it makes inconsistent URL which looks
-        //       hackish.
-        Map paramMap = new TreeMap(ServletActionContext.getRequest().getParameterMap());
-        String[] redirect = (String[])paramMap.get(REDIRECT_PARAMNAME);
-        if (redirect!=null) {
-            HttpServletResponse resp = ServletActionContext.getResponse();
 
-            // Redirect HTTP POST as well as HTTP GET. Remove REDIRECT_PARAMNAME from params.
-            StringBuffer params = new StringBuffer();
-            params.append("?");
-            Iterator iter = paramMap.keySet().iterator();
-            String paramConcat = "";
-            while (iter.hasNext()) {
-                String param = (String)iter.next();
+        if (getIsGroupMembershipRefreshFixEnabled()) {
+            HttpServletRequest req = ServletActionContext.getRequest();
+            // note: wrapping with TreeMap so it will sort params by name, otherwise it makes inconsistent URL which looks
+            //       hackish.
+            Map paramMap = new TreeMap(ServletActionContext.getRequest().getParameterMap());
+            String[] redirect = (String[])paramMap.get(REDIRECT_PARAMNAME);
+            if (redirect!=null) {
+                HttpServletResponse resp = ServletActionContext.getResponse();
 
-                // remove any params that could either do an additional redirect or additional action, except for groups
-                // because will need groups to know what cache to refresh on second request
-                if (!REDIRECT_PARAMNAME.equalsIgnoreCase(param) &&
-                        !ADMIN_ACTION_PARAMNAME.equalsIgnoreCase(param) &&
-                        !USERS_PARAMNAME.equalsIgnoreCase(param)
-                        ) {
-                    params.append(paramConcat);
-                    params.append(bestAttemptUTF8Encode(param));
-                    params.append("=");
-                    String[] value = (String[])paramMap.get(param);
-                    String valueConcat = "";
-                    if (value!=null) {
-                        params.append(valueConcat);
-                        for (int i=0;i<value.length;i++) {
-                            params.append(bestAttemptUTF8Encode(value[i]));
+                // Redirect HTTP POST as well as HTTP GET. Remove REDIRECT_PARAMNAME from params.
+                StringBuffer params = new StringBuffer();
+                params.append("?");
+                Iterator iter = paramMap.keySet().iterator();
+                String paramConcat = "";
+                while (iter.hasNext()) {
+                    String param = (String)iter.next();
+
+                    // remove any params that could either do an additional redirect or additional action, except for groups
+                    // because will need groups to know what cache to refresh on second request
+                    if (!REDIRECT_PARAMNAME.equalsIgnoreCase(param) &&
+                            !ADMIN_ACTION_PARAMNAME.equalsIgnoreCase(param) &&
+                            !USERS_PARAMNAME.equalsIgnoreCase(param)
+                            ) {
+                        params.append(paramConcat);
+                        params.append(bestAttemptUTF8Encode(param));
+                        params.append("=");
+                        String[] value = (String[])paramMap.get(param);
+                        String valueConcat = "";
+                        if (value!=null) {
+                            params.append(valueConcat);
+                            for (int i=0;i<value.length;i++) {
+                                params.append(bestAttemptUTF8Encode(value[i]));
+                            }
+                            valueConcat = ",";
                         }
-                        valueConcat = ",";
+                        paramConcat = "&";
                     }
-                    paramConcat = "&";
                 }
-            }
 
-            // store result, etc in session to be removed after redirect
-            storeInPluginCache("result", result);
-            storeInPluginCache("actionmessages", this.getActionMessages());
-            storeInPluginCache("actionerrors", this.getActionErrors());
-            storeInPluginCache("fielderrors", this.getFieldErrors());
+                // store result, etc in session to be removed after redirect
+                storeInPluginCache("result", result);
+                storeInPluginCache("actionmessages", this.getActionMessages());
+                storeInPluginCache("actionerrors", this.getActionErrors());
+                storeInPluginCache("fielderrors", this.getFieldErrors());
 
-            // add a param that tells action to refresh only cache associated with currently selected group in next req
-            params.append("&" + REFRESH_BUG_SECOND_REQUEST_PARAMNAME);
+                // add a param that tells action to refresh only cache associated with currently selected group in next req
+                params.append("&" + REFRESH_BUG_SECOND_REQUEST_PARAMNAME);
 
-            String url = req.getRequestURI();
-            int indexOfQuery = url.indexOf('?');
-            if (indexOfQuery != -1) {
-                // chop off query
-                url = url.substring(0, indexOfQuery);
-            }
-            // readd query with any post params
-            url = url + params.toString();
+                String url = req.getRequestURI();
+                int indexOfQuery = url.indexOf('?');
+                if (indexOfQuery != -1) {
+                    // chop off query
+                    url = url.substring(0, indexOfQuery);
+                }
+                // readd query with any post params
+                url = url + params.toString();
 
-            log.debug("Workaround for bug CSP-10371. Redirecting to: " + url);
-            try {
-                resp.sendRedirect( url );
-            }
-            catch (IOException e) {
-                LogUtil.errorWithRemoteUserInfo(log, "Redirect failed!", e);
+                log.debug("Workaround for bug CSP-10371. Redirecting to: " + url);
+                try {
+                    resp.sendRedirect( url );
+                }
+                catch (IOException e) {
+                    LogUtil.errorWithRemoteUserInfo(log, "Redirect failed!", e);
+                }
             }
         }
     }
@@ -1126,16 +1127,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 	//}
 
 	public boolean isPluginDown() {
-        boolean isPluginDown = false;
-        String val = (String)bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PLUGIN_STATUS);
-        if (CustomPermissionConfigConstants.YES.equals(val)) {
-            isPluginDown = true;
-        }
-        return isPluginDown;
+        return ConfigUtil.isNotNullAndIsYes(getCustomPermissionConfiguration().getPluginDown());
     }
 
     public String getPluginDownMessage() {
-        String result = (String)bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_DOWNTIME_MESSAGE);
+        String result = getCustomPermissionConfiguration().getDownTimeMessage();
         if ( result == null || result.trim().equals("")) {
             result = getText("csum.manager.downtimemessagedefault");
         }
@@ -1251,17 +1247,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public boolean getIsGroupActionsPermitted() {
-        log.debug("getIsGroupActionsPermitted() called");
+        return ConfigUtil.isNotNullAndIsYes(getCustomPermissionConfiguration().getGroupActionsPermitted());
+    }
 
-        boolean isGroupActionsPermitted = false;
-        String groupActionsPermitted = getCustomPermissionConfiguration().getGroupActionsPermitted();
-        if (ConfigUtil.isNotNullAndIsYesOrNo(groupActionsPermitted)) {
-            if ("YES".equals(groupActionsPermitted)) {
-                isGroupActionsPermitted = true;
-            }
-        }
-        log.debug("isGroupActionsPermitted = " + isGroupActionsPermitted);
-        return isGroupActionsPermitted;
+    public boolean getIsGroupMembershipRefreshFixEnabled() {
+        return ConfigUtil.isNotNullAndIsYes(getCustomPermissionConfiguration().getGroupMembershipRefreshFixEnabled());
     }
 
     public GroupManagementService getGroupManagementService() throws ServiceException {

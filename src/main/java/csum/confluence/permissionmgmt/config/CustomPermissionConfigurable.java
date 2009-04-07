@@ -102,5 +102,7 @@ public interface CustomPermissionConfigurable {
 
     public String getPersonalSpaceAllowed();
     public void setPersonalSpaceAllowed(String personalSpaceAllowed);
-    
+
+    public String getGroupMembershipRefreshFixEnabled();
+    public void setGroupMembershipRefreshFixEnabled(String groupMembershipRefreshFixEnabled);
 }

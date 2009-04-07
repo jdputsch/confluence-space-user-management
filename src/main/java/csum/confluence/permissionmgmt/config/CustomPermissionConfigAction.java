@@ -141,6 +141,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         setPersonalSpaceAllowed(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("personalSpaceAllowed", getPersonalSpaceAllowed(), CustomPermissionConfigConstants.NO));
         setPluginDown(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("pluginDown", getPluginDown(), CustomPermissionConfigConstants.NO));
         setUserSearchEnabled(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userSearchEnabled", getUserSearchEnabled(), CustomPermissionConfigConstants.YES));
+        setGroupMembershipRefreshFixEnabled(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("groupMembershipRefreshFixEnabled", getGroupMembershipRefreshFixEnabled(), CustomPermissionConfigConstants.NO));
 
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();

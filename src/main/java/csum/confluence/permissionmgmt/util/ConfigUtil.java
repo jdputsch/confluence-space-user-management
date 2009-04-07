@@ -94,6 +94,14 @@ public class ConfigUtil {
         return result;
     }
 
+    public static boolean isNotNullAndIsYes(String s) {
+        boolean result = false;
+        if ( s != null && ("YES".equals(s))) {
+            result = true;
+        }
+        return result;
+    }
+
     public static boolean isIntGreaterThanZero(String s) {
         boolean result = false;
         if ( s != null ) {

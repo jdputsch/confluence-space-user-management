@@ -84,6 +84,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setLdapConfigTestUsername(getLdapConfigTestUsername());
         config.setLdapNarrowingFilterExpression(getLdapNarrowingFilterExpression());
         config.setPersonalSpaceAllowed(getPersonalSpaceAllowed());
+        config.setGroupMembershipRefreshFixEnabled(getGroupMembershipRefreshFixEnabled());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -116,6 +117,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setLdapConfigTestUsername(config.getLdapConfigTestUsername());
         setLdapNarrowingFilterExpression(config.getLdapNarrowingFilterExpression());
         setPersonalSpaceAllowed(config.getPersonalSpaceAllowed());
+        setGroupMembershipRefreshFixEnabled(config.getGroupMembershipRefreshFixEnabled());
 
         // config has changed. clear ALL cache including indexes!!!
         AbstractPagerPaginationSupportCachingSpaceAction.clearCacheIncludingIndexes();
@@ -333,6 +335,11 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             result.setValid(false);
         }
 
+        if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getGroupMembershipRefreshFixEnabled())) {
+            result.addFieldError("groupMembershipRefreshFixEnabled", cas.getText("csum.configure.error.groupmembershiprefreshfixenabledinvalid"));
+            result.setValid(false);
+        }
+
         log.debug("CustomPermissionConfigAction - isValid=" + result + " fieldErrors=" + result.getFieldNameToErrorMessage());
         return result;
     }
@@ -543,6 +550,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setPersonalSpaceAllowed(String personalSpaceAllowed) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_PERSONAL_SPACE_ALLOWED, personalSpaceAllowed);
+    }
+
+    public String getGroupMembershipRefreshFixEnabled() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_GROUP_MEMBERSHIP_REFRESH_FIX_ENABLED);
+    }
+
+    public void setGroupMembershipRefreshFixEnabled(String groupMembershipRefreshFixEnabled) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_GROUP_MEMBERSHIP_REFRESH_FIX_ENABLED, groupMembershipRefreshFixEnabled);
     }
 
     public BandanaManager getBandanaManager() {

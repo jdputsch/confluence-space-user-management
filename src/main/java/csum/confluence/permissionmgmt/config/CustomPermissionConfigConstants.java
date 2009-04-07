@@ -61,6 +61,7 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_LDAP_CONFIG_TEST_USERNAME = "ext.delegateusermgmt.ldap.config.test.username";
     public static final String DELEGATE_USER_MGMT_LDAP_NARROWING_FILTER_EXPRESSION = "ext.delegateusermgmt.ldap.narrowing.filter.expression";
     public static final String DELEGATE_USER_MGMT_PERSONAL_SPACE_ALLOWED = "ext.delegateusermgmt.personal.space.allowed";
+    public static final String DELEGATE_USER_MGMT_GROUP_MEMBERSHIP_REFRESH_FIX_ENABLED = "ext.delegateusermgmt.group.management.refresh.fix.enabled";
 
     // static values
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";

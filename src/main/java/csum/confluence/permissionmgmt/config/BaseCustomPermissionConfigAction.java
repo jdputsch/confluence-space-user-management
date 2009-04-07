@@ -65,6 +65,7 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
     private String ldapConfigTestUsername;
     private String ldapNarrowingFilterExpression;
     private String personalSpaceAllowed;
+    private String groupMembershipRefreshFixEnabled;
 
 
     public String getUserManagerLocation() {
@@ -249,5 +250,13 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
 
     public void setPersonalSpaceAllowed(String personalSpaceAllowed) {
         this.personalSpaceAllowed = personalSpaceAllowed;
+    }
+
+    public String getGroupMembershipRefreshFixEnabled() {
+        return groupMembershipRefreshFixEnabled;
+    }
+
+    public void setGroupMembershipRefreshFixEnabled(String groupMembershipRefreshFixEnabled) {
+        this.groupMembershipRefreshFixEnabled = groupMembershipRefreshFixEnabled;
     }
 }
