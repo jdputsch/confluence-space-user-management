@@ -41,12 +41,18 @@
         #decoratorParam("mode" "view-edit-spaceUser")
         
             <content tag="spacekey">${action.space.key}</content>
-    #set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&" )
+
+    ## This is for later versions of Confluence (v2.8+)
+    #if($action.isConfluenceVersionEqualToOrAbove("2.8"))
+        #requireResource("raju.kadam.confluence.permissionmgmt:csumresources")
+    #end
+
+    ##set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&" )
 
     #set( $refreshbugworkaround = "&redirect=" )
 
     <body>
-
+        ## This is for earlier versions of Confluence (pre-v2.8)                                
 		<script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/yahoo-dom-event.js"></script>
 		<script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/element-beta-min.js"></script>        
 		<script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/container-min.js"></script>

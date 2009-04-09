@@ -30,6 +30,7 @@
 package csum.confluence.permissionmgmt.util.confluence;
 
 import com.atlassian.spring.container.ContainerManager;
+import com.atlassian.confluence.util.GeneralUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -81,6 +82,39 @@ public class ConfluenceUtil {
             //don't care
             log.debug("failed to load " + component);
         }
+        return result;
+    }
+
+    /**
+     * Method helps avoid more recent API changes, imperfect long term, but works for now.
+     *
+     * @param version
+     * @return true if equal to or above, false otherwise.
+     */
+    public static boolean isConfluenceVersionEqualToOrAbove(String version)
+    {
+        boolean result = false;
+
+        // following code contributed by Andy Brook, with small modifications from Gary Weaver. Thanks, Andy!
+        String fullVersion = GeneralUtil.getVersionNumber();
+        Float confluenceMajorAndMinorVersion = VersionNumberUtil.getMajorAndMinorVersion(fullVersion);
+        if (log.isDebugEnabled()) {
+            log.debug("Got confluence major/minor version '" + confluenceMajorAndMinorVersion + "' from full version string '" + fullVersion + "'");
+        }
+
+        Float thisMajorAndMinorVersion = VersionNumberUtil.getMajorAndMinorVersion(version);
+        if (thisMajorAndMinorVersion==null) {
+            log.warn("Unparseable version string '" + version + "'! Won't be able to compare to current Confluence version.");
+            // assuming will return false
+        }
+        else if (confluenceMajorAndMinorVersion==null) {
+            log.warn("Current confluence version string '" + fullVersion + "' was not parseable! Won't be able to compare to current Confluence version.");
+            // assuming will return false
+        }
+        else if (confluenceMajorAndMinorVersion.floatValue() >= thisMajorAndMinorVersion.floatValue()) {
+            result = true;
+        }
+
         return result;
     }
 }

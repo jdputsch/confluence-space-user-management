@@ -39,8 +39,19 @@
     </plugin-info>
     
     <!-- Modules here -->
-	<resource type="download" name="css/" location="templates/css/"/>
+
+    <!-- This is for earlier versions of Confluence (pre-v2.8) -->
+    <resource type="download" name="css/" location="templates/css/"/>
     <resource type="download" name="js/" location="templates/js/"/>
+
+    <!-- This is for later versions of Confluence (v2.8+) -->
+    <web-resource key="csumresources" name="CSUMResources - In Confluence versions less than 2.8 ignore errors">
+        <resource type="download" name="csum.css" location="templates/css/csum.css" />
+        <resource type="download" name="container-min.js" location="templates/js/container-min.js" />
+        <resource type="download" name="element-beta-min.js" location="templates/js/element-beta-min.js" />
+        <resource type="download" name="yahoo-dom-event.js" location="templates/js/yahoo-dom-event.js" />
+        <context>space</context>
+    </web-resource>
 
     <resource type="i18n" name="i18n" location="csum/confluence/permissionmgmt/AtlassianPlugin" />
 

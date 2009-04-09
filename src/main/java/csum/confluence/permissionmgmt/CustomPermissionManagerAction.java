@@ -30,7 +30,6 @@
 package csum.confluence.permissionmgmt;
 
 import bucket.core.actions.PagerPaginationSupport;
-import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.setup.settings.SettingsManager;
 import com.atlassian.confluence.spaces.Space;
@@ -57,6 +56,7 @@ import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.ListUtil;
 import csum.confluence.permissionmgmt.util.StringUtil;
+import csum.confluence.permissionmgmt.util.confluence.ConfluenceUtil;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.cache.CacheUtil;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
@@ -90,7 +90,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 {
     private Log log = LogFactory.getLog(this.getClass());
 
-    private BandanaManager bandanaManager;
     private SpaceDao spaceDao;
     private CustomPermissionServiceManager customPermissionServiceManager;
     private CustomPermissionConfiguration customPermissionConfiguration;
@@ -117,6 +116,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public CustomPermissionManagerAction()
 	{
 		log.debug("CustomPermissionManagerAction instance created");
+    }
+
+    public boolean getIsConfluenceVersionEqualToOrAbove(String version) {
+        return ConfluenceUtil.isConfluenceVersionEqualToOrAbove(version);
     }
 
     public String getActionDebug() {
@@ -166,12 +169,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
     
-    public void setBandanaManager(BandanaManager bandanaManager)
-    {
-        this.bandanaManager = bandanaManager;
-    }
-    
-	public String doDefault() throws Exception
+    public String doDefault() throws Exception
     {
 		//This method will be called very first time when user accesses .../custompermissionsmanage.action?key=<SPACEKEY>
 		log.debug("CustomPermissionManagerAction - log - Inside doDefault ..");
