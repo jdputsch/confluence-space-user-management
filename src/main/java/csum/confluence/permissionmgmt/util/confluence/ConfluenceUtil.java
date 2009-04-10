@@ -36,6 +36,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Gary S. Weaver
+ * @author Andy Brook
  */
 public class ConfluenceUtil {
 
@@ -97,22 +98,21 @@ public class ConfluenceUtil {
 
         // following code contributed by Andy Brook, with small modifications from Gary Weaver. Thanks, Andy!
         String fullVersion = GeneralUtil.getVersionNumber();
-        Float confluenceMajorAndMinorVersion = VersionNumberUtil.getMajorAndMinorVersion(fullVersion);
-        if (log.isDebugEnabled()) {
-            log.debug("Got confluence major/minor version '" + confluenceMajorAndMinorVersion + "' from full version string '" + fullVersion + "'");
+        if (fullVersion==null) {
+            log.warn("Could not determine Confluence version. Got null version number from GeneralUtil.getVersionNumber().");
         }
-
-        Float thisMajorAndMinorVersion = VersionNumberUtil.getMajorAndMinorVersion(version);
-        if (thisMajorAndMinorVersion==null) {
-            log.warn("Unparseable version string '" + version + "'! Won't be able to compare to current Confluence version.");
-            // assuming will return false
+        else if (version==null) {
+            log.warn("version passed into isConfluenceVersionEqualToOrAbove was null.");
         }
-        else if (confluenceMajorAndMinorVersion==null) {
-            log.warn("Current confluence version string '" + fullVersion + "' was not parseable! Won't be able to compare to current Confluence version.");
-            // assuming will return false
-        }
-        else if (confluenceMajorAndMinorVersion.floatValue() >= thisMajorAndMinorVersion.floatValue()) {
-            result = true;
+        else {
+            VersionNumberComparator comp = new VersionNumberComparator();
+            if (comp.compare(fullVersion, version) >= 0) {
+                log.debug("Confluence " + fullVersion + " is greater than or equal to " + version + ".");
+                result = false;
+            }
+            else {
+                log.debug("Confluence " + fullVersion + " is less than " + version + ".");
+            }
         }
 
         return result;

@@ -118,7 +118,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 		log.debug("CustomPermissionManagerAction instance created");
     }
 
-    public boolean getIsConfluenceVersionEqualToOrAbove(String version) {
+    public boolean isConfluenceVersionEqualToOrAbove(String version) {
         return ConfluenceUtil.isConfluenceVersionEqualToOrAbove(version);
     }
 
