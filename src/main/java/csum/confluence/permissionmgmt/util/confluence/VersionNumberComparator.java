@@ -72,11 +72,15 @@ public class VersionNumberComparator implements Comparator {
 
     private String stripEverythingAfterFirstNonDigitOrDotversion(String s) {
         StringBuffer sb = new StringBuffer();
-        for (int i=0; i<s.length(); i++) {
+        boolean foundFirstChar = false;
+		for (int i=0; i<s.length() && !foundFirstChar; i++) {
             char c = s.charAt(i);
             if (Character.isDigit(c) || c == '.') {
                 sb.append(c);
             }
+			else {
+			    foundFirstChar = true;
+			}
         }
         return sb.toString();
     }
