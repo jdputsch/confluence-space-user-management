@@ -77,6 +77,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -610,6 +611,40 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return isNotAllowed;
     }
 
+    // this can't be done in the velocity template, and must be called via reflection because method doesn't exist in
+    // earlier versions of Confluence < 2.8
+    public void loadWebResourceIfConfluence2_8_OrHigher(WebResourceManager webResourceManager, String resource) {
+        if (webResourceManager!=null) {
+            Class importExportManagerClazz = webResourceManager.getClass();
+            Method exportMethod;
+
+            try {
+                // Confluence >= 2.8(?) only has method (SUSR-75)
+                // exportAs(ExportContext,ProgressMeter):String
+                exportMethod = importExportManagerClazz.getMethod("requireResource", new Class[]{String.class});
+                exportMethod.invoke(webResourceManager, new Object[]{resource});
+
+                if (log.isDebugEnabled()) {
+                    log.debug("loaded webresource '" + resource + "'");
+                }
+
+            } catch (NoSuchMethodException nsme) {
+                // If this happens, we are most probably in Confluence < 2.8
+                if (log.isDebugEnabled()) {
+                    log.debug("Ignore the following exception for Confluence versions < 2.8 that do not support the " +
+                              "method: webResourceManager.requireResource(String). Resource that wasn't loaded was '" +
+                              resource + "'", nsme);
+                }
+            } catch (Exception e) {
+                log.warn("Problem using reflection to load web resource: " + resource, e);
+            }
+        }
+        else
+        {
+            log.warn("webResourceManager was not set on " + this.getClass() + " so didn't load webresource '" + resource + "'");
+        }
+    }
+
     public String execute() throws Exception
     {
 		log.debug("CustomPermissionManagerAction.execute() called");
@@ -631,31 +666,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             return ERROR;
         }
 
-
-        if (!isConfluenceVersionEqualToOrAbove("2.8"))
-        {
-            if (webResourceManager!=null) {
-                String resource = CustomPermissionConstants.PLUGIN_KEY + ":" + CustomPermissionConstants.RESOURCE_BUNDLE_KEY;
-
-                if (log.isDebugEnabled()) {
-                    log.debug("Detected confluence 2.8 or higher, so calling webResourceManager.requireResource(" + resource + ")");
-                }
-
-                webResourceManager.requireResource(resource);
-            }
-            else
-            {
-                log.warn("webResourceManager was not set on " + this.getClass() + " so CSUM plugin didn't add " +
-                         "webresources. This will probably cause a UI display issue and other issues. If autowiring " +
-                         "is not enabled in Confluence, you'll need to set webResourceManager in the spring config " +
-                         "on this bean.");
-            }
-        }
-        else {
-            if (log.isDebugEnabled()) {
-                log.debug("Detected confluence lower than 2.8, so not requiring webresource for CSUM");
-            }
-        }
+        loadWebResourceIfConfluence2_8_OrHigher(webResourceManager, CustomPermissionConstants.PLUGIN_KEY + ":" + CustomPermissionConstants.RESOURCE_BUNDLE_KEY);
 
         CacheUtil.setRemoteUser(getRemoteUser());
 
