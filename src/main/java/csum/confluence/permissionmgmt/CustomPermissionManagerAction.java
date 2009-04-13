@@ -615,14 +615,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     // earlier versions of Confluence < 2.8
     public void loadWebResourceIfConfluence2_8_OrHigher(WebResourceManager webResourceManager, String resource) {
         if (webResourceManager!=null) {
-            Class importExportManagerClazz = webResourceManager.getClass();
-            Method exportMethod;
-
+            Class webResourceManagerClazz = webResourceManager.getClass();
             try {
                 // Confluence >= 2.8(?) only has method (SUSR-75)
-                // exportAs(ExportContext,ProgressMeter):String
-                exportMethod = importExportManagerClazz.getMethod("requireResource", new Class[]{String.class});
-                exportMethod.invoke(webResourceManager, new Object[]{resource});
+                Method requireResourceMethod = webResourceManagerClazz.getMethod("requireResource", new Class[]{String.class});
+                requireResourceMethod.invoke(webResourceManager, new Object[]{resource});
 
                 if (log.isDebugEnabled()) {
                     log.debug("loaded webresource '" + resource + "'");
