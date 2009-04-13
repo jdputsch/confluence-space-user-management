@@ -40,6 +40,7 @@ import com.atlassian.confluence.util.SpaceComparator;
 import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
+import com.atlassian.plugin.webresource.WebResourceManager;
 import com.opensymphony.webwork.ServletActionContext;
 import csum.confluence.permissionmgmt.config.CsumConfigValidationResponse;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -99,6 +100,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private String bulkEdit;
     private SettingsManager settingsManager;
     private String pagerAction;
+    private WebResourceManager webResourceManager;
 
     public static final String REDIRECT_PARAMNAME = "redirect";
     public static final String ADMIN_ACTION_PARAMNAME = "adminAction";
@@ -116,6 +118,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public CustomPermissionManagerAction()
 	{
 		log.debug("CustomPermissionManagerAction instance created");
+    }
+
+    public void setWebResourceManager(WebResourceManager webResourceManager)
+    {
+        this.webResourceManager = webResourceManager;
     }
 
     public boolean isConfluenceVersionEqualToOrAbove(String version) {
@@ -607,7 +614,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     {
 		log.debug("CustomPermissionManagerAction.execute() called");
         log.debug("request uri: " + ServletActionContext.getRequest().getRequestURI());
-        
+
         if (getSpace()==null) {
             log.warn("Space was null");
             List resultList = new ArrayList();
@@ -622,6 +629,32 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             resultList.add(getText("csum.display.alert.invaliduser"));
             setActionErrors(resultList);
             return ERROR;
+        }
+
+
+        if (!isConfluenceVersionEqualToOrAbove("2.8"))
+        {
+            if (webResourceManager!=null) {
+                String resource = CustomPermissionConstants.PLUGIN_KEY + ":" + CustomPermissionConstants.RESOURCE_BUNDLE_KEY;
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Detected confluence 2.8 or higher, so calling webResourceManager.requireResource(" + resource + ")");
+                }
+
+                webResourceManager.requireResource(resource);
+            }
+            else
+            {
+                log.warn("webResourceManager was not set on " + this.getClass() + " so CSUM plugin didn't add " +
+                         "webresources. This will probably cause a UI display issue and other issues. If autowiring " +
+                         "is not enabled in Confluence, you'll need to set webResourceManager in the spring config " +
+                         "on this bean.");
+            }
+        }
+        else {
+            if (log.isDebugEnabled()) {
+                log.debug("Detected confluence lower than 2.8, so not requiring webresource for CSUM");
+            }
         }
 
         CacheUtil.setRemoteUser(getRemoteUser());

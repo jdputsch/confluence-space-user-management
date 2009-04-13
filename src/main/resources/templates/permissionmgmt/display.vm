@@ -43,9 +43,11 @@
             <content tag="spacekey">${action.space.key}</content>
 
     ## This is for later versions of Confluence (v2.8+)
-    #if($action.isConfluenceVersionEqualToOrAbove("2.8"))
-        #requireResource("raju.kadam.confluence.permissionmgmt:csumresources")
-    #end
+    ## checking via if this way doesn't work, probably because confluence evaluates all #requireResource in page prior to other velocity logic?
+    ###if($action.isConfluenceVersionEqualToOrAbove("2.8"))
+    ## instead we load this in the action...
+    ###requireResource("raju.kadam.confluence.permissionmgmt:csumresources")
+    ###end
 
     ##set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&" )
 
