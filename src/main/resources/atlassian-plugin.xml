@@ -50,7 +50,6 @@
         <resource type="download" name="container-min.js" location="templates/js/container-min.js" />
         <resource type="download" name="element-beta-min.js" location="templates/js/element-beta-min.js" />
         <resource type="download" name="yahoo-dom-event.js" location="templates/js/yahoo-dom-event.js" />
-        <context>space</context>
     </web-resource>
 
     <resource type="i18n" name="i18n" location="csum/confluence/permissionmgmt/AtlassianPlugin" />
