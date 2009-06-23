@@ -176,7 +176,23 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                 }
             }
             log.debug("Calling userAccessor.removeGroup(...)");
-            userAccessor.removeGroup(group);
+            boolean success=false;
+            try {
+                userAccessor.removeGroup(group);
+                success=true;
+            }
+            finally {
+	            if (perms!=null && !success) {
+		            log.warn("Remove of group " + group.getName() + " failed and since there were permissions, " +
+		                     "we'll attempt to add them back in case they were able to be removed (as workaround for SUSR-97, CONF-16183)");
+	                // readd perms, as workaround for SUSR-97, CONF-16183
+	                for (int i=0; i<perms.size(); i++) {
+	                    SpacePermission perm = (SpacePermission)perms.get(i);
+	                    log.debug("Calling spacePermissionManager.savePermission(" + perm + ")");
+	                    spacePermissionManager.savePermission(perm);
+	                }
+	            }
+	        }
         }
     }
 
