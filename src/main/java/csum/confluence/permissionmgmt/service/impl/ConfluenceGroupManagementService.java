@@ -123,7 +123,9 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
             if (!grpName.startsWith("confluence") && isPatternMatch) {
                 Group group = userAccessor.getGroup(grpName);
                 if (group != null) {
-                    removeGroup_Confluence2_6_0Compatible(group);
+                    // commenting because of SUSR-97
+                    //removeGroup_Confluence2_6_0Compatible(group);
+                    userAccessor.removeGroup(group);
                     success.add(grpName);
                 } else {
                     didNotExist.add(grpName);
