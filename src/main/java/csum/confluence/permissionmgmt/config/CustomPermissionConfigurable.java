@@ -35,74 +35,98 @@ package csum.confluence.permissionmgmt.config;
 public interface CustomPermissionConfigurable {
 
     public String getUserManagerLocation();
+
     public void setUserManagerLocation(String userManagerLocation);
 
     public String getLdapAuthUsed();
+
     public void setLdapAuthUsed(String ldapAuthUsed);
 
     public String getMaxUserIDsLimit();
+
     public void setMaxUserIDsLimit(String maxUserIDsLimit);
 
     public String getMaxGroupIDsLimit();
+
     public void setMaxGroupIDsLimit(String maxGroupIDsLimit);
 
     public String getPluginDown();
+
     public void setPluginDown(String pluginDown);
-    
+
     public String getDownTimeMessage();
+
     public void setDownTimeMessage(String downTimeMessage);
 
     public String getGroupActionsPermitted();
+
     public void setGroupActionsPermitted(String groupActionsPermitted);
 
     public String getNewGroupNameCreationPrefixPattern();
+
     public void setNewGroupNameCreationPrefixPattern(String newGroupNameCreationPrefixPattern);
 
     public String getNewGroupNameCreationSuffixPattern();
+
     public void setNewGroupNameCreationSuffixPattern(String newGroupNameCreationSuffixPattern);
 
     public String getUserSearchEnabled();
+
     public void setUserSearchEnabled(String userSearchEnabled);
 
     public String getJiraSoapUrl();
+
     public void setJiraSoapUrl(String jiraSoapUrl);
 
     public String getJiraSoapUsername();
+
     public void setJiraSoapUsername(String jiraSoapUsername);
 
     public String getJiraSoapPassword();
+
     public void setJiraSoapPassword(String jiraSoapPassword);
 
     public String getProviderType();
+
     public void setProviderType(String providerType);
 
     public String getLdapUserIdAttribute();
+
     public void setLdapUserIdAttribute(String ldapUserIdAttribute);
 
     public String getLdapEmailAttribute();
+
     public void setLdapEmailAttribute(String ldapEmailAttribute);
 
-	public String getLdapFirstNameAttribute();
-	public void setLdapFirstNameAttribute(String ldapFirstNameAttribute);
-	
-	public String getLdapLastNameAttribute();
-	public void setLdapLastNameAttribute(String ldapLastNameAttribute);
+    public String getLdapFirstNameAttribute();
+
+    public void setLdapFirstNameAttribute(String ldapFirstNameAttribute);
+
+    public String getLdapLastNameAttribute();
+
+    public void setLdapLastNameAttribute(String ldapLastNameAttribute);
 
     public String getLdapProviderFullyQualifiedClassname();
+
     public void setLdapProviderFullyQualifiedClassname(String ldapProviderFullyQualifiedClassname);
 
     public String getUserFullNameFormat();
+
     public void setUserFullNameFormat(String userFullNameFormat);
 
     public String getLdapConfigTestUsername();
+
     public void setLdapConfigTestUsername(String ldapConfigTestUsername);
 
     public String getLdapNarrowingFilterExpression();
+
     public void setLdapNarrowingFilterExpression(String ldapNarrowingFilterExpression);
 
     public String getPersonalSpaceAllowed();
+
     public void setPersonalSpaceAllowed(String personalSpaceAllowed);
 
     public String getGroupMembershipRefreshFixEnabled();
+
     public void setGroupMembershipRefreshFixEnabled(String groupMembershipRefreshFixEnabled);
 }

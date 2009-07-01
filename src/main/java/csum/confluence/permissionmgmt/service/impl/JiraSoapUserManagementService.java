@@ -91,7 +91,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     if (remoteUser == null) {
                         //userid doesn't exist, but if LDAP present then we will create user if it exists in LDAP.
                         if (isLDAPPresent) {
-							System.out.println("Getting user from LDAP ...");
+                            System.out.println("Getting user from LDAP ...");
                             remoteUser = createJiraUser(token, jiraSoapService, userid, isLDAPPresent);
                         }
 
@@ -142,8 +142,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
             // a less critical error that we don't want to log the same way
             throw new UsersNotFoundException(context.getText("csum.manager.error.usersnotfound") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".");
-        }
-        else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipAdditionProblems.size() > 0) {
+        } else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipAdditionProblems.size() > 0) {
             throw new AddException(getRemoveUsersByUsernameFromGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipAdditionProblems, context));
         }
     }
@@ -163,7 +162,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
 
                 if (lUser != null) {
                     //createUser(String token, String username, String password, String fullName, String email)
-                    vUser = jiraSoapService.createUser(token, creationUserName, creationUserName, lUser.getFullName(), lUser.getEmail() );
+                    vUser = jiraSoapService.createUser(token, creationUserName, creationUserName, lUser.getFullName(), lUser.getEmail());
                 }
             }
         } catch (Throwable e) {
@@ -263,8 +262,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
             // a less critical error that we don't want to log the same way
             throw new UsersNotFoundException(context.getText("csum.manager.error.usersnotfound") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".");
-        }
-        else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipRemovalProblems.size() > 0) {
+        } else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipRemovalProblems.size() > 0) {
             throw new RemoveException(getRemoveUsersByUsernameFromGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipRemovalProblems, context));
         }
     }

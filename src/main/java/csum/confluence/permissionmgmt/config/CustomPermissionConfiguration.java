@@ -33,14 +33,14 @@ import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.core.ConfluenceActionSupport;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.spring.container.ContainerManager;
+import com.dolby.confluence.net.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.StringUtil;
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
-import com.dolby.confluence.net.ldap.LDAPUser;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -102,7 +102,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setJiraSoapUsername(config.getJiraSoapUsername());
 
         String jiraSoapPassword = config.getJiraSoapPassword();
-        if (jiraSoapPassword!=null) {
+        if (jiraSoapPassword != null) {
             // only change password if it is set to a string (can be empty, but if null that indicates not to change)
             setJiraSoapPassword(jiraSoapPassword);
         }
@@ -137,23 +137,21 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
         CsumConfigValidationResponse result = new CsumConfigValidationResponse();
         result.setValid(true);
-        
-		String userMgrLocation = config.getUserManagerLocation();
-		boolean isUserManagerLocationSet = (userMgrLocation != null);
-        boolean userManagerLocationIsConfluence = (userMgrLocation != null) && (userMgrLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE));
-		boolean userManagerLocationIsJira = (userMgrLocation != null) && (userMgrLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE));
 
-		//If userManagerLocation is not set as CONFLUENCE or JIRA, then it must be set to either value.
-		if( !(userManagerLocationIsConfluence || userManagerLocationIsJira) )
-		{
+        String userMgrLocation = config.getUserManagerLocation();
+        boolean isUserManagerLocationSet = (userMgrLocation != null);
+        boolean userManagerLocationIsConfluence = (userMgrLocation != null) && (userMgrLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE));
+        boolean userManagerLocationIsJira = (userMgrLocation != null) && (userMgrLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE));
+
+        //If userManagerLocation is not set as CONFLUENCE or JIRA, then it must be set to either value.
+        if (!(userManagerLocationIsConfluence || userManagerLocationIsJira)) {
             result.addFieldError("userManagerLocation", cas.getText("csum.configure.error.usermanagerlocationnull"));
             result.setValid(false);
-		}
+        }
 
-		//Following information needs to be check only if Wiki User Management is delegated to Jira
-		if(isUserManagerLocationSet && userManagerLocationIsJira)
-		{
-			if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUrl())) {
+        //Following information needs to be check only if Wiki User Management is delegated to Jira
+        if (isUserManagerLocationSet && userManagerLocationIsJira) {
+            if (ConfigUtil.isNullOrEmpty(config.getJiraSoapUrl())) {
                 result.addFieldError("jiraSoapUrl", cas.getText("csum.configure.error.jirasoapurlempty"));
                 result.setValid(false);
             }
@@ -164,13 +162,11 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             }
 
             String jiraSoapPassword = null;
-            if (config.getJiraSoapPassword()!=null) {
+            if (config.getJiraSoapPassword() != null) {
                 jiraSoapPassword = config.getJiraSoapPassword();
-            }
-            else if (existingConfig != null && existingConfig.getJiraSoapPassword()!=null) {
+            } else if (existingConfig != null && existingConfig.getJiraSoapPassword() != null) {
                 jiraSoapPassword = existingConfig.getJiraSoapPassword();
-            }
-            else {
+            } else {
                 result.addFieldError("jiraSoapPassword", cas.getText("csum.configure.error.jirasoappasswordnull"));
                 result.setValid(false);
             }
@@ -197,39 +193,36 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getLdapAuthUsed())) {
             result.addFieldError("ldapAuthUsed", cas.getText("csum.configure.error.ldapauthusedinvalid"));
             result.setValid(false);
-        }
-        else {
+        } else {
             if ("YES".equals(config.getLdapAuthUsed())) {
                 String providerType = config.getProviderType();
-                if( providerType == null ||
+                if (providerType == null ||
                         (!providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER) &&
-                       !providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER)))
-                {
+                                !providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_ATLASSIAN_USER))) {
                     result.addFieldError("providerType", cas.getText("csum.configure.error.providertypeinvalid"));
                     result.setValid(false);
-                }
-                else if (providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER)) {
-                    if (config.getLdapUserIdAttribute()==null) {
+                } else if (providerType.equals(CustomPermissionConfigConstants.PROVIDER_TYPE_OSUSER)) {
+                    if (config.getLdapUserIdAttribute() == null) {
                         result.addFieldError("ldapUserIdAttribute", cas.getText("csum.configure.error.ldapuseridattributenull"));
                         result.setValid(false);
                     }
 
-                    if (config.getLdapEmailAttribute()==null) {
+                    if (config.getLdapEmailAttribute() == null) {
                         result.addFieldError("ldapEmailAttribute", cas.getText("csum.configure.error.ldapemailattributenull"));
                         result.setValid(false);
                     }
 
-                    if (config.getLdapFirstNameAttribute()==null) {
+                    if (config.getLdapFirstNameAttribute() == null) {
                         result.addFieldError("ldapFirstNameAttribute", cas.getText("csum.configure.error.ldapfirstnameattributenull"));
                         result.setValid(false);
                     }
 
-                    if (config.getLdapLastNameAttribute()==null) {
+                    if (config.getLdapLastNameAttribute() == null) {
                         result.addFieldError("ldapLastNameAttribute", cas.getText("csum.configure.error.ldaplastnameattributenull"));
                         result.setValid(false);
                     }
 
-                    if (config.getLdapProviderFullyQualifiedClassname()==null) {
+                    if (config.getLdapProviderFullyQualifiedClassname() == null) {
                         // ok to be empty. is not used in user-atlassian provider implementation
                         result.addFieldError("ldapProviderFullyQualifiedClassname", cas.getText("csum.configure.error.ldapproviderfullyqualifiedclassnamenull"));
                         result.setValid(false);
@@ -241,11 +234,10 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                 boolean firstLastFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_FIRSTNAME_LASTNAME));
                 boolean idFormat = (userFullNameFormat != null) && (userFullNameFormat.equals(CustomPermissionConfigConstants.USER_FULL_NAME_FORMAT_TYPE_ID));
 
-                if (userFullNameFormat==null) {
+                if (userFullNameFormat == null) {
                     result.addFieldError("userFullNameFormat", cas.getText("csum.configure.error.userfullnameformatnull"));
                     result.setValid(false);
-                }
-                else {
+                } else {
                     if (!lastCommaFirstFormat && !firstLastFormat && !idFormat) {
                         result.addFieldError("userFullNameFormat", cas.getText("csum.configure.error.userfullnameformatinvalid") + ": " + userFullNameFormat);
                         result.setValid(false);
@@ -260,12 +252,10 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
                 // narrowing filter expression is configurable but is optional and don't even care if it is null or empty
 
-                if (shouldTestExternalServices && result.isValid())
-                {
+                if (shouldTestExternalServices && result.isValid()) {
                     try {
                         LDAPUser usr = LDAPHelper.getLDAPUser(config, ldapConfigTestUsername);
-                        if(usr == null)
-                        {
+                        if (usr == null) {
                             log.debug("Got null user back from LDAP for " + ldapConfigTestUsername);
                             result.addFieldError("ldapAuthUsed", cas.getText("csum.configure.error.ldapconfigtestreturnednull") + ": " + ldapConfigTestUsername);
                             result.setValid(false);
@@ -304,8 +294,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                     result.setValid(false);
                 }
             }
-        }
-        else {
+        } else {
             result.addFieldError("pluginInDown", cas.getText("csum.configure.error.plugindowninvalid"));
             result.setValid(false);
         }
@@ -324,8 +313,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
                     result.setValid(false);
                 }
             }
-        }
-        else {
+        } else {
             result.addFieldError("groupActionsPermitted", cas.getText("csum.configure.error.groupactionspermittedinvalid"));
             result.setValid(false);
         }

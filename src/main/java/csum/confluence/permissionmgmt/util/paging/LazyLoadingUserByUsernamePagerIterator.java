@@ -54,7 +54,7 @@ public class LazyLoadingUserByUsernamePagerIterator implements Iterator {
     public Object next() {
         usernamePagerIterator = getUsernamePagerIterator();
         if (usernamePagerIterator != null) {
-            String username = (String)usernamePagerIterator.next();
+            String username = (String) usernamePagerIterator.next();
             return getUserAccessor().getUser(username);
         }
 

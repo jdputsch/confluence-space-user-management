@@ -37,46 +37,41 @@ import csum.confluence.permissionmgmt.CustomPermissionConstants;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.cache.CacheUtil;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
-
-import java.util.Iterator;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Action to configure plugin
- * 
+ *
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction implements Administrative
-{
+public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction implements Administrative {
     private Log log = LogFactory.getLog(this.getClass());
 
     BandanaManager bandanaManager;
     BootstrapManager bootstrapManager;
     CustomPermissionConfiguration customPermissionConfiguration;
     private static final String JIRA_SOAP_PASSWORD_SET_PARAMNAME = "jiraSoapPasswordSet";
-    
-    
-    public CustomPermissionConfigAction()
-    {
-    	log.debug("CustomPermissionConfigAction instance created");
+
+
+    public CustomPermissionConfigAction() {
+        log.debug("CustomPermissionConfigAction instance created");
     }
-    
-    public void setBandanaManager(BandanaManager bandanaManager)
-    {
+
+    public void setBandanaManager(BandanaManager bandanaManager) {
         this.bandanaManager = bandanaManager;
     }
 
-    public String doDefault() throws Exception
-    {
+    public String doDefault() throws Exception {
         log.debug("CustomPermissionConfigAction - Inside doDefault ..");
 
-		LegacyConfigurationMigrator.migrateLegacyConfiguration(bandanaManager);
+        LegacyConfigurationMigrator.migrateLegacyConfiguration(bandanaManager);
 
         configureFormValuesWithPersistedConfig();
 
@@ -85,16 +80,15 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         // NOTE: the main reason for doing this and showing errors even though it might be your first time to the page
         // is that people that have already configured the plugin once before will expect errors to show up on the page
         // when they visit it, even if they didn't post to it yet.
-        if(!validateConfiguration()) {
+        if (!validateConfiguration()) {
             return ERROR;
         }
 
         return super.doDefault();
     }
 
-    public String execute() throws Exception
-    {
-		log.debug("CustomPermissionConfigAction - Inside execute ..");
+    public String execute() throws Exception {
+        log.debug("CustomPermissionConfigAction - Inside execute ..");
 
         // this is for logging logged in user info when logging error, fatal, warn
         CacheUtil.setRemoteUser(getRemoteUser());
@@ -102,8 +96,8 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         List resultList = new ArrayList();
 
         fixFormValues();
-                
-        if(!validateConfiguration()) {
+
+        if (!validateConfiguration()) {
             LogUtil.warnWithRemoteUserInfo(log, "Configuration was invalid");
             resultList.add(getText("csum.configure.error.configurationinvalid"));
             setActionErrors(resultList);
@@ -119,18 +113,15 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         return SUCCESS;
     }
 
-    private void configureFormValuesWithPersistedConfig()
-    {
+    private void configureFormValuesWithPersistedConfig() {
         getCustomPermissionConfiguration().copyTo(this);
     }
 
-    private void updatePersistedConfigWithFormValues()
-    {        
+    private void updatePersistedConfigWithFormValues() {
         getCustomPermissionConfiguration().updateWith(this);
     }
 
-    public void fixFormValues()
-    {
+    public void fixFormValues() {
         // Set presets as config, trimming and using defaults if they make sense
         setDownTimeMessage(ConfigUtil.getTrimmedStringOrNull(getDownTimeMessage()));
         setGroupActionsPermitted(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("groupActionsPermitted", getGroupActionsPermitted(), CustomPermissionConfigConstants.YES));
@@ -146,21 +137,20 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
         log.debug("paramMap: " + paramMap);
-        if (paramMap.get(JIRA_SOAP_PASSWORD_SET_PARAMNAME)==null) {
+        if (paramMap.get(JIRA_SOAP_PASSWORD_SET_PARAMNAME) == null) {
             // make sure password is set to null if jiraSoapPasswordSet is not checked/set
             setJiraSoapPassword(null);
         }
     }
-    
-    public boolean validateConfiguration()
-	{
-		log.debug("CustomPermissionConfigAction - Inside validate Configuration ...");
+
+    public boolean validateConfiguration() {
+        log.debug("CustomPermissionConfigAction - Inside validate Configuration ...");
         CsumConfigValidationResponse validResp = CustomPermissionConfiguration.validate(this, getCustomPermissionConfiguration(), getRemoteUser().getName(), this, true);
         Map fieldErrorMap = validResp.getFieldNameToErrorMessage();
         Iterator keys = fieldErrorMap.keySet().iterator();
         while (keys.hasNext()) {
-            String key = (String)keys.next();
-            addFieldError(key, (String)fieldErrorMap.get(key));
+            String key = (String) keys.next();
+            addFieldError(key, (String) fieldErrorMap.get(key));
         }
 
         return validResp.isValid();
@@ -174,8 +164,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         this.customPermissionConfiguration = customPermissionConfiguration;
     }
 
-    public String getActionName(String fullClassName)
-    {
+    public String getActionName(String fullClassName) {
         return "Configure Custom Space User Management Plugin";
     }
 }

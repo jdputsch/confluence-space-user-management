@@ -32,27 +32,25 @@ package csum.confluence.permissionmgmt.service.impl;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.user.Group;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.exception.ServiceAuthenticationException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
-import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.soap.jira.RemoteGroup;
 import csum.confluence.permissionmgmt.soap.jira.RemoteUser;
 import csum.confluence.permissionmgmt.util.StringUtil;
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
-import csum.confluence.permissionmgmt.util.jira.JiraSoapUtil;
-import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
-import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
+import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
+import csum.confluence.permissionmgmt.util.jira.JiraSoapUtil;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * @author Rajendra Kadam

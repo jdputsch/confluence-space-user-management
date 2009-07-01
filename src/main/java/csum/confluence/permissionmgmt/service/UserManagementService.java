@@ -46,15 +46,15 @@ import java.util.List;
  */
 public interface UserManagementService {
 
-    public AdvancedUserQueryResults findUsers( AdvancedUserQuery advancedUserQuery, ServiceContext context ) throws FindException;
+    public AdvancedUserQueryResults findUsers(AdvancedUserQuery advancedUserQuery, ServiceContext context) throws FindException;
 
-    public Pager findUsersForGroup( String groupName, ServiceContext context ) throws FindException;
+    public Pager findUsersForGroup(String groupName, ServiceContext context) throws FindException;
 
-    public Pager findUsersWhoseNameStartsWith( String partialName, ServiceContext context ) throws FindException;
+    public Pager findUsersWhoseNameStartsWith(String partialName, ServiceContext context) throws FindException;
 
-    public void addUsersByUsernameToGroups( List userNames, List groupNames, ServiceContext context ) throws UsersNotFoundException, AddException, ServiceAuthenticationException;
+    public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws UsersNotFoundException, AddException, ServiceAuthenticationException;
 
-    public void removeUsersByUsernameFromGroups( List userNames, List groupNames, ServiceContext context ) throws UsersNotFoundException, RemoveException, ServiceAuthenticationException;
+    public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws UsersNotFoundException, RemoveException, ServiceAuthenticationException;
 
     public boolean isMemberOf(String userName, String groupName) throws FindException;
 }

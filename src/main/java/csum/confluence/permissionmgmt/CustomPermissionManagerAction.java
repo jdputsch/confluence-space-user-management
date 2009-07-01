@@ -37,10 +37,10 @@ import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
 import com.atlassian.confluence.util.GeneralUtil;
 import com.atlassian.confluence.util.SpaceComparator;
+import com.atlassian.plugin.webresource.WebResourceManager;
 import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerUtils;
-import com.atlassian.plugin.webresource.WebResourceManager;
 import com.opensymphony.webwork.ServletActionContext;
 import csum.confluence.permissionmgmt.config.CsumConfigValidationResponse;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -57,17 +57,20 @@ import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.ListUtil;
 import csum.confluence.permissionmgmt.util.StringUtil;
-import csum.confluence.permissionmgmt.util.confluence.ConfluenceUtil;
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.cache.CacheUtil;
+import csum.confluence.permissionmgmt.util.confluence.ConfluenceUtil;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csum.confluence.permissionmgmt.util.group.GroupUtil;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.paging.PagerPaginationSupportUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -77,10 +80,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.lang.reflect.Method;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * The action that most of the work for the plugin centers around.
@@ -88,8 +88,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class CustomPermissionManagerAction extends AbstractPagerPaginationSupportCachingSpaceAction implements SpaceAdministrative
-{
+public class CustomPermissionManagerAction extends AbstractPagerPaginationSupportCachingSpaceAction implements SpaceAdministrative {
     private Log log = LogFactory.getLog(this.getClass());
 
     private SpaceDao spaceDao;
@@ -116,13 +115,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public static final String REFRESH_BUG_SECOND_REQUEST_PARAMNAME = "conf9035";
     public static final String DEBUG = "debug";
 
-    public CustomPermissionManagerAction()
-	{
-		log.debug("CustomPermissionManagerAction instance created");
+    public CustomPermissionManagerAction() {
+        log.debug("CustomPermissionManagerAction instance created");
     }
 
-    public void setWebResourceManager(WebResourceManager webResourceManager)
-    {
+    public void setWebResourceManager(WebResourceManager webResourceManager) {
         this.webResourceManager = webResourceManager;
     }
 
@@ -133,35 +130,32 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public String getActionDebug() {
         String result = null;
 
-        if (this.getFromPluginCache(DEBUG)!=null) {
+        if (this.getFromPluginCache(DEBUG) != null) {
 
             try {
                 StringBuffer sb = new StringBuffer();
 
                 sb.append("isUserSearchEnabled=" + getIsUserSearchEnabled() + "<br/>");
                 sb.append("selectedGroup=" + getSelectedGroup() + "<br/>");
-                if (getGroups()!=null) {
+                if (getGroups() != null) {
                     sb.append("groups size=" + getGroups().getTotal() + "<br/>");
                     sb.append("groups current page first record=" + this.firstRecordNum(getGroups()) + "<br/>");
                     sb.append("groups current page last record=" + this.lastRecordNum(getGroups()) + "<br/>");
-                }
-                else {
+                } else {
                     sb.append("groups=null<br/>");
                 }
-                if (getUsers()!=null) {
+                if (getUsers() != null) {
                     sb.append("users size=" + getUsers().getTotal() + "<br/>");
                     sb.append("users current page first record=" + this.firstRecordNum(getUsers()) + "<br/>");
                     sb.append("users current page last record=" + this.lastRecordNum(getUsers()) + "<br/>");
-                }
-                else {
+                } else {
                     sb.append("users=null<br/>");
                 }
-                if (getSearchResultUsers()!=null) {
+                if (getSearchResultUsers() != null) {
                     sb.append("searchResultUsers size=" + getSearchResultUsers().getTotal() + "<br/>");
                     sb.append("searchResultUsers current page first record=" + this.firstRecordNum(getSearchResultUsers()) + "<br/>");
                     sb.append("searchResultUsers current page last record=" + this.lastRecordNum(getSearchResultUsers()) + "<br/>");
-                }
-                else {
+                } else {
                     sb.append("searchResultUsers=null<br/>");
                 }
 
@@ -176,11 +170,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         return result;
     }
-    
-    public String doDefault() throws Exception
-    {
-		//This method will be called very first time when user accesses .../custompermissionsmanage.action?key=<SPACEKEY>
-		log.debug("CustomPermissionManagerAction - log - Inside doDefault ..");
+
+    public String doDefault() throws Exception {
+        //This method will be called very first time when user accesses .../custompermissionsmanage.action?key=<SPACEKEY>
+        log.debug("CustomPermissionManagerAction - log - Inside doDefault ..");
         return execute();
     }
 
@@ -190,10 +183,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private List getUrlDecodedCleanedTrimmedParameterValues(Map paramMap, String param) {
         List result = null;
-        String[] values = (String[])paramMap.get(param);
-        if ( values != null ) {
+        String[] values = (String[]) paramMap.get(param);
+        if (values != null) {
             result = new ArrayList();
-            for (int i=0;i<values.length;i++) {
+            for (int i = 0; i < values.length; i++) {
                 String value = cleanParamValue(param, values[i]);
                 result.add(value);
             }
@@ -207,7 +200,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private String cleanParamValue(String param, String value) {
-        if (value!=null) {
+        if (value != null) {
             value = StringUtil.clean(value.trim());
             if (!StringUtil.isNullOrEmpty(value)) {
                 try {
@@ -228,8 +221,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private String getRawParameterValue(Map paramMap, String param) {
-        String[] values = (String[])paramMap.get(param);
-        if ( values != null && values.length > 0 ) {
+        String[] values = (String[]) paramMap.get(param);
+        if (values != null && values.length > 0) {
             return values[0];
         }
         return null;
@@ -238,7 +231,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private List getUrlDecodedCleanedTrimmedParameterValueList(Map paramMap, String param) {
         List result = null;
         String decodedValue = getUrlDecodedCleanedTrimmedParameterValue(paramMap, param);
-        if (decodedValue!=null) {
+        if (decodedValue != null) {
             result = StringUtil.getCleanedListFromDelimitedValueString(decodedValue);
         }
 
@@ -248,9 +241,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private List getUrlDecodedCleanedTrimmedParameterValueListWithCheckboxSupport(Map paramMap, String param) {
         List result = new ArrayList();
         List decodedValues = getUrlDecodedCleanedTrimmedParameterValues(paramMap, param);
-        if (decodedValues!=null) {
-            for (int i=0; i<decodedValues.size(); i++) {
-                String decodedValue = (String)decodedValues.get(i);
+        if (decodedValues != null) {
+            for (int i = 0; i < decodedValues.size(); i++) {
+                String decodedValue = (String) decodedValues.get(i);
                 result.addAll(StringUtil.getCleanedListFromDelimitedValueString(decodedValue));
             }
         }
@@ -270,17 +263,17 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public CustomPermissionManagerActionContext createContext() {
         CustomPermissionManagerActionContext context = new CustomPermissionManagerActionContext();
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        context.setSpecifiedGroups(getUrlDecodedCleanedTrimmedParameterValueListWithCheckboxSupport( paramMap, GROUPS_PARAMNAME));
+        context.setSpecifiedGroups(getUrlDecodedCleanedTrimmedParameterValueListWithCheckboxSupport(paramMap, GROUPS_PARAMNAME));
         log.debug("groups=" + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedGroups()));
-        context.setSpecifiedUsers(getUrlDecodedCleanedTrimmedParameterValueList( paramMap, USERS_PARAMNAME));
+        context.setSpecifiedUsers(getUrlDecodedCleanedTrimmedParameterValueList(paramMap, USERS_PARAMNAME));
         log.debug("users=" + StringUtil.convertCollectionToCommaDelimitedString(context.getSpecifiedUsers()));
         context.setLoggedInUser(getRemoteUser().getName());
-		log.debug("loggedInUser=" + context.getLoggedInUser());
+        log.debug("loggedInUser=" + context.getLoggedInUser());
         context.setKey(getKey());
         log.debug("key=" + context.getKey());
-        context.setAdminAction(getUrlDecodedCleanedTrimmedParameterValue( paramMap, ADMIN_ACTION_PARAMNAME));
+        context.setAdminAction(getUrlDecodedCleanedTrimmedParameterValue(paramMap, ADMIN_ACTION_PARAMNAME));
         log.debug("adminAction=" + context.getAdminAction());
-        context.setUserSearch(getUrlDecodedCleanedTrimmedParameterValue( paramMap, USER_SEARCH_PARAMNAME));
+        context.setUserSearch(getUrlDecodedCleanedTrimmedParameterValue(paramMap, USER_SEARCH_PARAMNAME));
         log.debug("userSearch=" + context.getUserSearch());
         context.setConfluenceActionSupport(this);
         return context;
@@ -289,11 +282,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public AdvancedUserQuery createAdvancedUserQuery() {
         AdvancedUserQuery userQuery = new AdvancedUserQuery();
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
-        userQuery.setLookupType(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "lookupType"));
+        userQuery.setLookupType(getUrlDecodedCleanedTrimmedParameterValue(paramMap, "lookupType"));
         log.debug("lookupType=" + userQuery.getLookupType());
-        userQuery.setPartialSearchTerm(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "partialSearchTerm"));
+        userQuery.setPartialSearchTerm(getUrlDecodedCleanedTrimmedParameterValue(paramMap, "partialSearchTerm"));
         log.debug("partialSearchTerm=" + userQuery.getPartialSearchTerm());
-        userQuery.setSubstringMatchType(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "substringMatchType"));
+        userQuery.setSubstringMatchType(getUrlDecodedCleanedTrimmedParameterValue(paramMap, "substringMatchType"));
         log.debug("substringMatchType=" + userQuery.getSubstringMatchType());
         return userQuery;
     }
@@ -312,11 +305,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void populateGroupsUnlessCached() {
-        if (getGroups()==null) {
+        if (getGroups() == null) {
             log.debug("getGroups() returned null so calling findAndSetGroups()");
             findAndSetGroups();
-        }
-        else {
+        } else {
             log.debug("returned cached groups.");
         }
     }
@@ -324,34 +316,31 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private void populateUsersForSelectedGroupUnlessCached() {
         String selectedGroup = getSelectedGroup();
         if (!ConfigUtil.isNullOrEmpty(selectedGroup)) {
-            if (getUsers()==null) {
+            if (getUsers() == null) {
                 log.debug("getUsers() returned null so calling findAndSetUsers()");
                 findAndSetUsers(selectedGroup);
-            }
-            else {
+            } else {
                 log.debug("returned cached users. selectedGroup='" + selectedGroup + "'");
             }
         }
     }
 
     private void handlePaging(Map paramMap) {
-        setPagerAction(getUrlDecodedCleanedTrimmedParameterValue( paramMap, "pagerAction"));
+        setPagerAction(getUrlDecodedCleanedTrimmedParameterValue(paramMap, "pagerAction"));
         String pagerAction = getPagerAction();
         if ("nextPageGroups".equals(pagerAction)) {
             PagerPaginationSupport groups = getGroups();
             if (hasNext(groups)) {
                 next(groups);
             }
-        }
-        else if ("prevPageGroups".equals(pagerAction)) {
+        } else if ("prevPageGroups".equals(pagerAction)) {
             PagerPaginationSupport groups = getGroups();
             if (hasPrev(groups)) {
                 prev(groups);
             }
-        }
-        else if ("skipToGroup".equals(pagerAction)) {
+        } else if ("skipToGroup".equals(pagerAction)) {
             Integer recordNum = getRecordNum(paramMap);
-            if (recordNum!=null) {
+            if (recordNum != null) {
                 // record num is one-based, not zero-based
                 PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getGroups());
             }
@@ -362,16 +351,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             if (hasNext(users)) {
                 next(users);
             }
-        }
-        else if ("prevPageUsers".equals(pagerAction)) {
+        } else if ("prevPageUsers".equals(pagerAction)) {
             PagerPaginationSupport users = getUsers();
             if (hasPrev(users)) {
                 prev(users);
             }
-        }
-        else if ("skipToUser".equals(pagerAction)) {
+        } else if ("skipToUser".equals(pagerAction)) {
             Integer recordNum = getRecordNum(paramMap);
-            if (recordNum!=null) {
+            if (recordNum != null) {
                 // record num is one-based, not zero-based
                 PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getUsers());
             }
@@ -382,16 +369,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             if (hasNext(users)) {
                 next(users);
             }
-        }
-        else if ("prevPageSearchResultUsers".equals(pagerAction)) {
+        } else if ("prevPageSearchResultUsers".equals(pagerAction)) {
             PagerPaginationSupport users = getSearchResultUsers();
             if (hasPrev(users)) {
                 prev(users);
             }
-        }
-        else if ("skipToSearchResultUser".equals(pagerAction)) {
+        } else if ("skipToSearchResultUser".equals(pagerAction)) {
             Integer recordNum = getRecordNum(paramMap);
-            if (recordNum!=null) {
+            if (recordNum != null) {
                 // record num is one-based, not zero-based
                 PagerPaginationSupportUtil.safelyMoveToOldStartIndex(new Integer(recordNum.intValue() - 1), getSearchResultUsers());
             }
@@ -400,8 +385,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private Integer getRecordNum(Map paramMap) {
         Integer result = null;
-        String val = getUrlDecodedCleanedTrimmedParameterValue( paramMap, "recordNum");
-        if (val!=null) {
+        String val = getUrlDecodedCleanedTrimmedParameterValue(paramMap, "recordNum");
+        if (val != null) {
             try {
                 result = new Integer(val);
             }
@@ -413,12 +398,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void handleUserSearch(CustomPermissionManagerActionContext context) {
-        if (getUserSearch()!=null && getPagerAction()==null && ACTION_ADVANCED_FIND_USERS.equalsIgnoreCase(context.getAdminAction())) {
-            log.debug("validating user search form. userSearch=" + getUserSearch() + " pagerAction=" + getPagerAction()+ " adminAction=" + context.getAdminAction());
+        if (getUserSearch() != null && getPagerAction() == null && ACTION_ADVANCED_FIND_USERS.equalsIgnoreCase(context.getAdminAction())) {
+            log.debug("validating user search form. userSearch=" + getUserSearch() + " pagerAction=" + getPagerAction() + " adminAction=" + context.getAdminAction());
             doUserSearch();
-        }
-        else {
-            log.debug("not a user search. userSearch=" + getUserSearch() + " pagerAction=" + getPagerAction()+ " adminAction=" + context.getAdminAction());            
+        } else {
+            log.debug("not a user search. userSearch=" + getUserSearch() + " pagerAction=" + getPagerAction() + " adminAction=" + context.getAdminAction());
         }
     }
 
@@ -440,8 +424,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void handleRefreshData(Map paramMap) {
-        if (getUrlDecodedCleanedTrimmedParameterValue(paramMap, "refresh")!=null) {
-            refreshData();            
+        if (getUrlDecodedCleanedTrimmedParameterValue(paramMap, "refresh") != null) {
+            refreshData();
         }
     }
 
@@ -458,7 +442,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     private String bestAttemptUTF8Encode(String s) {
         String result = s;
         try {
-            result = URLEncoder.encode(s,"UTF-8");
+            result = URLEncoder.encode(s, "UTF-8");
         }
         catch (Throwable t) {
             LogUtil.errorWithRemoteUserInfo(log, "Failed to URLEncode '" + s + "'", t);
@@ -468,7 +452,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private String[] bestAttemptUTF8Encode(String[] s) {
         String[] result = new String[s.length];
-        for (int i=0;i<s.length;i++) {
+        for (int i = 0; i < s.length; i++) {
             result[i] = bestAttemptUTF8Encode(s[i]);
         }
         return result;
@@ -482,8 +466,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             // note: wrapping with TreeMap so it will sort params by name, otherwise it makes inconsistent URL which looks
             //       hackish.
             Map paramMap = new TreeMap(ServletActionContext.getRequest().getParameterMap());
-            String[] redirect = (String[])paramMap.get(REDIRECT_PARAMNAME);
-            if (redirect!=null) {
+            String[] redirect = (String[]) paramMap.get(REDIRECT_PARAMNAME);
+            if (redirect != null) {
                 HttpServletResponse resp = ServletActionContext.getResponse();
 
                 // Redirect HTTP POST as well as HTTP GET. Remove REDIRECT_PARAMNAME from params.
@@ -492,7 +476,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 Iterator iter = paramMap.keySet().iterator();
                 String paramConcat = "";
                 while (iter.hasNext()) {
-                    String param = (String)iter.next();
+                    String param = (String) iter.next();
 
                     // remove any params that could either do an additional redirect or additional action, except for groups
                     // because will need groups to know what cache to refresh on second request
@@ -503,11 +487,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         params.append(paramConcat);
                         params.append(bestAttemptUTF8Encode(param));
                         params.append("=");
-                        String[] value = (String[])paramMap.get(param);
+                        String[] value = (String[]) paramMap.get(param);
                         String valueConcat = "";
-                        if (value!=null) {
+                        if (value != null) {
                             params.append(valueConcat);
-                            for (int i=0;i<value.length;i++) {
+                            for (int i = 0; i < value.length; i++) {
                                 params.append(bestAttemptUTF8Encode(value[i]));
                             }
                             valueConcat = ",";
@@ -536,7 +520,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                 log.debug("Workaround for bug CSP-10371. Redirecting to: " + url);
                 try {
-                    resp.sendRedirect( url );
+                    resp.sendRedirect(url);
                 }
                 catch (IOException e) {
                     LogUtil.errorWithRemoteUserInfo(log, "Redirect failed!", e);
@@ -554,10 +538,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
             // RECOVER STATE
 
-            result = (String)getFromPluginCache("result");
-            setActionMessages((Collection)getFromPluginCache("actionmessages"));
-            setActionErrors((Collection)getFromPluginCache("actionerrors"));
-            setFieldErrors((Map)getFromPluginCache("fielderrors"));
+            result = (String) getFromPluginCache("result");
+            setActionMessages((Collection) getFromPluginCache("actionmessages"));
+            setActionErrors((Collection) getFromPluginCache("actionerrors"));
+            setFieldErrors((Map) getFromPluginCache("fielderrors"));
 
             // CLEAR STATE
 
@@ -571,7 +555,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             this.clearGroupCache(getKey());
             // this is why we have to leave groups param in the url in handleRedirect
             List groups = getUrlDecodedCleanedTrimmedParameterValueList(paramMap, GROUPS_PARAMNAME);
-            if (groups!=null) { 
+            if (groups != null) {
                 this.clearSearchResultUserCache(getKey(), groups);
                 doUserSearch();
                 this.clearUserCache(getKey(), groups);
@@ -598,13 +582,12 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         // Is this a personal space, and is personal space administration not allowed?
         String spaceKey = getKey();
-        if (spaceKey!=null && spaceKey.startsWith("~")) {
+        if (spaceKey != null && spaceKey.startsWith("~")) {
             if (!isPersonalSpaceAdminAllowed()) {
                 log.info("Refused to allow " + getRemoteUser().getName() + " to administer users/groups in personal space " + spaceKey);
                 isNotAllowed = true;
             }
-        }
-        else {
+        } else {
             log.debug("Space is not a personal space");
         }
 
@@ -614,7 +597,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     // this can't be done in the velocity template, and must be called via reflection because method doesn't exist in
     // earlier versions of Confluence < 2.8
     public void loadWebResourceIfConfluence2_8_OrHigher(WebResourceManager webResourceManager, String resource) {
-        if (webResourceManager!=null) {
+        if (webResourceManager != null) {
             Class webResourceManagerClazz = webResourceManager.getClass();
             try {
                 // Confluence >= 2.8(?) only has method (SUSR-75)
@@ -629,25 +612,22 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                 // If this happens, we are most probably in Confluence < 2.8
                 if (log.isDebugEnabled()) {
                     log.debug("Ignore the following exception for Confluence versions < 2.8 that do not support the " +
-                              "method: webResourceManager.requireResource(String). Resource that wasn't loaded was '" +
-                              resource + "'", nsme);
+                            "method: webResourceManager.requireResource(String). Resource that wasn't loaded was '" +
+                            resource + "'", nsme);
                 }
             } catch (Exception e) {
                 log.warn("Problem using reflection to load web resource: " + resource, e);
             }
-        }
-        else
-        {
+        } else {
             log.warn("webResourceManager was not set on " + this.getClass() + " so didn't load webresource '" + resource + "'");
         }
     }
 
-    public String execute() throws Exception
-    {
-		log.debug("CustomPermissionManagerAction.execute() called");
+    public String execute() throws Exception {
+        log.debug("CustomPermissionManagerAction.execute() called");
         log.debug("request uri: " + ServletActionContext.getRequest().getRequestURI());
 
-        if (getSpace()==null) {
+        if (getSpace() == null) {
             log.warn("Space was null");
             List resultList = new ArrayList();
             resultList.add(getText("csum.display.alert.invalidspacekey"));
@@ -655,7 +635,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             return ERROR;
         }
 
-        if (getRemoteUser()==null) {
+        if (getRemoteUser() == null) {
             log.warn("RemoteUser was null");
             List resultList = new ArrayList();
             resultList.add(getText("csum.display.alert.invaliduser"));
@@ -672,11 +652,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         log.debug("paramMap: " + paramMap);
 
 
-        if (paramMap != null && paramMap.get(DEBUG)!=null) {
+        if (paramMap != null && paramMap.get(DEBUG) != null) {
             storeInPluginCache(DEBUG, paramMap.get(DEBUG));
         }
 
-        if(isNotAllowed()) {
+        if (isNotAllowed()) {
             LogUtil.warnWithRemoteUserInfo(log, "Action not allowed");
             List resultList = new ArrayList();
             resultList.add(getText("csum.display.alert.notallowed"));
@@ -694,13 +674,13 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         // fix for bug: if group (due to permissions or config change) is no longer selectable, then set to null, clear cache
         if (selectedGroup != null) {
-            boolean canManageSelectedGroup = getGroupManagementService().isAllowedToManageGroup(serviceContext,selectedGroup);
+            boolean canManageSelectedGroup = getGroupManagementService().isAllowedToManageGroup(serviceContext, selectedGroup);
             log.debug("isAllowedToManage '" + selectedGroup + "' = " + canManageSelectedGroup);
             if (!canManageSelectedGroup) {
                 setSelectedGroup(null);
 
                 Collection actionErrors = getActionErrors();
-                if (actionErrors==null) {
+                if (actionErrors == null) {
                     actionErrors = new ArrayList();
                 }
                 actionErrors.add(getText("csum.manager.error.notallowedtomanageselectedgroup") + ": " + selectedGroup);
@@ -726,10 +706,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         setBulkEdit(getUrlDecodedCleanedTrimmedParameterValue(paramMap, "bulkEdit"));
 
         //validate adminAction set if bulkedit submit
-        if (paramMap.get("bulkEditSubmit")!=null) {
-            if (context.getAdminAction()==null) {
+        if (paramMap.get("bulkEditSubmit") != null) {
+            if (context.getAdminAction() == null) {
                 Collection actionErrors = getActionErrors();
-                if (actionErrors==null) {
+                if (actionErrors == null) {
                     actionErrors = new ArrayList();
                 }
                 actionErrors.add(getText("csum.manager.error.bulkeditnoadminaction"));
@@ -746,15 +726,15 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         // START TEST SECTION
         //if (getUrlDecodedCleanedTrimmedParameterValue(paramMap, "createTestUsersAndGroups")!= null) {
-            // go nuts
-            //createTestUsersAndGroups();
+        // go nuts
+        //createTestUsersAndGroups();
         //}
         // END TEST SECTION
 
         // TODO: rewrite validation and include errors in display.vm
         //Validate user input
         //boolean isValid = validateInput(context);
-    	//if(!isValid)
+        //if(!isValid)
         //{
         //    log.debug("Input was invalid");
         //    return ERROR;
@@ -762,14 +742,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         // TODO: rewrite validation and include errors in display.vm
         //String UserValidationMessage = validateUserGroupWikiSpaceAssociation(context.getSelectedGroups());
-    	//if(UserValidationMessage != null)
-    	//{
+        //if(UserValidationMessage != null)
+        //{
         //    log.debug("There are no groups this user can currently administer. message=" + UserValidationMessage);
         //    addFieldError("NotPermittedUserErrorMessage", UserValidationMessage);
-    	//	return ERROR;
-    	//}
+        //	return ERROR;
+        //}
 
-        if ( result == null) {
+        if (result == null) {
             result = this.manage(context, serviceContext);
         }
 
@@ -839,28 +819,25 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     }
     */
-    
+
     /*
-     * Action implements SpaceAdministrative interface.
-     * To make sure that only Space Administrators, System checks information from getPermissionTypes() and isPermitted() functions 
-     * Hence we have implemented those two functions below!
-     */
-    public List getPermissionTypes()
-    {
+    * Action implements SpaceAdministrative interface.
+    * To make sure that only Space Administrators, System checks information from getPermissionTypes() and isPermitted() functions
+    * Hence we have implemented those two functions below!
+    */
+
+    public List getPermissionTypes() {
         List permissionTypes = super.getPermissionTypes();
 
-        if (getSpace() != null)
-        {
-            if (this instanceof SpaceAdministrative)
-            {
+        if (getSpace() != null) {
+            if (this instanceof SpaceAdministrative) {
                 addPermissionTypeTo(SpacePermission.ADMINISTER_SPACE_PERMISSION, permissionTypes);
             }
         }
         return permissionTypes;
     }
 
-    public boolean isPermitted()
-    {
+    public boolean isPermitted() {
         if (GeneralUtil.isSuperUser(getRemoteUser())) {
             return true;
         }
@@ -871,33 +848,29 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     /*
      * Get List of all Spaces to which logged in user is Space Administrator
      */
-    public List getSpacesAsSpaceAdminForUser()
-    {
-    	return getSpacesAssociatedToUserForGivenPermission(getRemoteUser(),SpacePermission.ADMINISTER_SPACE_PERMISSION);
+    public List getSpacesAsSpaceAdminForUser() {
+        return getSpacesAssociatedToUserForGivenPermission(getRemoteUser(), SpacePermission.ADMINISTER_SPACE_PERMISSION);
     }
-    
-    public List getSpacesAssociatedToUserForGivenPermission(User user, String permission)
-    {
+
+    public List getSpacesAssociatedToUserForGivenPermission(User user, String permission) {
         List spaceList = null;
 
         if (GeneralUtil.isSuperUser(user)) {
             spaceList = getAllSpaces();
-        }
-        else {
-            spaceList = spaceDao.getPermittedSpacesForUser(user,permission);
+        } else {
+            spaceList = spaceDao.getPermittedSpacesForUser(user, permission);
         }
 
-        if ( spaceList != null ) {
+        if (spaceList != null) {
             //remove personal spaces if not allowed
             if (!isPersonalSpaceAdminAllowed()) {
                 List newList = new ArrayList();
-                for ( int i=0; i<spaceList.size(); i++ ) {
-                    Space thisSpace = (Space)spaceList.get(i);
+                for (int i = 0; i < spaceList.size(); i++) {
+                    Space thisSpace = (Space) spaceList.get(i);
                     String key = thisSpace.getKey();
                     if (key != null && key.startsWith("~")) {
-                        log.debug("Removing " + key + " from list of spaces that can be administered, since personal space administration not allowed" );
-                    }
-                    else {
+                        log.debug("Removing " + key + " from list of spaces that can be administered, since personal space administration not allowed");
+                    } else {
                         newList.add(thisSpace);
                     }
                 }
@@ -910,12 +883,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         return spaceList;
     }
-    
+
     /*
-     * If logged in user is Confluence Administrator, then get list of wiki spaces available in Confluence
-     */
-    public List getAllSpaces()
-    {
+    * If logged in user is Confluence Administrator, then get list of wiki spaces available in Confluence
+    */
+    public List getAllSpaces() {
         return spaceDao.findAllSorted("name");
     }
 
@@ -928,28 +900,25 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
 
-    public String manage(CustomPermissionManagerActionContext context, ServiceContext serviceContext)
-    {
-		log.debug("manage() called");
+    public String manage(CustomPermissionManagerActionContext context, ServiceContext serviceContext) {
+        log.debug("manage() called");
 
         List resultList = new ArrayList();
         String opMessage = null;
-		String adminAction = context.getAdminAction();
+        String adminAction = context.getAdminAction();
 
-        try
-        {
+        try {
             GroupManagementService groupManagementService = getGroupManagementService();
             UserManagementService userManagementService = getUserManagementService();
 
             log.debug("adminAction=" + adminAction);
 
-            if(adminAction != null && !"".equals(adminAction))
-            {
+            if (adminAction != null && !"".equals(adminAction)) {
                 if (adminAction.equals(ACTION_ADVANCED_FIND_USERS)) {
                     //TODO: consider calling find from here
                     return SUCCESS;
-                }
-                else if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS) || adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS)) {
+                } else
+                if (adminAction.equals(ACTION_ADD_USERS_TO_GROUPS) || adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS)) {
 
                     //validate
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedUsers())) {
@@ -990,14 +959,11 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     Integer oldUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getUsers());
                     //Integer oldSearchResultUsersIndex = PagerPaginationSupportUtil.getStartIndexAsIntegerOrNull(getSearchResultUsers());
                     try {
-                        if(adminAction.equals(ACTION_ADD_USERS_TO_GROUPS))
-                        {
+                        if (adminAction.equals(ACTION_ADD_USERS_TO_GROUPS)) {
                             userManagementService.addUsersByUsernameToGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
                             opMessage = getText("csum.manager.success.adduserstogroups");
 
-                        }
-                        else if(adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS))
-                        {
+                        } else if (adminAction.equals(ACTION_REMOVE_USERS_FROM_GROUPS)) {
                             userManagementService.removeUsersByUsernameFromGroups(context.getSpecifiedUsers(), context.getSpecifiedGroups(), serviceContext);
                             opMessage = getText("csum.manager.success.removeusersfromgroups");
                         }
@@ -1013,8 +979,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
                         //PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldSearchResultUsersIndex, getSearchResultUsers());
                     }
-                }
-                else if(adminAction.equals(ACTION_ADD_GROUPS) || adminAction.equals(ACTION_REMOVE_GROUPS)) {
+                } else if (adminAction.equals(ACTION_ADD_GROUPS) || adminAction.equals(ACTION_REMOVE_GROUPS)) {
 
                     //validate
                     if (ListUtil.isNullOrEmpty(context.getSpecifiedGroups())) {
@@ -1041,16 +1006,15 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
                     boolean usersAdded = false;
                     try {
-                        if(adminAction.equals(ACTION_ADD_GROUPS))
-                        {
+                        if (adminAction.equals(ACTION_ADD_GROUPS)) {
                             String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
                             log.debug("group name prefix will be " + prefix);
                             String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
                             log.debug("group name suffix will be " + suffix);
                             List fixedGroupNames = new ArrayList();
                             List oldGroupNames = context.getSpecifiedGroups();
-                            for (int i=0; i<oldGroupNames.size(); i++) {
-                                String oldGroupName = (String)oldGroupNames.get(i);
+                            for (int i = 0; i < oldGroupNames.size(); i++) {
+                                String oldGroupName = (String) oldGroupNames.get(i);
                                 String newGroupName = prefix + oldGroupName + suffix;
                                 fixedGroupNames.add(newGroupName);
                             }
@@ -1059,7 +1023,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                             opMessage = getText("csum.manager.success.addgroups");
 
                             List specifiedUsers = context.getSpecifiedUsers();
-                            if (specifiedUsers!=null && specifiedUsers.size()>0) {
+                            if (specifiedUsers != null && specifiedUsers.size() > 0) {
 
                                 int usersSize = context.getSpecifiedUsers().size();
                                 int maxUserIDsLimit = new Integer(this.getCustomPermissionConfiguration().getMaxUserIDsLimit()).intValue();
@@ -1075,9 +1039,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                                 usersAdded = true;
                                 userManagementService.addUsersByUsernameToGroups(specifiedUsers, fixedGroupNames, serviceContext);
                             }
-                        }
-                        else if(adminAction.equals(ACTION_REMOVE_GROUPS))
-                        {
+                        } else if (adminAction.equals(ACTION_REMOVE_GROUPS)) {
                             List specifiedGroups = context.getSpecifiedGroups();
 
                             groupManagementService.removeGroups(specifiedGroups, serviceContext);
@@ -1101,8 +1063,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                         PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldUsersIndex, getUsers());
                         //PagerPaginationSupportUtil.safelyMoveToOldStartIndex(oldSearchResultUsersIndex, getSearchResultUsers());
                     }
-                }
-                else {
+                } else {
                     LogUtil.warnWithRemoteUserInfo(log, "Unrecognized adminAction='" + adminAction + "'");
                 }
             }
@@ -1121,15 +1082,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             setActionErrors(resultList);
             return ERROR;
         }
-        catch(Throwable t)
-        {
+        catch (Throwable t) {
             LogUtil.errorWithRemoteUserInfo(log, "Failed action", t);
             resultList.add(t.getMessage());
             setActionErrors(resultList);
             return ERROR;
         }
 
-        if (opMessage!=null) {
+        if (opMessage != null) {
             resultList.add(opMessage);
             setActionMessages(resultList);
             return SUCCESS;
@@ -1140,9 +1100,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     //public String getUserManagerLocation() {
     //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_USER_MANAGER_LOCATION);
-	//}
+    //}
 
-	//public String getIsLdapAuthUsed()
+    //public String getIsLdapAuthUsed()
     //{
     //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_LDAP_AUTH_STATUS_KEY);
     //}
@@ -1152,31 +1112,31 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_JIRA_JNDI_KEY);
     //}
 
-	//public String getCompanyLDAPBaseDN() {
+    //public String getCompanyLDAPBaseDN() {
     //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_COMPANY_LDAP_BASE_DN_KEY);
-	//}
+    //}
 
-	//public String getCompanyLDAPUrl() {
+    //public String getCompanyLDAPUrl() {
     //    return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_COMPANY_LDAP_URL_KEY);
-	//}
+    //}
 
-	//Get the count which indicates total no. of userids that can be processed at a time.
-	//public String getMaxUserIDsLimit() {
+    //Get the count which indicates total no. of userids that can be processed at a time.
+    //public String getMaxUserIDsLimit() {
     //    return ((String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT));
-	//}
+    //}
 
-	public boolean isPluginDown() {
+    public boolean isPluginDown() {
         return ConfigUtil.isNotNullAndIsYes(getCustomPermissionConfiguration().getPluginDown());
     }
 
     public String getPluginDownMessage() {
         String result = getCustomPermissionConfiguration().getDownTimeMessage();
-        if ( result == null || result.trim().equals("")) {
+        if (result == null || result.trim().equals("")) {
             result = getText("csum.manager.downtimemessagedefault");
         }
         return result;
     }
-	
+
     //Validate user input. return false if data invalid.
     /*
     public boolean validateInput(CustomPermissionManagerActionContext context)
@@ -1315,7 +1275,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     public void setCustomPermissionServiceManager(CustomPermissionServiceManager customPermissionServiceManager) {
         this.customPermissionServiceManager = customPermissionServiceManager;
-    }    
+    }
 
     public SpaceDao getSpaceDao() {
         return spaceDao;
@@ -1357,7 +1317,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public PagerPaginationSupport createPagerPaginationSupport(Pager pager, int rowsPerPage) {
-        if (pager==null) {
+        if (pager == null) {
             return null;
         }
 
@@ -1368,9 +1328,9 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void debug(PagerPaginationSupport pps) {
-        if (log.isDebugEnabled() && pps!=null) {
-            log.debug( "pps hashCode=" + pps.hashCode());
-            log.debug( "pps.getTotal()=" + pps.getTotal() );
+        if (log.isDebugEnabled() && pps != null) {
+            log.debug("pps hashCode=" + pps.hashCode());
+            log.debug("pps.getTotal()=" + pps.getTotal());
             //log.debug( "pps.getItems() (following lines)" );
             debug(pps.getItems());
         }
@@ -1378,15 +1338,14 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private void debug(Pager pager) {
         if (log.isDebugEnabled()) {
-            if (pager!=null) {
-                log.debug( "pager hashCode=" + pager.hashCode());
-                log.debug( "PagerUtils.count(pager)=" + PagerUtils.count(pager));
+            if (pager != null) {
+                log.debug("pager hashCode=" + pager.hashCode());
+                log.debug("PagerUtils.count(pager)=" + PagerUtils.count(pager));
                 //log.debug( "pager.getIndex()=" + pager.getIndex());
                 //log.debug( "pager.getIndexOfFirstItemInCurrentPage()=" + pager.getIndexOfFirstItemInCurrentPage());
                 //log.debug( "pager.isEmpty()=" + pager.isEmpty());
                 //log.debug( "pager.onLastPage()=" + pager.onLastPage());
-            }
-            else {
+            } else {
                 log.debug("pager was null");
             }
         }
@@ -1395,7 +1354,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public void findAndSetUsers(String groupName) {
         log.debug("findAndSetUsers() called. groupName='" + groupName + "'");
 
-        if ( groupName != null ) {
+        if (groupName != null) {
             Pager pager = null;
             try {
                 ServiceContext serviceContext = createServiceContext();
@@ -1406,8 +1365,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             }
 
             setUsers(createPagerPaginationSupport(pager));
-        }
-        else {
+        } else {
             log.debug("findAndSetUsers shouldn't be called with null groupName. programming error");
         }
     }
@@ -1433,15 +1391,15 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             PagerPaginationSupport pps = this.createPagerPaginationSupport(pager, numResults);
             List users = pps.getPage();
             boolean gotAtLeastOne = false;
-            if (users!=null) {
-                for (int i=0; i<users.size(); i++) {
-                    User user = (User)users.get(i);
+            if (users != null) {
+                for (int i = 0; i < users.size(); i++) {
+                    User user = (User) users.get(i);
                     String username = user.getName();
                     if (gotAtLeastOne) {
                         sb.append(", ");
                     }
 
-                    sb.append( "\"" + username + "\"");
+                    sb.append("\"" + username + "\"");
                     gotAtLeastOne = true;
                 }
             }
@@ -1459,6 +1417,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     */
 
     //TODO: is there a better way to access this?
+
     public String getUsernameLookupType() {
         return AdvancedUserQueryLookupType.USERNAME;
     }
@@ -1510,7 +1469,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         String spaceKey = getKey();
         String selectedGroup = getSelectedGroup();
         AdvancedUserQuery advancedUserQuery = this.getAdvancedUserQuery(spaceKey, selectedGroup);
-        if ( advancedUserQuery == null ) {
+        if (advancedUserQuery == null) {
             advancedUserQuery = new AdvancedUserQuery();
             this.setAdvancedUserQuery(spaceKey, selectedGroup, advancedUserQuery);
         }
@@ -1540,7 +1499,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private void addFieldErrorIfMessageNotNull(String nameOfField, String error) {
-        if (error!=null) {
+        if (error != null) {
             LogUtil.warnWithRemoteUserInfo(log, "setting fieldError " + error + " on " + nameOfField);
             addFieldError(nameOfField, error);
         }
@@ -1556,7 +1515,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             AdvancedUserQuery query = getAdvancedUserQuery();
             AdvancedUserQueryResults results = this.getUserManagementService().findUsers(query, serviceContext);
 
-            addFieldErrorIfMessageNotNull("advancedSearch",results.getMessage());
+            addFieldErrorIfMessageNotNull("advancedSearch", results.getMessage());
 
             pager = results.getUsers();
         } catch (Throwable t) {
@@ -1594,9 +1553,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return result;
     }
 
-    public String getActionName(String fullClassName)
-    {
-    	return getText("csum.manager.action.name");
+    public String getActionName(String fullClassName) {
+        return getText("csum.manager.action.name");
     }
 
     public PagerPaginationSupport getGroups() {
@@ -1645,7 +1603,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return PagerPaginationSupportUtil.hasNext(pps);
     }
 
-    public void next( PagerPaginationSupport pps ) {
+    public void next(PagerPaginationSupport pps) {
         PagerPaginationSupportUtil.next(pps);
     }
 
@@ -1653,21 +1611,21 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return PagerPaginationSupportUtil.hasPrev(pps);
     }
 
-    public void prev( PagerPaginationSupport pps ) {
+    public void prev(PagerPaginationSupport pps) {
         PagerPaginationSupportUtil.prev(pps);
     }
 
-    public String firstRecordNum( PagerPaginationSupport pps ) {
+    public String firstRecordNum(PagerPaginationSupport pps) {
         String result = null;
-        if (pps!=null) {
+        if (pps != null) {
             result = "" + (pps.getStartIndex() + 1);
         }
         return result;
     }
 
-    public String lastRecordNum( PagerPaginationSupport pps ) {
+    public String lastRecordNum(PagerPaginationSupport pps) {
         String result = null;
-        if (pps!=null) {
+        if (pps != null) {
             result = "" + (PagerPaginationSupportUtil.getPageEndIndex(pps) + 1);
         }
         return result;
@@ -1677,17 +1635,15 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         log.debug("getAllGroups() called");
         populateGroupsUnlessCached();
         List result = null;
-        if (getGroups()!=null) {
+        if (getGroups() != null) {
             if (getGroups().getTotal() > 0) {
                 result = PagerPaginationSupportUtil.toList(getGroups());
                 GroupUtil.sortGroupsByGroupnameAscending(result);
-                log.debug("returning " + result.size() + " groups");                
-            }
-            else {
+                log.debug("returning " + result.size() + " groups");
+            } else {
                 log.debug("getGroups().getTotal() was 0");
             }
-        }
-        else {
+        } else {
             log.debug("no groups found");
         }
 
@@ -1710,11 +1666,10 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     public void logPps(PagerPaginationSupport pps) {
-        if (log.isDebugEnabled() && pps!=null) {
+        if (log.isDebugEnabled() && pps != null) {
             log.debug("VELOCITY SHOWING USERS " + pps.hashCode());
             debug(pps);
-        }
-        else {
+        } else {
             log.debug("VELOCITY SHOWING NULL USERS");
         }
     }
@@ -1722,4 +1677,4 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public List getRanges(PagerPaginationSupport pps, int roughNumberOfRanges) {
         return PagerPaginationSupportUtil.getRanges(pps, roughNumberOfRanges);
     }
-  }
+}

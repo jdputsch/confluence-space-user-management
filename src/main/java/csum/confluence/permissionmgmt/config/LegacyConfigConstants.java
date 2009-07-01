@@ -50,6 +50,6 @@ public interface LegacyConfigConstants {
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";
     public static final String DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE = "JIRA";
 
-    public static final String DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE= "YES";
-    public static final String DELEGATE_USER_LDAP_AUTH_KEY_NO_VALUE= "NO";
+    public static final String DELEGATE_USER_LDAP_AUTH_KEY_YES_VALUE = "YES";
+    public static final String DELEGATE_USER_LDAP_AUTH_KEY_NO_VALUE = "NO";
 }

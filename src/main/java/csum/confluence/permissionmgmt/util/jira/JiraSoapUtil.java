@@ -29,17 +29,14 @@
 
 package csum.confluence.permissionmgmt.util.jira;
 
-import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
+import csum.confluence.permissionmgmt.config.CustomPermissionConfigurable;
 import csum.confluence.permissionmgmt.service.exception.ServiceAuthenticationException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
-import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
-import csum.confluence.permissionmgmt.config.CustomPermissionConfigurable;
+import csum.confluence.permissionmgmt.soap.jira.JiraSoapServiceServiceLocator;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.xml.rpc.ServiceException;
 
 /**
  * @author Gary S. Weaver
@@ -55,8 +52,8 @@ public class JiraSoapUtil {
             CustomPermissionConfigurable config = serviceContext.getCustomPermissionConfigurable();
             jiraSoapServiceGetter.setJirasoapserviceV2EndpointAddress(config.getJiraSoapUrl());
             JiraSoapService jiraSoapService = jiraSoapServiceGetter.getJirasoapserviceV2();
-            jiraServiceAuthenticationContext.setJiraSoapService( jiraSoapService );
-            jiraServiceAuthenticationContext.setToken( jiraSoapService.login(config.getJiraSoapUsername(), config.getJiraSoapPassword()) );
+            jiraServiceAuthenticationContext.setJiraSoapService(jiraSoapService);
+            jiraServiceAuthenticationContext.setToken(jiraSoapService.login(config.getJiraSoapUsername(), config.getJiraSoapPassword()));
         }
         catch (Throwable t) {
             LogUtil.errorWithRemoteUserInfo(log, "Failed Jira SOAP Authentication!", t);

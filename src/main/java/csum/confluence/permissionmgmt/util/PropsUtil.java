@@ -29,6 +29,7 @@
 
 package csum.confluence.permissionmgmt.util;
 
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -36,14 +37,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
-
 /**
  * @author Gary S. Weaver
  */
 public class PropsUtil {
 
-    public static final String PROPS_FILENAME  = "spaceusergroupmanagementplugin.properties";
+    public static final String PROPS_FILENAME = "spaceusergroupmanagementplugin.properties";
 
     private static Log log = LogFactory.getLog(PropsUtil.class);
 
@@ -52,20 +51,18 @@ public class PropsUtil {
         log.debug("getProperty() called. propertyName='" + propertyName + "'");
         String value = null;
         InputStream in = null;
-        try
-        {
+        try {
             log.debug("Loading property " + propertyName + " from properties file " + PROPS_FILENAME);
             Properties props = new Properties();
             in = PropsUtil.class.getClassLoader().getResourceAsStream(PROPS_FILENAME);
-            if ( in != null ) {
+            if (in != null) {
                 props.load(in);
-                value = (String)props.get(propertyName);
+                value = (String) props.get(propertyName);
             }
 
-            if (value!=null) {
-                log.debug("Loaded property " + propertyName );
-            }
-            else {
+            if (value != null) {
+                log.debug("Loaded property " + propertyName);
+            } else {
                 LogUtil.warnWithRemoteUserInfo(log, "Failed to load property " + propertyName + " from properties file " + PROPS_FILENAME + " (was assuming it should be somewhere on classpath and property would be defined. see documentation for details)");
             }
         }

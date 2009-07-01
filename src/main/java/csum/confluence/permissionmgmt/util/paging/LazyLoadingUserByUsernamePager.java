@@ -33,14 +33,13 @@ import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerException;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
 
 /**
  * @author Gary S. Weaver
@@ -68,7 +67,7 @@ public class LazyLoadingUserByUsernamePager implements Pager {
 
             iterator.setUserAccessor(getUserAccessor());
             iterator.setUsernamePagerIterator(getUsernamePager().iterator());
-                        
+
             return iterator;
         }
 
@@ -79,20 +78,18 @@ public class LazyLoadingUserByUsernamePager implements Pager {
         List results = new ArrayList();
         Pager usernamePager = getUsernamePager();
         // must check for null here! (SUSR-54)
-        if ( usernamePager != null ) {
+        if (usernamePager != null) {
             List usernames = usernamePager.getCurrentPage();
-            if (usernames!=null) {
-                for (int i=0; i<usernames.size(); i++) {
-                    String username = (String)usernames.get(i);
+            if (usernames != null) {
+                for (int i = 0; i < usernames.size(); i++) {
+                    String username = (String) usernames.get(i);
                     User user = getUserAccessor().getUser(username);
                     results.add(user);
                 }
-            }
-            else {
+            } else {
                 log.debug("usernamePager.getCurrentPage() returned null. This may just be an empty group.");
             }
-        }
-        else {
+        } else {
             LogUtil.warnWithRemoteUserInfo(log, "usernamePager was null. Either was an empty group or an API issue. Look in debug logging for the groupname to look it up and be sure.");
         }
         return results;

@@ -30,6 +30,7 @@
 package csum.confluence.permissionmgmt.util.paging;
 
 import bucket.core.actions.PagerPaginationSupport;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -39,7 +40,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
 
 /**
  * @author Gary S. Weaver
@@ -51,11 +51,12 @@ public class PagerPaginationSupportUtil {
 
     public static Integer getStartIndexAsIntegerOrNull(PagerPaginationSupport pps) {
         Integer result = null;
-        if (pps!=null) {
+        if (pps != null) {
             result = new Integer(pps.getStartIndex());
         }
         return result;
     }
+
     /**
      * Notes: this returns an unsorted list (index of items gets messed up due to use of HashMap to ensure same object
      * is not added to List more than once). It is awful than PagerUtils.toList(pps.getItems()) doesn't work. Need to
@@ -69,7 +70,7 @@ public class PagerPaginationSupportUtil {
 
         log.debug("toList() called");
         List result = null;
-        if (pps!=null) {
+        if (pps != null) {
             //TODO: may be being paranoid by using Map here. consider not using if not needed
             // using map hopefully to avoid any chance of adding the same items more than once
             Map itemsAsKeysMap = new HashMap();
@@ -82,8 +83,8 @@ public class PagerPaginationSupportUtil {
 
             // get other pages
             int[] startIndexes = pps.getNextStartIndexes();
-            if (startIndexes!=null && startIndexes.length > 0) {
-                for (int i=0; i<startIndexes.length; i++) {
+            if (startIndexes != null && startIndexes.length > 0) {
+                for (int i = 0; i < startIndexes.length; i++) {
                     int nextStartIndex = startIndexes[i];
                     log.debug("converting PagerPaginationSupport to List. at index=" + nextStartIndex);
                     pps.setStartIndex(nextStartIndex);
@@ -91,12 +92,12 @@ public class PagerPaginationSupportUtil {
                 }
             }
 
-            result = new ArrayList(itemsAsKeysMap.keySet());;
-            if ( result.size() != pps.getTotal()) {
+            result = new ArrayList(itemsAsKeysMap.keySet());
+            ;
+            if (result.size() != pps.getTotal()) {
                 LogUtil.warnWithRemoteUserInfo(log, "Got incorrect number of items in toList()! Expected " + pps.getTotal() + " but got " + result.size());
-            }
-            else {
-                log.debug("Got " + result.size() + " items from pps. This was same as pps.getTotal() so hopefully all is ok.");                            
+            } else {
+                log.debug("Got " + result.size() + " items from pps. This was same as pps.getTotal() so hopefully all is ok.");
             }
         }
         return result;
@@ -106,21 +107,21 @@ public class PagerPaginationSupportUtil {
         log.debug("getRanges() called. roughNumberOfRanges=" + roughNumberOfRanges);
         List ranges = null;
         int numBeforeAndAfter = roughNumberOfRanges / 2;
-        if (pps!=null && pps.getTotal() > pps.getCountOnEachPage()) {
+        if (pps != null && pps.getTotal() > pps.getCountOnEachPage()) {
             int[] startIndexes = pps.getNextStartIndexes();
-            if (startIndexes!=null && startIndexes.length > 0) {
+            if (startIndexes != null && startIndexes.length > 0) {
                 ranges = new ArrayList();
 
                 // ranges before current
                 int currStartIndex = pps.getStartIndex();
                 int lastCurrStartIndex = currStartIndex;
-                for (int i=0; i<numBeforeAndAfter; i++) {
+                for (int i = 0; i < numBeforeAndAfter; i++) {
                     currStartIndex = currStartIndex - pps.getCountOnEachPage();
-                    if ( currStartIndex < 0 && lastCurrStartIndex != 0) {
+                    if (currStartIndex < 0 && lastCurrStartIndex != 0) {
                         currStartIndex = 0;
                     }
 
-                    if ( currStartIndex >= 0 ) {
+                    if (currStartIndex >= 0) {
                         Range range = new Range();
                         range.setRecordNum(currStartIndex + 1);
                         range.setText("" + (currStartIndex + 1) + "-" + lastCurrStartIndex);
@@ -137,13 +138,13 @@ public class PagerPaginationSupportUtil {
                 int currEndIndex = pps.getStartIndex() + pps.getCountOnEachPage();
                 int lastCurrEndIndex = currEndIndex;
                 int maxIndex = pps.getTotal() - 1;
-                for (int i=0; i<numBeforeAndAfter; i++) {
+                for (int i = 0; i < numBeforeAndAfter; i++) {
                     currEndIndex = currEndIndex + pps.getCountOnEachPage();
-                    if ( currEndIndex > maxIndex && lastCurrEndIndex != maxIndex) {
+                    if (currEndIndex > maxIndex && lastCurrEndIndex != maxIndex) {
                         currEndIndex = maxIndex;
                     }
 
-                    if ( currEndIndex <= maxIndex ) {
+                    if (currEndIndex <= maxIndex) {
                         Range range = new Range();
                         range.setRecordNum(lastCurrEndIndex + 1);
                         range.setText("" + (lastCurrEndIndex + 1) + "-" + currEndIndex);
@@ -152,12 +153,10 @@ public class PagerPaginationSupportUtil {
 
                     lastCurrEndIndex = currEndIndex;
                 }
-            }
-            else {
+            } else {
                 log.debug("nextStartIndexes was null");
             }
-        }
-        else {
+        } else {
             log.debug("safelyMoveToPageStartIndexClosestToIndex() shouldn't really be called with null. programming error");
         }
 
@@ -180,15 +179,15 @@ public class PagerPaginationSupportUtil {
     }
 
     private static void addAllAsKeys(List list, Map map) {
-        if (list!= null && map != null) {
-            for (int i=0; i<list.size(); i++) {
+        if (list != null && map != null) {
+            for (int i = 0; i < list.size(); i++) {
                 map.put(list.get(i), "");
             }
         }
     }
 
     public static void safelyMoveToOldStartIndex(Integer startIndex, PagerPaginationSupport pps) {
-        if (startIndex!=null) {
+        if (startIndex != null) {
             safelyMoveToOldStartIndex(startIndex.intValue(), pps);
         }
     }
@@ -199,19 +198,17 @@ public class PagerPaginationSupportUtil {
      */
     public static void safelyMoveToOldStartIndex(int startIndex, PagerPaginationSupport pps) {
         log.debug("safelyMoveToOldStartIndex() called. startIndex=" + startIndex);
-        if (pps!=null) {
+        if (pps != null) {
             int closestStartIndex = startIndex;
             int maxIndex = pps.getTotal() - 1;
             if (closestStartIndex > maxIndex) {
                 closestStartIndex = maxIndex;
-            }
-            else if (closestStartIndex < 0) {
+            } else if (closestStartIndex < 0) {
                 closestStartIndex = 0;
             }
 
             pps.setStartIndex(closestStartIndex);
-        }
-        else {
+        } else {
             log.debug("safelyMoveToOldStartIndex() shouldn't really be called with null. programming error");
         }
     }
@@ -222,46 +219,43 @@ public class PagerPaginationSupportUtil {
      */
     public static void safelyMoveToPageStartIndexClosestToIndex(int startIndex, PagerPaginationSupport pps) {
         log.debug("safelyMoveToPageStartIndexClosestToIndex() called. startIndex=" + startIndex);
-        if (pps!=null) {
+        if (pps != null) {
             int[] startIndexes = pps.getNextStartIndexes();
-            if (startIndexes!=null && startIndexes.length > 0) {
+            if (startIndexes != null && startIndexes.length > 0) {
                 // 0 is a valid start index not included in nextStartIndexes
                 int closestStartIndex = 0;
-                for (int i=0; i<startIndexes.length; i++) {
+                for (int i = 0; i < startIndexes.length; i++) {
                     int nextStartIndex = startIndexes[i];
                     int oldAbsoluteDifference = Math.abs(startIndex - closestStartIndex);
                     int absoluteDifference = Math.abs(startIndex - nextStartIndex);
 
                     //log.debug("is startIndex=" + startIndex + " closer to " + closestStartIndex + " or " + nextStartIndex + " ?");
 
-                    if ( absoluteDifference < oldAbsoluteDifference ) {
+                    if (absoluteDifference < oldAbsoluteDifference) {
                         //log.debug("now using " + nextStartIndex + " as closest index");
                         closestStartIndex = nextStartIndex;
                     }
                 }
 
                 pps.setStartIndex(closestStartIndex);
-            }
-            else {
+            } else {
                 log.debug("nextStartIndexes was null");
             }
-        }
-        else {
+        } else {
             log.debug("safelyMoveToPageStartIndexClosestToIndex() shouldn't really be called with null. programming error");
         }
     }
 
     public static boolean hasNext(PagerPaginationSupport pps) {
         boolean result = false;
-        
+
         //log.debug("hasNext() called");
         debug(pps);
-        if (pps!=null) {
+        if (pps != null) {
             if (pps.getStartIndex() < (pps.getTotal() - pps.getCountOnEachPage())) {
                 result = true;
             }
-        }
-        else {
+        } else {
             log.debug("next() shouldn't really be called with null. programming error");
         }
 
@@ -270,15 +264,14 @@ public class PagerPaginationSupportUtil {
         return result;
     }
 
-    public static void next( PagerPaginationSupport pps ) {
+    public static void next(PagerPaginationSupport pps) {
         log.debug("next() called");
         debug(pps);
-        if (pps!=null) {
+        if (pps != null) {
             if (hasNext(pps)) {
                 pps.setStartIndex(pps.getStartIndex() + pps.getCountOnEachPage());
             }
-        }
-        else {
+        } else {
             log.debug("next() shouldn't really be called with null. programming error");
         }
     }
@@ -288,13 +281,12 @@ public class PagerPaginationSupportUtil {
 
         //log.debug("hasPrev() called");
         debug(pps);
-        if (pps!=null) {
+        if (pps != null) {
             // 0 is the lowest valid start index
             if (pps.getStartIndex() > 0) {
                 result = true;
             }
-        }
-        else {
+        } else {
             log.debug("prev() shouldn't really be called with null. programming error");
         }
 
@@ -303,10 +295,10 @@ public class PagerPaginationSupportUtil {
         return result;
     }
 
-    public static void prev( PagerPaginationSupport pps ) {
+    public static void prev(PagerPaginationSupport pps) {
         log.debug("prev() called");
         debug(pps);
-        if (pps!=null) {
+        if (pps != null) {
             if (pps.getStartIndex() > 0) {
                 int newStartIndex = pps.getStartIndex() - pps.getCountOnEachPage();
                 if (newStartIndex < 0) {
@@ -314,21 +306,20 @@ public class PagerPaginationSupportUtil {
                 }
                 pps.setStartIndex(newStartIndex);
             }
-        }
-        else {
+        } else {
             log.debug("prev() shouldn't really be called with null. programming error");
         }
     }
 
-    public static int getPageEndIndex( PagerPaginationSupport pps ) {
+    public static int getPageEndIndex(PagerPaginationSupport pps) {
         int pageEndIndex = pps.getStartIndex() + pps.getCountOnEachPage() - 1;
-        if ( pageEndIndex > (pps.getTotal() - 1) ) {
+        if (pageEndIndex > (pps.getTotal() - 1)) {
             pageEndIndex = pps.getTotal() - 1;
         }
         return pageEndIndex;
     }
 
-    private static void debug( PagerPaginationSupport pps ) {
+    private static void debug(PagerPaginationSupport pps) {
 
         /*
         StringBuffer sb = new StringBuffer();
@@ -362,15 +353,14 @@ public class PagerPaginationSupportUtil {
 
     private static String intArrayToString(int[] ints) {
         StringBuffer sb = new StringBuffer();
-        if (ints!=null) {
-            for (int i=0; i<ints.length; i++) {
-                if (i!=0) {
+        if (ints != null) {
+            for (int i = 0; i < ints.length; i++) {
+                if (i != 0) {
                     sb.append(", ");
                 }
-                sb.append( ints[i] );
+                sb.append(ints[i]);
             }
-        }
-        else {
+        } else {
             sb.append("null");
         }
         return sb.toString();

@@ -48,7 +48,7 @@ public class StringUtil {
     public static final String CHARACTERS_TO_CLEAN = "[<>/]";
     public static final String DELIMITING_CHARACTERS = "[:;,]";
 
-    public static String clean( String s ) {
+    public static String clean(String s) {
         return s.replaceAll(CHARACTERS_TO_CLEAN, "");
     }
 
@@ -59,15 +59,15 @@ public class StringUtil {
         return false;
     }
 
-    public static List getCleanedListFromDelimitedValueString( String s ) {
+    public static List getCleanedListFromDelimitedValueString(String s) {
         List result = null;
-        if ( s != null ) {
+        if (s != null) {
             result = new ArrayList();
             s = s.replaceAll(CHARACTERS_TO_CLEAN, "");
             String[] valueArray = s.split(DELIMITING_CHARACTERS);
-            for (int i=0; i<valueArray.length; i++) {
+            for (int i = 0; i < valueArray.length; i++) {
                 String value = valueArray[i];
-                if (value!=null) {
+                if (value != null) {
                     value = value.trim();
                     if (!"".equals(value)) {
                         result.add(value);
@@ -78,14 +78,14 @@ public class StringUtil {
         return result;
     }
 
-    public static String convertCollectionToCommaDelimitedString( Collection collection ) {
+    public static String convertCollectionToCommaDelimitedString(Collection collection) {
         StringBuffer sb = new StringBuffer();
-        if ( collection != null ) {
+        if (collection != null) {
             Iterator iter = collection.iterator();
             int count = 0;
             while (iter.hasNext()) {
-                String item = (String)iter.next();
-                if (count!=0) {
+                String item = (String) iter.next();
+                if (count != 0) {
                     sb.append(", ");
                 }
                 sb.append(item);
@@ -97,16 +97,14 @@ public class StringUtil {
 
     public static boolean areBothNullOrAreEqual(String s1, String s2) {
         boolean result = false;
-        if (s1==s2) {
+        if (s1 == s2) {
             // note this checks for null==null as well as instance ref is same as instance ref
             result = true;
-        }
-        else if (s1==null || s2==null) {
+        } else if (s1 == null || s2 == null) {
             //implied result = false;
-        }
-        else if (s1.equals(s2)) {
+        } else if (s1.equals(s2)) {
             return true;
         }
         return result;
-    }     
+    }
 }

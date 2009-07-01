@@ -35,10 +35,9 @@ import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
-import com.atlassian.user.User;
-import com.atlassian.user.Group;
-import com.atlassian.bandana.BandanaManager;
 import com.atlassian.spring.container.ContainerManager;
+import com.atlassian.user.Group;
+import com.atlassian.user.User;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
@@ -165,56 +164,54 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
     }
 
     private void removeGroup_Confluence2_6_0Compatible(Group group) throws RemoveException {
-        if (group!=null) {
+        if (group != null) {
             // Workaround for http://jira.atlassian.com/browse/CONF-9623
             // Confluence 2.6.0 has a bug where removeGroup fails if space permissions are not removed for the group
             // prior to deletion of the group. This was not a problem in Confluence 2.5.x
 
             // workaround for Managers performing actions without specifying permissions, contributed by Anatolia Kazatchkov (Atlassian) in http://jira.atlassian.com/browse/CONF-16183
             User currentUser = AuthenticatedUserThreadLocal.getUser();
-            if (currentUser==null) {
+            if (currentUser == null) {
                 String msg = "Could not check permissions to delete group '" + group.getName() + "' since AuthenticatedUserThreadLocal.getUser() returned null (could not determine current user)";
                 log.error(msg);
-			    throw new RemoveException(msg);
+                throw new RemoveException(msg);
             }
 
-            if (permissionManager.hasPermission(currentUser, Permission.REMOVE, group))
-			{
-				log.debug("Removing space permissions from group " + group.getName() + " as (workaround for CONF-9623)");
-	            log.debug("Calling spacePermissionManager.getAllPermissionsForGroup(" + group.getName() + ")");
-	            List perms = spacePermissionManager.getAllPermissionsForGroup(group.getName());
-	            if (perms!=null) {
-	                for (int i=0; i<perms.size(); i++) {
-	                    SpacePermission perm = (SpacePermission)perms.get(i);
-	                    log.debug("Calling spacePermissionManager.removePermission(" + perm + ")");
-	                    spacePermissionManager.removePermission(perm);
-	                }
-	            }
-	        
-            	log.debug("Calling userAccessor.removeGroup(...)");
-	            boolean success=false;
-	            try {
-	                userAccessor.removeGroup(group);
-	                success=true;
-	            }
-	            finally {
-		            if (perms!=null && !success) {
-			            log.warn("Remove of group " + group.getName() + " failed and since there were permissions, " +
-			                     "we'll attempt to add them back in case they were able to be removed.");
-		                // readd perms. Related to SUSR-97
-		                for (int i=0; i<perms.size(); i++) {
-		                    SpacePermission perm = (SpacePermission)perms.get(i);
-		                    log.debug("Calling spacePermissionManager.savePermission(" + perm + ")");
-		                    spacePermissionManager.savePermission(perm);
-		                }
-		            }
-		        }
-		    }
-		    else {
+            if (permissionManager.hasPermission(currentUser, Permission.REMOVE, group)) {
+                log.debug("Removing space permissions from group " + group.getName() + " as (workaround for CONF-9623)");
+                log.debug("Calling spacePermissionManager.getAllPermissionsForGroup(" + group.getName() + ")");
+                List perms = spacePermissionManager.getAllPermissionsForGroup(group.getName());
+                if (perms != null) {
+                    for (int i = 0; i < perms.size(); i++) {
+                        SpacePermission perm = (SpacePermission) perms.get(i);
+                        log.debug("Calling spacePermissionManager.removePermission(" + perm + ")");
+                        spacePermissionManager.removePermission(perm);
+                    }
+                }
+
+                log.debug("Calling userAccessor.removeGroup(...)");
+                boolean success = false;
+                try {
+                    userAccessor.removeGroup(group);
+                    success = true;
+                }
+                finally {
+                    if (perms != null && !success) {
+                        log.warn("Remove of group " + group.getName() + " failed and since there were permissions, " +
+                                "we'll attempt to add them back in case they were able to be removed.");
+                        // readd perms. Related to SUSR-97
+                        for (int i = 0; i < perms.size(); i++) {
+                            SpacePermission perm = (SpacePermission) perms.get(i);
+                            log.debug("Calling spacePermissionManager.savePermission(" + perm + ")");
+                            spacePermissionManager.savePermission(perm);
+                        }
+                    }
+                }
+            } else {
                 String msg = "User '" + currentUser.getName() + "' doesn't have rights to delete group '" + group.getName() + "'";
                 log.error(msg);
-			    throw new RemoveException(msg);
-		    }
+                throw new RemoveException(msg);
+            }
         }
     }
 

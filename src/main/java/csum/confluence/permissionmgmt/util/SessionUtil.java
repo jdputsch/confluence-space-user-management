@@ -30,11 +30,10 @@
 package csum.confluence.permissionmgmt.util;
 
 import com.opensymphony.xwork.ActionContext;
-
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Map;
 
 /**
  * @author Gary S. Weaver
@@ -46,10 +45,9 @@ public class SessionUtil {
     public static Map getSession() {
         Map session = null;
         ActionContext context = ActionContext.getContext();
-        if ( context != null ) {
+        if (context != null) {
             session = (Map) context.get("session");
-        }
-        else {
+        } else {
             log.warn("ActionContext was null!");
         }
         return session;
@@ -58,10 +56,9 @@ public class SessionUtil {
     public static Object getSessionProperty(String key) {
         Object value = null;
         Map session = getSession();
-        if (session!=null) {
+        if (session != null) {
             value = session.get(key);
-        }
-        else {
+        } else {
             log.warn("Session was null!");
         }
 
@@ -76,18 +73,16 @@ public class SessionUtil {
             } else {
                 session.remove(key);
             }
-        }
-        else {
+        } else {
             log.warn("Session was null!");
         }
     }
 
     public static void removeSessionProperty(String key) {
         Map session = getSession();
-        if (session!=null) {
+        if (session != null) {
             session.remove(key);
-        }
-        else {
+        } else {
             log.warn("Session was null!");
         }
     }

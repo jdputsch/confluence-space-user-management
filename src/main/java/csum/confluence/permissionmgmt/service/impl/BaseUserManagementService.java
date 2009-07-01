@@ -41,6 +41,8 @@ import com.atlassian.user.search.query.EmailTermQuery;
 import com.atlassian.user.search.query.FullNameTermQuery;
 import com.atlassian.user.search.query.TermQuery;
 import com.atlassian.user.search.query.UserNameTermQuery;
+import com.dolby.confluence.net.ldap.LDAPException;
+import com.dolby.confluence.net.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.UserManagementService;
 import csum.confluence.permissionmgmt.service.exception.FindException;
@@ -48,21 +50,19 @@ import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
-import com.dolby.confluence.net.ldap.LDAPException;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
-import com.dolby.confluence.net.ldap.LDAPUser;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.paging.LazyLoadingUserByUsernamePager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
-import java.io.IOException;
 
 /**
  * @author Rajendra Kadam
@@ -86,15 +86,13 @@ public abstract class BaseUserManagementService implements UserManagementService
     }
 
     private static boolean isAlphanumeric(String s) {
-        if (s!=null) {
+        if (s != null) {
             char[] chars = s.toCharArray();
 
-            for(int i=0; i<chars.length; i++)
-            {
-                if(  (chars[i] < 'a' || chars[i] > 'z') &&
+            for (int i = 0; i < chars.length; i++) {
+                if ((chars[i] < 'a' || chars[i] > 'z') &&
                         (chars[i] < 'A' || chars[i] > 'Z') &&
-                        (chars[i] < '0' || chars[i] > '9') )
-                {
+                        (chars[i] < '0' || chars[i] > '9')) {
                     return false;
                 }
             }
@@ -104,7 +102,7 @@ public abstract class BaseUserManagementService implements UserManagementService
     }
 
     private void checkSearchForUnsupportedTerms(String searchString, AdvancedUserQueryResults results, ServiceContext context) {
-        if (searchString!=null && results!=null) {
+        if (searchString != null && results != null) {
             // assume non-alphanumeric covers operators, conditions, multiple terms, quotes, ...
             if (!isAlphanumeric(searchString)) {
                 results.setMessage(context.getText("csum.manageusersadvanced.warning.unsupportedterm"));
@@ -238,11 +236,11 @@ public abstract class BaseUserManagementService implements UserManagementService
 
         if (userIdToGroupNameMapForMembershipAdditionProblems.size() > 0) {
             Iterator iter = userIdToGroupNameMapForMembershipAdditionProblems.keySet().iterator();
-            while(iter.hasNext()) {
-                String groupName = (String)iter.next();
-                String userid = (String)userIdToGroupNameMapForMembershipAdditionProblems.get(groupName);
+            while (iter.hasNext()) {
+                String groupName = (String) iter.next();
+                String userid = (String) userIdToGroupNameMapForMembershipAdditionProblems.get(groupName);
                 msg += concat;
-                msg += context.getText("csum.manager.error.problemaddingusertogroup", new String[] {userid, groupName});
+                msg += context.getText("csum.manager.error.problemaddingusertogroup", new String[]{userid, groupName});
                 concat = " ";
             }
         }
@@ -267,11 +265,11 @@ public abstract class BaseUserManagementService implements UserManagementService
 
         if (userIdToGroupNameMapForMembershipRemovalProblems.size() > 0) {
             Iterator iter = userIdToGroupNameMapForMembershipRemovalProblems.keySet().iterator();
-            while(iter.hasNext()) {
-                String groupName = (String)iter.next();
-                String userid = (String)userIdToGroupNameMapForMembershipRemovalProblems.get(groupName);
+            while (iter.hasNext()) {
+                String groupName = (String) iter.next();
+                String userid = (String) userIdToGroupNameMapForMembershipRemovalProblems.get(groupName);
                 msg += concat;
-                msg += context.getText("csum.manager.error.problemremovinguserfromgroup", new String[] {userid, groupName});
+                msg += context.getText("csum.manager.error.problemremovinguserfromgroup", new String[]{userid, groupName});
                 concat = " ";
             }
         }

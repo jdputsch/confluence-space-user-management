@@ -30,7 +30,6 @@
 package csum.confluence.permissionmgmt.config;
 
 import com.atlassian.confluence.core.Administrative;
-import com.atlassian.confluence.core.ConfluenceActionSupport;
 import csum.confluence.permissionmgmt.CsumConfluenceActionSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -196,7 +195,7 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
         this.ldapEmailAttribute = ldapEmailAttribute;
     }
 
-    public String getLdapFirstNameAttribute() {    
+    public String getLdapFirstNameAttribute() {
         return ldapFirstNameAttribute;
     }
 
@@ -204,7 +203,7 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
         this.ldapFirstNameAttribute = ldapFirstNameAttribute;
     }
 
-    public String getLdapLastNameAttribute() {    
+    public String getLdapLastNameAttribute() {
         return ldapLastNameAttribute;
     }
 

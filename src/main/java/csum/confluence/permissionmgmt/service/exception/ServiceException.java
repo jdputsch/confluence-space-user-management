@@ -63,12 +63,12 @@ public class ServiceException extends Exception {
 
     public String getThrowablesMessagesAsCommaDelimitedString() {
         StringBuffer sb = new StringBuffer();
-        if ( this.throwables != null ) {
+        if (this.throwables != null) {
             Iterator iter = this.throwables.iterator();
             int count = 0;
             while (iter.hasNext()) {
-                Throwable throwable = (Throwable)iter.next();
-                if (count!=0) {
+                Throwable throwable = (Throwable) iter.next();
+                if (count != 0) {
                     sb.append(", ");
                 }
                 sb.append(throwable.getMessage());

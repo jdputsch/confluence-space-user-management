@@ -29,11 +29,11 @@
 
 package csum.confluence.permissionmgmt.config;
 
-import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
 import com.atlassian.bandana.BandanaManager;
+import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
+import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import csum.confluence.permissionmgmt.util.logging.LogUtil;
 
 /**
  * Utility to migrate what we can of the config from v1.1 of the plugin
@@ -63,7 +63,7 @@ public class LegacyConfigurationMigrator {
 
         if (newGroupPrefix == null && newGroupSuffix == null) {
             String legacyMatchingPattern = getValue(bandanaManager, LegacyConfigConstants.DELEGATE_USER_MGMT_User_MATCHING_PATTERN);
-            if ( legacyMatchingPattern!=null ) {
+            if (legacyMatchingPattern != null) {
                 // this is used as an example in old config page
                 int wildCardIndex = legacyMatchingPattern.indexOf(".*");
                 if (wildCardIndex == -1) {
@@ -93,7 +93,7 @@ public class LegacyConfigurationMigrator {
 
         if (maxGroupIDs == null) {
             String legacyMaxUserIDs = getValue(bandanaManager, LegacyConfigConstants.DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT);
-            if ( legacyMaxUserIDs!=null ) {
+            if (legacyMaxUserIDs != null) {
                 setValue(bandanaManager, CustomPermissionConfigConstants.DELEGATE_USER_MGMT_MAXGROUPIDS_LIMIT, legacyMaxUserIDs);
             }
         }
@@ -107,7 +107,6 @@ public class LegacyConfigurationMigrator {
         }
         return result;
     }
-
 
 
     public static String getValue(BandanaManager bandanaManager, String key) {

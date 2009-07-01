@@ -48,7 +48,7 @@ public class CustomPermissionManagerActionContext {
     private String userSearch;
 
     public String toString() {
-        return  "confluenceActionSupport=" + confluenceActionSupport +
+        return "confluenceActionSupport=" + confluenceActionSupport +
                 ", loggedInUser=" + loggedInUser +
                 ", key=" + key +
                 ", adminAction=" + adminAction +
@@ -114,7 +114,6 @@ public class CustomPermissionManagerActionContext {
     }
 
     /**
-     *
      * Convenience method to getText from i18n resource backing the action, assuming it exists
      *
      * @param key - key
@@ -123,7 +122,7 @@ public class CustomPermissionManagerActionContext {
     public String getText(String key) {
         String result = key;
 
-        if (confluenceActionSupport!=null) {
+        if (confluenceActionSupport != null) {
             result = confluenceActionSupport.getText(key);
         }
 

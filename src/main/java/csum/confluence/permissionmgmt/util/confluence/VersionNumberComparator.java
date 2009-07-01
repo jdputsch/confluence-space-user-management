@@ -26,8 +26,8 @@ public class VersionNumberComparator implements Comparator {
         }
 
         // for now just strip everything after the first non-digit or dot
-        String workingVersion = stripEverythingAfterFirstNonDigitOrDotversion((String)version);
-        String workingVersion1 = stripEverythingAfterFirstNonDigitOrDotversion((String)version1);
+        String workingVersion = stripEverythingAfterFirstNonDigitOrDotversion((String) version);
+        String workingVersion1 = stripEverythingAfterFirstNonDigitOrDotversion((String) version1);
 
         String[] verPartAndRest = ifNotNullThenSplitStringAtFirstDot(workingVersion);
         String[] ver1PartAndRest = ifNotNullThenSplitStringAtFirstDot(workingVersion1);
@@ -37,33 +37,27 @@ public class VersionNumberComparator implements Comparator {
         String verRest = verPartAndRest[1];
         String ver1Rest = ver1PartAndRest[1];
 
-        if (verPart==null && ver1Part!=null) {
+        if (verPart == null && ver1Part != null) {
             return -1;
-        }
-        else if (verPart!=null && ver1Part==null) {
+        } else if (verPart != null && ver1Part == null) {
             return 1;
-        }
-        else if (verPart==null) {
+        } else if (verPart == null) {
             return 0;
-        }
-        else {
+        } else {
             int i = Integer.parseInt(verPart);
             int i1 = Integer.parseInt(verPart);
-            if (i<i1) {
+            if (i < i1) {
                 return -1;
-            }
-            else if (i>i1) {
+            } else if (i > i1) {
                 return 1;
             }
         }
 
-        if (verRest==null && ver1Rest!=null) {
+        if (verRest == null && ver1Rest != null) {
             return -1;
-        }
-        else if (verRest!=null && ver1Rest==null) {
+        } else if (verRest != null && ver1Rest == null) {
             return 1;
-        }
-        else if (verRest==null) {
+        } else if (verRest == null) {
             return 0;
         }
 
@@ -73,24 +67,23 @@ public class VersionNumberComparator implements Comparator {
     private String stripEverythingAfterFirstNonDigitOrDotversion(String s) {
         StringBuffer sb = new StringBuffer();
         boolean foundFirstChar = false;
-		for (int i=0; i<s.length() && !foundFirstChar; i++) {
+        for (int i = 0; i < s.length() && !foundFirstChar; i++) {
             char c = s.charAt(i);
             if (Character.isDigit(c) || c == '.') {
                 sb.append(c);
+            } else {
+                foundFirstChar = true;
             }
-			else {
-			    foundFirstChar = true;
-			}
         }
         return sb.toString();
     }
 
     private String[] ifNotNullThenSplitStringAtFirstDot(String s) {
         String[] result = new String[2];
-        if (s!=null) {
+        if (s != null) {
             result[0] = s;
             int indexOfFirstDot = s.indexOf('.');
-            if (indexOfFirstDot!=-1) {
+            if (indexOfFirstDot != -1) {
                 result[0] = s.substring(0, indexOfFirstDot);
                 result[1] = s.substring(indexOfFirstDot + 1, s.length());
             }
@@ -99,7 +92,7 @@ public class VersionNumberComparator implements Comparator {
     }
 
     private String ifNotNullThenTrimStringAndNullifyIfTrimmedStringIsEmpty(String version) {
-        if (version!=null) {
+        if (version != null) {
             version = version.trim();
             if ("".equals(version)) {
                 version = null;

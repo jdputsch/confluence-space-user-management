@@ -40,7 +40,7 @@ public class ServiceContext {
 
     private ConfluenceActionSupport confluenceActionSupport;
     private Space space;
-    private CustomPermissionConfigurable customPermissionConfigurable;    
+    private CustomPermissionConfigurable customPermissionConfigurable;
 
     public ConfluenceActionSupport getConfluenceActionSupport() {
         return confluenceActionSupport;
@@ -67,7 +67,6 @@ public class ServiceContext {
     }
 
     /**
-     *
      * Convenience method to getText from i18n resource backing the action, assuming it exists
      *
      * @param key - key
@@ -77,7 +76,7 @@ public class ServiceContext {
         String result = key;
 
         ConfluenceActionSupport cas = getConfluenceActionSupport();
-        if (cas!=null) {
+        if (cas != null) {
             result = cas.getText(key);
         }
 
@@ -85,10 +84,9 @@ public class ServiceContext {
     }
 
     /**
-     *
      * Convenience method to getText from i18n resource backing the action, assuming it exists
      *
-     * @param key - key
+     * @param key    - key
      * @param values - values
      * @return i18n message string if confluenceActionSupport set on context.
      */
@@ -96,7 +94,7 @@ public class ServiceContext {
         String result = key;
 
         ConfluenceActionSupport cas = getConfluenceActionSupport();
-        if (cas!=null) {
+        if (cas != null) {
             result = cas.getText(key, values);
         }
 

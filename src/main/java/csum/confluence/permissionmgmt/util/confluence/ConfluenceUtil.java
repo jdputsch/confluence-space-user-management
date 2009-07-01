@@ -29,8 +29,8 @@
 
 package csum.confluence.permissionmgmt.util.confluence;
 
-import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.confluence.util.GeneralUtil;
+import com.atlassian.spring.container.ContainerManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -50,11 +50,11 @@ public class ConfluenceUtil {
             result = loadComponentOrReturnNullCatchingThrowable(component);
             triesLeft--;
 
-            if (result==null) {
+            if (result == null) {
                 try {
                     // wait 0-1000 msec
                     log.debug("waiting before next try");
-                    Thread.sleep((int)(Math.random() * 1000D));
+                    Thread.sleep((int) (Math.random() * 1000D));
                 }
                 catch (InterruptedException ie) {
                     //don't care
@@ -62,7 +62,7 @@ public class ConfluenceUtil {
             }
         }
 
-        if (result==null) {
+        if (result == null) {
             //one last try
 
             // maybe this one will work, or maybe it will throw an error
@@ -92,25 +92,21 @@ public class ConfluenceUtil {
      * @param version
      * @return true if equal to or above, false otherwise.
      */
-    public static boolean isConfluenceVersionEqualToOrAbove(String version)
-    {
+    public static boolean isConfluenceVersionEqualToOrAbove(String version) {
         boolean result = false;
 
         // following code contributed by Andy Brook, with small modifications from Gary Weaver. Thanks, Andy!
         String fullVersion = GeneralUtil.getVersionNumber();
-        if (fullVersion==null) {
+        if (fullVersion == null) {
             log.warn("Could not determine Confluence version. Got null version number from GeneralUtil.getVersionNumber().");
-        }
-        else if (version==null) {
+        } else if (version == null) {
             log.warn("version passed into isConfluenceVersionEqualToOrAbove was null.");
-        }
-        else {
+        } else {
             VersionNumberComparator comp = new VersionNumberComparator();
             if (comp.compare(fullVersion, version) >= 0) {
                 log.debug("Confluence " + fullVersion + " is greater than or equal to " + version + ".");
                 result = false;
-            }
-            else {
+            } else {
                 log.debug("Confluence " + fullVersion + " is less than " + version + ".");
             }
         }

@@ -30,12 +30,8 @@
 package csum.confluence.permissionmgmt.util.group;
 
 import csum.confluence.permissionmgmt.CustomPermissionConstants;
-import csum.confluence.permissionmgmt.config.CustomPermissionConfigurable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Rajendra Kadam
@@ -49,7 +45,7 @@ public class GroupNameUtil {
     public static String replaceSpaceKey(String groupPattern, String spaceKey) {
         //log.debug("replaceSpaceKey() called.");
         //If spacekey is present in groupPattern then before compiling it replace it with current space key
-        if ( (groupPattern != null) && (groupPattern.indexOf(CustomPermissionConstants.SPACEKEY) != -1) ) {
+        if ((groupPattern != null) && (groupPattern.indexOf(CustomPermissionConstants.SPACEKEY) != -1)) {
             //Replace String "SPACEKEY" with input Space Key.
             groupPattern = groupPattern.replaceFirst(CustomPermissionConstants.SPACEKEY, spaceKey);
         }

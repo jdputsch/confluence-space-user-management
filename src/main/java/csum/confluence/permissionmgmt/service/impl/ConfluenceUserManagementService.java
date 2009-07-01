@@ -115,8 +115,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
             // a less critical error that we don't want to log the same way
             throw new UsersNotFoundException(context.getText("csum.manager.error.usersnotfound") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".");
-        }
-        else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipAdditionProblems.size() > 0) {
+        } else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipAdditionProblems.size() > 0) {
             throw new AddException(getRemoveUsersByUsernameFromGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipAdditionProblems, context));
         }
     }
@@ -213,8 +212,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
             // a less critical error that we don't want to log the same way
             throw new UsersNotFoundException(context.getText("csum.manager.error.usersnotfound") + ": " +
                     StringUtil.convertCollectionToCommaDelimitedString(usersNotFound) + ".");
-        }
-        else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipRemovalProblems.size() > 0) {
+        } else if (groupsNotFound.size() > 0 || userIdToGroupNameMapForMembershipRemovalProblems.size() > 0) {
             throw new RemoveException(getRemoveUsersByUsernameFromGroupsErrorMessage(usersNotFound, groupsNotFound, userIdToGroupNameMapForMembershipRemovalProblems, context));
         }
     }

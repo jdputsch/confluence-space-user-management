@@ -29,10 +29,10 @@
 
 package csum.confluence.permissionmgmt.util.logging;
 
-import org.apache.commons.logging.Log;
-import org.apache.log4j.Category;
 import csum.confluence.permissionmgmt.util.cache.CacheUtil;
 import csum.confluence.permissionmgmt.util.user.UserUtil;
+import org.apache.commons.logging.Log;
+import org.apache.log4j.Category;
 
 /**
  * @author Gary S. Weaver

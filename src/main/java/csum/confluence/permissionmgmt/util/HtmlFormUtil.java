@@ -65,7 +65,7 @@ public class HtmlFormUtil {
         //Get all groups that user has selected.
         for (Iterator iterator = paramMap.keySet().iterator(); iterator.hasNext();) {
             String paramKey = (String) iterator.next();
-            if (paramKey != null && paramKey.startsWith( checkboxGroupName + "_")) {
+            if (paramKey != null && paramKey.startsWith(checkboxGroupName + "_")) {
 
                 String encoded = getCheckboxValueFromParamName(paramKey);
                 try {

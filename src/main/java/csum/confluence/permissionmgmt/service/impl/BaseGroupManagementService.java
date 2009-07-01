@@ -54,7 +54,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * @author Rajendra Kadam
@@ -92,19 +91,19 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
         return pager;
     }
 
-    public boolean isAllowedToManageGroup( ServiceContext context, String groupName ) throws FindException {
+    public boolean isAllowedToManageGroup(ServiceContext context, String groupName) throws FindException {
         log.debug("isAllowedToManageGroup() called. groupName=" + groupName);
         Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
         List groupNames = getGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
-        return groupNames.contains(groupName);         
+        return groupNames.contains(groupName);
     }
 
     private List getGroupsThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
         log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
         List groupNames = getGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
         List groups = new ArrayList();
-        for (int i=0; i<groupNames.size(); i++) {
-            String groupName = (String)groupNames.get(i);
+        for (int i = 0; i < groupNames.size(); i++) {
+            String groupName = (String) groupNames.get(i);
             Group group = userAccessor.getGroup(groupName);
             groups.add(group);
         }

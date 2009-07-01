@@ -43,11 +43,11 @@ import java.util.List;
  */
 public interface GroupManagementService {
 
-    public Pager findGroups( ServiceContext context ) throws FindException;
+    public Pager findGroups(ServiceContext context) throws FindException;
 
-    public boolean isAllowedToManageGroup( ServiceContext context, String groupName ) throws FindException;
+    public boolean isAllowedToManageGroup(ServiceContext context, String groupName) throws FindException;
 
-    public void addGroups( List groupNames, ServiceContext context ) throws AddException, ServiceAuthenticationException;
+    public void addGroups(List groupNames, ServiceContext context) throws AddException, ServiceAuthenticationException;
 
-    public void removeGroups( List groupNames, ServiceContext context ) throws RemoveException, ServiceAuthenticationException;
+    public void removeGroups(List groupNames, ServiceContext context) throws RemoveException, ServiceAuthenticationException;
 }

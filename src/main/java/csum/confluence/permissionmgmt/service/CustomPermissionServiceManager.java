@@ -57,19 +57,15 @@ public class CustomPermissionServiceManager {
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
         String userManagerLocation = config.getUserManagerLocation();
 
-        if ( userManagerLocation==null )
-        {
+        if (userManagerLocation == null) {
             throw new ServiceException(action.getText("csum.manager.error.invalidusermanager"));
-        }
-        else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
-    	{
+        } else
+        if (userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE)) {
             return confluenceGroupManagementService;
-    	}
-    	else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
-    	{
+        } else
+        if (userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE)) {
             return jiraSoapGroupManagementService;
-        }
-        else {
+        } else {
             throw new ServiceException(action.getText("csum.manager.error.invalidusermanager"));
         }
     }
@@ -78,19 +74,15 @@ public class CustomPermissionServiceManager {
         CustomPermissionConfiguration config = getCustomPermissionConfiguration();
         String userManagerLocation = config.getUserManagerLocation();
 
-        if ( userManagerLocation==null )
-        {
+        if (userManagerLocation == null) {
             throw new ServiceException(action.getText("csum.manager.error.invalidusermanager"));
-        }
-        else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE))
-    	{
+        } else
+        if (userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE)) {
             return confluenceUserManagementService;
-    	}
-    	else if(userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE))
-    	{
+        } else
+        if (userManagerLocation.equals(CustomPermissionConfigConstants.DELEGATE_USER_MANAGER_LOCATION_JIRA_VALUE)) {
             return jiraSoapUserManagementService;
-        }
-        else {
+        } else {
             throw new ServiceException(action.getText("csum.manager.error.invalidusermanager"));
         }
     }

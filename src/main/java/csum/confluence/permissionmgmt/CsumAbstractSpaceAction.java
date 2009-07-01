@@ -36,8 +36,7 @@ import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
  */
 public class CsumAbstractSpaceAction extends AbstractSpaceAction {
 
-    public String getPluginKey()
-    {
+    public String getPluginKey() {
         return CustomPermissionConstants.PLUGIN_KEY;
     }
 }

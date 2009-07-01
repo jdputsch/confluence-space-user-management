@@ -36,8 +36,7 @@ import com.atlassian.confluence.core.ConfluenceActionSupport;
  */
 public abstract class CsumConfluenceActionSupport extends ConfluenceActionSupport {
 
-    public String getPluginKey()
-    {
+    public String getPluginKey() {
         return CustomPermissionConstants.PLUGIN_KEY;
     }
 }

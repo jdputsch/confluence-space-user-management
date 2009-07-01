@@ -39,20 +39,20 @@ public class ConfigUtil {
 
     private static final Log log = LogFactory.getLog(ConfigUtil.class);
 
-    public static String getTrimmedStringOrNull( String value ) {
+    public static String getTrimmedStringOrNull(String value) {
         String result = value;
-        if ( result != null ) {
+        if (result != null) {
             result = value.trim();
         }
 
         return result;
     }
 
-    public static String getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty( String name, String value, String defaultValue ) {
+    public static String getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty(String name, String value, String defaultValue) {
         String result = defaultValue;
-        if ( value != null ) {
+        if (value != null) {
             result = value.trim();
-            if ( "".equals(value) ) {
+            if ("".equals(value)) {
                 result = defaultValue;
             }
         }
@@ -60,27 +60,25 @@ public class ConfigUtil {
         return result;
     }
 
-    public static int getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger( String name, String value, int defaultValue ) {
+    public static int getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnInteger(String name, String value, int defaultValue) {
         int result = defaultValue;
-        if ( value != null ) {
+        if (value != null) {
             value = value.trim();
-            try
-            {
+            try {
                 result = Integer.parseInt(value);
             }
-            catch(NumberFormatException nfe)
-            {
+            catch (NumberFormatException nfe) {
                 log.debug("Could not parse " + name + " value of '" + value +
-                        "'. Using default value " + defaultValue );
+                        "'. Using default value " + defaultValue);
             }
         }
-        
+
         return result;
     }
 
     public static boolean isNullOrEmpty(String s) {
         boolean result = false;
-        if (s==null || "".equals(s)) {
+        if (s == null || "".equals(s)) {
             result = true;
         }
         return result;
@@ -88,7 +86,7 @@ public class ConfigUtil {
 
     public static boolean isNotNullAndIsYesOrNo(String s) {
         boolean result = false;
-        if ( s != null && ("YES".equals(s) || "NO".equals(s))) {
+        if (s != null && ("YES".equals(s) || "NO".equals(s))) {
             result = true;
         }
         return result;
@@ -96,7 +94,7 @@ public class ConfigUtil {
 
     public static boolean isNotNullAndIsYes(String s) {
         boolean result = false;
-        if ( s != null && ("YES".equals(s))) {
+        if (s != null && ("YES".equals(s))) {
             result = true;
         }
         return result;
@@ -104,11 +102,11 @@ public class ConfigUtil {
 
     public static boolean isIntGreaterThanZero(String s) {
         boolean result = false;
-        if ( s != null ) {
+        if (s != null) {
             int i = 0;
             try {
                 i = Integer.parseInt(s);
-                if (i>0) {
+                if (i > 0) {
                     result = true;
                 }
             }
@@ -117,5 +115,5 @@ public class ConfigUtil {
             }
         }
         return result;
-    }        
+    }
 }

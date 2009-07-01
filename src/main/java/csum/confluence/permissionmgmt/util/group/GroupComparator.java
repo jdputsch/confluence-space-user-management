@@ -39,8 +39,7 @@ import java.util.Comparator;
  */
 public class GroupComparator implements Comparator {
 
-    public int compare(Object o, Object o1)
-    {
+    public int compare(Object o, Object o1) {
         return ((Group) o).getName().compareToIgnoreCase(((Group) o1).getName());
     }
 }

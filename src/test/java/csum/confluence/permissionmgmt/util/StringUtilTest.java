@@ -31,9 +31,9 @@ package csum.confluence.permissionmgmt.util;
 
 import junit.framework.TestCase;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Gary S. Weaver
@@ -65,9 +65,9 @@ public class StringUtilTest extends TestCase {
     }
 
     public void test_areBothNullOrAreEqual() {
-        assertFalse("Should return false for diff strings", StringUtil.areBothNullOrAreEqual("a","b"));
-        assertFalse("Should return false for string and null", StringUtil.areBothNullOrAreEqual("c",null));
-        assertFalse("Should return false for null and string", StringUtil.areBothNullOrAreEqual(null,"d"));
+        assertFalse("Should return false for diff strings", StringUtil.areBothNullOrAreEqual("a", "b"));
+        assertFalse("Should return false for string and null", StringUtil.areBothNullOrAreEqual("c", null));
+        assertFalse("Should return false for null and string", StringUtil.areBothNullOrAreEqual(null, "d"));
         assertTrue("Should return true for null", StringUtil.areBothNullOrAreEqual(null, null));
         assertTrue("Should return true for empty", StringUtil.areBothNullOrAreEqual("", ""));
         assertTrue("Should return true for empty", StringUtil.areBothNullOrAreEqual("abcd", "abcd"));

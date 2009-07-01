@@ -34,10 +34,9 @@ import java.util.Comparator;
 /**
  * @author Gary S. Weaver
  */
-public class RangeComparator  implements Comparator {
+public class RangeComparator implements Comparator {
 
-    public int compare(Object o, Object o1)
-    {
+    public int compare(Object o, Object o1) {
         return new Integer(((Range) o).getRecordNum()).compareTo(new Integer(((Range) o1).getRecordNum()));
     }
 }

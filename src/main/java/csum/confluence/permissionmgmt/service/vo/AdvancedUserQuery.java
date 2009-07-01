@@ -70,7 +70,7 @@ public class AdvancedUserQuery {
 
     public boolean isDefined() {
         boolean result = false;
-        if ( this.getLookupType() != null &&
+        if (this.getLookupType() != null &&
                 this.getSubstringMatchType() != null &&
                 !ConfigUtil.isNullOrEmpty(this.getPartialSearchTerm())) {
             result = true;
@@ -81,14 +81,12 @@ public class AdvancedUserQuery {
     // TODO: consider using enumeration instance instead
     public String lookupTypeInstance(String s) {
         String result = null;
-        if (s!=null) {
-            if (AdvancedUserQueryLookupType.USERNAME.equalsIgnoreCase(s) ) {
+        if (s != null) {
+            if (AdvancedUserQueryLookupType.USERNAME.equalsIgnoreCase(s)) {
                 result = AdvancedUserQueryLookupType.USERNAME;
-            }
-            else if (AdvancedUserQueryLookupType.USER_FULL_NAME.equalsIgnoreCase(s) ) {
+            } else if (AdvancedUserQueryLookupType.USER_FULL_NAME.equalsIgnoreCase(s)) {
                 result = AdvancedUserQueryLookupType.USER_FULL_NAME;
-            }
-            else if (AdvancedUserQueryLookupType.USER_EMAIL.equalsIgnoreCase(s) ) {
+            } else if (AdvancedUserQueryLookupType.USER_EMAIL.equalsIgnoreCase(s)) {
                 result = AdvancedUserQueryLookupType.USER_EMAIL;
             }
         }
@@ -98,14 +96,12 @@ public class AdvancedUserQuery {
     // note: atlassian-user is really picky about doing == instead of .equals to check the TermQuery constant, so we do this
     public String substringMatchTypeInstance(String s) {
         String result = null;
-        if (s!=null) {
-            if (AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS.equalsIgnoreCase(s) ) {
+        if (s != null) {
+            if (AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS.equalsIgnoreCase(s)) {
                 result = AdvancedUserQuerySubstringMatchType.SUBSTRING_CONTAINS;
-            }
-            else if (AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH.equalsIgnoreCase(s) ) {
+            } else if (AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH.equalsIgnoreCase(s)) {
                 result = AdvancedUserQuerySubstringMatchType.SUBSTRING_ENDS_WITH;
-            }
-            else if (AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH.equalsIgnoreCase(s) ) {
+            } else if (AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH.equalsIgnoreCase(s)) {
                 result = AdvancedUserQuerySubstringMatchType.SUBSTRING_STARTS_WITH;
             }
         }
@@ -114,7 +110,7 @@ public class AdvancedUserQuery {
 
     public boolean isUsernameSearchDefined() {
         boolean result = false;
-        if (this.getLookupType()==AdvancedUserQueryLookupType.USERNAME) {
+        if (this.getLookupType() == AdvancedUserQueryLookupType.USERNAME) {
             result = true;
         }
         return result;
@@ -122,7 +118,7 @@ public class AdvancedUserQuery {
 
     public boolean isFullnameSearchDefined() {
         boolean result = false;
-        if (this.getLookupType()==AdvancedUserQueryLookupType.USER_FULL_NAME) {
+        if (this.getLookupType() == AdvancedUserQueryLookupType.USER_FULL_NAME) {
             result = true;
         }
         return result;
@@ -130,14 +126,13 @@ public class AdvancedUserQuery {
 
     public boolean isEmailSearchDefined() {
         boolean result = false;
-        if (this.getLookupType()==AdvancedUserQueryLookupType.USER_EMAIL) {
+        if (this.getLookupType() == AdvancedUserQueryLookupType.USER_EMAIL) {
             result = true;
         }
         return result;
     }
 
-    public boolean isValid()
-    {
+    public boolean isValid() {
         return isDefined();
     }
 }
