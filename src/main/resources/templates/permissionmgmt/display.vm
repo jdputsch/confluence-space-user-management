@@ -68,34 +68,11 @@
 			YAHOO.util.Event.preventDefault(e);
                         var targetLink = document.getElementById("trashGroup").href
 
-			groupTrashDialog = new YAHOO.widget.SimpleDialog("dlg", { 
-				width: "25em", 
-				//effect:[{effect:YAHOO.widget.ContainerEffect.FADE, 
-				//		duration:0.25}],
-				fixedcenter:true,
-				modal:true,
-				draggable:false } );
-			groupTrashDialog.setHeader("Confirm Group Deletion");
-			groupTrashDialog.setBody("Are you sure you want to delete this group?");
-
-			var handleYes = function() {
-			 window.location = targetLink;
-			 this.hide();
-			};
-
-			var handleNo = function() {
-			 //user cancels item deletion
-			 this.hide();
-			};
-
-			var trashButtons = [ { text:"Yes", handler:handleYes },
-							  { text:"Cancel", handler:handleNo, isDefault:true } 
-							];
-
-			groupTrashDialog.cfg.queueProperty("buttons", trashButtons);
-			groupTrashDialog.render(document.body);
+			if (confirm("Are you sure you want to delete this group?")) {
+                            window.location = targetLink
+                        }
 		};
-		
+
 		function validateForm(e, form)
 		{
 			var valid = true;
