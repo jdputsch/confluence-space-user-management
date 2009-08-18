@@ -177,7 +177,22 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                 throw new RemoveException(msg);
             }
 
-            if (permissionManager.hasPermission(currentUser, Permission.REMOVE, group)) {
+            // SUSR-99 - fix for "Could not check permissions for (group name) no suitable delegate found." error in Confluence 2.5.7 
+            boolean hasRemoveGroupPermission = true;
+            try {
+                hasRemoveGroupPermission = permissionManager.hasPermission(currentUser, Permission.REMOVE, group);
+            }
+            catch (IllegalArgumentException e) {
+                // this is going to happen a lot unfortunately on older Confluence...
+                log.debug("Because permissionManager.hasPermission(currentUser, Permission.REMOVE, group) threw " +
+                          "IllegalArgumentException (which apparently it does in some versions of Confluence), we " +
+                          "can't therefore check whether the user '" + currentUser.getName() + 
+                          "' has permissions to remove the group '" + group.getName() + "'. We'll assume since " +
+                          "they have rights to use the CSUM plugin that they are allowed to remove this group " +
+                          "(see CONF-16183, SUSR-97, SUSR-99).");                          
+            }
+
+            if (hasRemoveGroupPermission) {
                 log.debug("Removing space permissions from group " + group.getName() + " as (workaround for CONF-9623)");
                 log.debug("Calling spacePermissionManager.getAllPermissionsForGroup(" + group.getName() + ")");
                 List perms = spacePermissionManager.getAllPermissionsForGroup(group.getName());
