@@ -164,6 +164,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
     }
 
     private void removeGroup_Confluence2_6_0Compatible(Group group) throws RemoveException {
+        log.debug("removeGroup called for " + group);
         if (group != null) {
             // Workaround for http://jira.atlassian.com/browse/CONF-9623
             // Confluence 2.6.0 has a bug where removeGroup fails if space permissions are not removed for the group
@@ -180,17 +181,18 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
             // SUSR-99 - fix for "Could not check permissions for (group name) no suitable delegate found." error in Confluence 2.5.7 
             boolean hasRemoveGroupPermission = true;
             try {
+                log.debug("Checking whether '" + currentUser.getName() + "' has permission to remove group '" + group.getName() + "'.");
                 hasRemoveGroupPermission = permissionManager.hasPermission(currentUser, Permission.REMOVE, group);
             }
             catch (IllegalArgumentException e) {
                 // this is going to happen a lot unfortunately on older Confluence...
-                log.debug("Because permissionManager.hasPermission(currentUser, Permission.REMOVE, group) threw " +
-                          "IllegalArgumentException (which apparently it does in some versions of Confluence), we " +
-                          "can't therefore check whether the user '" + currentUser.getName() + 
-                          "' has permissions to remove the group '" + group.getName() + "'. We'll assume since " +
-                          "they have rights to use the CSUM plugin that they are allowed to remove this group " +
-                          "(see CONF-16183, SUSR-97, SUSR-99).");                          
+                log.debug("permissionManager.hasPermission(currentUser, Permission.REMOVE, group) failed, " +
+                          "which is normal in some versions of Confluence. Therefore, we can't check " + 
+                          "whether user '" + currentUser.getName() + "' has permissions to remove group '" + 
+                          group.getName() + "'. Assuming that the user should be allowed to remove " +
+                          "this group (see CONF-16183, SUSR-97, SUSR-99).");                          
             }
+            log.debug("hasRemoveGroupPermission=" + hasRemoveGroupPermission);
 
             if (hasRemoveGroupPermission) {
                 log.debug("Removing space permissions from group " + group.getName() + " as (workaround for CONF-9623)");
@@ -207,8 +209,10 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                 log.debug("Calling userAccessor.removeGroup(...)");
                 boolean success = false;
                 try {
+                    log.debug("Calling userAccessor.removeGroup(group).");
                     userAccessor.removeGroup(group);
                     success = true;
+                    log.debug("Assuming that userAccessor.removeGroup(group) was successful.");
                 }
                 finally {
                     if (perms != null && !success) {
@@ -228,6 +232,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                 throw new RemoveException(msg);
             }
         }
+        log.debug("Group removal complete.");
     }
 
     public PermissionManager getPermissionManager() {
