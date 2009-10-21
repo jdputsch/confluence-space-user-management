@@ -96,11 +96,13 @@ Releasing Plugin
 
 13) Edit http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin and change all references to point at latest jar release. Add comment to it to let people know there is a new release with a link to the built jar.
 
-14) Add release in http://plugins.atlassian.com
+14) Add release in https://plugins.atlassian.com/manage/plugin/133
 
 15) Add release and set release info in tickets in Jira
 
-16) Follow the process above and don't make substitutions or changes. For example, the maven build should ensure Java backwards compatibility, but if you build with IDea or something else, it might not. Also, note that it is intentional that the tag's pom is changed and that it is not changed in trunk. Trunk's pom should always have SNAPSHOT in the version of the pom.
+16) Update pom.xml in trunk to increment version to next snapshot version.
+
+17) Follow the process above and don't make substitutions or changes. For example, the maven build should ensure Java backwards compatibility, but if you build with IDea or something else, it might not. Also, note that it is intentional that the tag's pom is changed and that it is not changed in trunk. Trunk's pom should always have SNAPSHOT in the version of the pom.
 
 -------
 Reports
