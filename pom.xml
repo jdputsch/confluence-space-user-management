@@ -124,7 +124,6 @@
 
         <developer>
             <name>Ren Provey</name>
-            <email>renald.provey@duke.edu</email>
             <organization>Duke University</organization>
             <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
             <roles>
@@ -150,7 +149,30 @@
                 <role>Developer - v2 bug fixes for key names in i18n properties, fix for delete group in IE</role>
             </roles>
         </developer>
+        
     </developers>
+    
+    <contributors>
+      
+        <contributor>
+            <name>Christian Nesemann</name>
+            <organization>Bünting IT GmbH</organization>
+            <organizationUrl>http://www.buenting.de/</organizationUrl>
+            <roles>
+                <role>Provided German translation</role>
+            </roles>
+        </contributor>
+        
+        <contributor>
+            <name>Tom Saathoff</name>
+            <organization>Bünting IT GmbH</organization>
+            <organizationUrl>http://www.buenting.de/</organizationUrl>
+            <roles>
+                <role>Provided German translation</role>
+            </roles>
+        </contributor>
+        
+    </contributors>
 
     <organization>
         <name>Custom Space User Management Plugin Team</name>
