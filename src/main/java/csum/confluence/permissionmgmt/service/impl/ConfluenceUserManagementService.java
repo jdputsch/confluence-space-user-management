@@ -171,8 +171,13 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                 }
 
                 if (group != null) {
-                    log.debug("Adding " + user.getName() + " to group " + groupName);
-                    userAccessor.addMembership(group, user);
+                    if (!isMemberOf(user.getName(), groupName)) {
+                        log.debug("Adding " + user.getName() + " to group " + groupName);
+                        userAccessor.addMembership(group, user);
+                    }
+                    else {
+                        log.debug("User " + user.getName() + " was already a member of group " + groupName);
+                    }
                 }
             }
             catch (Throwable t) {
@@ -245,7 +250,13 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
 
                 if (group != null) {
                     log.debug("Removing " + user.getName() + " from " + groupName);
-                    userAccessor.removeMembership(group, user);
+                    if (isMemberOf(user.getName(), groupName)) {
+                        log.debug("Removing " + user.getName() + " from group " + groupName);
+                        userAccessor.removeMembership(group, user);
+                    }
+                    else {
+                        log.debug("User " + user.getName() + " was not a member of group " + groupName + " so did not have to remove.");
+                    }
                 }
             }
             catch (Throwable t) {

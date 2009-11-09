@@ -199,8 +199,13 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 }
 
                 if (remoteGroup != null) {
-                    log.debug("Adding " + remoteUser.getName() + " to Jira group " + groupName);
-                    jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                    if (!isMemberOf(remoteUser.getName(), groupName)) {
+                        log.debug("Adding " + remoteUser.getName() + " to Jira group " + groupName);
+                        jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                    }
+                    else {
+                        log.debug("User " + remoteUser.getName() + " was already a member of Jira group " + groupName);
+                    }
                 }
             }
             catch (Throwable t) {
@@ -294,8 +299,13 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 }
 
                 if (remoteGroup != null) {
-                    log.debug("Removing " + remoteUser.getName() + " from Jira group " + groupName);
-                    jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
+                    if (isMemberOf(remoteUser.getName(), groupName)) {
+                        log.debug("Removing " + remoteUser.getName() + " from Jira group " + groupName);
+                        jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
+                    }
+                    else {
+                        log.debug("User " + remoteUser.getName() + " was not a member of Jira group " + groupName + " so did not have to remove.");
+                    }
                 }
             }
             catch (Throwable t) {

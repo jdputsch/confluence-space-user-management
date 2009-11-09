@@ -237,8 +237,8 @@ public abstract class BaseUserManagementService implements UserManagementService
         if (userIdToGroupNameMapForMembershipAdditionProblems.size() > 0) {
             Iterator iter = userIdToGroupNameMapForMembershipAdditionProblems.keySet().iterator();
             while (iter.hasNext()) {
-                String groupName = (String) iter.next();
-                String userid = (String) userIdToGroupNameMapForMembershipAdditionProblems.get(groupName);
+                String userid = (String) iter.next();
+                String groupName = (String) userIdToGroupNameMapForMembershipAdditionProblems.get(userid);
                 msg += concat;
                 msg += context.getText("csum.manager.error.problemaddingusertogroup", new String[]{userid, groupName});
                 concat = " ";
@@ -266,8 +266,8 @@ public abstract class BaseUserManagementService implements UserManagementService
         if (userIdToGroupNameMapForMembershipRemovalProblems.size() > 0) {
             Iterator iter = userIdToGroupNameMapForMembershipRemovalProblems.keySet().iterator();
             while (iter.hasNext()) {
-                String groupName = (String) iter.next();
-                String userid = (String) userIdToGroupNameMapForMembershipRemovalProblems.get(groupName);
+                String userid = (String) iter.next();
+                String groupName = (String) userIdToGroupNameMapForMembershipRemovalProblems.get(userid);                
                 msg += concat;
                 msg += context.getText("csum.manager.error.problemremovinguserfromgroup", new String[]{userid, groupName});
                 concat = " ";
