@@ -199,12 +199,17 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 }
 
                 if (remoteGroup != null) {
-                    if (!isMemberOf(remoteUser.getName(), groupName) || "jira-users".equals(groupName)) {
-                        log.debug("Adding " + remoteUser.getName() + " to Jira group " + groupName);
-                        jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                    if (!isMemberOf(remoteUser.getName(), groupName)) {
+                        if ("jira-users".equals(groupName)) {
+                            log.debug("We won't add " + remoteUser.getName() + " to group jira-users (SUSR-102).");
+                        }
+                        else {
+                            log.debug("Adding " + remoteUser.getName() + " to Jira group " + groupName);
+                            jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
+                        }
                     }
                     else {
-                        log.debug("User " + remoteUser.getName() + " was already a member of Jira group " + groupName + ", or group name was 'jira-users'.");
+                        log.debug("Did not add user " + remoteUser.getName() + " to group " + groupName + ". It was already a member.");
                     }
                 }
             }
@@ -299,13 +304,19 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 }
 
                 if (remoteGroup != null) {
-                    if (isMemberOf(remoteUser.getName(), groupName) && !"jira-users".equals(groupName)) {
-                        log.debug("Removing " + remoteUser.getName() + " from Jira group " + groupName);
-                        jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
+                    if (isMemberOf(remoteUser.getName(), groupName)) {
+                        if ("jira-users".equals(groupName)) {
+                            log.debug("We will not remove " + remoteUser.getName() + " from group jira-users (SUSR-102).");
+                        }
+                        else {
+                            log.debug("Removing " + remoteUser.getName() + " from Jira group " + groupName);
+                            jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
+                        }
                     }
                     else {
-                        log.debug("User " + remoteUser.getName() + " was not a member of Jira group " + groupName + " so did not have to remove, or group name was 'jira-users'.");
+                        log.debug("Did not remove user " + remoteUser.getName() + " from group " + groupName + ", because it was not a member of that group.");
                     }
+
                 }
             }
             catch (Throwable t) {
