@@ -184,9 +184,9 @@
         <dependency>
             <groupId>com.atlassian.confluence</groupId>
             <artifactId>confluence</artifactId>
-            <version>2.7.3</version>
+            <version>3.1-beta3</version>
             <scope>provided</scope>
-        </dependency>        
+        </dependency>     
         
         <!-- for CONF-9035 hack in CustomPermissionManagerAction -->
         <dependency>
@@ -405,23 +405,14 @@
     </reporting>
 
     <repositories>
-        <repository>
-            <id>atlassian-m2-contrib</id>
-            <name>Atlassian Maven 2 Contributor Repository</name>
-            <url>http://svn.atlassian.com/svn/public/contrib/repository/maven2</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>atlassian-m2-repository</id>
-            <name>Atlassian Maven 2 Repository</name>
-            <url>http://repository.atlassian.com/maven2</url>
-        </repository>
+      <repository>
+          <snapshots>
+              <enabled>true</enabled>
+          </snapshots>
+          <id>atlassian-m2-repository</id>
+          <name>Atlassian Maven 2 Repository</name>
+          <url>https://m2proxy.atlassian.com/repository/public</url>
+      </repository>
 
         <repository>
             <snapshots>
