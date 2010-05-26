@@ -42,7 +42,7 @@
 			<form id="bulkEdit" action="docustompermissionsmanage.action">
 				<fieldset>
                     <input type="hidden" name="bulkEdit" value="1"/>
-				    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
+				    <input type="hidden" name="key" value="$key"/>
 					<div id="bulkChooseWrap">
 						<label>1. $action.getText("csum.bulkedit.adminaction.label"):</label>
 						<input type="radio" value="addUsersToGroups" name="adminAction" required="true"></input> $action.getText("csum.bulkedit.adminaction.choice.adduserstogroups")<br />

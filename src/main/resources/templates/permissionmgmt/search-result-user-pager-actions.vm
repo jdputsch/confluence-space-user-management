@@ -49,8 +49,8 @@
                         #if($searchResultUsers.total > $searchResultUsers.countOnEachPage)
                         <form class="pageSkip" action="docustompermissionsmanage.action">
 		                    <fieldset>
-			                    <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
-			                    <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
+			                    <input type="hidden" name="key" value="$key"/>
+			                    <input type="hidden" name="selectedGroup" value="$action.selectedGroup"/>
                                 <input type="hidden" name="userSearch" value="1"/>
 		                        <input type="hidden" name="pagerAction" value="skipToSearchResultUser"/>
 								<label>$action.getText("csum.searchresultuserpageractions.userskipbynumber.label"): </label>

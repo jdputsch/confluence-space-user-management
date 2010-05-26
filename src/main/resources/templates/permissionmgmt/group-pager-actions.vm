@@ -52,8 +52,8 @@
 	                        #if($groups.total > $groups.countOnEachPage)
 	                        <form action="docustompermissionsmanage.action" class="pageSkip">
 		                        <fieldset>
-		                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
-		                        <input type="hidden" name="selectedGroup" value="$generalUtil.doubleUrlEncode($action.selectedGroup)"/>
+		                        <input type="hidden" name="key" value="$key"/>
+		                        <input type="hidden" name="selectedGroup" value="$action.selectedGroup"/>
 		                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
 								<label>$action.getText("csum.skip.byNum"):</label>
 								<input type="text" name="recordNum"/>
@@ -85,7 +85,7 @@
 	                        #if($groups.total > $groups.countOnEachPage)
 	                        <form action="docustompermissionsmanage.action" class="pageSkip">
 		                        <fieldset>
-			                        <input type="hidden" name="key" value="$generalUtil.doubleUrlEncode($key)"/>
+			                        <input type="hidden" name="key" value="$key"/>
 			                        <input type="hidden" name="pagerAction" value="skipToGroup"/>
 									<label>$action.getText("csum.skip.byNum"):</label>
 			                    	<input type="text" name="recordNum"/>
