@@ -46,4 +46,3 @@ mvn eclipse:eclipse
 To build in Netbeans:
 mvn netbeans-freeform:generate-netbeans-project
 or try the nbm plugin or Mevenide Netbeans for Maven 2 at http://mevenide.codehaus.org/m2-site/index.html
-
