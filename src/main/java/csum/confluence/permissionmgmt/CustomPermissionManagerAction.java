@@ -179,7 +179,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     private int getRowsPerPage() {
         int result = PagerPaginationSupport.DEFAULT_COUNT_ON_EACH_PAGE;
-        if (customPermissionConfiguration != null) {
+        if (this.getCustomPermissionConfiguration() != null) {
             try {
                 result = new Integer(this.getCustomPermissionConfiguration().getNumRowsPerPage()).intValue();
             }
@@ -1016,7 +1016,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
                     boolean usersAdded = false;
                     try {
                         if (adminAction.equals(ACTION_ADD_GROUPS)) {
-                            String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
+                            String prefix = GroupNameUtil.replaceSpaceKey(this.getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), space.getKey());
                             log.debug("group name prefix will be " + prefix);
                             String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), space.getKey());
                             log.debug("group name suffix will be " + suffix);

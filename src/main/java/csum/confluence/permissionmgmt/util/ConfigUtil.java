@@ -103,38 +103,22 @@ public class ConfigUtil {
     }
 
     public static boolean isNullOrEmpty(String s) {
-        boolean result = false;
-        if (s == null || "".equals(s)) {
-            result = true;
-        }
-        return result;
+        return s == null || "".equals(s);
     }
 
     public static boolean isNotNullAndIsYesOrNo(String s) {
-        boolean result = false;
-        if (s != null && ("YES".equals(s) || "NO".equals(s))) {
-            result = true;
-        }
-        return result;
+        return s != null && ("YES".equals(s) || "NO".equals(s));
     }
 
     public static boolean isNotNullAndIsYes(String s) {
-        boolean result = false;
-        if (s != null && ("YES".equals(s))) {
-            result = true;
-        }
-        return result;
+        return s != null && "YES".equals(s);
     }
 
-    public static boolean isIntGreaterThanZero(String s) {
+    public static boolean isNotNullAndIsIntGreaterThanZero(String s) {
         boolean result = false;
         if (s != null) {
-            int i = 0;
             try {
-                i = Integer.parseInt(s);
-                if (i > 0) {
-                    result = true;
-                }
+                result = (Integer.parseInt(s) > 0);
             }
             catch (NumberFormatException nfe) {
                 // invalid
@@ -143,15 +127,12 @@ public class ConfigUtil {
         return result;
     }
     
-    public static boolean isIntBetween(String s, int min, int max) {
+    public static boolean isNotNullAndIsIntBetween(String s, int min, int max) {
         boolean result = false;
         if (s != null) {
-            int i = 0;
             try {
-                i = Integer.parseInt(s);
-                if (i >= min && i <= max) {
-                    result = true;
-                }
+                int i = Integer.parseInt(s);
+                result = (i >= min && i <= max);
             }
             catch (NumberFormatException nfe) {
                 // invalid

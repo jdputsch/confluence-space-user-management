@@ -275,17 +275,17 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             result.setValid(false);
         }
 
-        if (config.getMaxUserIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(config.getMaxUserIDsLimit())) {
+        if (config.getMaxUserIDsLimit() == null || !ConfigUtil.isNotNullAndIsIntGreaterThanZero(config.getMaxUserIDsLimit())) {
             result.addFieldError("maxUserIDsLimit", cas.getText("csum.configure.error.maxuseridslimitinvalid"));
             result.setValid(false);
         }
 
-        if (config.getMaxGroupIDsLimit() == null || !ConfigUtil.isIntGreaterThanZero(config.getMaxGroupIDsLimit())) {
+        if (config.getMaxGroupIDsLimit() == null || !ConfigUtil.isNotNullAndIsIntGreaterThanZero(config.getMaxGroupIDsLimit())) {
             result.addFieldError("maxGroupIDsLimit", cas.getText("csum.configure.error.maxgroupidslimitinvalid"));
             result.setValid(false);
         }
         
-        if (config.getNumRowsPerPage() == null || !ConfigUtil.isIntBetween(config.getNumRowsPerPage(), CustomPermissionConfigConstants.MIN_ROWS_PER_PAGE, CustomPermissionConfigConstants.MAX_ROWS_PER_PAGE)) {
+        if (config.getNumRowsPerPage() == null || !ConfigUtil.isNotNullAndIsIntBetween(config.getNumRowsPerPage(), CustomPermissionConfigConstants.MIN_ROWS_PER_PAGE, CustomPermissionConfigConstants.MAX_ROWS_PER_PAGE)) {
             result.addFieldError("numRowsPerPage", cas.getText("csum.configure.error.numrowsperpageinvalid"));
             result.setValid(false);
         }
