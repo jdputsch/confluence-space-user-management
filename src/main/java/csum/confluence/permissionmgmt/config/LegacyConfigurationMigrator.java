@@ -62,7 +62,7 @@ public class LegacyConfigurationMigrator {
         String newGroupSuffix = getValue(bandanaManager, CustomPermissionConfigConstants.DELEGATE_USER_MGMT_NEW_GROUP_NAME_CREATION_SUFFIX_PATTERN);
 
         if (newGroupPrefix == null && newGroupSuffix == null) {
-            String legacyMatchingPattern = getValue(bandanaManager, LegacyConfigConstants.DELEGATE_USER_MGMT_User_MATCHING_PATTERN);
+            String legacyMatchingPattern = getValue(bandanaManager, LegacyConfigConstants.DELEGATE_USER_MGMT_USER_MATCHING_PATTERN);
             if (legacyMatchingPattern != null) {
                 // this is used as an example in old config page
                 int wildCardIndex = legacyMatchingPattern.indexOf(".*");

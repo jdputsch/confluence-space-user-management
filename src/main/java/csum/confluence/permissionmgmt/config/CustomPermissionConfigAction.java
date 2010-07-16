@@ -29,6 +29,7 @@
 
 package csum.confluence.permissionmgmt.config;
 
+import bucket.core.actions.PagerPaginationSupport;
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.setup.BootstrapManager;
@@ -133,7 +134,8 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         setPluginDown(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("pluginDown", getPluginDown(), CustomPermissionConfigConstants.NO));
         setUserSearchEnabled(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userSearchEnabled", getUserSearchEnabled(), CustomPermissionConfigConstants.YES));
         setGroupMembershipRefreshFixEnabled(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("groupMembershipRefreshFixEnabled", getGroupMembershipRefreshFixEnabled(), CustomPermissionConfigConstants.NO));
-
+        setNumRowsPerPage("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnIntegerOrUseRangeMinOrMaxIfOutOfRange("numRowsPerPage", getNumRowsPerPage(), PagerPaginationSupport.DEFAULT_COUNT_ON_EACH_PAGE, CustomPermissionConfigConstants.MIN_ROWS_PER_PAGE, CustomPermissionConfigConstants.MAX_ROWS_PER_PAGE));
+        
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();
         log.debug("paramMap: " + paramMap);

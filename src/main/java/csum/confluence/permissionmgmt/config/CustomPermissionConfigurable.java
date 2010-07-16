@@ -129,4 +129,8 @@ public interface CustomPermissionConfigurable {
     public String getGroupMembershipRefreshFixEnabled();
 
     public void setGroupMembershipRefreshFixEnabled(String groupMembershipRefreshFixEnabled);
+    
+    public String getNumRowsPerPage();
+    
+    public void setNumRowsPerPage(String numRowsPerPage);
 }

@@ -178,7 +178,16 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     }
 
     private int getRowsPerPage() {
-        return PagerPaginationSupport.DEFAULT_COUNT_ON_EACH_PAGE;
+        int result = PagerPaginationSupport.DEFAULT_COUNT_ON_EACH_PAGE;
+        if (customPermissionConfiguration != null) {
+            try {
+                result = new Integer(this.getCustomPermissionConfiguration().getNumRowsPerPage()).intValue();
+            }
+            catch (Throwable t) {
+                log.error("Problem getting numRowsPerPage from config", t);
+            }
+        }
+        return result;
     }
 
     private List getUrlDecodedCleanedTrimmedParameterValues(Map paramMap, String param) {

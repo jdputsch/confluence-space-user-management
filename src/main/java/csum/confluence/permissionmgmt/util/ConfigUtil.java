@@ -75,6 +75,32 @@ public class ConfigUtil {
 
         return result;
     }
+    
+    public static int getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnIntegerOrUseRangeMinOrMaxIfOutOfRange(String name, String value, int defaultValue, int minValue, int maxValue) {
+        int result = defaultValue;
+        if (value != null) {
+            value = value.trim();
+            try {
+                result = Integer.parseInt(value);
+                if (result < minValue) {
+                    log.debug("" + name + " value of " + value + " smaller than minimum " + minValue + ". Using minimum value " +
+                        minValue);
+                    result = minValue;
+                }
+                else if (result > maxValue) {
+                    log.debug("" + name + " value of " + value + " greater than maximum " + maxValue + ". Using maximum value " +
+                        maxValue);
+                    result = maxValue;
+                }
+            }
+            catch (NumberFormatException nfe) {
+                log.debug("Could not parse " + name + " value of '" + value +
+                        "'. Using default value " + defaultValue);
+            }
+        }
+
+        return result;
+    }
 
     public static boolean isNullOrEmpty(String s) {
         boolean result = false;
@@ -107,6 +133,23 @@ public class ConfigUtil {
             try {
                 i = Integer.parseInt(s);
                 if (i > 0) {
+                    result = true;
+                }
+            }
+            catch (NumberFormatException nfe) {
+                // invalid
+            }
+        }
+        return result;
+    }
+    
+    public static boolean isIntBetween(String s, int min, int max) {
+        boolean result = false;
+        if (s != null) {
+            int i = 0;
+            try {
+                i = Integer.parseInt(s);
+                if (i >= min && i <= max) {
                     result = true;
                 }
             }

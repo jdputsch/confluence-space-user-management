@@ -343,6 +343,17 @@
                 </p>
             </td>
         </tr>
+        
+        <tr>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.numrowsperpage.label"):</td>
+            <td>
+                #fielderror ('numRowsPerPage')
+                <input type="text" name="numRowsPerPage" value="$!action.numRowsPerPage" />
+                <p>
+                    <font size="1">$action.getText("csum.configure.numrowsperpage.help")</font>
+                </p>
+            </td>
+        </tr>
 
         <tr>
             <td valign="top" class="label" width="30%">$action.getText("csum.configure.usersearchenabled.label"):</td>

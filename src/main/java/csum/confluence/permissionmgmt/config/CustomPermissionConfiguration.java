@@ -284,6 +284,11 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
             result.addFieldError("maxGroupIDsLimit", cas.getText("csum.configure.error.maxgroupidslimitinvalid"));
             result.setValid(false);
         }
+        
+        if (config.getNumRowsPerPage() == null || !ConfigUtil.isIntBetween(config.getNumRowsPerPage(), CustomPermissionConfigConstants.MIN_ROWS_PER_PAGE, CustomPermissionConfigConstants.MAX_ROWS_PER_PAGE)) {
+            result.addFieldError("numRowsPerPage", cas.getText("csum.configure.error.numrowsperpageinvalid"));
+            result.setValid(false);
+        }
 
         String pluginInDown = config.getPluginDown();
         if (ConfigUtil.isNotNullAndIsYesOrNo(pluginInDown)) {
@@ -546,6 +551,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setGroupMembershipRefreshFixEnabled(String groupMembershipRefreshFixEnabled) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_GROUP_MEMBERSHIP_REFRESH_FIX_ENABLED, groupMembershipRefreshFixEnabled);
+    }
+    
+    public String getNumRowsPerPage() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_NUM_ROWS_PER_PAGE);
+    }
+
+    public void setNumRowsPerPage(String numRowsPerPage) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_NUM_ROWS_PER_PAGE, numRowsPerPage);
     }
 
     public BandanaManager getBandanaManager() {

@@ -65,6 +65,7 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
     private String ldapNarrowingFilterExpression;
     private String personalSpaceAllowed;
     private String groupMembershipRefreshFixEnabled;
+    private String numRowsPerPage;
 
 
     public String getUserManagerLocation() {
@@ -257,5 +258,13 @@ public class BaseCustomPermissionConfigAction extends CsumConfluenceActionSuppor
 
     public void setGroupMembershipRefreshFixEnabled(String groupMembershipRefreshFixEnabled) {
         this.groupMembershipRefreshFixEnabled = groupMembershipRefreshFixEnabled;
+    }
+    
+    public String getNumRowsPerPage() {
+        return numRowsPerPage;
+    }
+
+    public void setNumRowsPerPage(String numRowsPerPage) {
+        this.numRowsPerPage = numRowsPerPage;
     }
 }

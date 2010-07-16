@@ -44,7 +44,7 @@ public interface LegacyConfigConstants {
     public static final String DELEGATE_USER_MGMT_COMPANY_LDAP_BASE_DN_KEY = "ext.delegateusermgmt.company.ldap.base.dn.value";
     public static final String DELEGATE_USER_MGMT_MAXUSERIDS_LIMIT = "ext.delegateusermgmt.maxuserids.limit.value";
     public static final String DELEGATE_USER_MGMT_PLUGIN_STATUS = "ext.delegateusermgmt.plugin.status";
-    public static final String DELEGATE_USER_MGMT_User_MATCHING_PATTERN = "ext.delegateusermgmt.User.matching.pattern";
+    public static final String DELEGATE_USER_MGMT_USER_MATCHING_PATTERN = "ext.delegateusermgmt.user.matching.pattern";
     public static final String DELEGATE_USER_MGMT_DOWNTIME_MESSAGE = "ext.delegateusermgmt.downtime.message.value";
 
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";

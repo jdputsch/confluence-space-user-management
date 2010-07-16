@@ -62,6 +62,7 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_LDAP_NARROWING_FILTER_EXPRESSION = "ext.delegateusermgmt.ldap.narrowing.filter.expression";
     public static final String DELEGATE_USER_MGMT_PERSONAL_SPACE_ALLOWED = "ext.delegateusermgmt.personal.space.allowed";
     public static final String DELEGATE_USER_MGMT_GROUP_MEMBERSHIP_REFRESH_FIX_ENABLED = "ext.delegateusermgmt.group.management.refresh.fix.enabled";
+    public static final String DELEGATE_USER_MGMT_NUM_ROWS_PER_PAGE = "ext.delegateusermgmt.num.rows.per.page";
 
     // static values
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";
@@ -81,4 +82,8 @@ public interface CustomPermissionConfigConstants {
     public static final String PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_URL = "ext.delegateusermgmt.jira.soap.url.value";
     public static final String PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_USERNAME = "ext.delegateusermgmt.jira.soap.username.value";
     public static final String PROPERTIES_FILE_PROPERTY_NAME_JIRA_SOAP_PASSWORD = "ext.delegateusermgmt.jira.soap.password.value";
+    
+    // remember that you must change these values in each i18n properties file message (AtlassianPlugin.properties and other files in same path)
+    public static final int MIN_ROWS_PER_PAGE = 5;
+    public static final int MAX_ROWS_PER_PAGE = 10000;
 }
