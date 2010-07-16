@@ -85,6 +85,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setLdapNarrowingFilterExpression(getLdapNarrowingFilterExpression());
         config.setPersonalSpaceAllowed(getPersonalSpaceAllowed());
         config.setGroupMembershipRefreshFixEnabled(getGroupMembershipRefreshFixEnabled());
+        config.setNumRowsPerPage(getNumRowsPerPage());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -118,6 +119,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setLdapNarrowingFilterExpression(config.getLdapNarrowingFilterExpression());
         setPersonalSpaceAllowed(config.getPersonalSpaceAllowed());
         setGroupMembershipRefreshFixEnabled(config.getGroupMembershipRefreshFixEnabled());
+        setNumRowsPerPage(config.getNumRowsPerPage());
 
         // config has changed. clear ALL cache including indexes!!!
         AbstractPagerPaginationSupportCachingSpaceAction.clearCacheIncludingIndexes();
