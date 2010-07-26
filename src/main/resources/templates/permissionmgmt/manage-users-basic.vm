@@ -36,21 +36,21 @@
             <div class="sectionHeader">				
 #*
 				<div class="mode">
-					<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&refresh=1">
+					<a href="docustompermissionsmanage.action?key=$key&selectedGroup=$action.selectedGroup&refresh=1">
 						$action.getText("csum.refresh")</a>
 			    </div>
 *#
 				<h2>$action.getText("csum.manageusersbasic.section.title", ["$generalUtil.htmlEncode(${action.selectedGroup})"])</h2>
 				#if(${action.isGroupActionsPermitted})
-				<a id="trashGroup" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&adminAction=removeGroups&groups=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround"><img src="${req.contextPath}/images/icons/trash_16.gif" /> $action.getText("csum.manageusersbasic.deletegroup", ["${action.selectedGroup}"])</a>
+				<a id="trashGroup" href="docustompermissionsmanage.action?key=$key&adminAction=removeGroups&groups=$action.selectedGroup$refreshbugworkaround"><img src="${req.contextPath}/images/icons/trash_16.gif" /> $action.getText("csum.manageusersbasic.deletegroup", ["${action.selectedGroup}"])</a>
 				#end
 			</div>
 
             #if($action.isUserSearchEnabled)
-            <a id="showAdvS" href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&userSearch=1">&raquo; $action.getText("csum.manageusersbasic.usersearch")</a>
+            <a id="showAdvS" href="docustompermissionsmanage.action?key=$key&selectedGroup=$action.selectedGroup&userSearch=1">&raquo; $action.getText("csum.manageusersbasic.usersearch")</a>
             #end
 
-            <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)$refreshbugworkaround" id="addUsersForm" name="ManageUsersForm">
+            <form method="POST" action="docustompermissionsmanage.action?key=$key&selectedGroup=$action.selectedGroup$refreshbugworkaround" id="addUsersForm" name="ManageUsersForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addUsersToGroups"/>
                     <input type="hidden" name="groups" value="$action.selectedGroup"/>
@@ -93,7 +93,7 @@
                         <td>#if($user.fullName)<img class="icon" src="${req.contextPath}/images/icons/user_16.gif"/>$generalUtil.htmlEncode($user.fullName)#else&nbsp;#end</td>
                         <td>#if($user.name)$generalUtil.htmlEncode($user.name)#else&nbsp;#end</td>
                         <td>#if($user.email)<a href="mailto:$generalUtil.maskEmail($user.email)" alt='$action.getText("csum.manageusersbasic.sendemailtouser", ["$generalUtil.maskEmail($user.email)"])'>$generalUtil.maskEmail($user.email)</a>#else&nbsp;#end</td>
-                        <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$user.name$refreshbugworkaround"><img alt='$action.getText("csum.manageusersbasic.removeuserfromgroup", ["$user.name", "${action.selectedGroup}"])' src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
+                        <td class="delete"><a href="docustompermissionsmanage.action?key=$key&selectedGroup=$action.selectedGroup&adminAction=removeUsersFromGroups&groups=$!action.selectedGroup&users=$user.name$refreshbugworkaround"><img alt='$action.getText("csum.manageusersbasic.removeuserfromgroup", ["$user.name", "${action.selectedGroup}"])' src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                 #end
                     </tbody>

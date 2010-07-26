@@ -34,7 +34,7 @@
 
 			<div id="bulkEditSectionHeader" class="sectionHeader">
 				<h2>$action.getText("csum.bulkedit.section.title")</h2>
-				<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)">&laquo; $action.getText("csum.bulkedit.normalview")</a>
+				<a href="docustompermissionsmanage.action?key=$key">&laquo; $action.getText("csum.bulkedit.normalview")</a>
 			</div>
 
             #set ($allGroups = $action.allGroups)
@@ -63,7 +63,7 @@
 	                    <ul>
 	                    #foreach ($group in $allGroups)
 	                        <li>
-	                            <input type="checkbox" id="groups" name="groups" value="$!group.name"> $generalUtil.htmlEncode($!group.name)</input> (<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($group.name)">Edit $generalUtil.htmlEncode($!group.name)</a>)
+	                            <input type="checkbox" id="groups" name="groups" value="$!group.name"> $generalUtil.htmlEncode($!group.name)</input> (<a href="docustompermissionsmanage.action?key=$key&selectedGroup=$group.name">Edit $generalUtil.htmlEncode($!group.name)</a>)
 	                        </li>
 	                    #end
 	                    </ul>

@@ -33,7 +33,7 @@
             #set ($groups = ${action.groups})
             <div class="sectionHeader">
 				#*
-                <div class="mode"><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("csum.refresh")</a></div>
+                <div class="mode"><a href="docustompermissionsmanage.action?key=$key&refresh=1">$action.getText("csum.refresh")</a></div>
                 *#
 				<h2>$generalUtil.htmlEncode(${action.space.name}) ($generalUtil.htmlEncode($action.space.key)) $action.getText("csum.grouplist.groups"):</h2>
             </div>
@@ -43,7 +43,7 @@
                 ## List groups using Pager
                 #foreach ($group in $groups.page)
                 <li>
-                    <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($group.name)" #if($group.name == $action.selectedGroup) class="selected" #end>$generalUtil.htmlEncode($!group.name)</a>
+                    <a href="docustompermissionsmanage.action?key=$key&selectedGroup=$group.name" #if($group.name == $action.selectedGroup) class="selected" #end>$generalUtil.htmlEncode($!group.name)</a>
                 </li>
                 #end
             </ul>
@@ -56,7 +56,7 @@
             #end
 
             #if(${action.isGroupActionsPermitted})
-            <form method="POST" action="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)$refreshbugworkaround" id="addGroupForm" name="AddGroupForm">
+            <form method="POST" action="docustompermissionsmanage.action?key=$key$refreshbugworkaround" id="addGroupForm" name="AddGroupForm">
                 <fieldset>
                     <input type="hidden" name="adminAction" value="addGroups"/>
                     <label for="groups">$action.getText("csum.grouplist.groups.label")</label>
@@ -84,7 +84,7 @@
 
 ##START TEST ONLY!
 ##TODO: Remove this test section and supporting method in action before release
-##<a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&createTestUsersAndGroups=1">create test users and groups</a>
+##<a href="docustompermissionsmanage.action?key=$key&createTestUsersAndGroups=1">create test users and groups</a>
 ##END TEST ONLY!
 
             <!-- end group-list -->

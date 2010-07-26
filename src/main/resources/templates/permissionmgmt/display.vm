@@ -49,7 +49,7 @@
     ###requireResource("raju.kadam.confluence.permissionmgmt:csumresources")
     ###end
 
-    ##set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&" )
+    ##set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=$key&" )
 
     #set( $refreshbugworkaround = "&redirect=" )
 
@@ -214,10 +214,10 @@
         <div id="footer">
 				<ul>
 				#if($groups && $groups.total>0)
-			        <li><a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&bulkEdit=1">$action.getText("csum.display.bulkedit")</a> </li>
+			        <li><a href="docustompermissionsmanage.action?key=$key&bulkEdit=1">$action.getText("csum.display.bulkedit")</a> </li>
 			        #*
 					#if($action.isUserSearchEnabled)
-					<li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&userSearch=1">$action.getText("csum.searchUsers.link.title")</a> </li>
+					<li>| <a href="docustompermissionsmanage.action?key=$key&userSearch=1">$action.getText("csum.searchUsers.link.title")</a> </li>
 					#end
 					*#
 			    #end
@@ -227,18 +227,18 @@
 					#if($groups && $groups.total>0)
 					 |
 					#end
-					<a href="${req.contextPath}/spaces/spacepermissions.action?key=$generalUtil.doubleUrlEncode($key)">
+					<a href="${req.contextPath}/spaces/spacepermissions.action?key=$key">
 						#*<img src="${req.contextPath}/images/icons/lock_16.gif"/>*#
 						$action.getText("csum.display.spacepermissions")</a> </li>
-					#*<li>| <a href="${req.contextPath}/pages/listpermissionpages.action?key=$generalUtil.doubleUrlEncode($key)">
+					#*<li>| <a href="${req.contextPath}/pages/listpermissionpages.action?key=$key">
 						<img src="${req.contextPath}/images/icons/locked_pages_16.gif"/>
 						$action.getText("csum.page.permissions.link.title")</a> </li>*#
 			    #end
 
                 #if($action.selectedGroup)
-                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&selectedGroup=$generalUtil.doubleUrlEncode($selectedGroup)&refresh=1">$action.getText("csum.display.refresh")</a> </li>
+                <li>| <a href="docustompermissionsmanage.action?key=$key&selectedGroup=$selectedGroup&refresh=1">$action.getText("csum.display.refresh")</a> </li>
                 #else
-                <li>| <a href="docustompermissionsmanage.action?key=$generalUtil.doubleUrlEncode($key)&refresh=1">$action.getText("csum.display.refresh")</a> </li>
+                <li>| <a href="docustompermissionsmanage.action?key=$key&refresh=1">$action.getText("csum.display.refresh")</a> </li>
                 #end
 			        
 				</ul>
