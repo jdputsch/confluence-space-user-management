@@ -34,12 +34,12 @@
 <div class="paging">
                     #if($action.hasPrev($searchResultUsers))
                     <span class="prev">
-                        <a href="docustompermissionsmanage.action?key=$key&selectedGroup=$action.selectedGroup&userSearch=1&pagerAction=prevPageSearchResultUsers">&laquo; $action.getText("csum.searchresultuserpageractions.previous")</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&selectedGroup=$generalUtil.urlEncode($action.selectedGroup)&userSearch=1&pagerAction=prevPageSearchResultUsers">&laquo; $action.getText("csum.searchresultuserpageractions.previous")</a>
                     </span>
                     #end
                     #if($action.hasNext($searchResultUsers))
                     <span class="next">
-                        <a href="docustompermissionsmanage.action?key=$key&selectedGroup=$action.selectedGroup&userSearch=1&pagerAction=nextPageSearchResultUsers">$action.getText("csum.searchresultuserpageractions.next") &raquo;</a>
+                        <a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&selectedGroup=$generalUtil.urlEncode($action.selectedGroup)&userSearch=1&pagerAction=nextPageSearchResultUsers">$action.getText("csum.searchresultuserpageractions.next") &raquo;</a>
                     </span>
                     #end
                     #if(${action.groups})

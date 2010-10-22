@@ -34,13 +34,13 @@
                 #if ($action.selectedGroup)
 	                    #if($action.hasPrev($groups))
 	                    <span class="prev">
-	                        <a href="docustompermissionsmanage.action?key=$key&selectedGroup=$action.selectedGroup&pagerAction=prevPageGroups">&laquo; $action.getText("csum.grouppageractions.previous")</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&selectedGroup=$generalUtil.urlEncode($action.selectedGroup)&pagerAction=prevPageGroups">&laquo; $action.getText("csum.grouppageractions.previous")</a>
 	                    </span>
 	                    #end
 
 	                    #if($action.hasNext($groups))
 	                    <span class="next">
-	                        <a href="docustompermissionsmanage.action?key=$key&selectedGroup=$action.selectedGroup&pagerAction=nextPageGroups">$action.getText("csum.grouppageractions.next") &raquo;</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&selectedGroup=$generalUtil.urlEncode($action.selectedGroup)&pagerAction=nextPageGroups">$action.getText("csum.grouppageractions.next") &raquo;</a>
 	                    </span>
 	                    #end
 
@@ -68,13 +68,13 @@
 
 	                    #if($action.hasPrev($groups))
 	                    <span class="prev">
-	                        <a href="docustompermissionsmanage.action?key=$key&pagerAction=prevPageGroups">&laquo; $action.getText("csum.grouppageractions.previous")</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&pagerAction=prevPageGroups">&laquo; $action.getText("csum.grouppageractions.previous")</a>
 	                    </span>
 	                    #end
 
 	                    #if($action.hasNext($groups))
 	                    <span class="next">
-	                        <a href="docustompermissionsmanage.action?key=$key&pagerAction=nextPageGroups">$action.getText("csum.grouppageractions.next") &raquo;</a>
+	                        <a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&pagerAction=nextPageGroups">$action.getText("csum.grouppageractions.next") &raquo;</a>
 	                    </span>
 	                    #end
 
