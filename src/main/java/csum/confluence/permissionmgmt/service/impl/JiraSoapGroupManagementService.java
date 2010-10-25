@@ -62,6 +62,11 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
 
     private JiraSoapUserManagementService jiraSoapUserManagementService;
 
+    protected boolean isGroupReadOnly(Group group) {
+        // cannot use Confluence API to check read-only
+        return false;
+    }
+
     // note: findGroups()... are in ConfluenceGroupManagementService, as Confluence has read-only access to JIRA
 
     public void addGroups(List groupNames, ServiceContext context) throws AddException, ServiceAuthenticationException {

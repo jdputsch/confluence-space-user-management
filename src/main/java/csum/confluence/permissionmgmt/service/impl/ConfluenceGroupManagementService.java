@@ -62,6 +62,10 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
         setSpacePermissionManager((SpacePermissionManager) ContainerManager.getComponent("spacePermissionManager"));
     }
 
+    protected boolean isGroupReadOnly(Group group) {
+        return userAccessor.isReadOnly(group);
+    }
+
     public void addGroups(List groupNames, ServiceContext context) throws AddException {
         log.debug("addGroups() called. groupName='" + StringUtil.convertCollectionToCommaDelimitedString(groupNames) + "'");
         Space space = context.getSpace();
@@ -127,8 +131,14 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
             if (!grpName.startsWith("confluence") && isPatternMatch) {
                 Group group = userAccessor.getGroup(grpName);
                 if (group != null) {
-                    removeGroup_Confluence2_6_0Compatible(group);
-                    success.add(grpName);
+                    if (userAccessor.isReadOnly(group)) {
+                        log.debug("Not deleting group '" + grpName + "' because it was read-only");
+                        badGroupNames.add(grpName);
+                    }
+                    else {
+                        removeGroup_Confluence2_6_0Compatible(group);
+                        success.add(grpName);
+                    }
                 } else {
                     didNotExist.add(grpName);
                 }

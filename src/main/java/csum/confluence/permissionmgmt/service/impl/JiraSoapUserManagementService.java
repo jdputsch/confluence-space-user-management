@@ -163,6 +163,13 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 if (lUser != null) {
                     //createUser(String token, String username, String password, String fullName, String email)
                     vUser = jiraSoapService.createUser(token, creationUserName, creationUserName, lUser.getFullName(), lUser.getEmail());
+
+                    if (vUser == null) {
+                        LogUtil.warnWithRemoteUserInfo(log, "jiraSoapService.createUser(...) returned null for userid '" + creationUserName + ". User addition may have been unsuccessful.");
+                    }
+                }
+                else {
+                    LogUtil.warnWithRemoteUserInfo(log, "No LDAP user found for userid '" + creationUserName + "'. Unable to add user.");
                 }
             }
         } catch (Throwable e) {

@@ -85,7 +85,7 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
     public Pager findGroups(ServiceContext context) throws FindException {
         log.debug("findGroups() called");
         Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
-        List groups = getGroupsThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
+        List groups = getReadWriteGroupsThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
         GroupUtil.sortGroupsByGroupnameAscending(groups);
         Pager pager = new DefaultPager(groups);
         return pager;
@@ -94,23 +94,31 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
     public boolean isAllowedToManageGroup(ServiceContext context, String groupName) throws FindException {
         log.debug("isAllowedToManageGroup() called. groupName=" + groupName);
         Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
-        List groupNames = getGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
+        List groupNames = getReadWriteGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
         return groupNames.contains(groupName);
     }
 
-    private List getGroupsThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
+    private List getReadWriteGroupsThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
         log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
-        List groupNames = getGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
+        List groupNames = getReadWriteGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
         List groups = new ArrayList();
         for (int i = 0; i < groupNames.size(); i++) {
             String groupName = (String) groupNames.get(i);
             Group group = userAccessor.getGroup(groupName);
-            groups.add(group);
+            if (isGroupReadOnly(group)) {
+                log.debug("group '" + groupName + "' is read-only according to Confluence, therefore it cannot be managed by CSUM.");
+            }
+            else {
+                groups.add(group);
+            }
         }
         return groups;
     }
 
-    private List getGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
+    // When managing via Jira API, all groups are readonly in Confluence API, but not via SOAP, necessarily.
+    protected abstract boolean isGroupReadOnly(Group group);     
+
+    private List getReadWriteGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
         log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
         List groupNames = new ArrayList();
 

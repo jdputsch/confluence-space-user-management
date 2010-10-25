@@ -135,6 +135,13 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
 
                 if (lUser != null) {
                     vUser = userAccessor.addUser(creationUserName, creationUserName, lUser.getEmail(), lUser.getFullName());
+
+                    if (vUser == null) {
+                        LogUtil.warnWithRemoteUserInfo(log, "userAccessor.addUser(...) returned null for userid '" + creationUserName + ". User addition may have been unsuccessful.");
+                    }
+                }
+                else {
+                    LogUtil.warnWithRemoteUserInfo(log, "No LDAP user found for userid '" + creationUserName + "'. Unable to add user.");
                 }
             }
         } catch (Exception e) {
@@ -171,12 +178,18 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                 }
 
                 if (group != null) {
-                    if (!isMemberOf(user.getName(), groupName)) {
-                        log.debug("Adding " + user.getName() + " to group " + groupName);
-                        userAccessor.addMembership(group, user);
+                    if (userAccessor.isReadOnly(group)) {
+                        log.debug("Not adding '" + user.getName() + "' to group '" + groupName + "' because group was read-only");
+                        userIdToGroupNameMapForMembershipAdditionProblems.put("" + user.getName(), "" + groupName);
                     }
                     else {
-                        log.debug("User " + user.getName() + " was already a member of group " + groupName);
+                        if (!isMemberOf(user.getName(), groupName)) {
+                            log.debug("Adding " + user.getName() + " to group " + groupName);
+                            userAccessor.addMembership(group, user);
+                        }
+                        else {
+                            log.debug("User " + user.getName() + " was already a member of group " + groupName);
+                        }
                     }
                 }
             }
@@ -222,7 +235,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
         }
     }
 
-    private void removeMembershipPassivelyAndTrackingErrors(String groupName, User user, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipAdditionProblems) {
+    private void removeMembershipPassivelyAndTrackingErrors(String groupName, User user, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipRemovalProblems) {
         if (groupsNotFoundMap.get(groupName) == null && user != null) {
             try {
                 Group group = userAccessor.getGroup(groupName);
@@ -250,19 +263,25 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
 
                 if (group != null) {
                     log.debug("Removing " + user.getName() + " from " + groupName);
-                    if (isMemberOf(user.getName(), groupName)) {
-                        log.debug("Removing " + user.getName() + " from group " + groupName);
-                        userAccessor.removeMembership(group, user);
+                    if (userAccessor.isReadOnly(group)) {
+                        log.debug("Not removing '" + user.getName() + "' from group '" + groupName + "' because group was read-only");
+                        userIdToGroupNameMapForMembershipRemovalProblems.put("" + user.getName(), "" + groupName);
                     }
                     else {
-                        log.debug("User " + user.getName() + " was not a member of group " + groupName + " so did not have to remove.");
+                        if (isMemberOf(user.getName(), groupName)) {
+                            log.debug("Removing " + user.getName() + " from group " + groupName);
+                            userAccessor.removeMembership(group, user);
+                        }
+                        else {
+                            log.debug("User " + user.getName() + " was not a member of group " + groupName + " so did not have to remove.");
+                        }
                     }
                 }
             }
             catch (Throwable t) {
                 LogUtil.errorWithRemoteUserInfo(log, "Failed removing " + user.getName() + " from " + groupName);
                 // using "" + to guard against nulls
-                userIdToGroupNameMapForMembershipAdditionProblems.put("" + user.getName(), "" + groupName);
+                userIdToGroupNameMapForMembershipRemovalProblems.put("" + user.getName(), "" + groupName);
             }
         }
     }
