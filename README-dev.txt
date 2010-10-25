@@ -59,7 +59,7 @@ Releasing Plugin
 1) Before releasing check with team to make sure is ok and that they know you are releasing.
 
 2) If you don't already have the whole plugin checked out (including all tags) you might want it to make this easier:
- svn co https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/
+ svn co https://studio.plugins.atlassian.com/svn/SUSR/
 
 3) svn up in trunk
  cd trunk
@@ -75,7 +75,7 @@ Releasing Plugin
  mvn -Dmaven.test.skip=true clean install
 
 7) Immediately after successful build, tag it (replace instances of username and version with appropriate values):
- svn copy --username (username) https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk https://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/tags/(version) -m "Tagging (version)"
+ svn copy --username (username) https://studio.plugins.atlassian.com/svn/SUSR/trunk https://studio.plugins.atlassian.com/svn/SUSR/tags/(version) -m "Tagging (version)"
 
 8) Get tag:
  cd ../tags
