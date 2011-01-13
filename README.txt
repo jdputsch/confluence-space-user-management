@@ -20,6 +20,18 @@ svn co http://svn.atlassian.com/svn/public/contrib/maven-plugins/com.atlassian.m
 cd 2.1.1
 mvn clean install
 
+2.1) Install the activation jar:
+
+Go to: http://www.oracle.com/technetwork/java/jaf102-139581.html
+
+Download the zip file.
+
+Unzip it.
+
+Install it with Maven 2 (change ~/Downloads/jaf-1.0.2/activation.jar into the path to the jar your downloaded. For some reason, it cannot be a relative path.):
+
+mvn install:install-file -DgroupId=javax.activation -DartifactId=activation -Dversion=1.0.2 -Dpackaging=jar -Dfile=/Users/myuser/Downloads/jaf-1.0.2/activation.jar
+
 3) Go back to the trunk dir of the plugin project, so if you started off in that dir, you could just:
 
 cd ../..
