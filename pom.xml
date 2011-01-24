@@ -1,55 +1,22 @@
-<!--
- * Copyright (c) 2007-2010, Custom Space User Management Plugin Development Team
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Custom Space User Management Plugin Development Team
- *       nor the names of its contributors may be used to endorse or promote
- *       products derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
--->
+<?xml version="1.0" encoding="UTF-8"?>
 
-        <!--
-        The following file is used to build this plugin using Maven 2. See README for details on how to build.
-        -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>csum.confluence.permissionmgmt</groupId>
     <artifactId>permission-management</artifactId>
-    <packaging>atlassian-plugin</packaging>
+    <version>2.1.0-SNAPSHOT</version>
 
     <name>Custom Space User Management Plugin</name>
-    <version>2.1.0-SNAPSHOT</version>
     <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
-    <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces
-    </description>
+    <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces</description>
+    <packaging>atlassian-plugin</packaging>
 
     <properties>
-        <!-- The plugin key. This will be injected into the atlassian-plugins.xml file when built. -->
-        <!-- NOTE: because we needed to make sure this would be backwards compatible with earlier versions, we left raju kadam in the key name. -->
-        <!-- if you ever change this, be sure to change constant(s) in the code.  -->
-        <atlassian.plugin.key>raju.kadam.confluence.permissionmgmt</atlassian.plugin.key>
+        <confluence.version>3.4.1</confluence.version>
+        <confluence.data.version>3.1</confluence.data.version>
     </properties>
 
     <issueManagement>
@@ -177,6 +144,38 @@
     </organization>
 
     <dependencies>
+        <!--
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.confluence</groupId>
+            <artifactId>confluence</artifactId>
+            <version>${confluence.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.confluence.plugin</groupId>
+            <artifactId>func-test</artifactId>
+            <version>2.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.jwebunit</groupId>
+            <artifactId>jwebunit-htmlunit-plugin</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.12</version>
+            <scope>test</scope>
+        </dependency>
+        -->
         <!-- scope provided means it is only used for compilation and not included in jar -->
         <dependency>
             <groupId>com.atlassian.confluence</groupId>
@@ -279,20 +278,22 @@
         </testResources>
 
         <plugins>
-
-            <!--  ensure we build what we're targetting -->
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>maven-confluence-plugin</artifactId>
+                <version>3.2.3</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <productVersion>${confluence.version}</productVersion>
+                    <productDataVersion>${confluence.data.version}</productDataVersion>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.4</source>
-                    <target>1.4</target>
+                    <source>1.5</source>
+                    <target>1.5</target>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>atlassian-pdk</artifactId>
-                <extensions>true</extensions>
             </plugin>
 
             <!-- target = axistools:wsdl2java -->
@@ -402,6 +403,7 @@
     </reporting>
 
     <repositories>
+        <!--
       <repository>
           <snapshots>
               <enabled>true</enabled>
@@ -410,7 +412,7 @@
           <name>Atlassian Maven 2 Repository</name>
           <url>https://m2proxy.atlassian.com/repository/public</url>
       </repository>
-
+-->
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -433,6 +435,7 @@
     </repositories>
 
     <pluginRepositories>
+   <!--
         <pluginRepository>
             <id>atlassian-m2-contrib</id>
             <name>Atlassian Maven 2 Contributor Repository</name>
@@ -441,7 +444,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </pluginRepository>
-
+-->
         <pluginRepository>
             <id>codehaus.org</id>
             <name>CodeHaus Plugin Snapshots</name>

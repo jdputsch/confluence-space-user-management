@@ -66,13 +66,13 @@ Releasing Plugin
  svn up
 
 4) Build trunk:
- mvn -Dmaven.test.skip=true clean install
+ atlas-mvn -Dmaven.test.skip=true clean install
 
 5) Deploy plugin and make sure it works
 
 6) svn up in trunk and build again (it could have changed while you were testing)
  svn up
- mvn -Dmaven.test.skip=true clean install
+ atlas-mvn -Dmaven.test.skip=true clean install
 
 7) Immediately after successful build, tag it (replace instances of username and version with appropriate values):
  svn copy --username (username) https://studio.plugins.atlassian.com/svn/SUSR/trunk https://studio.plugins.atlassian.com/svn/SUSR/tags/(version) -m "Tagging (version)"
@@ -87,7 +87,7 @@ Releasing Plugin
  svn commit
 
 11) Build the tag:
- mvn -Dmaven.test.skip=true clean install
+ atlas-mvn -Dmaven.test.skip=true clean install
 
 12) Copy tag to releases, add and commit
  cp target/...jar ../releases/
@@ -111,7 +111,7 @@ Reports
 Thanks to Andy we have a site.xml and pom.xml changes to support it
 
 To produce site use:
- mvn -Dmaven.test.skip=true clean site
+ atlas-mvn -Dmaven.test.skip=true clean site
 
 If you are Andy or you have graphviz installed http://www.graphviz.org and have uncommented the pom.xml and added a local repository to the pom that contains the CSUM plugin, then you can do this:
- mvn depgraph:depgraph
+ atlas-mvn depgraph:depgraph
