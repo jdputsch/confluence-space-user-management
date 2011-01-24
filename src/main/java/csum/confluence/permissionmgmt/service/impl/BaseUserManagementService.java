@@ -68,8 +68,9 @@ import java.util.Map;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public abstract class BaseUserManagementService implements UserManagementService {
+public abstract class BaseUserManagementService extends UserAndGroupManagementService implements UserManagementService {
 
+    // Note: FOR ADVANCED AND PARTIAL NAME USER QUERIES ONLY! THIS IS ACCESS-CONTROLLED AND MAY NOT BE AVAILABLE TO NON-ADMINS IN LATER VERSIONS OF CONFLUENCE
     protected UserAccessor userAccessor;
     private CustomPermissionConfiguration customPermissionConfiguration;
     protected Log log = LogFactory.getLog(this.getClass());
@@ -178,30 +179,6 @@ public abstract class BaseUserManagementService implements UserManagementService
         return results;
     }
 
-    public Pager findUsersForGroup(String groupName, ServiceContext context) throws FindException {
-        log.debug("findUsersForGroup(groupName) called. groupName='" + groupName + "'");
-        Group group = userAccessor.getGroup(groupName);
-        if (group == null) {
-            throw new FindException("Group '" + groupName + "' not found");
-        }
-        return findUsersForGroup(group);
-    }
-
-    private Pager findUsersForGroup(Group group) throws FindException {
-        log.debug("findUsersForGroup(Group) called.");
-        if (group == null) {
-            throw new FindException("Group was null");
-        }
-        Pager usernamePager = userAccessor.getMemberNames(group);
-        if (usernamePager == null) {
-            throw new FindException("Did not find users for group '" + group.getName() + "'");
-        }
-        LazyLoadingUserByUsernamePager userPager = new LazyLoadingUserByUsernamePager();
-        userPager.setUsernamePager(usernamePager);
-        userPager.setUserAccessor(this.userAccessor);
-        return userPager;
-    }
-
     public Pager findUsersWhoseNameStartsWith(String partialName, ServiceContext context) {
         log.debug("findUsersWhoseNameStartsWith() called. partialName='" + partialName + "'");
         Pager pager = null;
@@ -216,6 +193,30 @@ public abstract class BaseUserManagementService implements UserManagementService
         }
 
         return pager;
+    }
+
+    public Pager findUsersForGroup(String groupName, ServiceContext context) throws FindException {
+        log.debug("findUsersForGroup(groupName) called. groupName='" + groupName + "'");
+        Group group = getGroup(groupName);
+        if (group == null) {
+            throw new FindException("Group '" + groupName + "' not found");
+        }
+        return findUsersForGroup(group);
+    }
+
+    private Pager findUsersForGroup(Group group) throws FindException {
+        log.debug("findUsersForGroup(Group) called.");
+        if (group == null) {
+            throw new FindException("Group was null");
+        }
+        Pager usernamePager = getMemberNames(group);
+        if (usernamePager == null) {
+            throw new FindException("Did not find users for group '" + group.getName() + "'");
+        }
+        LazyLoadingUserByUsernamePager userPager = new LazyLoadingUserByUsernamePager();
+        userPager.setUsernamePager(usernamePager);
+        userPager.setUserAndGroupManagementService(this);
+        return userPager;
     }
 
     protected String getAddUsersByUsernameToGroupsErrorMessage(List usersNotFound, List groupsNotFound, Map userIdToGroupNameMapForMembershipAdditionProblems, ServiceContext context) {
@@ -280,7 +281,7 @@ public abstract class BaseUserManagementService implements UserManagementService
     public boolean isMemberOf(String userName, String groupName) {
         log.debug("isMemberOf() called. userName=" + userName + " groupName=" + groupName);
         boolean result = false;
-        Group group = userAccessor.getGroup(groupName);
+        Group group = getGroup(groupName);
         if (group != null) {
             Pager pager = userAccessor.getMemberNames(group);
             List memberNames = PagerUtils.toList(pager);
@@ -289,14 +290,6 @@ public abstract class BaseUserManagementService implements UserManagementService
             }
         }
         return result;
-    }
-
-    public UserAccessor getUserAccessor() {
-        return userAccessor;
-    }
-
-    public void setUserAccessor(UserAccessor userAccessor) {
-        this.userAccessor = userAccessor;
     }
 
     public CustomPermissionConfiguration getCustomPermissionConfiguration() {

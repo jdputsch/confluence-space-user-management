@@ -29,10 +29,10 @@
 
 package csum.confluence.permissionmgmt.util.paging;
 
-import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.user.User;
 import com.atlassian.user.search.page.Pager;
 import com.atlassian.user.search.page.PagerException;
+import csum.confluence.permissionmgmt.service.impl.UserAndGroupManagementService;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,7 +49,7 @@ public class LazyLoadingUserByUsernamePager implements Pager {
     public final Log log = LogFactory.getLog(this.getClass());
 
     private Pager usernamePager;
-    private UserAccessor userAccessor;
+    private UserAndGroupManagementService userAndGroupManagementService;
 
     public boolean isEmpty() {
         Pager usernamePager = getUsernamePager();
@@ -65,7 +65,7 @@ public class LazyLoadingUserByUsernamePager implements Pager {
         if (usernamePager != null) {
             LazyLoadingUserByUsernamePagerIterator iterator = new LazyLoadingUserByUsernamePagerIterator();
 
-            iterator.setUserAccessor(getUserAccessor());
+            iterator.setUserAndGroupManagementService(getUserAndGroupManagementService());
             iterator.setUsernamePagerIterator(getUsernamePager().iterator());
 
             return iterator;
@@ -83,7 +83,7 @@ public class LazyLoadingUserByUsernamePager implements Pager {
             if (usernames != null) {
                 for (int i = 0; i < usernames.size(); i++) {
                     String username = (String) usernames.get(i);
-                    User user = getUserAccessor().getUser(username);
+                    User user = getUserAndGroupManagementService().getUser(username);
                     results.add(user);
                 }
             } else {
@@ -144,11 +144,11 @@ public class LazyLoadingUserByUsernamePager implements Pager {
         this.usernamePager = usernamePager;
     }
 
-    public UserAccessor getUserAccessor() {
-        return userAccessor;
+    public UserAndGroupManagementService getUserAndGroupManagementService() {
+        return userAndGroupManagementService;
     }
 
-    public void setUserAccessor(UserAccessor userAccessor) {
-        this.userAccessor = userAccessor;
+    public void setUserAndGroupManagementService(UserAndGroupManagementService userAndGroupManagementService) {
+        this.userAndGroupManagementService = userAndGroupManagementService;
     }
 }

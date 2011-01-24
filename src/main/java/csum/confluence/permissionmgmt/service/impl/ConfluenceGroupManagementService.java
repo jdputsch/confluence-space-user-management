@@ -63,7 +63,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
     }
 
     protected boolean isGroupReadOnly(Group group) {
-        return userAccessor.isReadOnly(group);
+        return isReadOnly(group);
     }
 
     public void addGroups(List groupNames, ServiceContext context) throws AddException {
@@ -75,9 +75,9 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
 
         for (int i = 0; i < groupNames.size(); i++) {
             String groupName = (String) groupNames.get(i);
-            if (userAccessor.getGroup(groupName) == null) {
+            if (getGroup(groupName) == null) {
 
-                Group vGroup = userAccessor.addGroup(groupName);
+                Group vGroup = addGroup(groupName);
                 log.debug("created " + groupName);
                 success.add(groupName);
 
@@ -129,9 +129,9 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
 
             // Space admin should not be able to delete any groups whose names begin with "confluence"
             if (!grpName.startsWith("confluence") && isPatternMatch) {
-                Group group = userAccessor.getGroup(grpName);
+                Group group = getGroup(grpName);
                 if (group != null) {
-                    if (userAccessor.isReadOnly(group)) {
+                    if (isReadOnly(group)) {
                         log.debug("Not deleting group '" + grpName + "' because it was read-only");
                         badGroupNames.add(grpName);
                     }
@@ -220,7 +220,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                 boolean success = false;
                 try {
                     log.debug("Calling userAccessor.removeGroup(group).");
-                    userAccessor.removeGroup(group);
+                    removeGroup(group);
                     success = true;
                     log.debug("Assuming that userAccessor.removeGroup(group) was successful.");
                 }

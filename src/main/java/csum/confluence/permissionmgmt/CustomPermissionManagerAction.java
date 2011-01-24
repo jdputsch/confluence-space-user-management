@@ -782,7 +782,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         {
             SpaceDao spaceDao = (SpaceDao)ContainerManager.getComponent("spaceDao");
             Space space = spaceDao.getSpace(getKey());
-            UserAccessor userAccessor = (UserAccessor) ContainerManager.getComponent("userAccessor");
+            UserManager userAccessor = (UserManager) ContainerManager.getComponent("userAccessor");
             String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), getKey());
             log.debug("group name prefix will be " + prefix);
 
@@ -794,7 +794,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             int useridcount = 1;
             for (int i=1; i<=numGroups; i++) {
                 String groupname = prefix + "tstgroup" + i + suffix;
-                if (userAccessor.getGroup(groupname)==null) {
+                if (getGroup(groupname)==null) {
                     log.debug("Creating test group '" + groupname + "'");
                     userAccessor.createGroup(groupname);
                 }
@@ -1243,7 +1243,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     //Get total user count for given user group
     //public int findUserCountForUserGroup(String grpName)
     //{
-    //	return PagerUtils.count(userAccessor.getMemberNames(userAccessor.getGroup(grpName)));
+    //	return PagerUtils.count(userAccessor.getMemberNames(getGroup(grpName)));
     //}
 
     public CsumConfigValidationResponse getConfigValidationResponse() {

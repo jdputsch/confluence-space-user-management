@@ -70,7 +70,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
         for (Iterator itr = userNames.iterator(); itr.hasNext();) {
             //First check if given user is present or not
             String userid = (String) itr.next();
-            User user = userAccessor.getUser(userid);
+            User user = getUser(userid);
             if (user == null) {
                 //create an user
                 //userid doesn't exists, if LDAP present then we will create User if it exists in LDAP.
@@ -134,7 +134,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                 lUser = getLDAPUser(creationUserName);
 
                 if (lUser != null) {
-                    vUser = userAccessor.addUser(creationUserName, creationUserName, lUser.getEmail(), lUser.getFullName());
+                    vUser = addUser(creationUserName, lUser.getEmail(), lUser.getFullName());
 
                     if (vUser == null) {
                         LogUtil.warnWithRemoteUserInfo(log, "userAccessor.addUser(...) returned null for userid '" + creationUserName + ". User addition may have been unsuccessful.");
@@ -154,7 +154,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
     private void addMembershipPassivelyAndTrackingErrors(String groupName, User user, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipAdditionProblems) {
         if (groupsNotFoundMap.get(groupName) == null && user != null) {
             try {
-                Group group = userAccessor.getGroup(groupName);
+                Group group = getGroup(groupName);
                 if (group == null) {
 
                     String lowercaseGroupName = groupName.toLowerCase();
@@ -168,7 +168,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                         // scenarios just in case it gets fixed: http://jira.atlassian.com/browse/CONF-9224
 
                         log.debug("No group exists for groupname " + groupName + " so will try lowercase groupName");
-                        group = userAccessor.getGroup(lowercaseGroupName);
+                        group = getGroup(lowercaseGroupName);
                         if (group == null) {
                             LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + user.getName() + " to " + groupName + ". Group didn't exist (tried regular case and lowercase groupname)");
                             // make sure to use regular case here since it is checked against in calling method
@@ -178,14 +178,14 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                 }
 
                 if (group != null) {
-                    if (userAccessor.isReadOnly(group)) {
+                    if (isReadOnly(group)) {
                         log.debug("Not adding '" + user.getName() + "' to group '" + groupName + "' because group was read-only");
                         userIdToGroupNameMapForMembershipAdditionProblems.put("" + user.getName(), "" + groupName);
                     }
                     else {
                         if (!isMemberOf(user.getName(), groupName)) {
                             log.debug("Adding " + user.getName() + " to group " + groupName);
-                            userAccessor.addMembership(group, user);
+                            addMembership(group, user);
                         }
                         else {
                             log.debug("User " + user.getName() + " was already a member of group " + groupName);
@@ -213,7 +213,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
 
         for (Iterator itr = userNames.iterator(); itr.hasNext();) {
             String userid = (String) itr.next();
-            User user = userAccessor.getUser(userid);
+            User user = getUser(userid);
             if (user != null) {
                 for (Iterator iterator = groupNames.iterator(); iterator.hasNext();) {
                     String groupName = (String) iterator.next();
@@ -238,7 +238,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
     private void removeMembershipPassivelyAndTrackingErrors(String groupName, User user, Map groupsNotFoundMap, List usersNotFound, Map userIdToGroupNameMapForMembershipRemovalProblems) {
         if (groupsNotFoundMap.get(groupName) == null && user != null) {
             try {
-                Group group = userAccessor.getGroup(groupName);
+                Group group = getGroup(groupName);
                 if (group == null) {
 
                     String lowercaseGroupName = groupName.toLowerCase();
@@ -252,7 +252,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                         // scenarios just in case it gets fixed: http://jira.atlassian.com/browse/CONF-9224
 
                         log.debug("No group exists for groupname " + groupName + " so will try lowercase groupName");
-                        group = userAccessor.getGroup(lowercaseGroupName);
+                        group = getGroup(lowercaseGroupName);
                         if (group == null) {
                             LogUtil.warnWithRemoteUserInfo(log, "Failed adding " + user.getName() + " to " + groupName + ". Group didn't exist (tried regular case and lowercase groupname)");
                             // make sure to use regular case here since it is checked against in calling method
@@ -263,14 +263,14 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
 
                 if (group != null) {
                     log.debug("Removing " + user.getName() + " from " + groupName);
-                    if (userAccessor.isReadOnly(group)) {
+                    if (isReadOnly(group)) {
                         log.debug("Not removing '" + user.getName() + "' from group '" + groupName + "' because group was read-only");
                         userIdToGroupNameMapForMembershipRemovalProblems.put("" + user.getName(), "" + groupName);
                     }
                     else {
                         if (isMemberOf(user.getName(), groupName)) {
                             log.debug("Removing " + user.getName() + " from group " + groupName);
-                            userAccessor.removeMembership(group, user);
+                            removeMembership(group, user);
                         }
                         else {
                             log.debug("User " + user.getName() + " was not a member of group " + groupName + " so did not have to remove.");

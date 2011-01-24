@@ -29,7 +29,8 @@
 
 package csum.confluence.permissionmgmt.util.paging;
 
-import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.user.User;
+import csum.confluence.permissionmgmt.service.impl.UserAndGroupManagementService;
 
 import java.util.Iterator;
 
@@ -38,7 +39,7 @@ import java.util.Iterator;
  */
 public class LazyLoadingUserByUsernamePagerIterator implements Iterator {
 
-    private UserAccessor userAccessor;
+    private UserAndGroupManagementService userAndGroupManagementService;
     private Iterator usernamePagerIterator;
 
 
@@ -55,7 +56,12 @@ public class LazyLoadingUserByUsernamePagerIterator implements Iterator {
         usernamePagerIterator = getUsernamePagerIterator();
         if (usernamePagerIterator != null) {
             String username = (String) usernamePagerIterator.next();
-            return getUserAccessor().getUser(username);
+            User user = null;
+            try {
+                user = getUserAndGroupManagementService().getUser(username);
+            } catch (Throwable t) {
+
+            }
         }
 
         return null;
@@ -68,12 +74,12 @@ public class LazyLoadingUserByUsernamePagerIterator implements Iterator {
         }
     }
 
-    public UserAccessor getUserAccessor() {
-        return userAccessor;
+    public UserAndGroupManagementService getUserAndGroupManagementService() {
+        return userAndGroupManagementService;
     }
 
-    public void setUserAccessor(UserAccessor userAccessor) {
-        this.userAccessor = userAccessor;
+    public void setUserAndGroupManagementService(UserAndGroupManagementService userAndGroupManagementService) {
+        this.userAndGroupManagementService = userAndGroupManagementService;
     }
 
     public Iterator getUsernamePagerIterator() {

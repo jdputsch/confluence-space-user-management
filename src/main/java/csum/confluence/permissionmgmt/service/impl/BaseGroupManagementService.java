@@ -35,7 +35,7 @@ import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
-import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.user.UserManager;
 import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.Group;
 import com.atlassian.user.search.page.DefaultPager;
@@ -59,7 +59,7 @@ import java.util.Map;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public abstract class BaseGroupManagementService implements GroupManagementService {
+public abstract class BaseGroupManagementService extends UserAndGroupManagementService implements GroupManagementService {
 
     protected Log log = LogFactory.getLog(this.getClass());
 
@@ -68,7 +68,7 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
     private BandanaManager bandanaManager;
     private SpaceDao spaceDao;
     private SpacePermissionManager spacePermissionManager;
-    protected UserAccessor userAccessor;
+    protected UserManager userAccessor;
     private CustomPermissionConfiguration customPermissionConfiguration;
 
     public BaseGroupManagementService() {
@@ -77,7 +77,7 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
         bandanaManager = (BandanaManager) ContainerManager.getComponent("bandanaManager");
         spaceDao = (SpaceDao) ContainerManager.getComponent("spaceDao");
         spacePermissionManager = (SpacePermissionManager) ContainerManager.getComponent("spacePermissionManager");
-        userAccessor = (UserAccessor) ContainerManager.getComponent("userAccessor");
+        userAccessor = (UserManager) ContainerManager.getComponent("userAccessor");
         //customPermissionConfiguration = (CustomPermissionConfiguration) ConfluenceUtil.loadComponentWithRetry("customPermissionConfiguration");
         log.debug("ConfluenceGroupManagementService end constructor");
     }
@@ -104,7 +104,7 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
         List groups = new ArrayList();
         for (int i = 0; i < groupNames.size(); i++) {
             String groupName = (String) groupNames.get(i);
-            Group group = userAccessor.getGroup(groupName);
+            Group group = getGroup(groupName);
             if (isGroupReadOnly(group)) {
                 log.debug("group '" + groupName + "' is read-only according to Confluence, therefore it cannot be managed by CSUM.");
             }
@@ -201,11 +201,11 @@ public abstract class BaseGroupManagementService implements GroupManagementServi
         this.spaceDao = spaceDao;
     }
 
-    public UserAccessor getUserAccessor() {
+    public UserManager getUserManager() {
         return userAccessor;
     }
 
-    public void setUserAccessor(UserAccessor userAccessor) {
+    public void setUserManager(UserManager userAccessor) {
         this.userAccessor = userAccessor;
     }
 }
