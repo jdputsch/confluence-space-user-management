@@ -29,9 +29,13 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import com.atlassian.confluence.security.PermissionManager;
 import com.atlassian.confluence.security.SpacePermission;
+import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.user.Group;
+import com.atlassian.user.GroupManager;
+import com.atlassian.user.UserManager;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
@@ -61,6 +65,20 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
     private Log log = LogFactory.getLog(this.getClass());
 
     private JiraSoapUserManagementService jiraSoapUserManagementService;
+
+    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    public JiraSoapGroupManagementService(PermissionManager permissionManager,
+                                          SpacePermissionManager spacePermissionManager,
+                                          UserManager userManager,
+                                          CustomPermissionConfiguration customPermissionConfiguration,
+                                          GroupManager groupManager,
+                                          JiraSoapUserManagementService jiraSoapUserManagementService) {
+        super(spacePermissionManager,
+                userManager,
+                customPermissionConfiguration,
+                groupManager);
+        this.jiraSoapUserManagementService = jiraSoapUserManagementService;
+    }
 
     protected boolean isGroupReadOnly(Group group) {
         // cannot use Confluence API to check read-only
@@ -101,17 +119,14 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
                     alreadyExisted.add(groupName);
                 }
             }
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             LogUtil.errorWithRemoteUserInfo(log, "Failed while adding groups!", e);
             throw new AddException(e.getMessage(), e);
-        }
-        finally {
+        } finally {
             if (authContext != null) {
                 try {
                     JiraSoapUtil.logout(authContext);
-                }
-                catch (Throwable t) {
+                } catch (Throwable t) {
                     LogUtil.errorWithRemoteUserInfo(log, "Error in Jira logout", t);
                 }
             }
@@ -176,17 +191,14 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
                     badGroupNames.add(grpName);
                 }
             }
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             LogUtil.errorWithRemoteUserInfo(log, "Failed while removing groups!", e);
             throw new RemoveException(e.getMessage(), e);
-        }
-        finally {
+        } finally {
             if (authContext != null) {
                 try {
                     JiraSoapUtil.logout(authContext);
-                }
-                catch (Throwable t) {
+                } catch (Throwable t) {
                     LogUtil.errorWithRemoteUserInfo(log, "Error in Jira logout", t);
                 }
             }
@@ -215,13 +227,5 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
             }
             throw new RemoveException(msg);
         }
-    }
-
-    public JiraSoapUserManagementService getJiraSoapUserManagementService() {
-        return jiraSoapUserManagementService;
-    }
-
-    public void setJiraSoapUserManagementService(JiraSoapUserManagementService jiraSoapUserManagementService) {
-        this.jiraSoapUserManagementService = jiraSoapUserManagementService;
     }
 }

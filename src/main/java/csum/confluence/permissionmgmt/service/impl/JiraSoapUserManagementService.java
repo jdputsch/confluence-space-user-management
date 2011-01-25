@@ -29,6 +29,9 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.user.GroupManager;
+import com.atlassian.user.UserManager;
 import com.dolby.confluence.net.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfigConstants;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -60,6 +63,17 @@ import java.util.TreeMap;
 public class JiraSoapUserManagementService extends BaseUserManagementService {
 
     private Log log = LogFactory.getLog(this.getClass());
+
+    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    public JiraSoapUserManagementService(UserAccessor userAccessor,
+                                         UserManager userManager,
+                                         GroupManager groupManager,
+                                         CustomPermissionConfiguration customPermissionConfiguration) {
+        super(userAccessor,
+                userManager,
+                groupManager,
+                customPermissionConfiguration);
+    }
 
     public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws UsersNotFoundException, AddException, ServiceAuthenticationException {
         log.debug("addUsersByUsernameToGroupsByGroupname() called. " +
@@ -120,17 +134,14 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     }
                 }
             }
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             LogUtil.errorWithRemoteUserInfo(log, "Failed adding users to groups!", e);
             throw new AddException(e.getMessage(), e);
-        }
-        finally {
+        } finally {
             if (authContext != null) {
                 try {
                     JiraSoapUtil.logout(authContext);
-                }
-                catch (Throwable t) {
+                } catch (Throwable t) {
                     LogUtil.errorWithRemoteUserInfo(log, "Error in Jira logout", t);
                 }
             }
@@ -167,8 +178,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     if (vUser == null) {
                         LogUtil.warnWithRemoteUserInfo(log, "jiraSoapService.createUser(...) returned null for userid '" + creationUserName + ". User addition may have been unsuccessful.");
                     }
-                }
-                else {
+                } else {
                     LogUtil.warnWithRemoteUserInfo(log, "No LDAP user found for userid '" + creationUserName + "'. Unable to add user.");
                 }
             }
@@ -209,18 +219,15 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     if (!isMemberOf(remoteUser.getName(), groupName)) {
                         if ("jira-users".equals(groupName)) {
                             log.debug("We won't add " + remoteUser.getName() + " to group jira-users (SUSR-102).");
-                        }
-                        else {
+                        } else {
                             log.debug("Adding " + remoteUser.getName() + " to Jira group " + groupName);
                             jiraSoapService.addUserToGroup(token, remoteGroup, remoteUser);
                         }
-                    }
-                    else {
+                    } else {
                         log.debug("Did not add user " + remoteUser.getName() + " to group " + groupName + ". It was already a member.");
                     }
                 }
-            }
-            catch (Throwable t) {
+            } catch (Throwable t) {
                 LogUtil.errorWithRemoteUserInfo(log, "Failed adding " + remoteUser.getName() + " to " + groupName);
                 // using "" + to guard against nulls
                 userIdToGroupNameMapForMembershipAdditionProblems.put("" + remoteUser.getName(), "" + groupName);
@@ -257,17 +264,14 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     usersNotFound.add(userid);
                 }
             }
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             LogUtil.errorWithRemoteUserInfo(log, "Failed removing users from groups!", e);
             throw new RemoveException(e.getMessage(), e);
-        }
-        finally {
+        } finally {
             if (authContext != null) {
                 try {
                     JiraSoapUtil.logout(authContext);
-                }
-                catch (Throwable t) {
+                } catch (Throwable t) {
                     LogUtil.errorWithRemoteUserInfo(log, "Error in Jira logout", t);
                 }
             }
@@ -314,19 +318,16 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     if (isMemberOf(remoteUser.getName(), groupName)) {
                         if ("jira-users".equals(groupName)) {
                             log.debug("We will not remove " + remoteUser.getName() + " from group jira-users (SUSR-102).");
-                        }
-                        else {
+                        } else {
                             log.debug("Removing " + remoteUser.getName() + " from Jira group " + groupName);
                             jiraSoapService.removeUserFromGroup(token, remoteGroup, remoteUser);
                         }
-                    }
-                    else {
+                    } else {
                         log.debug("Did not remove user " + remoteUser.getName() + " from group " + groupName + ", because it was not a member of that group.");
                     }
 
                 }
-            }
-            catch (Throwable t) {
+            } catch (Throwable t) {
                 LogUtil.errorWithRemoteUserInfo(log, "Failed removing " + remoteUser.getName() + " from Jira group " + groupName);
                 // using "" + to guard against nulls
                 userIdToGroupNameMapForMembershipRemovalProblems.put("" + remoteUser.getName(), "" + groupName);

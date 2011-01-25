@@ -15,12 +15,18 @@ public class UserAndGroupManagementService {
     protected UserManager userManager;
     protected GroupManager groupManager;
 
+    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    public UserAndGroupManagementService(UserManager userManager,
+                                         GroupManager groupManager) {
+        this.userManager = userManager;
+        this.groupManager = groupManager;
+    }
+
     public User getUser(String username) {
         User user = null;
         try {
             user = userManager.getUser(username);
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             log.error("Problem getting user '" + username + "'", t);
         }
 
@@ -36,8 +42,7 @@ public class UserAndGroupManagementService {
         boolean result = false;
         try {
             result = groupManager.isReadOnly(group);
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             log.error("Problem checking isReadOnly status of group '" + group.getName() + "'. Will assume isn't read-only.", t);
         }
 

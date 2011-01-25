@@ -29,9 +29,12 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.user.EntityException;
 import com.atlassian.user.Group;
+import com.atlassian.user.GroupManager;
+import com.atlassian.user.UserManager;
 import com.atlassian.user.search.SearchResult;
 import com.atlassian.user.search.page.DefaultPager;
 import com.atlassian.user.search.page.Pager;
@@ -73,6 +76,15 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
     protected UserAccessor userAccessor;
     private CustomPermissionConfiguration customPermissionConfiguration;
     protected Log log = LogFactory.getLog(this.getClass());
+
+    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    public BaseUserManagementService(UserAccessor userAccessor,
+                                     UserManager userManager,
+                                     GroupManager groupManager,
+                                     CustomPermissionConfiguration customPermissionConfiguration) {
+        super(userManager, groupManager);
+        this.customPermissionConfiguration = customPermissionConfiguration;
+    }
 
     protected LDAPUser getLDAPUser(String userid) throws ParserConfigurationException, LDAPException, IOException, SAXException {
         return LDAPHelper.getLDAPUser(getCustomPermissionConfiguration(), userid);
@@ -118,12 +130,10 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
                 SearchResult result = userAccessor.findUsers(query);
                 pager = result.pager();
                 //results.setMessage("" + PagerUtils.count(pager) + " returned");
-            }
-            catch (EntityException e) {
+            } catch (EntityException e) {
                 LogUtil.warnWithRemoteUserInfo(log, "query by username failed due to EntityException", e);
                 results.setMessage("" + e);
-            }
-            catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 // if search type is not allowed
                 LogUtil.warnWithRemoteUserInfo(log, "Bad value '" + advancedUserQuery.getPartialSearchTerm() + "' for search type '" + advancedUserQuery.getSubstringMatchType() + "'", e);
                 results.setMessage("Bad value '" + advancedUserQuery.getPartialSearchTerm() + "' for search type '" + advancedUserQuery.getSubstringMatchType() + "'");
@@ -136,12 +146,10 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
                 SearchResult result = userAccessor.findUsers(query);
                 pager = result.pager();
                 //results.setMessage("" + PagerUtils.count(pager) + " returned");
-            }
-            catch (EntityException e) {
+            } catch (EntityException e) {
                 LogUtil.warnWithRemoteUserInfo(log, "query by user fullname failed due to EntityException", e);
                 results.setMessage("" + e);
-            }
-            catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 // if search type is not allowed
                 LogUtil.warnWithRemoteUserInfo(log, "Bad value '" + advancedUserQuery.getPartialSearchTerm() + "' for search type '" + advancedUserQuery.getSubstringMatchType() + "'", e);
                 results.setMessage("Bad value '" + advancedUserQuery.getPartialSearchTerm() + "' for search type '" + advancedUserQuery.getSubstringMatchType() + "'");
@@ -154,12 +162,10 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
                 SearchResult result = userAccessor.findUsers(query);
                 pager = result.pager();
                 //results.setMessage("" + PagerUtils.count(pager) + " returned");
-            }
-            catch (EntityException e) {
+            } catch (EntityException e) {
                 LogUtil.warnWithRemoteUserInfo(log, "query by user email failed due to EntityException", e);
                 results.setMessage("" + e);
-            }
-            catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 // if search type is not allowed
                 LogUtil.warnWithRemoteUserInfo(log, "Bad value '" + advancedUserQuery.getPartialSearchTerm() + "' for search type '" + advancedUserQuery.getSubstringMatchType() + "'", e);
                 results.setMessage("Bad value '" + advancedUserQuery.getPartialSearchTerm() + "' for search type '" + advancedUserQuery.getSubstringMatchType() + "'");
@@ -179,8 +185,7 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
             UserNameTermQuery query = new UserNameTermQuery(partialName, TermQuery.SUBSTRING_STARTS_WITH);
             SearchResult searchResult = userAccessor.findUsers(query);
             pager = searchResult.pager();
-        }
-        catch (EntityException e) {
+        } catch (EntityException e) {
             LogUtil.errorWithRemoteUserInfo(log, "Error finding username that starts with " + partialName, e);
         }
 
@@ -260,7 +265,7 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
             Iterator iter = userIdToGroupNameMapForMembershipRemovalProblems.keySet().iterator();
             while (iter.hasNext()) {
                 String userid = (String) iter.next();
-                String groupName = (String) userIdToGroupNameMapForMembershipRemovalProblems.get(userid);                
+                String groupName = (String) userIdToGroupNameMapForMembershipRemovalProblems.get(userid);
                 msg += concat;
                 msg += context.getText("csum.manager.error.problemremovinguserfromgroup", new String[]{userid, groupName});
                 concat = " ";
@@ -287,9 +292,4 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
     public CustomPermissionConfiguration getCustomPermissionConfiguration() {
         return customPermissionConfiguration;
     }
-
-    public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
-        this.customPermissionConfiguration = customPermissionConfiguration;
-    }
-
 }

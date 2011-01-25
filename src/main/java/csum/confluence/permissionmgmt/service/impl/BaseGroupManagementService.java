@@ -35,6 +35,7 @@ import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
+import com.atlassian.user.GroupManager;
 import com.atlassian.user.UserManager;
 import com.atlassian.user.Group;
 import com.atlassian.user.search.page.DefaultPager;
@@ -63,12 +64,18 @@ public abstract class BaseGroupManagementService extends UserAndGroupManagementS
     protected Log log = LogFactory.getLog(this.getClass());
 
     // assuming these are autowired
-    private BootstrapManager bootstrapManager;
-    private BandanaManager bandanaManager;
-    private SpaceDao spaceDao;
     private SpacePermissionManager spacePermissionManager;
-    protected UserManager userAccessor;
     private CustomPermissionConfiguration customPermissionConfiguration;
+
+    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    public BaseGroupManagementService(SpacePermissionManager spacePermissionManager,
+                                      UserManager userManager,
+                                      CustomPermissionConfiguration customPermissionConfiguration,
+                                      GroupManager groupManager) {
+        super(userManager, groupManager);
+        this.spacePermissionManager = spacePermissionManager;
+        this.customPermissionConfiguration = customPermissionConfiguration;
+    }
 
     public Pager findGroups(ServiceContext context) throws FindException {
         log.debug("findGroups() called");
@@ -95,8 +102,7 @@ public abstract class BaseGroupManagementService extends UserAndGroupManagementS
             Group group = getGroup(groupName);
             if (isGroupReadOnly(group)) {
                 log.debug("group '" + groupName + "' is read-only according to Confluence, therefore it cannot be managed by CSUM.");
-            }
-            else {
+            } else {
                 groups.add(group);
             }
         }
@@ -104,7 +110,7 @@ public abstract class BaseGroupManagementService extends UserAndGroupManagementS
     }
 
     // When managing via Jira API, all groups are readonly in Confluence API, but not via SOAP, necessarily.
-    protected abstract boolean isGroupReadOnly(Group group);     
+    protected abstract boolean isGroupReadOnly(Group group);
 
     private List getReadWriteGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
         log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
@@ -149,51 +155,7 @@ public abstract class BaseGroupManagementService extends UserAndGroupManagementS
         return map;
     }
 
-    public BandanaManager getBandanaManager() {
-        return bandanaManager;
-    }
-
-    public void setBandanaManager(BandanaManager bandanaManager) {
-        this.bandanaManager = bandanaManager;
-    }
-
-    public BootstrapManager getBootstrapManager() {
-        return bootstrapManager;
-    }
-
-    public void setBootstrapManager(BootstrapManager bootstrapManager) {
-        this.bootstrapManager = bootstrapManager;
-    }
-
     public CustomPermissionConfiguration getCustomPermissionConfiguration() {
         return customPermissionConfiguration;
-    }
-
-    public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
-        this.customPermissionConfiguration = customPermissionConfiguration;
-    }
-
-    public SpacePermissionManager getSpacePermissionManager() {
-        return spacePermissionManager;
-    }
-
-    public void setSpacePermissionManager(SpacePermissionManager spacePermissionManager) {
-        this.spacePermissionManager = spacePermissionManager;
-    }
-
-    public SpaceDao getSpaceDao() {
-        return spaceDao;
-    }
-
-    public void setSpaceDao(SpaceDao spaceDao) {
-        this.spaceDao = spaceDao;
-    }
-
-    public UserManager getUserManager() {
-        return userAccessor;
-    }
-
-    public void setUserManager(UserManager userAccessor) {
-        this.userAccessor = userAccessor;
     }
 }

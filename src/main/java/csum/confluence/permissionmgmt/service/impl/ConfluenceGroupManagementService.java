@@ -35,8 +35,11 @@ import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
+import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.user.Group;
+import com.atlassian.user.GroupManager;
 import com.atlassian.user.User;
+import com.atlassian.user.UserManager;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
 import csum.confluence.permissionmgmt.service.exception.AddException;
 import csum.confluence.permissionmgmt.service.exception.RemoveException;
@@ -56,6 +59,20 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
 
     private PermissionManager permissionManager;
     private SpacePermissionManager spacePermissionManager;
+
+    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    public ConfluenceGroupManagementService(PermissionManager permissionManager,
+                                            SpacePermissionManager spacePermissionManager,
+                                            UserManager userManager,
+                                            CustomPermissionConfiguration customPermissionConfiguration,
+                                            GroupManager groupManager) {
+        super(spacePermissionManager,
+                userManager,
+                customPermissionConfiguration,
+                groupManager);
+        this.spacePermissionManager = spacePermissionManager;
+        this.permissionManager = permissionManager;
+    }
 
     protected boolean isGroupReadOnly(Group group) {
         return isReadOnly(group);
@@ -129,8 +146,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                     if (isReadOnly(group)) {
                         log.debug("Not deleting group '" + grpName + "' because it was read-only");
                         badGroupNames.add(grpName);
-                    }
-                    else {
+                    } else {
                         removeGroup_Confluence2_6_0Compatible(group);
                         success.add(grpName);
                     }
@@ -188,14 +204,13 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
             try {
                 log.debug("Checking whether '" + currentUser.getName() + "' has permission to remove group '" + group.getName() + "'.");
                 hasRemoveGroupPermission = permissionManager.hasPermission(currentUser, Permission.REMOVE, group);
-            }
-            catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 // this is going to happen a lot unfortunately on older Confluence...
                 log.debug("permissionManager.hasPermission(currentUser, Permission.REMOVE, group) failed, " +
-                          "which is normal in some versions of Confluence. Therefore, we can't check " + 
-                          "whether user '" + currentUser.getName() + "' has permissions to remove group '" + 
-                          group.getName() + "'. Assuming that the user should be allowed to remove " +
-                          "this group (see CONF-16183, SUSR-97, SUSR-99).");                          
+                        "which is normal in some versions of Confluence. Therefore, we can't check " +
+                        "whether user '" + currentUser.getName() + "' has permissions to remove group '" +
+                        group.getName() + "'. Assuming that the user should be allowed to remove " +
+                        "this group (see CONF-16183, SUSR-97, SUSR-99).");
             }
             log.debug("hasRemoveGroupPermission=" + hasRemoveGroupPermission);
 
@@ -218,8 +233,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                     removeGroup(group);
                     success = true;
                     log.debug("Assuming that userAccessor.removeGroup(group) was successful.");
-                }
-                finally {
+                } finally {
                     if (perms != null && !success) {
                         log.warn("Remove of group " + group.getName() + " failed and since there were permissions, " +
                                 "we'll attempt to add them back in case they were able to be removed.");
@@ -238,21 +252,5 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
             }
         }
         log.debug("Group removal complete.");
-    }
-
-    public PermissionManager getPermissionManager() {
-        return permissionManager;
-    }
-
-    public void setPermissionManager(PermissionManager permissionManager) {
-        this.permissionManager = permissionManager;
-    }
-
-    public SpacePermissionManager getSpacePermissionManager() {
-        return spacePermissionManager;
-    }
-
-    public void setSpacePermissionManager(SpacePermissionManager spacePermissionManager) {
-        this.spacePermissionManager = spacePermissionManager;
     }
 }
