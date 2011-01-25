@@ -35,7 +35,6 @@ import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
-import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -57,10 +56,6 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
 
     private PermissionManager permissionManager;
     private SpacePermissionManager spacePermissionManager;
-
-    public ConfluenceGroupManagementService() {
-        setSpacePermissionManager((SpacePermissionManager) ContainerManager.getComponent("spacePermissionManager"));
-    }
 
     protected boolean isGroupReadOnly(Group group) {
         return isReadOnly(group);

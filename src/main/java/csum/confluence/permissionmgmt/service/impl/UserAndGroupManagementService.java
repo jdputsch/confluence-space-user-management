@@ -1,6 +1,5 @@
 package csum.confluence.permissionmgmt.service.impl;
 
-import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.User;
@@ -15,14 +14,6 @@ public class UserAndGroupManagementService {
 
     protected UserManager userManager;
     protected GroupManager groupManager;
-
-    public UserAndGroupManagementService() {
-        log.debug("UserAndGroupManagementService start constructor");
-        userManager = (UserManager) ContainerManager.getComponent("userManager");
-        groupManager = (GroupManager) ContainerManager.getComponent("groupManager");
-        //customPermissionConfiguration = (CustomPermissionConfiguration) ConfluenceUtil.loadComponentWithRetry("customPermissionConfiguration");
-        log.debug("UserAndGroupManagementService end constructor");
-    }
 
     public User getUser(String username) {
         User user = null;

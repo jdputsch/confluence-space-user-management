@@ -36,7 +36,6 @@ import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
 import com.atlassian.user.UserManager;
-import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.Group;
 import com.atlassian.user.search.page.DefaultPager;
 import com.atlassian.user.search.page.Pager;
@@ -70,17 +69,6 @@ public abstract class BaseGroupManagementService extends UserAndGroupManagementS
     private SpacePermissionManager spacePermissionManager;
     protected UserManager userAccessor;
     private CustomPermissionConfiguration customPermissionConfiguration;
-
-    public BaseGroupManagementService() {
-        log.debug("ConfluenceGroupManagementService start constructor");
-        bootstrapManager = (BootstrapManager) ContainerManager.getComponent("bootstrapManager");
-        bandanaManager = (BandanaManager) ContainerManager.getComponent("bandanaManager");
-        spaceDao = (SpaceDao) ContainerManager.getComponent("spaceDao");
-        spacePermissionManager = (SpacePermissionManager) ContainerManager.getComponent("spacePermissionManager");
-        userAccessor = (UserManager) ContainerManager.getComponent("userAccessor");
-        //customPermissionConfiguration = (CustomPermissionConfiguration) ConfluenceUtil.loadComponentWithRetry("customPermissionConfiguration");
-        log.debug("ConfluenceGroupManagementService end constructor");
-    }
 
     public Pager findGroups(ServiceContext context) throws FindException {
         log.debug("findGroups() called");

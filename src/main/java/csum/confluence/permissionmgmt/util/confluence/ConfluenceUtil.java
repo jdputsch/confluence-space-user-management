@@ -30,7 +30,6 @@
 package csum.confluence.permissionmgmt.util.confluence;
 
 import com.atlassian.confluence.util.GeneralUtil;
-import com.atlassian.spring.container.ContainerManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -41,50 +40,6 @@ import org.apache.commons.logging.LogFactory;
 public class ConfluenceUtil {
 
     private static Log log = LogFactory.getLog(ConfluenceUtil.class);
-
-    public static Object loadComponentWithRetry(String component) {
-        Object result = null;
-        int triesLeft = 5;
-        while (result == null && triesLeft > 0) {
-            log.debug("attempting to load '" + component + "'. tries left = " + triesLeft);
-            result = loadComponentOrReturnNullCatchingThrowable(component);
-            triesLeft--;
-
-            if (result == null) {
-                try {
-                    // wait 0-1000 msec
-                    log.debug("waiting before next try");
-                    Thread.sleep((int) (Math.random() * 1000D));
-                }
-                catch (InterruptedException ie) {
-                    //don't care
-                }
-            }
-        }
-
-        if (result == null) {
-            //one last try
-
-            // maybe this one will work, or maybe it will throw an error
-            result = ContainerManager.getComponent(component);
-            log.debug("successfully loaded " + component);
-        }
-
-        return result;
-    }
-
-    private static Object loadComponentOrReturnNullCatchingThrowable(String component) {
-        Object result = null;
-        try {
-            result = ContainerManager.getComponent(component);
-            log.debug("successfully loaded " + component);
-        }
-        catch (Throwable t) {
-            //don't care
-            log.debug("failed to load " + component);
-        }
-        return result;
-    }
 
     /**
      * Method helps avoid more recent API changes, imperfect long term, but works for now.

@@ -32,7 +32,6 @@ package csum.confluence.permissionmgmt.config;
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.core.ConfluenceActionSupport;
 import com.atlassian.confluence.setup.bandana.ConfluenceBandanaContext;
-import com.atlassian.spring.container.ContainerManager;
 import com.dolby.confluence.net.ldap.LDAPUser;
 import csum.confluence.permissionmgmt.AbstractPagerPaginationSupportCachingSpaceAction;
 import csum.confluence.permissionmgmt.soap.jira.JiraSoapService;
@@ -53,12 +52,6 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
     private static final Log log = LogFactory.getLog(CustomPermissionConfiguration.class);
 
     private BandanaManager bandanaManager;
-
-    public CustomPermissionConfiguration() {
-        log.debug("CustomPermissionConfiguration start constructor");
-        setBandanaManager((BandanaManager) ContainerManager.getComponent("bandanaManager"));
-        log.debug("CustomPermissionConfiguration end constructor");
-    }
 
     public void copyTo(CustomPermissionConfigurable config) {
         config.setUserManagerLocation(getUserManagerLocation());

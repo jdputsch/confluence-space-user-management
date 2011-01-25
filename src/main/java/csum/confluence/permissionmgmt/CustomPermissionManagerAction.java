@@ -605,6 +605,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
     // this can't be done in the velocity template, and must be called via reflection because method doesn't exist in
     // earlier versions of Confluence < 2.8
+    // TODO: stop using reflection for this, since we're no longer compatible with Confluence pre-2.10 as of CSUM v2.1.
     public void loadWebResourceIfConfluence2_8_OrHigher(WebResourceManager webResourceManager, String resource) {
         if (webResourceManager != null) {
             Class webResourceManagerClazz = webResourceManager.getClass();
@@ -775,59 +776,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
 
         return result;
     }
-
-    /*
-    private void createTestUsersAndGroups() {
-        try
-        {
-            SpaceDao spaceDao = (SpaceDao)ContainerManager.getComponent("spaceDao");
-            Space space = spaceDao.getSpace(getKey());
-            UserManager userAccessor = (UserManager) ContainerManager.getComponent("userAccessor");
-            String prefix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationPrefixPattern(), getKey());
-            log.debug("group name prefix will be " + prefix);
-
-            String suffix = GroupNameUtil.replaceSpaceKey(getCustomPermissionConfiguration().getNewGroupNameCreationSuffixPattern(), getKey());
-            log.debug("group name suffix will be " + suffix);
-
-            int numGroups = 40;
-            int maxUsersPerGroup = 1000;
-            int useridcount = 1;
-            for (int i=1; i<=numGroups; i++) {
-                String groupname = prefix + "tstgroup" + i + suffix;
-                if (getGroup(groupname)==null) {
-                    log.debug("Creating test group '" + groupname + "'");
-                    userAccessor.createGroup(groupname);
-                }
-                log.debug("Adding permission '" + SpacePermission.VIEWSPACE_PERMISSION + "' to test group '" + groupname + "'");
-                SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION, space, groupname);
-                space.addPermission(perm);
-
-                for (int j=1; j<=(maxUsersPerGroup - (maxUsersPerGroup/i) + 1); j++) {
-                    String username = "tstuser" + useridcount;
-                    if (userAccessor.getUser(username)==null) {
-                        log.debug("Creating test user '" + username + "'");
-                        userAccessor.createUser(username);
-                    }
-
-                    User user = userAccessor.getUser(username);
-                    user.setEmail( username + "@duke.edu");
-                    user.setFullName( "Test User " + useridcount );
-
-                    log.debug("Adding test user '" + username + "' to group 'confluence-users'");
-                    userAccessor.addMembership("confluence-users", username);
-                    log.debug("Adding test user '" + username + "' to test group '" + groupname + "'");
-                    userAccessor.addMembership(groupname, username);
-                    useridcount++;
-                }
-            }
-        }
-        catch(Throwable t)
-        {
-            LogUtil.warnWithRemoteUserInfo(log, "Failed creating test groups/users", t);
-        }
-
-    }
-    */
 
     /*
     * Action implements SpaceAdministrative interface.

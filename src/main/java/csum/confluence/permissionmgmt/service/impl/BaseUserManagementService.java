@@ -30,7 +30,6 @@
 package csum.confluence.permissionmgmt.service.impl;
 
 import com.atlassian.confluence.user.UserAccessor;
-import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.EntityException;
 import com.atlassian.user.Group;
 import com.atlassian.user.search.SearchResult;
@@ -74,13 +73,6 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
     protected UserAccessor userAccessor;
     private CustomPermissionConfiguration customPermissionConfiguration;
     protected Log log = LogFactory.getLog(this.getClass());
-
-    public BaseUserManagementService() {
-        log.debug("BaseUserManagementService start constructor");
-        userAccessor = (UserAccessor) ContainerManager.getComponent("userAccessor");
-        //customPermissionConfiguration = (CustomPermissionConfiguration) ConfluenceUtil.loadComponentWithRetry("customPermissionConfiguration");
-        log.debug("BaseUserManagementService end constructor");
-    }
 
     protected LDAPUser getLDAPUser(String userid) throws ParserConfigurationException, LDAPException, IOException, SAXException {
         return LDAPHelper.getLDAPUser(getCustomPermissionConfiguration(), userid);
