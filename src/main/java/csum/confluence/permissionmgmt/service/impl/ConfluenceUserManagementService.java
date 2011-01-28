@@ -204,7 +204,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                     }
                 }
             } catch (Throwable t) {
-                LogUtil.errorWithRemoteUserInfo(log, "Failed adding " + user.getName() + " to " + groupName);
+                LogUtil.errorWithRemoteUserInfo(log, "Failed adding " + user.getName() + " to " + groupName, t);
                 // using "" + to guard against nulls
                 userIdToGroupNameMapForMembershipAdditionProblems.put("" + user.getName(), "" + groupName);
             }
@@ -286,7 +286,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                     }
                 }
             } catch (Throwable t) {
-                LogUtil.errorWithRemoteUserInfo(log, "Failed removing " + user.getName() + " from " + groupName);
+                LogUtil.errorWithRemoteUserInfo(log, "Failed removing " + user.getName() + " from " + groupName, t);
                 // using "" + to guard against nulls
                 userIdToGroupNameMapForMembershipRemovalProblems.put("" + user.getName(), "" + groupName);
             }

@@ -228,7 +228,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                     }
                 }
             } catch (Throwable t) {
-                LogUtil.errorWithRemoteUserInfo(log, "Failed adding " + remoteUser.getName() + " to " + groupName);
+                LogUtil.errorWithRemoteUserInfo(log, "Failed adding " + remoteUser.getName() + " to " + groupName, t);
                 // using "" + to guard against nulls
                 userIdToGroupNameMapForMembershipAdditionProblems.put("" + remoteUser.getName(), "" + groupName);
             }
@@ -328,7 +328,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
 
                 }
             } catch (Throwable t) {
-                LogUtil.errorWithRemoteUserInfo(log, "Failed removing " + remoteUser.getName() + " from Jira group " + groupName);
+                LogUtil.errorWithRemoteUserInfo(log, "Failed removing " + remoteUser.getName() + " from Jira group " + groupName, t);
                 // using "" + to guard against nulls
                 userIdToGroupNameMapForMembershipRemovalProblems.put("" + remoteUser.getName(), "" + groupName);
             }
