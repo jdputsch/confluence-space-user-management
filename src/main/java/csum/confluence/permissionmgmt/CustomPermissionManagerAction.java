@@ -49,11 +49,7 @@ import csum.confluence.permissionmgmt.service.GroupManagementService;
 import csum.confluence.permissionmgmt.service.UserManagementService;
 import csum.confluence.permissionmgmt.service.exception.ServiceException;
 import csum.confluence.permissionmgmt.service.exception.UsersNotFoundException;
-import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
-import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryLookupType;
-import csum.confluence.permissionmgmt.service.vo.AdvancedUserQueryResults;
-import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuerySubstringMatchType;
-import csum.confluence.permissionmgmt.service.vo.ServiceContext;
+import csum.confluence.permissionmgmt.service.vo.*;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.ListUtil;
 import csum.confluence.permissionmgmt.util.StringUtil;
@@ -70,16 +66,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 
 /**
@@ -603,36 +592,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         return isNotAllowed;
     }
 
-    // this can't be done in the velocity template, and must be called via reflection because method doesn't exist in
-    // earlier versions of Confluence < 2.8
-    // TODO: stop using reflection for this, since we're no longer compatible with Confluence pre-2.10 as of CSUM v2.1.
-    public void loadWebResourceIfConfluence2_8_OrHigher(WebResourceManager webResourceManager, String resource) {
-        if (webResourceManager != null) {
-            Class webResourceManagerClazz = webResourceManager.getClass();
-            try {
-                // Confluence >= 2.8(?) only has method (SUSR-75)
-                Method requireResourceMethod = webResourceManagerClazz.getMethod("requireResource", new Class[]{String.class});
-                requireResourceMethod.invoke(webResourceManager, new Object[]{resource});
-
-                if (log.isDebugEnabled()) {
-                    log.debug("loaded webresource '" + resource + "'");
-                }
-
-            } catch (NoSuchMethodException nsme) {
-                // If this happens, we are most probably in Confluence < 2.8
-                if (log.isDebugEnabled()) {
-                    log.debug("Ignore the following exception for Confluence versions < 2.8 that do not support the " +
-                            "method: webResourceManager.requireResource(String). Resource that wasn't loaded was '" +
-                            resource + "'", nsme);
-                }
-            } catch (Exception e) {
-                log.warn("Problem using reflection to load web resource: " + resource, e);
-            }
-        } else {
-            log.warn("webResourceManager was not set on " + this.getClass() + " so didn't load webresource '" + resource + "'");
-        }
-    }
-
     public String execute() throws Exception {
         log.debug("CustomPermissionManagerAction.execute() called");
         log.debug("request uri: " + ServletActionContext.getRequest().getRequestURI());
@@ -652,8 +611,6 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
             setActionErrors(resultList);
             return ERROR;
         }
-
-        loadWebResourceIfConfluence2_8_OrHigher(webResourceManager, CustomPermissionConstants.PLUGIN_KEY + ":" + CustomPermissionConstants.RESOURCE_BUNDLE_KEY);
 
         CacheUtil.setRemoteUser(getRemoteUser());
 

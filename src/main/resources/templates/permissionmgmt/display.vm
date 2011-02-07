@@ -42,24 +42,11 @@
         
             <content tag="spacekey">${action.space.key}</content>
 
-    ## This is for later versions of Confluence (v2.8+)
-    ## checking via if this way doesn't work, probably because confluence evaluates all #requireResource in page prior to other velocity logic?
-    ###if($action.isConfluenceVersionEqualToOrAbove("2.8"))
-    ## instead we load this in the action...
-    ###requireResource("raju.kadam.confluence.permissionmgmt:csumresources")
-    ###end
-
-    ##set( $contextPath = "/customspacemgmt/permissions/custompermissionsmanage.action?key=$generalUtil.urlEncode($key)&" )
-
     #set( $refreshbugworkaround = "&redirect=" )
 
-    <body>
-        ## This is for earlier versions of Confluence (pre-v2.8)                                
-		<script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/yahoo-dom-event.js"></script>
-		<script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/element-beta-min.js"></script>        
-		<script type="text/javascript" src="$req.contextPath/download/resources/$action.pluginKey/js/container-min.js"></script>
+        $webResourceManager.requireResourcesForContext("raju.kadam.confluence.permissionmgmt.csumcontext")
 
-		<link rel="stylesheet" href="$req.contextPath/download/resources/$action.pluginKey/css/csum.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <body>
 
 		<script>
 		YAHOO.namespace("ifs");

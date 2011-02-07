@@ -30,6 +30,7 @@
 package csum.confluence.permissionmgmt;
 
 import bucket.core.actions.PagerPaginationSupport;
+import com.atlassian.confluence.spaces.actions.AbstractSpaceAction;
 import com.atlassian.confluence.spaces.actions.SpaceAdministrative;
 import com.opensymphony.xwork.ActionContext;
 import csum.confluence.permissionmgmt.service.vo.AdvancedUserQuery;
@@ -46,7 +47,7 @@ import java.util.TreeMap;
 /**
  * @author Gary S. Weaver
  */
-public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends CsumAbstractSpaceAction implements SpaceAdministrative, CacheConstants {
+public abstract class AbstractPagerPaginationSupportCachingSpaceAction extends AbstractSpaceAction implements SpaceAdministrative, CacheConstants {
 
     private Log log = LogFactory.getLog(this.getClass());
     private static final Log staticlog = LogFactory.getLog(AbstractPagerPaginationSupportCachingSpaceAction.class);
