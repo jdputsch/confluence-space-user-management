@@ -29,6 +29,7 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.UserManager;
@@ -64,7 +65,7 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
 
     private Log log = LogFactory.getLog(this.getClass());
 
-    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    @Autowired
     public JiraSoapUserManagementService(UserAccessor userAccessor,
                                          UserManager userManager,
                                          GroupManager groupManager,
@@ -73,6 +74,19 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
                 userManager,
                 groupManager,
                 customPermissionConfiguration);
+
+        if (userAccessor==null) {
+			throw new RuntimeException("userAccessor was not autowired in JiraSoapUserManagementService");
+        }
+        else if (userManager==null) {
+			throw new RuntimeException("userManager was not autowired in JiraSoapUserManagementService");
+        }
+        else if (groupManager==null) {
+			throw new RuntimeException("groupManager was not autowired in JiraSoapUserManagementService");
+        }
+        else if (customPermissionConfiguration==null) {
+			throw new RuntimeException("customPermissionConfiguration was not autowired in JiraSoapUserManagementService");
+        }
     }
 
     public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws UsersNotFoundException, AddException, ServiceAuthenticationException {

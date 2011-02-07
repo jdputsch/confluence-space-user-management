@@ -29,6 +29,7 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.user.EntityException;
@@ -77,13 +78,26 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
     private CustomPermissionConfiguration customPermissionConfiguration;
     protected Log log = LogFactory.getLog(this.getClass());
 
-    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    @Autowired
     public BaseUserManagementService(UserAccessor userAccessor,
                                      UserManager userManager,
                                      GroupManager groupManager,
                                      CustomPermissionConfiguration customPermissionConfiguration) {
         super(userManager, groupManager);
         this.customPermissionConfiguration = customPermissionConfiguration;
+
+        if (userAccessor==null) {
+			throw new RuntimeException("userAccessor was not autowired in BaseUserManagementService");
+        }
+        else if (userManager==null) {
+			throw new RuntimeException("userManager was not autowired in BaseUserManagementService");
+        }
+        else if (groupManager==null) {
+			throw new RuntimeException("groupManager was not autowired in BaseUserManagementService");
+        }
+        else if (customPermissionConfiguration==null) {
+			throw new RuntimeException("customPermissionConfiguration was not autowired in BaseUserManagementService");
+        }
     }
 
     protected LDAPUser getLDAPUser(String userid) throws ParserConfigurationException, LDAPException, IOException, SAXException {

@@ -1,5 +1,6 @@
 package csum.confluence.permissionmgmt.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.User;
@@ -15,11 +16,18 @@ public class UserAndGroupManagementService {
     protected UserManager userManager;
     protected GroupManager groupManager;
 
-    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    @Autowired
     public UserAndGroupManagementService(UserManager userManager,
                                          GroupManager groupManager) {
         this.userManager = userManager;
         this.groupManager = groupManager;
+
+        if (userManager==null) {
+			throw new RuntimeException("userManager was not autowired in UserAndGroupManagementService");
+        }
+        else if (groupManager==null) {
+			throw new RuntimeException("groupManager was not autowired in UserAndGroupManagementService");
+        }
     }
 
     public User getUser(String username) {

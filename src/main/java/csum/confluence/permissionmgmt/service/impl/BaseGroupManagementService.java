@@ -29,6 +29,7 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
@@ -67,7 +68,7 @@ public abstract class BaseGroupManagementService extends UserAndGroupManagementS
     private SpacePermissionManager spacePermissionManager;
     private CustomPermissionConfiguration customPermissionConfiguration;
 
-    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    @Autowired
     public BaseGroupManagementService(SpacePermissionManager spacePermissionManager,
                                       UserManager userManager,
                                       CustomPermissionConfiguration customPermissionConfiguration,
@@ -75,6 +76,19 @@ public abstract class BaseGroupManagementService extends UserAndGroupManagementS
         super(userManager, groupManager);
         this.spacePermissionManager = spacePermissionManager;
         this.customPermissionConfiguration = customPermissionConfiguration;
+
+        if (spacePermissionManager==null) {
+			throw new RuntimeException("spacePermissionManager was not autowired in BaseGroupManagementService");
+        }
+        else if (userManager==null) {
+			throw new RuntimeException("userManager was not autowired in BaseGroupManagementService");
+        }
+        else if (customPermissionConfiguration==null) {
+			throw new RuntimeException("customPermissionConfiguration was not autowired in BaseGroupManagementService");
+        }
+        else if (groupManager==null) {
+			throw new RuntimeException("groupManager was not autowired in BaseGroupManagementService");
+        }
     }
 
     public Pager findGroups(ServiceContext context) throws FindException {

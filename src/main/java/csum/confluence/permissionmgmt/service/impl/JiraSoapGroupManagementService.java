@@ -29,6 +29,7 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.confluence.security.PermissionManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
@@ -66,7 +67,7 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
 
     private JiraSoapUserManagementService jiraSoapUserManagementService;
 
-    // autowired by constructor injection via Atlassian Plugin framework/OSGi.
+    @Autowired
     public JiraSoapGroupManagementService(PermissionManager permissionManager,
                                           SpacePermissionManager spacePermissionManager,
                                           UserManager userManager,
@@ -78,6 +79,25 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
                 customPermissionConfiguration,
                 groupManager);
         this.jiraSoapUserManagementService = jiraSoapUserManagementService;
+
+        if (permissionManager==null) {
+			throw new RuntimeException("permissionManager was not autowired in JiraSoapGroupManagementService");
+        }
+        else if (spacePermissionManager==null) {
+			throw new RuntimeException("spacePermissionManager was not autowired in JiraSoapGroupManagementService");
+        }
+        else if (userManager==null) {
+			throw new RuntimeException("userManager was not autowired in JiraSoapGroupManagementService");
+        }
+        else if (customPermissionConfiguration==null) {
+			throw new RuntimeException("customPermissionConfiguration was not autowired in JiraSoapGroupManagementService");
+        }
+        else if (groupManager==null) {
+			throw new RuntimeException("groupManager was not autowired in JiraSoapGroupManagementService");
+        }
+        else if (jiraSoapUserManagementService==null) {
+			throw new RuntimeException("jiraSoapUserManagementService was not autowired in JiraSoapGroupManagementService");
+        }
     }
 
     protected boolean isGroupReadOnly(Group group) {
