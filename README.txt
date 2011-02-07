@@ -16,7 +16,7 @@ Here are some things I learned that might make it easier for those interested in
 
 MAVEN_OPTS=-Xmx512m
 
-2) Setup the Atlassian SDK. See the appropriate part of: http://confluence.atlassian.com/display/DEVNET/Developing+your+Plugin+using+the+Atlassian+Plugin+SDK
+2) Setup the Atlassian SDK. See the appropriate part of: http://confluence.atlassian.com/display/DEVNET/Setting+up+your+Plugin+Development+Environment
 
 2.1) Install the activation jar:
 
