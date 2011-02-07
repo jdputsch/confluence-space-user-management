@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007-2010, Custom Space User Management Plugin Development Team
+ * Copyright (c) 2007-2011, Custom Space User Management Plugin Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,6 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.confluence.security.Permission;
 import com.atlassian.confluence.security.PermissionManager;
 import com.atlassian.confluence.security.SpacePermission;
@@ -46,6 +45,7 @@ import csum.confluence.permissionmgmt.service.exception.RemoveException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,8 +57,7 @@ import java.util.List;
  */
 public class ConfluenceGroupManagementService extends BaseGroupManagementService {
 
-    private PermissionManager permissionManager;
-    private SpacePermissionManager spacePermissionManager;
+    protected PermissionManager permissionManager;
 
     @Autowired
     public ConfluenceGroupManagementService(PermissionManager permissionManager,
@@ -70,7 +69,6 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                 userManager,
                 customPermissionConfiguration,
                 groupManager);
-        this.spacePermissionManager = spacePermissionManager;
         this.permissionManager = permissionManager;
 
         if (permissionManager==null) {

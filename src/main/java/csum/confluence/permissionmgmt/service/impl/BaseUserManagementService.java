@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007-2010, Custom Space User Management Plugin Development Team
+ * Copyright (c) 2007-2011, Custom Space User Management Plugin Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,8 +29,6 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.user.EntityException;
 import com.atlassian.user.Group;
@@ -56,8 +54,7 @@ import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import csum.confluence.permissionmgmt.util.paging.LazyLoadingUserByUsernamePager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -75,8 +72,7 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
 
     // Note: FOR ADVANCED AND PARTIAL NAME USER QUERIES ONLY! THIS IS ACCESS-CONTROLLED AND MAY NOT BE AVAILABLE TO NON-ADMINS IN LATER VERSIONS OF CONFLUENCE
     protected UserAccessor userAccessor;
-    private CustomPermissionConfiguration customPermissionConfiguration;
-    protected Log log = LogFactory.getLog(this.getClass());
+    protected CustomPermissionConfiguration customPermissionConfiguration;
 
     @Autowired
     public BaseUserManagementService(UserAccessor userAccessor,
@@ -84,6 +80,7 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
                                      GroupManager groupManager,
                                      CustomPermissionConfiguration customPermissionConfiguration) {
         super(userManager, groupManager);
+        this.userAccessor = userAccessor;
         this.customPermissionConfiguration = customPermissionConfiguration;
 
         if (userAccessor==null) {

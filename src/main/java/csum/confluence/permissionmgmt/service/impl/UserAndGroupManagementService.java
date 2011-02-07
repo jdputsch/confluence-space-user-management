@@ -1,6 +1,5 @@
 package csum.confluence.permissionmgmt.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.User;
@@ -8,6 +7,7 @@ import com.atlassian.user.UserManager;
 import com.atlassian.user.search.page.Pager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserAndGroupManagementService {
 

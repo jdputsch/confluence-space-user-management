@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007-2010, Custom Space User Management Plugin Development Team
+ * Copyright (c) 2007-2011, Custom Space User Management Plugin Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,6 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.confluence.security.PermissionManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
@@ -50,8 +49,7 @@ import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csum.confluence.permissionmgmt.util.jira.JiraServiceAuthenticationContext;
 import csum.confluence.permissionmgmt.util.jira.JiraSoapUtil;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -63,9 +61,7 @@ import java.util.List;
  */
 public class JiraSoapGroupManagementService extends BaseGroupManagementService {
 
-    private Log log = LogFactory.getLog(this.getClass());
-
-    private JiraSoapUserManagementService jiraSoapUserManagementService;
+    protected JiraSoapUserManagementService jiraSoapUserManagementService;
 
     @Autowired
     public JiraSoapGroupManagementService(PermissionManager permissionManager,

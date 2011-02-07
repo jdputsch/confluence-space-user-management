@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007-2010, Custom Space User Management Plugin Development Team
+ * Copyright (c) 2007-2011, Custom Space User Management Plugin Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,6 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
@@ -44,12 +43,9 @@ import csum.confluence.permissionmgmt.service.exception.UsersNotFoundException;
 import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * @author Rajendra Kadam

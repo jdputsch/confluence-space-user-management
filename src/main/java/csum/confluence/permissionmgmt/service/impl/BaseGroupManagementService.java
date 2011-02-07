@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2007-2010, Custom Space User Management Plugin Development Team
+ * Copyright (c) 2007-2011, Custom Space User Management Plugin Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,16 +29,12 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import com.atlassian.bandana.BandanaManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
-import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.confluence.spaces.Space;
-import com.atlassian.confluence.spaces.persistence.dao.SpaceDao;
+import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.UserManager;
-import com.atlassian.user.Group;
 import com.atlassian.user.search.page.DefaultPager;
 import com.atlassian.user.search.page.Pager;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -48,8 +44,7 @@ import csum.confluence.permissionmgmt.service.vo.ServiceContext;
 import csum.confluence.permissionmgmt.util.StringUtil;
 import csum.confluence.permissionmgmt.util.group.GroupNameUtil;
 import csum.confluence.permissionmgmt.util.group.GroupUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -62,11 +57,9 @@ import java.util.Map;
  */
 public abstract class BaseGroupManagementService extends UserAndGroupManagementService implements GroupManagementService {
 
-    protected Log log = LogFactory.getLog(this.getClass());
-
     // assuming these are autowired
-    private SpacePermissionManager spacePermissionManager;
-    private CustomPermissionConfiguration customPermissionConfiguration;
+    protected SpacePermissionManager spacePermissionManager;
+    protected CustomPermissionConfiguration customPermissionConfiguration;
 
     @Autowired
     public BaseGroupManagementService(SpacePermissionManager spacePermissionManager,
