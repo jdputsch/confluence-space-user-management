@@ -12,6 +12,10 @@ Here are some things I learned that might make it easier for those interested in
 
 1) If you haven't already, download and install maven 2 from http://maven.apache.org/download.html and make sure your MAVEN_HOME and PATH are set as in the maven install documentation on their site.
 
+1.1) Ensure you have given Maven enough memory by setting the following in your environment variables:
+
+MAVEN_OPTS=-Xmx512m
+
 2) Setup the Atlassian SDK. See the appropriate part of: http://confluence.atlassian.com/display/DEVNET/Developing+your+Plugin+using+the+Atlassian+Plugin+SDK
 
 2.1) Install the activation jar:

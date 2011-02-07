@@ -15,7 +15,7 @@
     <packaging>atlassian-plugin</packaging>
 
     <properties>
-        <confluence.version>3.4.1</confluence.version>
+        <confluence.version>3.4.8</confluence.version>
         <confluence.data.version>3.1</confluence.data.version>
     </properties>
 
@@ -432,6 +432,62 @@
             <id>Codehaus Snapshots</id>
             <url>http://snapshots.repository.codehaus.org</url>
         </repository>
+        
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Public</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </repository>
+    
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Atlassian Public Snaphots</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
+        </repository>
+        
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian 3rd-party Repository</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
+        </repository>
+        
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>JBoss</id>
+            <url>http://repository.jboss.org/maven2/</url>
+        </repository>
+        
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>TWData</id>
+            <url>https://twdata-m2-repository.googlecode.com/svn/</url>
+        </repository>
+        
     </repositories>
 
     <pluginRepositories>
@@ -470,6 +526,49 @@
                           </snapshots>
                 </pluginRepository>
         -->
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Public</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </pluginRepository>
+    
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Atlassian Public Snaphots</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
+        </pluginRepository>
+        
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian 3rd-party Repository</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
+        </pluginRepository>
+        
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>JBoss</id>
+            <url>http://repository.jboss.org/maven2/</url>
+        </pluginRepository>
 
     </pluginRepositories>
 
