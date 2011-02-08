@@ -29,7 +29,6 @@
 
 package csum.confluence.permissionmgmt.config;
 
-import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.core.ConfluenceActionSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Gary S. Weaver
  */
-public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements Administrative, CustomPermissionConfigurable {
+public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements CustomPermissionConfigurable {
 
     private Log log = LogFactory.getLog(this.getClass());
 
@@ -66,7 +65,7 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String personalSpaceAllowed;
     private String groupMembershipRefreshFixEnabled;
     private String numRowsPerPage;
-
+    private String unvalidatedUserAdditionEnabled;
 
     public String getUserManagerLocation() {
         return userManagerLocation;
@@ -266,5 +265,13 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setNumRowsPerPage(String numRowsPerPage) {
         this.numRowsPerPage = numRowsPerPage;
+    }
+
+    public String getUnvalidatedUserAdditionEnabled() {
+        return unvalidatedUserAdditionEnabled;
+    }
+
+    public void setUnvalidatedUserAdditionEnabled(String unvalidatedUserAdditionEnabled) {
+        this.unvalidatedUserAdditionEnabled = unvalidatedUserAdditionEnabled;
     }
 }

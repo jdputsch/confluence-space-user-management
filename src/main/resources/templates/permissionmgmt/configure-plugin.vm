@@ -270,6 +270,18 @@
         </tr>
 
         <tr>
+            <td valign="top" class="label" width="30%">$action.getText("csum.configure.unvalidateduseradditionenabled.label"):</td>
+            <td>
+                #fielderror ('unvalidatedUserAdditionEnabled')
+                <input type="radio" name="unvalidatedUserAdditionEnabled" value="YES" #if ($!action.unvalidatedUserAdditionEnabled == "YES") checked="true" #end />$action.getText("csum.configure.yes") &nbsp;
+                <input type="radio" name="unvalidatedUserAdditionEnabled" value="NO" #if ($!action.unvalidatedUserAdditionEnabled == "NO") checked="true" #end />$action.getText("csum.configure.no")
+                <p>
+                    <font size="1">$action.getText("csum.configure.unvalidateduseradditionenabled.help")</font>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
             <td valign="top" class="label" width="30%">$action.getText("csum.configure.userfullnameformat.label"):</td>
             <td>
 				#fielderror ('userFullNameFormat')

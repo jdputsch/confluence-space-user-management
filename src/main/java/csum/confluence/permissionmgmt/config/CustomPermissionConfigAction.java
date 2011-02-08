@@ -31,8 +31,6 @@ package csum.confluence.permissionmgmt.config;
 
 import bucket.core.actions.PagerPaginationSupport;
 import com.atlassian.bandana.BandanaManager;
-import com.atlassian.confluence.core.Administrative;
-import com.atlassian.confluence.setup.BootstrapManager;
 import com.opensymphony.webwork.ServletActionContext;
 import csum.confluence.permissionmgmt.CustomPermissionConstants;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
@@ -40,6 +38,7 @@ import csum.confluence.permissionmgmt.util.cache.CacheUtil;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,21 +51,26 @@ import java.util.Map;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction implements Administrative {
+public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction {
     private Log log = LogFactory.getLog(this.getClass());
 
     BandanaManager bandanaManager;
-    BootstrapManager bootstrapManager;
     CustomPermissionConfiguration customPermissionConfiguration;
     private static final String JIRA_SOAP_PASSWORD_SET_PARAMNAME = "jiraSoapPasswordSet";
 
 
-    public CustomPermissionConfigAction() {
-        log.debug("CustomPermissionConfigAction instance created");
-    }
-
-    public void setBandanaManager(BandanaManager bandanaManager) {
+    @Autowired
+    public CustomPermissionConfigAction(BandanaManager bandanaManager,
+                                      CustomPermissionConfiguration customPermissionConfiguration) {
         this.bandanaManager = bandanaManager;
+        this.customPermissionConfiguration = customPermissionConfiguration;
+
+        if (bandanaManager==null) {
+			throw new RuntimeException("bandanaManager was not autowired in CustomPermissionConfigAction");
+        }
+        else if (customPermissionConfiguration==null) {
+			throw new RuntimeException("customPermissionConfiguration was not autowired in CustomPermissionConfigAction");
+        }
     }
 
     public String doDefault() throws Exception {
@@ -135,6 +139,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         setUserSearchEnabled(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("userSearchEnabled", getUserSearchEnabled(), CustomPermissionConfigConstants.YES));
         setGroupMembershipRefreshFixEnabled(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("groupMembershipRefreshFixEnabled", getGroupMembershipRefreshFixEnabled(), CustomPermissionConfigConstants.NO));
         setNumRowsPerPage("" + ConfigUtil.getIntOrUseDefaultIfNullOrTrimmedValueIsEmptyOrNotAnIntegerOrUseRangeMinOrMaxIfOutOfRange("numRowsPerPage", getNumRowsPerPage(), PagerPaginationSupport.DEFAULT_COUNT_ON_EACH_PAGE, CustomPermissionConfigConstants.MIN_ROWS_PER_PAGE, CustomPermissionConfigConstants.MAX_ROWS_PER_PAGE));
+        setUnvalidatedUserAdditionEnabled(ConfigUtil.getTrimmedStringOrUseDefaultIfValueIsNullOrTrimmedValueIsEmpty("unvalidatedUserAdditionEnabled", getUnvalidatedUserAdditionEnabled(), CustomPermissionConfigConstants.NO));
         
         // only relevant for page itself, so not putting into context
         Map paramMap = ServletActionContext.getRequest().getParameterMap();

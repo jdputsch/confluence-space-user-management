@@ -79,6 +79,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         config.setPersonalSpaceAllowed(getPersonalSpaceAllowed());
         config.setGroupMembershipRefreshFixEnabled(getGroupMembershipRefreshFixEnabled());
         config.setNumRowsPerPage(getNumRowsPerPage());
+        config.setUnvalidatedUserAdditionEnabled(getUnvalidatedUserAdditionEnabled());
     }
 
     public void updateWith(CustomPermissionConfigurable config) {
@@ -113,6 +114,7 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
         setPersonalSpaceAllowed(config.getPersonalSpaceAllowed());
         setGroupMembershipRefreshFixEnabled(config.getGroupMembershipRefreshFixEnabled());
         setNumRowsPerPage(config.getNumRowsPerPage());
+        setUnvalidatedUserAdditionEnabled(config.getUnvalidatedUserAdditionEnabled());
 
         // config has changed. clear ALL cache including indexes!!!
         AbstractPagerPaginationSupportCachingSpaceAction.clearCacheIncludingIndexes();
@@ -325,6 +327,11 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
         if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getGroupMembershipRefreshFixEnabled())) {
             result.addFieldError("groupMembershipRefreshFixEnabled", cas.getText("csum.configure.error.groupmembershiprefreshfixenabledinvalid"));
+            result.setValid(false);
+        }
+
+        if (!ConfigUtil.isNotNullAndIsYesOrNo(config.getUnvalidatedUserAdditionEnabled())) {
+            result.addFieldError("unvalidatedUserAdditionEnabled", cas.getText("csum.configure.error.unvalidateduseradditionenabledinvalid"));
             result.setValid(false);
         }
 
@@ -554,6 +561,14 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setNumRowsPerPage(String numRowsPerPage) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_NUM_ROWS_PER_PAGE, numRowsPerPage);
+    }
+
+    public String getUnvalidatedUserAdditionEnabled() {
+        return (String) bandanaManager.getValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_UNVALIDATED_USER_ADDITION_ENABLED);
+    }
+
+    public void setUnvalidatedUserAdditionEnabled(String unvalidatedUserAdditionEnabled) {
+        bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_UNVALIDATED_USER_ADDITION_ENABLED, unvalidatedUserAdditionEnabled);
     }
 
     public BandanaManager getBandanaManager() {

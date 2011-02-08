@@ -89,6 +89,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
         Map groupsNotFoundMap = new TreeMap();
 
         boolean isLDAPPresent = config.getLdapAuthUsed().equals(CustomPermissionConfigConstants.YES) ? true : false;
+        boolean createUserAnyway = config.getUnvalidatedUserAdditionEnabled().equals(CustomPermissionConfigConstants.YES) ? true : false;
 
         //Associate selected user-groups to all users.
         for (Iterator itr = userNames.iterator(); itr.hasNext();) {
@@ -101,11 +102,7 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                 if (isLDAPPresent) {
                     //create an user.
 
-                    // TODO: the option to create users if they don't exist using LDAP info should be in config
-
-                    // TODO: consider adding option and ability to create users if they don't exist, even if LDAP not used
-
-                    user = createConfUser(userid, isLDAPPresent);
+                    user = createConfUser(userid, isLDAPPresent, createUserAnyway);
                 }
 
                 //if user details not found in LDAP too, then retun userid in errorids
@@ -145,12 +142,13 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
     }
 
     //This method will be used to create an user when Confluence is used for Managing Wiki Users
-    private User createConfUser(String creationUserName, boolean isLDAPAvailable) {
+    private User createConfUser(String creationUserName, boolean isLDAPAvailable, boolean createUserAnyway) {
         log.debug("createConfUser() called. creationUserName=" + creationUserName + " isLDAPAvailable" + isLDAPAvailable);
         User vUser = null;
         LDAPUser lUser = null;
 
         try {
+            boolean createdUser = false;
             //if LDAP Lookup is available, get information from there.
             if (isLDAPAvailable) {
                 //log.debug("LDAP Lookup available");
@@ -161,11 +159,19 @@ public class ConfluenceUserManagementService extends BaseUserManagementService {
                     vUser = addUser(creationUserName, lUser.getEmail(), lUser.getFullName());
 
                     if (vUser == null) {
-                        LogUtil.warnWithRemoteUserInfo(log, "userAccessor.addUser(...) returned null for userid '" + creationUserName + ". User addition may have been unsuccessful.");
+                        LogUtil.warnWithRemoteUserInfo(log, "addUser(...) returned null for userid '" + creationUserName + ". User addition may have been unsuccessful.");
+                    }
+                    else {
+                        createdUser = true;
                     }
                 } else {
                     LogUtil.warnWithRemoteUserInfo(log, "No LDAP user found for userid '" + creationUserName + "'. Unable to add user.");
                 }
+            }
+
+            if (!createdUser && createUserAnyway) {
+                LogUtil.debugWithRemoteUserInfo(log, "Adding unvalidated user '" + creationUserName + "'");
+                addUser(creationUserName, null, creationUserName );
             }
         } catch (Exception e) {
             LogUtil.errorWithRemoteUserInfo(log, "Error creating confluence user " + creationUserName, e);

@@ -133,4 +133,8 @@ public interface CustomPermissionConfigurable {
     public String getNumRowsPerPage();
     
     public void setNumRowsPerPage(String numRowsPerPage);
+
+    public String getUnvalidatedUserAdditionEnabled();
+
+    public void setUnvalidatedUserAdditionEnabled(String unvalidatedUserAdditionEnabled);
 }

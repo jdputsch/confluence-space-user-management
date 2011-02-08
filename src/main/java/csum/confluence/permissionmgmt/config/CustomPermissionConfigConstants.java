@@ -63,6 +63,7 @@ public interface CustomPermissionConfigConstants {
     public static final String DELEGATE_USER_MGMT_PERSONAL_SPACE_ALLOWED = "ext.delegateusermgmt.personal.space.allowed";
     public static final String DELEGATE_USER_MGMT_GROUP_MEMBERSHIP_REFRESH_FIX_ENABLED = "ext.delegateusermgmt.group.management.refresh.fix.enabled";
     public static final String DELEGATE_USER_MGMT_NUM_ROWS_PER_PAGE = "ext.delegateusermgmt.num.rows.per.page";
+    public static final String DELEGATE_USER_MGMT_UNVALIDATED_USER_ADDITION_ENABLED = "ext.delegateusermgmt.unvalidated.user.addition.enabled";
 
     // static values
     public static final String DELEGATE_USER_MANAGER_LOCATION_CONFLUENCE_VALUE = "CONFLUENCE";
