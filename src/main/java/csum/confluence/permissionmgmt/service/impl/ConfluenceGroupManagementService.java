@@ -57,11 +57,8 @@ import java.util.List;
  */
 public class ConfluenceGroupManagementService extends BaseGroupManagementService {
 
-    protected PermissionManager permissionManager;
-
     @Autowired
-    public ConfluenceGroupManagementService(PermissionManager permissionManager,
-                                            SpacePermissionManager spacePermissionManager,
+    public ConfluenceGroupManagementService(SpacePermissionManager spacePermissionManager,
                                             UserManager userManager,
                                             CustomPermissionConfiguration customPermissionConfiguration,
                                             GroupManager groupManager) {
@@ -69,12 +66,8 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                 userManager,
                 customPermissionConfiguration,
                 groupManager);
-        this.permissionManager = permissionManager;
 
-        if (permissionManager==null) {
-			throw new RuntimeException("permissionManager was not autowired in ConfluenceGroupManagementService");
-        }
-        else if (spacePermissionManager==null) {
+        if (spacePermissionManager==null) {
 			throw new RuntimeException("spacePermissionManager was not autowired in ConfluenceGroupManagementService");
         }
         else if (userManager==null) {
@@ -201,68 +194,35 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
     private void removeGroup_Confluence2_6_0Compatible(Group group) throws RemoveException {
         log.debug("removeGroup called for " + group);
         if (group != null) {
-            // Workaround for http://jira.atlassian.com/browse/CONF-9623
-            // Confluence 2.6.0 has a bug where removeGroup fails if space permissions are not removed for the group
-            // prior to deletion of the group. This was not a problem in Confluence 2.5.x
-
-            // workaround for Managers performing actions without specifying permissions, contributed by Anatolia Kazatchkov (Atlassian) in http://jira.atlassian.com/browse/CONF-16183
-            User currentUser = AuthenticatedUserThreadLocal.getUser();
-            if (currentUser == null) {
-                String msg = "Could not check permissions to delete group '" + group.getName() + "' since AuthenticatedUserThreadLocal.getUser() returned null (could not determine current user)";
-                log.error(msg);
-                throw new RemoveException(msg);
+            log.debug("Removing space permissions from group " + group.getName() + " as (workaround for CONF-9623)");
+            log.debug("Calling spacePermissionManager.getAllPermissionsForGroup(" + group.getName() + ")");
+            List perms = spacePermissionManager.getAllPermissionsForGroup(group.getName());
+            if (perms != null) {
+                for (int i = 0; i < perms.size(); i++) {
+                    SpacePermission perm = (SpacePermission) perms.get(i);
+                    log.debug("Calling spacePermissionManager.removePermission(" + perm + ")");
+                    spacePermissionManager.removePermission(perm);
+                }
             }
 
-            // SUSR-99 - fix for "Could not check permissions for (group name) no suitable delegate found." error in Confluence 2.5.7 
-            boolean hasRemoveGroupPermission = true;
+            log.debug("Calling userAccessor.removeGroup(...)");
+            boolean success = false;
             try {
-                log.debug("Checking whether '" + currentUser.getName() + "' has permission to remove group '" + group.getName() + "'.");
-                hasRemoveGroupPermission = permissionManager.hasPermission(currentUser, Permission.REMOVE, group);
-            } catch (IllegalArgumentException e) {
-                // this is going to happen a lot unfortunately on older Confluence...
-                log.debug("permissionManager.hasPermission(currentUser, Permission.REMOVE, group) failed, " +
-                        "which is normal in some versions of Confluence. Therefore, we can't check " +
-                        "whether user '" + currentUser.getName() + "' has permissions to remove group '" +
-                        group.getName() + "'. Assuming that the user should be allowed to remove " +
-                        "this group (see CONF-16183, SUSR-97, SUSR-99).");
-            }
-            log.debug("hasRemoveGroupPermission=" + hasRemoveGroupPermission);
-
-            if (hasRemoveGroupPermission) {
-                log.debug("Removing space permissions from group " + group.getName() + " as (workaround for CONF-9623)");
-                log.debug("Calling spacePermissionManager.getAllPermissionsForGroup(" + group.getName() + ")");
-                List perms = spacePermissionManager.getAllPermissionsForGroup(group.getName());
-                if (perms != null) {
+                log.debug("Calling userAccessor.removeGroup(group).");
+                removeGroup(group);
+                success = true;
+                log.debug("Assuming that userAccessor.removeGroup(group) was successful.");
+            } finally {
+                if (perms != null && !success) {
+                    log.warn("Remove of group " + group.getName() + " failed and since there were permissions, " +
+                            "we'll attempt to add them back in case they were able to be removed.");
+                    // readd perms. Related to SUSR-97
                     for (int i = 0; i < perms.size(); i++) {
                         SpacePermission perm = (SpacePermission) perms.get(i);
-                        log.debug("Calling spacePermissionManager.removePermission(" + perm + ")");
-                        spacePermissionManager.removePermission(perm);
+                        log.debug("Calling spacePermissionManager.savePermission(" + perm + ")");
+                        spacePermissionManager.savePermission(perm);
                     }
                 }
-
-                log.debug("Calling userAccessor.removeGroup(...)");
-                boolean success = false;
-                try {
-                    log.debug("Calling userAccessor.removeGroup(group).");
-                    removeGroup(group);
-                    success = true;
-                    log.debug("Assuming that userAccessor.removeGroup(group) was successful.");
-                } finally {
-                    if (perms != null && !success) {
-                        log.warn("Remove of group " + group.getName() + " failed and since there were permissions, " +
-                                "we'll attempt to add them back in case they were able to be removed.");
-                        // readd perms. Related to SUSR-97
-                        for (int i = 0; i < perms.size(); i++) {
-                            SpacePermission perm = (SpacePermission) perms.get(i);
-                            log.debug("Calling spacePermissionManager.savePermission(" + perm + ")");
-                            spacePermissionManager.savePermission(perm);
-                        }
-                    }
-                }
-            } else {
-                String msg = "User '" + currentUser.getName() + "' doesn't have rights to delete group '" + group.getName() + "'";
-                log.error(msg);
-                throw new RemoveException(msg);
             }
         }
         log.debug("Group removal complete.");
