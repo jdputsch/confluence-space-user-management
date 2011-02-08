@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>raju.kadam.confluence</groupId>
     <artifactId>permissionmgmt</artifactId>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.1.1</version>
 
     <name>Custom Space User Management Plugin</name>
     <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
