@@ -29,6 +29,7 @@
 
 package csum.confluence.permissionmgmt.config;
 
+import com.atlassian.confluence.core.Administrative;
 import com.atlassian.confluence.core.ConfluenceActionSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,7 +37,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Gary S. Weaver
  */
-public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements CustomPermissionConfigurable {
+public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements Administrative, CustomPermissionConfigurable {
 
     protected Log log = LogFactory.getLog(this.getClass());
 
@@ -70,6 +71,14 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     public BaseCustomPermissionConfigAction() {
         log.debug("instantiating BaseCustomPermissionConfigAction");
         log.debug("instantiated BaseCustomPermissionConfigAction");
+    }
+
+    public String doDefault() throws Exception {
+        return INPUT;
+    }
+
+    public String execute() throws Exception {
+        return INPUT;
     }
 
     public String getUserManagerLocation() {

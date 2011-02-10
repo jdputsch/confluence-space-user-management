@@ -31,6 +31,7 @@ package csum.confluence.permissionmgmt.config;
 
 import bucket.core.actions.PagerPaginationSupport;
 import com.atlassian.bandana.BandanaManager;
+import com.atlassian.confluence.core.Administrative;
 import com.opensymphony.webwork.ServletActionContext;
 import csum.confluence.permissionmgmt.CustomPermissionConstants;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
@@ -49,7 +50,9 @@ import java.util.Map;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction {
+public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction implements Administrative {
+    // tried removing deprecated Administrative interface from this and base class, but then complains about
+    // missing doDefault, even though is defined and bean instantiates fine. xwork fail...
 
     BandanaManager bandanaManager;
     CustomPermissionConfiguration customPermissionConfiguration;
@@ -91,7 +94,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
             return ERROR;
         }
 
-        return super.doDefault();
+        return INPUT;
     }
 
     public String execute() throws Exception {
@@ -117,7 +120,8 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         resultList.add(getText("csum.configure.success"));
         setActionMessages(resultList);
 
-        return SUCCESS;
+        //old way: return super.doDefault();
+        return INPUT;
     }
 
     private void configureFormValuesWithPersistedConfig() {
