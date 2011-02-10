@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements CustomPermissionConfigurable {
 
-    private Log log = LogFactory.getLog(this.getClass());
+    protected Log log = LogFactory.getLog(this.getClass());
 
     private String userManagerLocation;
     private String ldapAuthUsed;
@@ -66,6 +66,11 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String groupMembershipRefreshFixEnabled;
     private String numRowsPerPage;
     private String unvalidatedUserAdditionEnabled;
+
+    public BaseCustomPermissionConfigAction() {
+        log.debug("instantiating BaseCustomPermissionConfigAction");
+        log.debug("instantiated BaseCustomPermissionConfigAction");
+    }
 
     public String getUserManagerLocation() {
         return userManagerLocation;

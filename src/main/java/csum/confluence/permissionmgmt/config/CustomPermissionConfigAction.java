@@ -36,8 +36,6 @@ import csum.confluence.permissionmgmt.CustomPermissionConstants;
 import csum.confluence.permissionmgmt.util.ConfigUtil;
 import csum.confluence.permissionmgmt.util.cache.CacheUtil;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -52,7 +50,6 @@ import java.util.Map;
  * @author Gary S. Weaver
  */
 public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction {
-    private Log log = LogFactory.getLog(this.getClass());
 
     BandanaManager bandanaManager;
     CustomPermissionConfiguration customPermissionConfiguration;
@@ -62,15 +59,20 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     @Autowired
     public CustomPermissionConfigAction(BandanaManager bandanaManager,
                                       CustomPermissionConfiguration customPermissionConfiguration) {
+        log.debug("instantiating CustomPermissionConfigAction");
         this.bandanaManager = bandanaManager;
         this.customPermissionConfiguration = customPermissionConfiguration;
 
         if (bandanaManager==null) {
+            // wouldn't normally log and throw but xwork is hiding errors
+            log.warn("bandanaManager was not autowired in CustomPermissionConfigAction");
 			throw new RuntimeException("bandanaManager was not autowired in CustomPermissionConfigAction");
         }
         else if (customPermissionConfiguration==null) {
+            log.warn("customPermissionConfiguration was not autowired in CustomPermissionConfigAction");
 			throw new RuntimeException("customPermissionConfiguration was not autowired in CustomPermissionConfigAction");
         }
+        log.debug("instantiated CustomPermissionConfigAction");
     }
 
     public String doDefault() throws Exception {
@@ -119,11 +121,11 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     }
 
     private void configureFormValuesWithPersistedConfig() {
-        getCustomPermissionConfiguration().copyTo(this);
+        this.customPermissionConfiguration.copyTo(this);
     }
 
     private void updatePersistedConfigWithFormValues() {
-        getCustomPermissionConfiguration().updateWith(this);
+        this.customPermissionConfiguration.updateWith(this);
     }
 
     public void fixFormValues() {
@@ -152,7 +154,7 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
 
     public boolean validateConfiguration() {
         log.debug("CustomPermissionConfigAction - Inside validate Configuration ...");
-        CsumConfigValidationResponse validResp = CustomPermissionConfiguration.validate(this, getCustomPermissionConfiguration(), getRemoteUser().getName(), this, true);
+        CsumConfigValidationResponse validResp = CustomPermissionConfiguration.validate(this, this.customPermissionConfiguration, getRemoteUser().getName(), this, true);
         Map fieldErrorMap = validResp.getFieldNameToErrorMessage();
         Iterator keys = fieldErrorMap.keySet().iterator();
         while (keys.hasNext()) {
@@ -161,14 +163,6 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
         }
 
         return validResp.isValid();
-    }
-
-    public CustomPermissionConfiguration getCustomPermissionConfiguration() {
-        return customPermissionConfiguration;
-    }
-
-    public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
-        this.customPermissionConfiguration = customPermissionConfiguration;
     }
 
     public String getActionName(String fullClassName) {

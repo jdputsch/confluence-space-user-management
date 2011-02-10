@@ -42,6 +42,7 @@ import csum.confluence.permissionmgmt.util.ldap.LDAPHelper;
 import csum.confluence.permissionmgmt.util.logging.LogUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Gary S. Weaver
@@ -52,6 +53,18 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
     private static final Log log = LogFactory.getLog(CustomPermissionConfiguration.class);
 
     private BandanaManager bandanaManager;
+
+    @Autowired
+    public CustomPermissionConfiguration(BandanaManager bandanaManager) {
+        log.debug("instantiating CustomPermissionConfiguration");
+        this.bandanaManager = bandanaManager;
+
+        if (bandanaManager==null) {
+            log.warn("bandanaManager was not autowired in CustomPermissionConfiguration");
+			throw new RuntimeException("bandanaManager was not autowired in CustomPermissionConfiguration");
+        }
+        log.debug("instantiated CustomPermissionConfiguration");
+    }
 
     public void copyTo(CustomPermissionConfigurable config) {
         config.setUserManagerLocation(getUserManagerLocation());
@@ -569,13 +582,5 @@ public class CustomPermissionConfiguration implements CustomPermissionConfigurab
 
     public void setUnvalidatedUserAdditionEnabled(String unvalidatedUserAdditionEnabled) {
         bandanaManager.setValue(new ConfluenceBandanaContext(), CustomPermissionConfigConstants.DELEGATE_USER_MGMT_UNVALIDATED_USER_ADDITION_ENABLED, unvalidatedUserAdditionEnabled);
-    }
-
-    public BandanaManager getBandanaManager() {
-        return bandanaManager;
-    }
-
-    public void setBandanaManager(BandanaManager bandanaManager) {
-        this.bandanaManager = bandanaManager;
     }
 }

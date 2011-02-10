@@ -54,10 +54,6 @@ public class CsumConfigValidationResponse {
         return fieldNameToErrorMessage;
     }
 
-    public void setFieldNameToErrorMessage(Map fieldNameToErrorMessage) {
-        this.fieldNameToErrorMessage = fieldNameToErrorMessage;
-    }
-
     public void addFieldError(String fieldName, String errorMessage) {
         fieldNameToErrorMessage.put(fieldName, errorMessage);
     }
