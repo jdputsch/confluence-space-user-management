@@ -30,10 +30,9 @@
 package csum.confluence.permissionmgmt.service.impl;
 
 import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.crowd.embedded.api.CrowdService;
+import com.atlassian.crowd.embedded.api.Group;
 import com.atlassian.user.EntityException;
-import com.atlassian.user.Group;
-import com.atlassian.user.GroupManager;
-import com.atlassian.user.UserManager;
 import com.atlassian.user.search.SearchResult;
 import com.atlassian.user.search.page.DefaultPager;
 import com.atlassian.user.search.page.Pager;
@@ -71,26 +70,17 @@ import java.util.Map;
 public abstract class BaseUserManagementService extends UserAndGroupManagementService implements UserManagementService {
 
     // Note: FOR ADVANCED AND PARTIAL NAME USER QUERIES ONLY! THIS IS ACCESS-CONTROLLED AND MAY NOT BE AVAILABLE TO NON-ADMINS IN LATER VERSIONS OF CONFLUENCE
-    protected UserAccessor userAccessor;
+    protected CrowdService crowdService;
     protected CustomPermissionConfiguration customPermissionConfiguration;
 
     @Autowired
-    public BaseUserManagementService(UserAccessor userAccessor,
-                                     UserManager userManager,
-                                     GroupManager groupManager,
+    public BaseUserManagementService(CrowdService crowdService,
                                      CustomPermissionConfiguration customPermissionConfiguration) {
-        super(userManager, groupManager);
-        this.userAccessor = userAccessor;
+        super(crowdService);
         this.customPermissionConfiguration = customPermissionConfiguration;
 
-        if (userAccessor==null) {
-			throw new RuntimeException("userAccessor was not autowired in BaseUserManagementService");
-        }
-        else if (userManager==null) {
-			throw new RuntimeException("userManager was not autowired in BaseUserManagementService");
-        }
-        else if (groupManager==null) {
-			throw new RuntimeException("groupManager was not autowired in BaseUserManagementService");
+        if (crowdService==null) {
+			throw new RuntimeException("crowdService was not autowired in BaseUserManagementService");
         }
         else if (customPermissionConfiguration==null) {
 			throw new RuntimeException("customPermissionConfiguration was not autowired in BaseUserManagementService");
@@ -138,7 +128,7 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
         if (advancedUserQuery.isUsernameSearchDefined()) {
             try {
                 UserNameTermQuery query = new UserNameTermQuery(advancedUserQuery.getPartialSearchTerm(), advancedUserQuery.getSubstringMatchType());
-                SearchResult result = userAccessor.findUsers(query);
+                SearchResult result = crowdService.search(query);
                 pager = result.pager();
                 //results.setMessage("" + PagerUtils.count(pager) + " returned");
             } catch (EntityException e) {

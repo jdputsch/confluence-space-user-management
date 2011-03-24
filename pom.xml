@@ -15,8 +15,11 @@
     <packaging>atlassian-plugin</packaging>
 
     <properties>
-        <confluence.version>3.4.8</confluence.version>
+        <confluence.version>3.5</confluence.version>
         <confluence.data.version>3.1</confluence.data.version>
+        <!-- find this in pom.xml in version dir: https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
+        <crowd.version>2.2.1</crowd.version>
+        <crowd.embedded.version>1.1</crowd.embedded.version>
     </properties>
 
     <issueManagement>
@@ -144,38 +147,6 @@
     </organization>
 
     <dependencies>
-        <!--
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.6</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.atlassian.confluence</groupId>
-            <artifactId>confluence</artifactId>
-            <version>${confluence.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.atlassian.confluence.plugin</groupId>
-            <artifactId>func-test</artifactId>
-            <version>2.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.jwebunit</groupId>
-            <artifactId>jwebunit-htmlunit-plugin</artifactId>
-            <version>2.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.nekohtml</groupId>
-            <artifactId>nekohtml</artifactId>
-            <version>1.9.12</version>
-            <scope>test</scope>
-        </dependency>
-        -->
         <!-- scope provided means it is only used for compilation and not included in jar -->
         <dependency>
             <groupId>com.atlassian.confluence</groupId>
@@ -184,6 +155,50 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.atlassian.crowd</groupId>
+            <artifactId>embedded-crowd-api</artifactId>
+            <version>${crowd.version}</version>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>com.atlassian.crowd</groupId>
+            <artifactId>crowd-integration-api</artifactId>
+            <version>${crowd.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.atlassian.crowd</groupId>
+            <artifactId>crowd-integration-seraph22</artifactId>
+            <version>${crowd.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.atlassian.crowd</groupId>
+            <artifactId>embedded-crowd-spi</artifactId>
+            <version>${crowd.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.crowd</groupId>
+            <artifactId>crowd-password-encoders</artifactId>
+            <version>${crowd.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.crowd</groupId>
+            <artifactId>embedded-crowd-core</artifactId>
+            <version>${crowd.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.crowd</groupId>
+            <artifactId>crowd-ldap</artifactId>
+            <version>${crowd.version}</version>
+        </dependency>
+        -->
+        
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
@@ -410,16 +425,6 @@
     </reporting>
 
     <repositories>
-        <!--
-      <repository>
-          <snapshots>
-              <enabled>true</enabled>
-          </snapshots>
-          <id>atlassian-m2-repository</id>
-          <name>Atlassian Maven 2 Repository</name>
-          <url>https://m2proxy.atlassian.com/repository/public</url>
-      </repository>
--->
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -498,16 +503,6 @@
     </repositories>
 
     <pluginRepositories>
-   <!--
-        <pluginRepository>
-            <id>atlassian-m2-contrib</id>
-            <name>Atlassian Maven 2 Contributor Repository</name>
-            <url>http://svn.atlassian.com/svn/public/contrib/repository/maven2</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
--->
         <pluginRepository>
             <id>codehaus.org</id>
             <name>CodeHaus Plugin Snapshots</name>

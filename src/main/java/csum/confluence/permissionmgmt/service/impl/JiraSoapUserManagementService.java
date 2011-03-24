@@ -30,6 +30,7 @@
 package csum.confluence.permissionmgmt.service.impl;
 
 import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.UserManager;
 import com.dolby.confluence.net.ldap.LDAPUser;
@@ -59,22 +60,17 @@ public class JiraSoapUserManagementService extends BaseUserManagementService {
 
     @Autowired
     public JiraSoapUserManagementService(UserAccessor userAccessor,
-                                         UserManager userManager,
-                                         GroupManager groupManager,
+                                         CrowdService crowdService,
                                          CustomPermissionConfiguration customPermissionConfiguration) {
         super(userAccessor,
-                userManager,
-                groupManager,
+                crowdService,
                 customPermissionConfiguration);
 
         if (userAccessor==null) {
 			throw new RuntimeException("userAccessor was not autowired in JiraSoapUserManagementService");
         }
-        else if (userManager==null) {
-			throw new RuntimeException("userManager was not autowired in JiraSoapUserManagementService");
-        }
-        else if (groupManager==null) {
-			throw new RuntimeException("groupManager was not autowired in JiraSoapUserManagementService");
+        else if (crowdService==null) {
+			throw new RuntimeException("crowdService was not autowired in JiraSoapUserManagementService");
         }
         else if (customPermissionConfiguration==null) {
 			throw new RuntimeException("customPermissionConfiguration was not autowired in JiraSoapUserManagementService");

@@ -35,6 +35,7 @@ import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
+import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.User;
@@ -59,25 +60,20 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
 
     @Autowired
     public ConfluenceGroupManagementService(SpacePermissionManager spacePermissionManager,
-                                            UserManager userManager,
-                                            CustomPermissionConfiguration customPermissionConfiguration,
-                                            GroupManager groupManager) {
+                                            CrowdService crowdService,
+                                            CustomPermissionConfiguration customPermissionConfiguration) {
         super(spacePermissionManager,
-                userManager,
-                customPermissionConfiguration,
-                groupManager);
+                crowdService,
+                customPermissionConfiguration);
 
         if (spacePermissionManager==null) {
 			throw new RuntimeException("spacePermissionManager was not autowired in ConfluenceGroupManagementService");
         }
-        else if (userManager==null) {
-			throw new RuntimeException("userManager was not autowired in ConfluenceGroupManagementService");
+        else if (crowdService==null) {
+			throw new RuntimeException("crowdService was not autowired in ConfluenceGroupManagementService");
         }
         else if (customPermissionConfiguration==null) {
 			throw new RuntimeException("customPermissionConfiguration was not autowired in ConfluenceGroupManagementService");
-        }
-        else if (groupManager==null) {
-			throw new RuntimeException("groupManager was not autowired in ConfluenceGroupManagementService");
         }
     }
 

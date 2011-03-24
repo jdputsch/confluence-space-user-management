@@ -1,9 +1,12 @@
 package csum.confluence.permissionmgmt.service.impl;
 
-import com.atlassian.user.Group;
-import com.atlassian.user.GroupManager;
-import com.atlassian.user.User;
-import com.atlassian.user.UserManager;
+import com.atlassian.crowd.embedded.api.CrowdService;
+import com.atlassian.crowd.embedded.api.User;
+import com.atlassian.crowd.embedded.api.Group;
+import com.atlassian.crowd.embedded.impl.ImmutableGroup;
+import com.atlassian.crowd.embedded.impl.ImmutableUser;
+import com.atlassian.crowd.model.group.GroupTemplate;
+import com.atlassian.crowd.model.group.GroupType;
 import com.atlassian.user.search.page.Pager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,27 +16,21 @@ public class UserAndGroupManagementService {
 
     protected Log log = LogFactory.getLog(this.getClass());
 
-    protected UserManager userManager;
-    protected GroupManager groupManager;
+    protected CrowdService crowdService;
 
     @Autowired
-    public UserAndGroupManagementService(UserManager userManager,
-                                         GroupManager groupManager) {
-        this.userManager = userManager;
-        this.groupManager = groupManager;
+    public UserAndGroupManagementService(CrowdService crowdService) {
+        this.crowdService = crowdService;
 
-        if (userManager==null) {
-			throw new RuntimeException("userManager was not autowired in UserAndGroupManagementService");
-        }
-        else if (groupManager==null) {
-			throw new RuntimeException("groupManager was not autowired in UserAndGroupManagementService");
+        if (crowdService==null) {
+			throw new RuntimeException("crowdService was not autowired in UserAndGroupManagementService");
         }
     }
 
     public User getUser(String username) {
         User user = null;
         try {
-            user = userManager.getUser(username);
+            user = crowdService.getUser(username);
         } catch (Throwable t) {
             log.error("Problem getting user '" + username + "'", t);
         }
@@ -41,28 +38,19 @@ public class UserAndGroupManagementService {
         return user;
     }
 
-    public boolean isReadOnly(Group group) {
-        if (group == null) {
-            log.warn("Attempted to check isReadOnly on null group. Returning false.");
-            return true;
-        }
-
-        boolean result = false;
-        try {
-            result = groupManager.isReadOnly(group);
-        } catch (Throwable t) {
-            log.error("Problem checking isReadOnly status of group '" + group.getName() + "'. Will assume isn't read-only.", t);
-        }
-
-        return result;
-    }
-
     public User addUser(String userName, String email, String fullName) {
         User user = null;
         try {
-            user = userManager.createUser(userName);
-            user.setEmail(email);
-            user.setFullName(fullName);
+            ImmutableUser.Builder userBuilder = new ImmutableUser.Builder();
+            userBuilder.active(true);
+            long directoryId = 0;
+            userBuilder.directoryId(directoryId);
+            userBuilder.displayName("John Doe");
+            userBuilder.emailAddress("this.is.an@email.address");
+            userBuilder.name("jdoe");
+            user = userBuilder.toUser();
+            String credential = null;
+            user = crowdService.addUser(user, credential);
         } catch (Throwable t) {
             log.error("Problem creating user '" + userName + "'", t);
         }
@@ -72,7 +60,7 @@ public class UserAndGroupManagementService {
     public Group getGroup(String groupName) {
         Group group = null;
         try {
-            group = groupManager.getGroup(groupName);
+            group = crowdService.getGroup(groupName);
         } catch (Throwable t) {
             log.error("Problem getting group '" + groupName + "'", t);
         }
@@ -82,7 +70,11 @@ public class UserAndGroupManagementService {
     public Group addGroup(String groupName) {
         Group group = null;
         try {
-            group = groupManager.createGroup(groupName);
+            group = new ImmutableGroup(groupName);
+            crowdService.addGroup(group);
+            //Long directoryId = 0L;
+            //GroupTemplate group = new GroupTemplate(groupName, directoryId);
+            group = crowdService.addGroup(group);
         } catch (Throwable t) {
             log.error("Problem creating group '" + groupName + "'", t);
         }
@@ -94,7 +86,7 @@ public class UserAndGroupManagementService {
             log.warn("Attempted to delete null group. Ignoring.");
         } else {
             try {
-                groupManager.removeGroup(group);
+                crowdService.removeGroup(group);
             } catch (Throwable t) {
                 log.error("Problem removing group with name '" + group.getName() + "'", t);
             }
@@ -107,7 +99,7 @@ public class UserAndGroupManagementService {
             log.warn("Attempted to get members of null group. Ignoring.");
         } else {
             try {
-                pager = groupManager.getMemberNames(group);
+                pager = crowdService.getGroupWithAttributes(group);
             } catch (Throwable t) {
                 log.error("Problem getting members of group '" + group.getName() + "'", t);
             }
@@ -122,7 +114,7 @@ public class UserAndGroupManagementService {
             log.warn("Attempted to add null user to group. Ignoring.");
         } else {
             try {
-                groupManager.addMembership(group, user);
+                crowdService.addMembership(group, user);
             } catch (Throwable t) {
                 log.error("Problem adding user '" + user.getName() + "' to group '" + group.getName() + "'", t);
             }
@@ -136,7 +128,7 @@ public class UserAndGroupManagementService {
             log.warn("Attempted to remove null user from group. Ignoring.");
         } else {
             try {
-                groupManager.removeMembership(group, user);
+                crowdService.removeMembership(group, user);
             } catch (Throwable t) {
                 log.error("Problem removing user '" + user.getName() + "' from group '" + group.getName() + "'", t);
             }

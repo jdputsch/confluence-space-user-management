@@ -33,6 +33,7 @@ import com.atlassian.confluence.security.PermissionManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
+import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.UserManager;
@@ -66,14 +67,12 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
     @Autowired
     public JiraSoapGroupManagementService(PermissionManager permissionManager,
                                           SpacePermissionManager spacePermissionManager,
-                                          UserManager userManager,
+                                          CrowdService crowdService,
                                           CustomPermissionConfiguration customPermissionConfiguration,
-                                          GroupManager groupManager,
                                           JiraSoapUserManagementService jiraSoapUserManagementService) {
         super(spacePermissionManager,
-                userManager,
-                customPermissionConfiguration,
-                groupManager);
+                crowdService,
+                customPermissionConfiguration);
         this.jiraSoapUserManagementService = jiraSoapUserManagementService;
 
         if (permissionManager==null) {
@@ -82,14 +81,11 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
         else if (spacePermissionManager==null) {
 			throw new RuntimeException("spacePermissionManager was not autowired in JiraSoapGroupManagementService");
         }
-        else if (userManager==null) {
-			throw new RuntimeException("userManager was not autowired in JiraSoapGroupManagementService");
+        else if (crowdService==null) {
+			throw new RuntimeException("crowdService was not autowired in JiraSoapGroupManagementService");
         }
         else if (customPermissionConfiguration==null) {
 			throw new RuntimeException("customPermissionConfiguration was not autowired in JiraSoapGroupManagementService");
-        }
-        else if (groupManager==null) {
-			throw new RuntimeException("groupManager was not autowired in JiraSoapGroupManagementService");
         }
         else if (jiraSoapUserManagementService==null) {
 			throw new RuntimeException("jiraSoapUserManagementService was not autowired in JiraSoapGroupManagementService");
