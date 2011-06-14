@@ -33,9 +33,11 @@ import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
 import com.atlassian.crowd.embedded.api.CrowdService;
-import com.atlassian.crowd.embedded.api.Group;
+import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
+import com.atlassian.user.UserManager;
 import com.atlassian.user.search.page.DefaultPager;
 import com.atlassian.user.search.page.Pager;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -67,16 +69,14 @@ public abstract class BaseGroupManagementService extends UserAndGroupManagementS
                                       CrowdService crowdService,
                                       CustomPermissionConfiguration customPermissionConfiguration,
                                       GroupManager groupManager,
+                                      CrowdDirectoryService crowdDirectoryService,
                                       UserAccessor userAccessor) {
-        super(crowdService, groupManager, userAccessor);
+        super(crowdService, crowdDirectoryService, groupManager, userAccessor);
         this.spacePermissionManager = spacePermissionManager;
         this.customPermissionConfiguration = customPermissionConfiguration;
 
         if (spacePermissionManager==null) {
 			throw new RuntimeException("spacePermissionManager was not autowired in BaseGroupManagementService");
-        }
-        else if (crowdService==null) {
-			throw new RuntimeException("crowdService was not autowired in BaseGroupManagementService");
         }
         else if (customPermissionConfiguration==null) {
 			throw new RuntimeException("customPermissionConfiguration was not autowired in BaseGroupManagementService");

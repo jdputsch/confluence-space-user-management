@@ -29,7 +29,9 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
 import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.UserManager;
@@ -59,22 +61,13 @@ import java.util.*;
 public class JiraSoapUserManagementService extends BaseUserManagementService {
 
     @Autowired
-    public JiraSoapUserManagementService(UserAccessor userAccessor,
-                                         CrowdService crowdService,
-                                         CustomPermissionConfiguration customPermissionConfiguration) {
-        super(userAccessor,
-                crowdService,
-                customPermissionConfiguration);
-
-        if (userAccessor==null) {
-			throw new RuntimeException("userAccessor was not autowired in JiraSoapUserManagementService");
-        }
-        else if (crowdService==null) {
-			throw new RuntimeException("crowdService was not autowired in JiraSoapUserManagementService");
-        }
-        else if (customPermissionConfiguration==null) {
-			throw new RuntimeException("customPermissionConfiguration was not autowired in JiraSoapUserManagementService");
-        }
+    public JiraSoapUserManagementService(SpacePermissionManager spacePermissionManager,
+                                            CrowdService crowdService,
+                                            CustomPermissionConfiguration customPermissionConfiguration,
+                                            GroupManager groupManager,
+                                            CrowdDirectoryService crowdDirectoryService,
+                                            UserAccessor userAccessor) {
+        super(spacePermissionManager, crowdService, customPermissionConfiguration, groupManager, crowdDirectoryService, userAccessor);
     }
 
     public void addUsersByUsernameToGroups(List userNames, List groupNames, ServiceContext context) throws UsersNotFoundException, AddException, ServiceAuthenticationException {

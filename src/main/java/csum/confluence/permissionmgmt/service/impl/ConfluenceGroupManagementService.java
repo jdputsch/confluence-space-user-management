@@ -36,6 +36,7 @@ import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
 import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
 import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
@@ -64,22 +65,9 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                                             CrowdService crowdService,
                                             CustomPermissionConfiguration customPermissionConfiguration,
                                             GroupManager groupManager,
+                                            CrowdDirectoryService crowdDirectoryService,
                                             UserAccessor userAccessor) {
-        super(spacePermissionManager,
-                crowdService,
-                customPermissionConfiguration,
-                groupManager,
-                userAccessor);
-
-        if (spacePermissionManager==null) {
-			throw new RuntimeException("spacePermissionManager was not autowired in ConfluenceGroupManagementService");
-        }
-        else if (crowdService==null) {
-			throw new RuntimeException("crowdService was not autowired in ConfluenceGroupManagementService");
-        }
-        else if (customPermissionConfiguration==null) {
-			throw new RuntimeException("customPermissionConfiguration was not autowired in ConfluenceGroupManagementService");
-        }
+        super(spacePermissionManager, crowdService, customPermissionConfiguration, groupManager, crowdDirectoryService, userAccessor);
     }
 
     protected boolean isGroupReadOnly(Group group) {

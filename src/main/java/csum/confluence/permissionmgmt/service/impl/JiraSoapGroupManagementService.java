@@ -33,6 +33,8 @@ import com.atlassian.confluence.security.PermissionManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
+import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
 import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
@@ -65,29 +67,17 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
     protected JiraSoapUserManagementService jiraSoapUserManagementService;
 
     @Autowired
-    public JiraSoapGroupManagementService(PermissionManager permissionManager,
-                                          SpacePermissionManager spacePermissionManager,
-                                          CrowdService crowdService,
-                                          CustomPermissionConfiguration customPermissionConfiguration,
-                                          JiraSoapUserManagementService jiraSoapUserManagementService) {
-        super(spacePermissionManager,
-                crowdService,
-                customPermissionConfiguration);
+    public JiraSoapGroupManagementService(SpacePermissionManager spacePermissionManager,
+                                            CrowdService crowdService,
+                                            CustomPermissionConfiguration customPermissionConfiguration,
+                                            GroupManager groupManager,
+                                            CrowdDirectoryService crowdDirectoryService,
+                                            UserAccessor userAccessor) {
+        super(spacePermissionManager, crowdService, customPermissionConfiguration, groupManager, crowdDirectoryService, userAccessor);
+
         this.jiraSoapUserManagementService = jiraSoapUserManagementService;
 
-        if (permissionManager==null) {
-			throw new RuntimeException("permissionManager was not autowired in JiraSoapGroupManagementService");
-        }
-        else if (spacePermissionManager==null) {
-			throw new RuntimeException("spacePermissionManager was not autowired in JiraSoapGroupManagementService");
-        }
-        else if (crowdService==null) {
-			throw new RuntimeException("crowdService was not autowired in JiraSoapGroupManagementService");
-        }
-        else if (customPermissionConfiguration==null) {
-			throw new RuntimeException("customPermissionConfiguration was not autowired in JiraSoapGroupManagementService");
-        }
-        else if (jiraSoapUserManagementService==null) {
+        if (jiraSoapUserManagementService==null) {
 			throw new RuntimeException("jiraSoapUserManagementService was not autowired in JiraSoapGroupManagementService");
         }
     }

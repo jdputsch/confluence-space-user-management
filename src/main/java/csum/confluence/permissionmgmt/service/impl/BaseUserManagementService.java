@@ -29,17 +29,14 @@
 
 package csum.confluence.permissionmgmt.service.impl;
 
+import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
 import com.atlassian.crowd.embedded.api.CrowdService;
-import com.atlassian.crowd.embedded.api.Group;
-import com.atlassian.crowd.embedded.api.Query;
-import com.atlassian.crowd.embedded.api.User;
-import com.atlassian.crowd.search.EntityDescriptor;
-import com.atlassian.crowd.search.builder.QueryBuilder;
-import com.atlassian.crowd.search.builder.Restriction;
-import com.atlassian.crowd.search.query.entity.restriction.constants.UserTermKeys;
 import com.atlassian.user.EntityException;
+import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
+import com.atlassian.user.UserManager;
 import com.atlassian.user.search.SearchResult;
 import com.atlassian.user.search.page.DefaultPager;
 import com.atlassian.user.search.page.Pager;
@@ -77,19 +74,22 @@ import java.util.Map;
 public abstract class BaseUserManagementService extends UserAndGroupManagementService implements UserManagementService {
 
     // Note: FOR ADVANCED AND PARTIAL NAME USER QUERIES ONLY! THIS IS ACCESS-CONTROLLED AND MAY NOT BE AVAILABLE TO NON-ADMINS IN LATER VERSIONS OF CONFLUENCE
-    protected CrowdService crowdService;
+    protected UserAccessor userAccessor;
     protected CustomPermissionConfiguration customPermissionConfiguration;
 
     @Autowired
-    public BaseUserManagementService(CrowdService crowdService,
-                                     CustomPermissionConfiguration customPermissionConfiguration,
-                                     GroupManager groupManager,
-                                     UserAccessor userAccessor) {
-        super(crowdService, groupManager, userAccessor);
+    public BaseUserManagementService(SpacePermissionManager spacePermissionManager,
+                                      CrowdService crowdService,
+                                      CustomPermissionConfiguration customPermissionConfiguration,
+                                      GroupManager groupManager,
+                                      CrowdDirectoryService crowdDirectoryService,
+                                      UserAccessor userAccessor) {
+        super(crowdService, crowdDirectoryService, groupManager, userAccessor);
+        this.userAccessor = userAccessor;
         this.customPermissionConfiguration = customPermissionConfiguration;
 
-        if (crowdService==null) {
-			throw new RuntimeException("crowdService was not autowired in BaseUserManagementService");
+        if (userAccessor==null) {
+			throw new RuntimeException("userAccessor was not autowired in BaseUserManagementService");
         }
         else if (customPermissionConfiguration==null) {
 			throw new RuntimeException("customPermissionConfiguration was not autowired in BaseUserManagementService");
@@ -288,22 +288,13 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
     public boolean isMemberOf(String userName, String groupName) {
         log.debug("isMemberOf() called. userName=" + userName + " groupName=" + groupName);
         boolean result = false;
-        try {
-            // TODO: streamline. should not have to be converting between crowd and confluence user/group objects.
-            com.atlassian.user.Group g = groupManager.getGroup(groupName);
-            if (g==null) {
-               log.warn("groupManager returned null group for '" + groupName + "'");
+        Group group = getGroup(groupName);
+        if (group != null) {
+            Pager pager = userAccessor.getMemberNames(group);
+            List memberNames = PagerUtils.toList(pager);
+            if (memberNames != null) {
+                result = memberNames.contains(userName);
             }
-            com.atlassian.user.User u = userAccessor.getUser(userName);
-            if (u==null) {
-               log.warn("userAccessor returned null user for '" + userName + "'");
-            }
-
-            result = groupManager.hasMembership(g, u);
-        }
-        catch (Throwable t) {
-            log.error("Error determining if '" + userName + "' is member of group '" + groupName + "'", t);
-            return result;
         }
         return result;
     }
