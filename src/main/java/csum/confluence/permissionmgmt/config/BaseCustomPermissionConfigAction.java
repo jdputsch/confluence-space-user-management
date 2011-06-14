@@ -35,9 +35,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
+ * An action backing the UI that only Confluence administrators are able to use to configure this plugin.
+ *
  * @author Gary S. Weaver
  */
-public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements Administrative, CustomPermissionConfigurable {
+public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements CustomPermissionConfigurable {
 
     protected Log log = LogFactory.getLog(this.getClass());
 
@@ -287,5 +289,11 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     public void setUnvalidatedUserAdditionEnabled(String unvalidatedUserAdditionEnabled) {
         this.unvalidatedUserAdditionEnabled = unvalidatedUserAdditionEnabled;
+    }
+
+    // Use of Confluence com.atlassian.confluence.core.Administrative interface is replaced with this,
+    // since is deprecated.
+    public boolean isPermitted() {
+        return permissionManager.isConfluenceAdministrator(getRemoteUser());
     }
 }

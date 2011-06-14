@@ -50,7 +50,7 @@ import java.util.Map;
  * @author Rajendra Kadam
  * @author Gary S. Weaver
  */
-public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction implements Administrative {
+public class CustomPermissionConfigAction extends BaseCustomPermissionConfigAction {
     // tried removing deprecated Administrative interface from this and base class, but then complains about
     // missing doDefault, even though is defined and bean instantiates fine. xwork fail...
 
@@ -172,4 +172,6 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     public String getActionName(String fullClassName) {
         return "Configure Custom Space User Management Plugin";
     }
+
+
 }
