@@ -32,8 +32,10 @@ package csum.confluence.permissionmgmt.service.impl;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
+import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.crowd.embedded.api.Group;
+import com.atlassian.user.GroupManager;
 import com.atlassian.user.search.page.DefaultPager;
 import com.atlassian.user.search.page.Pager;
 import csum.confluence.permissionmgmt.config.CustomPermissionConfiguration;
@@ -63,8 +65,10 @@ public abstract class BaseGroupManagementService extends UserAndGroupManagementS
     @Autowired
     public BaseGroupManagementService(SpacePermissionManager spacePermissionManager,
                                       CrowdService crowdService,
-                                      CustomPermissionConfiguration customPermissionConfiguration) {
-        super(crowdService);
+                                      CustomPermissionConfiguration customPermissionConfiguration,
+                                      GroupManager groupManager,
+                                      UserAccessor userAccessor) {
+        super(crowdService, groupManager, userAccessor);
         this.spacePermissionManager = spacePermissionManager;
         this.customPermissionConfiguration = customPermissionConfiguration;
 

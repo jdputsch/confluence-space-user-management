@@ -35,6 +35,7 @@ import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
+import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
@@ -61,10 +62,14 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
     @Autowired
     public ConfluenceGroupManagementService(SpacePermissionManager spacePermissionManager,
                                             CrowdService crowdService,
-                                            CustomPermissionConfiguration customPermissionConfiguration) {
+                                            CustomPermissionConfiguration customPermissionConfiguration,
+                                            GroupManager groupManager,
+                                            UserAccessor userAccessor) {
         super(spacePermissionManager,
                 crowdService,
-                customPermissionConfiguration);
+                customPermissionConfiguration,
+                groupManager,
+                userAccessor);
 
         if (spacePermissionManager==null) {
 			throw new RuntimeException("spacePermissionManager was not autowired in ConfluenceGroupManagementService");
