@@ -75,11 +75,7 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
                                             UserAccessor userAccessor) {
         super(spacePermissionManager, crowdService, customPermissionConfiguration, groupManager, crowdDirectoryService, userAccessor);
 
-        this.jiraSoapUserManagementService = jiraSoapUserManagementService;
-
-        if (jiraSoapUserManagementService==null) {
-			throw new RuntimeException("jiraSoapUserManagementService was not autowired in JiraSoapGroupManagementService");
-        }
+        this.jiraSoapUserManagementService = new JiraSoapUserManagementService(spacePermissionManager, crowdService, customPermissionConfiguration, groupManager, crowdDirectoryService, userAccessor);
     }
 
     protected boolean isGroupReadOnly(Group group) {
