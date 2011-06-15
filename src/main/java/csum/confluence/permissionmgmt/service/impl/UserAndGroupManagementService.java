@@ -10,7 +10,9 @@ import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.User;
 import com.atlassian.user.UserManager;
+import com.atlassian.user.impl.DefaultUser;
 import com.atlassian.user.search.page.Pager;
+import com.atlassian.user.security.password.Credential;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,21 +121,10 @@ public class UserAndGroupManagementService {
     public User addUser(String userName, String email, String fullName) {
         User user = null;
         try {
-            ImmutableUser.Builder userBuilder = new ImmutableUser.Builder();
-            userBuilder.active(true);
-            userBuilder.directoryId(findFirstWritableDirectoryId());
-            userBuilder.displayName(fullName);
-            userBuilder.emailAddress(email);
-            userBuilder.name(userName);
-            com.atlassian.crowd.embedded.api.User cUser = userBuilder.toUser();
-            String credential = null;
-            cUser = crowdService.addUser(cUser, credential);
-            if (cUser == null) {
-                log.warn("crowdService.addUser() returned null! Creation of user " + userName + " probably failed.");
-            }
-            user = userAccessor.getUser(cUser.getName());
+            user = new DefaultUser(userName, email, fullName);
+            userAccessor.createUser(user, Credential.NONE);
             if (user == null) {
-                log.warn("crowdService.addUser() for user '" + userName + "' returned a user object, but userAccessor.getUser with that user's username " + cUser.getName() + " returned null. Either user creation failed or there is a delay in user lookup.");
+                log.warn("userAccessor.createUser for " + userName + " returned null.");
             }
         } catch (Throwable t) {
             log.error("Problem creating user '" + userName + "'", t);
