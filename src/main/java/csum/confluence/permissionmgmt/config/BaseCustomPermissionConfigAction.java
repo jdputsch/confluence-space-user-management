@@ -39,7 +39,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author Gary S. Weaver
  */
-public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements CustomPermissionConfigurable {
+public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport implements CustomPermissionConfigurable, Administrative {
 
     protected Log log = LogFactory.getLog(this.getClass());
 
@@ -293,7 +293,7 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
 
     // Use of Confluence com.atlassian.confluence.core.Administrative interface is replaced with this,
     // since is deprecated.
-    public boolean isPermitted() {
-        return permissionManager.isConfluenceAdministrator(getRemoteUser());
-    }
+    //public boolean isPermitted() {
+   //     return permissionManager.isConfluenceAdministrator(getRemoteUser());
+   // }
 }
