@@ -6,6 +6,8 @@ import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.crowd.embedded.api.Directory;
 import com.atlassian.crowd.embedded.api.OperationType;
 import com.atlassian.crowd.embedded.impl.ImmutableUser;
+import com.atlassian.crowd.model.user.UserTemplate;
+import com.atlassian.crowd.util.SecureRandomStringUtils;
 import com.atlassian.user.Group;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.User;
@@ -22,6 +24,9 @@ import java.util.List;
 import java.util.Set;
 
 public class UserAndGroupManagementService {
+
+    // What EmbeddedCrowdUserManager uses...
+    private static final int RANDOM_PASSWORD_LENGTH = 22;
 
     protected Log log = LogFactory.getLog(this.getClass());
 
@@ -121,10 +126,21 @@ public class UserAndGroupManagementService {
     public User addUser(String userName, String email, String fullName) {
         User user = null;
         try {
-            user = new DefaultUser(userName, email, fullName);
-            userAccessor.createUser(user, Credential.NONE);
-            if (user == null) {
-                log.warn("userAccessor.createUser for " + userName + " returned null.");
+            UserTemplate template = new UserTemplate(userName);
+            template.setDisplayName(fullName);
+            template.setEmailAddress(email);
+            template.setActive(true);
+            // Crowd must have a password. Here we use the same method that EmbeddedCrowdUserManager uses in Confluence 3.5.x.
+            com.atlassian.crowd.embedded.api.User cUser = crowdService.addUser(template, Credential.unencrypted(SecureRandomStringUtils.getInstance().randomAlphanumericString(RANDOM_PASSWORD_LENGTH)).getValue());
+            if (cUser == null) {
+                log.warn("crowdService.addUser for " + userName + " returned null.");
+            }
+            else {
+                // could use Conversions.TO_ATLASSIAN_USER.apply(crowdUser)? Is class accessible?
+                user = userAccessor.getUser(userName);
+                if (user == null) {
+                    log.warn("userAccessor.getUser(" + userName + ") returned null! Did user creation fail or is it too slow to get it right away?");
+                }
             }
         } catch (Throwable t) {
             log.error("Problem creating user '" + userName + "'", t);
