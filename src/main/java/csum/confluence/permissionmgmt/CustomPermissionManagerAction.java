@@ -104,6 +104,7 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
     public static final String REFRESH_BUG_SECOND_REQUEST_PARAMNAME = "conf9035";
     public static final String DEBUG = "debug";
 
+    // Note Webwork actions cannot be constructor injected by Atlassian since they must have default constructors
     public CustomPermissionManagerAction() {
         log.debug("CustomPermissionManagerAction instance created");
     }

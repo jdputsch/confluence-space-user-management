@@ -70,6 +70,7 @@ public class BaseCustomPermissionConfigAction extends ConfluenceActionSupport im
     private String numRowsPerPage;
     private String unvalidatedUserAdditionEnabled;
 
+    // Note Webwork actions cannot be constructor injected by Atlassian since they must have default constructors
     public BaseCustomPermissionConfigAction() {
         log.debug("instantiating BaseCustomPermissionConfigAction");
         log.debug("instantiated BaseCustomPermissionConfigAction");

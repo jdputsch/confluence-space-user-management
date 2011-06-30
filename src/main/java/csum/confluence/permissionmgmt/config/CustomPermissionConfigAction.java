@@ -58,24 +58,16 @@ public class CustomPermissionConfigAction extends BaseCustomPermissionConfigActi
     CustomPermissionConfiguration customPermissionConfiguration;
     private static final String JIRA_SOAP_PASSWORD_SET_PARAMNAME = "jiraSoapPasswordSet";
 
+    // Note Webwork actions cannot be constructor injected by Atlassian since they must have default constructors
+    public CustomPermissionConfigAction() {
+    }
 
-    @Autowired
-    public CustomPermissionConfigAction(BandanaManager bandanaManager,
-                                      CustomPermissionConfiguration customPermissionConfiguration) {
-        log.debug("instantiating CustomPermissionConfigAction");
+    public void setBandanaManager(BandanaManager bandanaManager) {
         this.bandanaManager = bandanaManager;
-        this.customPermissionConfiguration = customPermissionConfiguration;
+    }
 
-        if (bandanaManager==null) {
-            // wouldn't normally log and throw but xwork is hiding errors
-            log.warn("bandanaManager was not autowired in CustomPermissionConfigAction");
-			throw new RuntimeException("bandanaManager was not autowired in CustomPermissionConfigAction");
-        }
-        else if (customPermissionConfiguration==null) {
-            log.warn("customPermissionConfiguration was not autowired in CustomPermissionConfigAction");
-			throw new RuntimeException("customPermissionConfiguration was not autowired in CustomPermissionConfigAction");
-        }
-        log.debug("instantiated CustomPermissionConfigAction");
+    public void setCustomPermissionConfiguration(CustomPermissionConfiguration customPermissionConfiguration) {
+        this.customPermissionConfiguration = customPermissionConfiguration;
     }
 
     public String doDefault() throws Exception {
