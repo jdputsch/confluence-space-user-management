@@ -73,18 +73,18 @@
             <name>Rajendra Kadam</name>
             <email>raju.kadam@gmail.com</email>
             <roles>
-                <role>Developer - v1 All (User Management, LDAP, XML RPC, User Experience)</role>
+                <role>Developer - v1 Lead Developer: User Management, LDAP, XML RPC, User Experience, etc.</role>
             </roles>
             <timezone>-7</timezone>
         </developer>
 
         <developer>
             <name>Gary S. Weaver</name>
-            <email>gary.weaver@duke.edu</email>
+            <email>garysweaver@gmail.com</email>
             <organization>Duke University</organization>
             <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
             <roles>
-                <role>Developer - v2 Group Management</role>
+                <role>Developer - v2 Lead Developer: User and Group Management, Config, Jira SOAP Service Integration, Confluence Compatibility Fixes, etc.</role>
             </roles>
             <timezone>-4</timezone>
         </developer>
@@ -101,7 +101,6 @@
 
         <developer>
             <name>Andy Brook</name>
-            <email>axb@dolby.co.uk</email>
             <organization>Dolby Laboratories, Inc.</organization>
             <organizationUrl>http://www.dolby.co.uk/</organizationUrl>
             <roles>
@@ -113,7 +112,7 @@
         <developer>
             <name>Igor Minar</name>
             <roles>
-                <role>Developer - v2 bug fixes for key names in i18n properties, fix for delete group in IE</role>
+                <role>Developer - v2 Bug Fixes for Key Names in i18n Properties, Fix for Delete Group in IE</role>
             </roles>
         </developer>
         
@@ -126,7 +125,7 @@
             <organization>Bünting IT GmbH</organization>
             <organizationUrl>http://www.buenting.de/</organizationUrl>
             <roles>
-                <role>Provided German translation</role>
+                <role>Provided initial German translation</role>
             </roles>
         </contributor>
         
@@ -135,7 +134,7 @@
             <organization>Bünting IT GmbH</organization>
             <organizationUrl>http://www.buenting.de/</organizationUrl>
             <roles>
-                <role>Provided German translation</role>
+                <role>Provided initial German translation</role>
             </roles>
         </contributor>
         
