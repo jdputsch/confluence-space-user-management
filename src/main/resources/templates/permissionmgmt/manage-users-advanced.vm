@@ -78,18 +78,22 @@
                         <th>$action.getText("csum.manageusersadvanced.addremovefromselectedgroup", ["$action.selectedGroup"])</th>
                     </tr>
                 #foreach ($user in $searchResultUsers.page)
+                    #if($user)
                     <tr #if ($velocityCount % 2 == 0) class="even" #end>
                         <td>#if($user.fullName)<img class="icon" src="${req.contextPath}/images/icons/user_16.gif"/>$generalUtil.htmlEncode($user.fullName)#else&nbsp;#end</td>
                         <td>#if($user.name)$generalUtil.htmlEncode($user.name)#else&nbsp;#end</td>
                         <td>#if($user.email)<a href="mailto:$generalUtil.maskEmail($user.email)" alt='$action.getText("csum.manageusersbasic.sendemailtouser", ["$generalUtil.maskEmail($user.email)"])'>$generalUtil.maskEmail($user.email)</a>#else&nbsp;#end</td>
-                    #if($action.isMemberOfSelectedGroup($user.name))
+                        #if($action.isMemberOfSelectedGroup($user.name))
                         #*<td><img alt="$generalUtil.htmlEncode($user.name) is a member of group $generalUtil.htmlEncode($action.selectedGroup)" src="${req.contextPath}/images/icons/emoticons/check.gif"/></td>*#
                         <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&selectedGroup=$generalUtil.urlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$generalUtil.urlEncode($action.selectedGroup)&users=$generalUtil.urlEncode($user.name)&userSearch=1$refreshbugworkaround"><img border="0" alt="Remove $generalUtil.htmlEncode($user.name) from group $generalUtil.htmlEncode($action.selectedGroup)" src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
-                    #else
+                        #else
                         #*<td text-align="center"><img alt="$user.name is NOT a member of group $!{action.selectedGroup}" src="${req.contextPath}/images/icons/emoticons/error.gif"/></td>*#
                         <td text-align="center"><a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&selectedGroup=$generalUtil.urlEncode($action.selectedGroup)&adminAction=addUsersToGroups&groups=$generalUtil.urlEncode($action.selectedGroup)&users=$generalUtil.urlEncode($user.name)&userSearch=1$refreshbugworkaround"><img border="0" alt="Add $generalUtil.htmlEncode($user.name) to group $generalUtil.htmlEncode($action.selectedGroup)" src="${req.contextPath}/images/icons/emoticons/add.png"/></a></td>
-                    #end
+                        #end
                     </tr>
+                    #else
+                        <!-- Note: would display an additional user row here but user in search results was null, probably because user was removed. -->
+                    #end
                 #end
                     <tr>
                         <td colspan="5">

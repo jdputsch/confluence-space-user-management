@@ -15,11 +15,11 @@
     <packaging>atlassian-plugin</packaging>
 
     <properties>
-        <confluence.version>3.5</confluence.version>
-        <confluence.data.version>3.1</confluence.data.version>
-        <!-- find this in pom.xml in version dir: https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
-        <crowd.version>2.2.1</crowd.version>
-        <crowd.embedded.version>1.1</crowd.embedded.version>
+        <confluence.version>4.1</confluence.version>
+        <confluence.data.version>4.1</confluence.data.version>
+        <!-- Look at pom.xml in confluence version in https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
+        <crowd.version>2.3.2</crowd.version>
+        <crowd.embedded.version>1.3.3</crowd.embedded.version>
     </properties>
 
     <issueManagement>
@@ -38,7 +38,7 @@
             <name>BSD-Style License</name>
             <distribution>manual</distribution>
             <comments>
- Copyright (c) 2007-2011, Custom Space User Management Plugin Development Team
+ Copyright (c) 2007-2012, Custom Space User Management Plugin Development Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -166,13 +166,13 @@
             <artifactId>crowd-integration-api</artifactId>
             <version>${crowd.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.atlassian.crowd</groupId>
             <artifactId>crowd-integration-seraph22</artifactId>
             <version>${crowd.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.atlassian.crowd</groupId>
             <artifactId>embedded-crowd-spi</artifactId>
@@ -426,13 +426,42 @@
     <repositories>
         <repository>
             <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Public</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Atlassian Public Snaphots</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian 3rd-party Repository</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
+        </repository>
+        <repository>
+            <snapshots>
                 <enabled>true</enabled>
             </snapshots>
             <id>central-m2-repository</id>
             <name>Central Maven 2 Repository</name>
             <url>http://repo1.maven.org/maven2</url>
         </repository>
-
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -443,51 +472,6 @@
             <id>Codehaus Snapshots</id>
             <url>http://snapshots.repository.codehaus.org</url>
         </repository>
-        
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Atlassian Public</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
-        </repository>
-    
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>Atlassian Public Snaphots</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
-        </repository>
-        
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Atlassian 3rd-party Repository</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
-        </repository>
-        
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>JBoss</id>
-            <url>http://repository.jboss.org/maven2/</url>
-        </repository>
-        
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -498,79 +482,16 @@
             <id>TWData</id>
             <url>https://twdata-m2-repository.googlecode.com/svn/</url>
         </repository>
-        
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Nuxeo</id>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
+        </repository>
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>codehaus.org</id>
-            <name>CodeHaus Plugin Snapshots</name>
-            <url>http://repository.codehaus.org</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-
-        <!-- depgraph plugin -->
-        <!-- UNCOMMENT TO GENERATE DEPENDENCY GRAPH, BUT YOU WILL NEED TO ADD A REPOSITORY TO THE LIST THAT CONTAINS THIS PLUGIN... HOPEFULLY THEY FIX THIS SOON.
-                        <pluginRepository>
-                  <id>elca-services</id>
-                  <url>http://el4.elca-services.ch/el4j/maven2repository</url>
-                  <releases>
-                   <enabled>true</enabled>
-                  </releases>
-                          <snapshots>
-                           <enabled>true</enabled>
-                          </snapshots>
-                </pluginRepository>
-        -->
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Atlassian Public</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
-        </pluginRepository>
-    
-        <pluginRepository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>Atlassian Public Snaphots</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
-        </pluginRepository>
-        
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Atlassian 3rd-party Repository</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
-        </pluginRepository>
-        
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>JBoss</id>
-            <url>http://repository.jboss.org/maven2/</url>
-        </pluginRepository>
-
-    </pluginRepositories>
 
 </project>
