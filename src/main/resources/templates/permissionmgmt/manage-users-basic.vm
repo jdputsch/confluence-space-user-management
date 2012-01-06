@@ -89,12 +89,14 @@
 					$action.logPps($users)
 
                 #foreach ($user in $users.page)
+                #if($user)
                     <tr #if ($velocityCount % 2 == 0) class="even" #end>
                         <td>#if($user.fullName)<img class="icon" src="${req.contextPath}/images/icons/user_16.gif"/>$generalUtil.htmlEncode($user.fullName)#else&nbsp;#end</td>
                         <td>#if($user.name)$generalUtil.htmlEncode($user.name)#else&nbsp;#end</td>
                         <td>#if($user.email)<a href="mailto:$generalUtil.maskEmail($user.email)" alt='$action.getText("csum.manageusersbasic.sendemailtouser", ["$generalUtil.maskEmail($user.email)"])'>$generalUtil.maskEmail($user.email)</a>#else&nbsp;#end</td>
                         <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&selectedGroup=$generalUtil.urlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$generalUtil.urlEncode($!action.selectedGroup)&users=$generalUtil.urlEncode($user.name)$refreshbugworkaround"><img alt='$action.getText("csum.manageusersbasic.removeuserfromgroup", ["$user.name", "${action.selectedGroup}"])' src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
                     </tr>
+                #end
                 #end
                     </tbody>
                 </table>
