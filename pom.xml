@@ -81,8 +81,6 @@
         <developer>
             <name>Gary S. Weaver</name>
             <email>garysweaver@gmail.com</email>
-            <organization>Duke University</organization>
-            <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
             <roles>
                 <role>Developer - v2 Lead Developer: User and Group Management, Config, Jira SOAP Service Integration, Confluence Compatibility Fixes, etc.</role>
             </roles>
