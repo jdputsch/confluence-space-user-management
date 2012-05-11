@@ -78,7 +78,7 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
         this.jiraSoapUserManagementService = new JiraSoapUserManagementService(spacePermissionManager, crowdService, customPermissionConfiguration, groupManager, crowdDirectoryService, userAccessor);
     }
 
-    protected boolean isGroupReadOnly(Group group) {
+    protected boolean isGroupReadOnly(ServiceContext context, Group group) {
         // cannot use Confluence API to check read-only
         return false;
     }
@@ -102,7 +102,7 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
             for (int i = 0; i < groupNames.size(); i++) {
                 String groupName = (String) groupNames.get(i);
 
-                if (getGroup(groupName) == null) {
+                if (getGroup(context, groupName) == null) {
                     RemoteGroup vGroup = jiraSoapService.createGroup(token, groupName, remoteUser);
                     log.debug("created " + groupName);
                     success.add(groupName);
@@ -176,7 +176,7 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
 
                 // Space admin should not be able to delete any groups whose names begin with "confluence"
                 if (!grpName.startsWith("confluence") && !grpName.startsWith("jira") && isPatternMatch) {
-                    Group group = getGroup(grpName);
+                    Group group = getGroup(context, grpName);
                     if (group != null) {
                         String swapGroupName = null;
                         jiraSoapService.deleteGroup(token, grpName, swapGroupName);

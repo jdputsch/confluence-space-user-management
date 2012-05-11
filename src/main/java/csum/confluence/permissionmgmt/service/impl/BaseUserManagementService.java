@@ -84,16 +84,7 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
                                       GroupManager groupManager,
                                       CrowdDirectoryService crowdDirectoryService,
                                       UserAccessor userAccessor) {
-        super(crowdService, crowdDirectoryService, groupManager, userAccessor);
-        this.userAccessor = userAccessor;
-        this.customPermissionConfiguration = customPermissionConfiguration;
-
-        if (userAccessor==null) {
-			throw new RuntimeException("userAccessor was not autowired in BaseUserManagementService");
-        }
-        else if (customPermissionConfiguration==null) {
-			throw new RuntimeException("customPermissionConfiguration was not autowired in BaseUserManagementService");
-        }
+        super(spacePermissionManager, crowdService, customPermissionConfiguration, groupManager, crowdDirectoryService, userAccessor);
     }
 
     protected LDAPUser getLDAPUser(String userid) throws ParserConfigurationException, LDAPException, IOException, SAXException {
@@ -204,19 +195,19 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
 
     public Pager findUsersForGroup(String groupName, ServiceContext context) throws FindException {
         log.debug("findUsersForGroup(groupName) called. groupName='" + groupName + "'");
-        Group group = getGroup(groupName);
+        Group group = getGroup(context, groupName);
         if (group == null) {
             throw new FindException("Group '" + groupName + "' not found");
         }
-        return findUsersForGroup(group);
+        return findUsersForGroup(group, context);
     }
 
-    private Pager findUsersForGroup(Group group) throws FindException {
+    private Pager findUsersForGroup(Group group, ServiceContext context) throws FindException {
         log.debug("findUsersForGroup(Group) called.");
         if (group == null) {
             throw new FindException("Group was null");
         }
-        Pager usernamePager = getMemberNames(group);
+        Pager usernamePager = getMemberNames(context, group);
         if (usernamePager == null) {
             throw new FindException("Did not find users for group '" + group.getName() + "'");
         }
@@ -285,21 +276,17 @@ public abstract class BaseUserManagementService extends UserAndGroupManagementSe
         return msg;
     }
 
-    public boolean isMemberOf(String userName, String groupName) {
+    public boolean isMemberOf(String userName, String groupName, ServiceContext context) {
         log.debug("isMemberOf() called. userName=" + userName + " groupName=" + groupName);
         boolean result = false;
-        Group group = getGroup(groupName);
+        Group group = getGroup(context, groupName);
         if (group != null) {
-            Pager pager = userAccessor.getMemberNames(group);
+            Pager pager = getMemberNames(context, group);
             List memberNames = PagerUtils.toList(pager);
             if (memberNames != null) {
                 result = memberNames.contains(userName);
             }
         }
         return result;
-    }
-
-    public CustomPermissionConfiguration getCustomPermissionConfiguration() {
-        return customPermissionConfiguration;
     }
 }

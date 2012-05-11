@@ -70,8 +70,8 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
         super(spacePermissionManager, crowdService, customPermissionConfiguration, groupManager, crowdDirectoryService, userAccessor);
     }
 
-    protected boolean isGroupReadOnly(Group group) {
-        return isReadOnly(group);
+    protected boolean isGroupReadOnly(ServiceContext context, Group group) {
+        return isReadOnly(context, group);
     }
 
     public void addGroups(List groupNames, ServiceContext context) throws AddException {
@@ -83,9 +83,9 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
 
         for (int i = 0; i < groupNames.size(); i++) {
             String groupName = (String) groupNames.get(i);
-            if (getGroup(groupName) == null) {
+            if (getGroup(context, groupName) == null) {
 
-                Group vGroup = addGroup(groupName);
+                Group vGroup = addGroup(context, groupName);
                 log.debug("created " + groupName);
                 success.add(groupName);
 
@@ -137,13 +137,13 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
 
             // Space admin should not be able to delete any groups whose names begin with "confluence"
             if (!grpName.startsWith("confluence") && isPatternMatch) {
-                Group group = getGroup(grpName);
+                Group group = getGroup(context, grpName);
                 if (group != null) {
-                    if (isReadOnly(group)) {
+                    if (isReadOnly(context, group)) {
                         log.debug("Not deleting group '" + grpName + "' because it was read-only");
                         badGroupNames.add(grpName);
                     } else {
-                        removeGroup_Confluence2_6_0Compatible(group);
+                        removeGroup_Confluence2_6_0Compatible(context, group);
                         success.add(grpName);
                     }
                 } else {
@@ -180,7 +180,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
         }
     }
 
-    private void removeGroup_Confluence2_6_0Compatible(Group group) throws RemoveException {
+    private void removeGroup_Confluence2_6_0Compatible(ServiceContext context, Group group) throws RemoveException {
         log.debug("removeGroup called for " + group);
         if (group != null) {
             log.debug("Removing space permissions from group " + group.getName() + " as (workaround for CONF-9623)");
@@ -198,7 +198,7 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
             boolean success = false;
             try {
                 log.debug("Calling userAccessor.removeGroup(group).");
-                removeGroup(group);
+                removeGroup(context, group);
                 success = true;
                 log.debug("Assuming that userAccessor.removeGroup(group) was successful.");
             } finally {

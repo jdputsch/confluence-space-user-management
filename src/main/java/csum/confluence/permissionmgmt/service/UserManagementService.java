@@ -52,5 +52,5 @@ public interface UserManagementService {
 
     public void removeUsersByUsernameFromGroups(List userNames, List groupNames, ServiceContext context) throws UsersNotFoundException, RemoveException, ServiceAuthenticationException;
 
-    public boolean isMemberOf(String userName, String groupName) throws FindException;
+    public boolean isMemberOf(String userName, String groupName, ServiceContext context) throws FindException;
 }

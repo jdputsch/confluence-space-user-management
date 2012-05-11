@@ -1447,7 +1447,8 @@ public class CustomPermissionManagerAction extends AbstractPagerPaginationSuppor
         boolean result = false;
 
         try {
-            result = this.getUserManagementService().isMemberOf(userName, this.getSelectedGroup());
+            ServiceContext serviceContext = createServiceContext();
+            result = this.getUserManagementService().isMemberOf(userName, this.getSelectedGroup(), serviceContext);
         } catch (Throwable t) {
             LogUtil.warnWithRemoteUserInfo(log, "Failed checking to see if user was member of group", t);
         }

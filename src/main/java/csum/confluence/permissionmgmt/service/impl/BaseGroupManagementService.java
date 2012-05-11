@@ -60,108 +60,19 @@ import java.util.Map;
  */
 public abstract class BaseGroupManagementService extends UserAndGroupManagementService implements GroupManagementService {
 
-    // assuming these are autowired
-    protected SpacePermissionManager spacePermissionManager;
-    protected CustomPermissionConfiguration customPermissionConfiguration;
-
     @Autowired
     public BaseGroupManagementService(SpacePermissionManager spacePermissionManager,
                                       CrowdService crowdService,
                                       CustomPermissionConfiguration customPermissionConfiguration,
                                       GroupManager groupManager,
                                       CrowdDirectoryService crowdDirectoryService,
-                                      UserAccessor userAccessor) {
-        super(crowdService, crowdDirectoryService, groupManager, userAccessor);
-        this.spacePermissionManager = spacePermissionManager;
-        this.customPermissionConfiguration = customPermissionConfiguration;
-
-        if (spacePermissionManager==null) {
-			throw new RuntimeException("spacePermissionManager was not autowired in BaseGroupManagementService");
-        }
-        else if (customPermissionConfiguration==null) {
-			throw new RuntimeException("customPermissionConfiguration was not autowired in BaseGroupManagementService");
-        }
-    }
-
-    public Pager findGroups(ServiceContext context) throws FindException {
-        log.debug("findGroups() called");
-        Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
-        List groups = getReadWriteGroupsThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
-        GroupUtil.sortGroupsByGroupnameAscending(groups);
-        Pager pager = new DefaultPager(groups);
-        return pager;
-    }
-
-    public boolean isAllowedToManageGroup(ServiceContext context, String groupName) throws FindException {
-        log.debug("isAllowedToManageGroup() called. groupName=" + groupName);
-        Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
-        List groupNames = getReadWriteGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
-        return groupNames.contains(groupName);
-    }
-
-    private List getReadWriteGroupsThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
-        log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
-        List groupNames = getReadWriteGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
-        List groups = new ArrayList();
-        for (int i = 0; i < groupNames.size(); i++) {
-            String groupName = (String) groupNames.get(i);
-            Group group = getGroup(groupName);
-            if (isGroupReadOnly(group)) {
-                log.debug("group '" + groupName + "' is read-only according to Confluence, therefore it cannot be managed by CSUM.");
-            } else {
-                groups.add(group);
-            }
-        }
-        return groups;
+                                      UserAccessor userAccessor
+    ) {
+        super(spacePermissionManager, crowdService, customPermissionConfiguration, groupManager, crowdDirectoryService, userAccessor);
     }
 
     // When managing via Jira API, all groups are readonly in Confluence API, but not via SOAP, necessarily.
-    protected abstract boolean isGroupReadOnly(Group group);
+    protected abstract boolean isGroupReadOnly(ServiceContext context, Group group);
+    
 
-    private List getReadWriteGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
-        log.debug("getGroupsThatMatchNamePatternExcludingConfluenceAdministrators() called");
-        List groupNames = new ArrayList();
-
-        ArrayList notAllowedUser = new ArrayList();
-        notAllowedUser.add("confluence-administrators");
-
-        CustomPermissionConfiguration config = getCustomPermissionConfiguration();
-        String spaceKey = context.getSpace().getKey();
-        String prefix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationPrefixPattern(), spaceKey);
-        String suffix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationSuffixPattern(), spaceKey);
-
-        for (Iterator iterator = mapWithGroupnamesAsKeys.keySet().iterator(); iterator.hasNext();) {
-            String groupName = (String) iterator.next();
-            //If notAllowedUser doesn't contain this group name
-            //and group name matches the pattern, then only add this user-group for display.
-            //log.debug("Selected Groups .....");
-            boolean isPatternMatch = GroupNameUtil.doesGroupMatchPattern(groupName, prefix, suffix);
-            if ((!notAllowedUser.contains(groupName)) && isPatternMatch) {
-                //log.debug("Group '" + grpName + "' allowed and matched pattern " + pat.pattern() );
-                groupNames.add(groupName);
-            } else {
-                //log.debug("Group '" + grpName + "' not allowed or didn't match pattern. notAllowedUser=" + StringUtil.convertCollectionToCommaDelimitedString(notAllowedUser) + " isPatternMatch=" + isPatternMatch + " pattern=" + pat.pattern());
-            }
-            //log.debug("-------End of Groups---------");
-
-        }
-        return groupNames;
-    }
-
-    private Map getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(ServiceContext context) {
-        log.debug("getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys() called");
-        Space space = context.getSpace();
-        //VIEWSPACE_PERMISSION is basic permission that every user group can have.
-        Map map = spacePermissionManager.getGroupsForPermissionType(SpacePermission.VIEWSPACE_PERMISSION, space);
-        if (map == null || map.size() == 0) {
-            log.debug("No groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION");
-        } else {
-            log.debug("Got the following groups with permissiontype SpacePermission.VIEWSPACE_PERMISSION: " + StringUtil.convertCollectionToCommaDelimitedString(map.keySet()));
-        }
-        return map;
-    }
-
-    public CustomPermissionConfiguration getCustomPermissionConfiguration() {
-        return customPermissionConfiguration;
-    }
 }
