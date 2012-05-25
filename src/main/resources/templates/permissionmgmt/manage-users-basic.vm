@@ -97,8 +97,7 @@
                         <td class="delete"><a href="docustompermissionsmanage.action?key=$generalUtil.urlEncode($key)&selectedGroup=$generalUtil.urlEncode($action.selectedGroup)&adminAction=removeUsersFromGroups&groups=$generalUtil.urlEncode($!action.selectedGroup)&users=$generalUtil.urlEncode($user.name)$refreshbugworkaround"><img alt='$action.getText("csum.manageusersbasic.removeuserfromgroup", ["$user.name", "${action.selectedGroup}"])' src="${req.contextPath}/images/icons/trash_16.gif"/></a></td>
                     </tr>
                     #else
-                    <!-- Note: would display an additional user row here but user in search results was null, probably because user was removed. -->
-                    #end
+                    <!-- note: user was null so removed row. probably user was deleted. -->
                     #end
                 #end
                     </tbody>
