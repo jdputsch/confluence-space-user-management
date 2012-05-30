@@ -290,10 +290,13 @@ public class UserAndGroupManagementService {
     }
     
     public boolean isAllowedToManageGroup(ServiceContext context, String groupName) {
-        log.debug("isAllowedToManageGroup() called. groupName=" + groupName);
-        Map mapWithGroupnamesAsKeys = getGroupsWithViewspacePermissionAsKeysAsMapWithGroupnamesAsKeys(context);
-        List groupNames = getReadWriteGroupnamesThatMatchNamePatternExcludingConfluenceAdministrators(mapWithGroupnamesAsKeys, context);
-        return groupNames.contains(groupName);
+        log.debug("isAllowedToDeleteGroup() called. groupName=" + groupName);
+        String spaceKey = context.getSpace().getKey();
+        CustomPermissionConfiguration config = getCustomPermissionConfiguration();
+        String prefix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationPrefixPattern(), spaceKey);
+        String suffix = GroupNameUtil.replaceSpaceKey(config.getNewGroupNameCreationSuffixPattern(), spaceKey);
+        boolean isPatternMatch = !("confluence-administrators").equals(groupName) && GroupNameUtil.doesGroupMatchPattern(groupName, prefix, suffix);
+        return isPatternMatch;
     }
 
     private List getReadWriteGroupsThatMatchNamePatternExcludingConfluenceAdministrators(Map mapWithGroupnamesAsKeys, ServiceContext context) {
