@@ -9,7 +9,7 @@
         <artifactId>confluence-plugin-base</artifactId>
         <version>22</version>
     </parent>
-    
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>raju.kadam.confluence</groupId>
     <artifactId>permissionmgmt</artifactId>
@@ -17,7 +17,8 @@
 
     <name>Custom Space User Management Plugin</name>
     <url>http://confluence.atlassian.com/display/CONFEXT/Custom+Space+User+Management+Plugin</url>
-    <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces</description>
+    <description>This plugin gives Space Administrators ability to manage user groups associated to their Wiki Spaces
+    </description>
     <packaging>atlassian-plugin</packaging>
 
     <properties>
@@ -26,7 +27,7 @@
         <!-- Look at pom.xml in confluence version in https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
         <crowd.version>2.4.0-rc1</crowd.version>
         <crowd.embedded.version>1.4-rc1</crowd.embedded.version>
-        
+
         <!-- Confluence version -->
         <atlassian.product.version>2.9</atlassian.product.version>
         <!-- Confluence plugin functional test library version -->
@@ -45,38 +46,38 @@
         <developerConnection>scm:svn:https://studio.plugins.atlassian.com/svn/SUSR/trunk</developerConnection>
         <url>https://studio.plugins.atlassian.com/source/browse/SUSR/trunk</url>
     </scm>
-    
+
     <licenses>
         <license>
             <name>BSD-Style License</name>
             <distribution>manual</distribution>
             <comments>
- Copyright (c) 2007-2012, Custom Space User Management Plugin Development Team
- All rights reserved.
+                Copyright (c) 2007-2012, Custom Space User Management Plugin Development Team
+                All rights reserved.
 
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
+                Redistribution and use in source and binary forms, with or without
+                modification, are permitted provided that the following conditions are met:
 
-     * Redistributions of source code must retain the above copyright notice,
-       this list of conditions and the following disclaimer.
-     * Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-     * Neither the name of the Custom Space User Management Plugin Development Team
-       nor the names of its contributors may be used to endorse or promote
-       products derived from this software without specific prior written permission.
+                * Redistributions of source code must retain the above copyright notice,
+                this list of conditions and the following disclaimer.
+                * Redistributions in binary form must reproduce the above copyright
+                notice, this list of conditions and the following disclaimer in the
+                documentation and/or other materials provided with the distribution.
+                * Neither the name of the Custom Space User Management Plugin Development Team
+                nor the names of its contributors may be used to endorse or promote
+                products derived from this software without specific prior written permission.
 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- POSSIBILITY OF SUCH DAMAGE.
+                THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+                AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+                IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+                ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+                LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+                CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+                SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+                INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+                CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+                ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+                POSSIBILITY OF SUCH DAMAGE.
             </comments>
         </license>
     </licenses>
@@ -95,7 +96,9 @@
             <name>Gary S. Weaver</name>
             <email>garysweaver@gmail.com</email>
             <roles>
-                <role>Developer - v2 Lead Developer: User and Group Management, Config, Jira SOAP Service Integration, Confluence Compatibility Fixes, etc.</role>
+                <role>Developer - v2 Lead Developer: User and Group Management, Config, Jira SOAP Service Integration,
+                    Confluence Compatibility Fixes, etc.
+                </role>
             </roles>
             <timezone>-4</timezone>
         </developer>
@@ -126,11 +129,11 @@
                 <role>Developer - v2 Bug Fixes for Key Names in i18n Properties, Fix for Delete Group in IE</role>
             </roles>
         </developer>
-        
+
     </developers>
-    
+
     <contributors>
-      
+
         <contributor>
             <name>Christian Nesemann</name>
             <organization>Bünting IT GmbH</organization>
@@ -139,7 +142,7 @@
                 <role>Provided initial German translation</role>
             </roles>
         </contributor>
-        
+
         <contributor>
             <name>Tom Saathoff</name>
             <organization>Bünting IT GmbH</organization>
@@ -148,7 +151,7 @@
                 <role>Provided initial German translation</role>
             </roles>
         </contributor>
-        
+
     </contributors>
 
     <organization>
@@ -208,14 +211,14 @@
             <version>${crowd.version}</version>
         </dependency>
         -->
-        
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
             <version>2.5.6</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- for CONF-9035 hack in CustomPermissionManagerAction -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -228,7 +231,7 @@
             <groupId>com.dolby.confluence.net</groupId>
             <artifactId>ldaputil</artifactId>
             <version>1.0.11</version>
-        </dependency> 
+        </dependency>
 
         <dependency>
             <groupId>commons-logging</groupId>
@@ -442,6 +445,16 @@
             <releases>
                 <enabled>true</enabled>
             </releases>
+            <id>Atlassian Real Public</id>
+            <url>https://maven.atlassian.com/content/repositories/public/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
             <id>Atlassian Public</id>
             <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
         </repository>
@@ -504,5 +517,79 @@
             <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Real Public</id>
+            <url>https://maven.atlassian.com/content/repositories/public/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Public</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Atlassian Public Snaphots</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian 3rd-party Repository</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Codehaus Snapshots</id>
+            <url>http://snapshots.repository.codehaus.org</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>TWData</id>
+            <url>https://twdata-m2-repository.googlecode.com/svn/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Nuxeo</id>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
+        </pluginRepository>
+
+    </pluginRepositories>
 
 </project>
