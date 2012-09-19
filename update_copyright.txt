@@ -1,0 +1,4 @@
+# example to update copyright, although we should probably just have a single license file
+find . -type f -name '*.java' -exec sed -i '' s/2007\-2011/2007\-2012/ {} +
+find . -type f -name '*.xml' -exec sed -i '' s/2007\-2011/2007\-2012/ {} +
+find . -type f -name '*.vm' -exec sed -i '' s/2007\-2011/2007\-2012/ {} +
