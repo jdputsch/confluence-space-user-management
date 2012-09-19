@@ -125,12 +125,6 @@
 		YAHOO.util.Event.addListener(window, "load", YAHOO.ifs.init);
 		</script>
 
-		<!--[if IE]>
-			<style>
-				div#csum div#groupEditor {width:505px;}
-			</style>
-		<![endif]-->
-
 <div id="csum">
 
   #if($action.isNotAllowed())
