@@ -1,0 +1,2550 @@
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>[#SUSR-117] Not able to remove &#39;Existing member&#39; from the space group - Atlassian Plugins JIRA Studio </title>
+
+    <meta content="general" name="decorator" />
+    <link rel="index" href="/secure/IssueNavigator.jspa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="A5G2-B7UC-JLK8-Z7KY|f291664ac1cedc44ec858d8362aa1e2a4cbf5fae|lout">
+
+
+    <link rel="shortcut icon" href="/s/en_US-31q2po/650/149/_/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/en_US-31q2po/650/149/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '';</script>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.css" media="all">
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar/jira.webresources:calendar.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:viewissue/jira.webresources:viewissue.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jira-fields/jira.webresources:jira-fields.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar-en/jira.webresources:calendar-en.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.4/_/download/batch/com.atlassian.jira.plugins.jira-github-connector-plugin:resources/com.atlassian.jira.plugins.jira-github-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-soy-plugin:soy-deps/com.atlassian.jira.jira-soy-plugin:soy-deps.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.js" ></script>
+
+    
+        <script type="text/javascript" src="/rest/api/1.0/shortcuts/650/2c704f3b1c272597f28d679bb85da011/shortcuts.js?context=issueaction&amp;context=issuenavigation"></script>
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="/osd.jsp" title="Atlassian Plugins JIRA Studio"/>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="jira" class="nl type-ab stalker sn">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/menu.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog.css">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog-ie.css">
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/userstatus.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_admin_styles/css/studioadmin.css">
+<link rel="stylesheet" type="text/css" href="/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.theme.jira:studio_jira_resources/css/studio-jira-theme-override.css">
+
+<div id="header" style="display:none">
+</div>
+<div class="studio-header" id="studio-header">
+
+	<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="studio-context-path" name="studio-context-path" content=""/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Space User Management Plugin </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                                                                                                                <li><a href="/browse/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/browse/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/browse/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/browse/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/browse/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/browse/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/browse/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/browse/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/browse/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/browse/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/browse/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/browse/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/browse/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/browse/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/browse/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/browse/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/browse/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/browse/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/browse/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/browse/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+	    <div id="studio-user-menu-container">
+        <a class="login-link" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-117">Log In</a>
+    </div>
+    
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li class="current"><a href="/browse/SUSR">Issues</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/wiki/display/SUSR">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SUSR">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SUSR">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SUSR">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+
+    <div id="header-bottom">
+
+        <div class="second-level-nav studio-menu">
+
+                            
+                
+<ul id="main-nav" class="menu-bar standard-menu-bar">
+                        <li class="aui-dd-parent lazy  ">
+                    <a class="lnk"
+                href="/secure/Dashboard.jspa"
+                 id="home_link"                 accessKey="h"                 title="View your current Dashboard"                >Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="home_link_drop"
+                    rel="home_link"
+                    accessKey="d"
+                    title="Access more options (Alt+d)"
+                                href="#"><span>Access more options (Alt+d)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent lazy  selected  ">
+                    <a class="lnk"
+                href="/secure/IssueNavigator.jspa"
+                 id="find_link"                 accessKey="f"                 title="View your current filter"                >Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="find_link_drop"
+                    rel="find_link"
+                    accessKey="i"
+                    title="Access more options (Alt+i)"
+                                href="#"><span>Access more options (Alt+i)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent nonlazy  ">
+                    <a class="lnk"
+                href="/secure/GreenHopper.jspa"
+                 id="greenhopper_menu"                                 title="Manage your project with GreenHopper"                >Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link"
+                                                                    id="greenhopper_menu_drop"
+                                    accessKey="g"
+                                    rel="greenhopper_menu"
+                                    title="Access more options (Alt+g)"
+                                                                href="#"><span>Access more options</span></a></span>
+                            <div class="aui-list hidden">
+                                                
+                            <ul id="greenhopper_menu_dropdown" class="aui-list-section aui-first   aui-last  ">
+                                                                    <li class="aui-list-item"><a
+                                         id="planningboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="taskboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/TaskBoard.jspa">Task Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="chartboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="releasedboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                            </ul>
+                                                    </div>
+                            </li>
+    </ul>
+
+                
+            
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+
+            
+            <a id="keyshortscuthelp" class="item-link hidden" title="Get more information about JIRA's Keyboard Shortcuts"
+               href="/secure/ViewKeyboardShortcuts!default.jspa">Keyboard Shortcuts</a>
+                            <a id="browse_link" class="hidden" href="/browse/SUSR">Selected Project</a>
+            
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-second-level -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="ajaxTimeout" value="The call to the JIRA server did not complete within the timeout period.  We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxUnauthorised" value="You are not authorised to perform this operation.  Please try to <a href='/login.jsp?os_destination=%2Fbrowse%2FSUSR-117'>log in</a> or <a href='/secure/Signup!default.jspa'>sign up</a> for an account.">
+    <input type="hidden" title="ajaxUnauthorisedAlert" value="You are not authorised to perform this operation.  Please log in.">
+    <input type="hidden" title="baseURL" value="https://studio.plugins.atlassian.com:443">
+    <input type="hidden" title="ajaxCommsError" value="The JIRA server could not be contacted.  This may be a temporary glitch or the server may be down.">
+    <input type="hidden" title="ajaxServerError" value="The JIRA server was contacted but has returned an error response. We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxErrorCloseDialog" value="Close this dialog and press refresh in your browser">
+    <input type="hidden" title="ajaxErrorDialogHeading" value="Communications Breakdown">
+
+    <input type="hidden" title="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.">
+    <input type="hidden" title="dirtyDialogMessage" value="You have entered new data in this dialog. If you navigate away from this dialog without first saving your data, the changes will be lost. Click cancel to return to the dialog.">
+    <input type="hidden" title="keyType" value="Type">
+    <input type="hidden" title="keyThen" value="then">
+    <input type="hidden" title="dblClickToExpand" value="Double click to expand">
+    <input type="hidden" title="actions" value="Actions">
+    <input type="hidden" title="removeItem" value="Remove">
+    <input type="hidden" title="workflow" value="Workflow">
+    <input type="hidden" title="labelNew" value="New Label">
+    <input type="hidden" title="enterIssueKey" value="Enter issue key">
+    <input type="hidden" title="issueActionsHint" value="Begin typing for available operations or press down to see all">
+    <input type="hidden" title="closelink" value="Close">
+    <input type="hidden" title="dotOperations" value="Operations">
+    <input type="hidden" title="dotLoading" value="Loading...">
+    <input type="hidden" title="frotherSuggestions" value="Suggestions">
+    <input type="hidden" title="frotherNomatches" value="No Matches">
+    <input type="hidden" title="multiselectVersionsError" value="{0} is not a valid version.">
+    <input type="hidden" title="multiselectComponentsError" value="{0} is not a valid component.">
+    <input type="hidden" title="multiselectGenericError" value="The value {0} is invalid.">
+</fieldset>
+
+
+
+
+<div class="alertHeader">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript" charset="utf-8">
+  (function(){
+    t = document.createElement('script');t.async=true;t.type ='text/javascript';
+    t.src = ('https:' == document.location.protocol ? 'https://secure.' : 'http://api.') + 'tellthemwhen.com/api/v2/notices/9ffb4ac1f71.js';
+    var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(t,s);
+  })();
+</script>
+
+<!-- <div id="TTWNotify" style="display:none"></div> -->
+
+<div style="text-align: center; border: #C00; background-color: #FF6600; line-height: 2em">studio.plugins.atlassian.com will be decommissioned in early 2013. If you are a project maintainer, please email <a href="mailto:developer-relations@atlassian.com">Atlassian Developer Relations</a> if you require assistance to migrate your project off this server.</div>
+</div>
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="viewMoreMsg" value="Click to view {0} more">
+    <input type="hidden" id="hideMsg" value="Hide" >
+    <input type="hidden" id="error-401" value="Cannot perform this operation. You are not logged in." >
+    <input type="hidden" id="issueOpTitleUnvote" value="Remove vote for this issue" >
+    <input type="hidden" id="issueOpTitleVote" value="Vote for this issue" >
+    <input type="hidden" id="issueOpTitleWatch" value="Start watching this issue" >
+    <input type="hidden" id="issueOpTitleUnwatch" value="Stop watching this issue" >
+    <input type="hidden" id="issueOpUnvote" value="Remove Vote" >
+    <input type="hidden" id="issueOpVote" value="Add Vote" >
+    <input type="hidden" id="issueOpWatch" value="Watch Issue" >
+    <input type="hidden" id="issueOpUnwatch" value="Stop Watching" >
+    <input type="hidden" id="i18nVote" value="Vote" >
+    <input type="hidden" id="i18nVoted" value="Voted" >
+    <input type="hidden" id="i18nWatch" value="Watch" >
+    <input type="hidden" id="i18nWatching" value="Watching" >
+</fieldset>
+
+<div id="stalker"  class="stalker">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image:url(/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large)">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" height="48" src="/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large" width="48" />
+        
+        <span>Confluence Space User Management Plugin</span>
+</h1>
+
+
+<ul class="breadcrumbs">
+    <li><a id="project-name-val" href="/browse/SUSR">Confluence Space User Management Plugin</a></li>
+    
+    <li><a id="key-val" rel="23765" href="/browse/SUSR-117">SUSR-117</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="/browse/SUSR-117">Not able to remove &#39;Existing member&#39; from the space group</a></h2>
+
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                
+                    <ul id="opsbar-login" class="first ops">
+                        <li id="ops-login" class="last">
+                            <a id="ops-login-lnk" class="button first last" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-117">Log In</a>
+                        </li>
+                    </ul>
+                
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent">
+                                    <a href="#" title="View this issue in another format" class="drop lnk aui-dd-link standard icon-views"><span>Views</span></a>
+                                        <div class="aui-list hidden">
+                                        <ul class="aui-first aui-last aui-list-section">
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-xml/SUSR-117/SUSR-117.xml">XML</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-word/SUSR-117/SUSR-117.doc">Word</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-html/SUSR-117/SUSR-117.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+        </div>
+    </div>          
+
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+                
+                
+                
+
+                    <div id="details-module" class="module toggle-wrap">
+                        <div class="mod-header">
+                            <h3 class="toggle-title">Details</h3>
+                        </div>
+                        <div class="mod-content">
+                            <ul id="issuedetails" class="property-list two-cols">
+    <li class="item">
+        <div class="wrap">
+            <strong class="name">Type:</strong>
+            <span id="type-val" class="value">
+                                                        <img alt="Support Request" height="16" src="/images/icons/genericissue.gif" title="Support Request - A request for support" width="16" />
+             Support Request
+            </span>
+        </div>
+    </li>
+    <li class="item item-right">
+        <div class="wrap">
+            <strong class="name">Status:</strong>
+            <span id="status-val" class="value">
+                                                        <img alt="Resolved" height="16" src="/images/icons/status_resolved.gif" title="Resolved - A resolution has been taken, and it is awaiting verification by reporter. From here issues are either reopened, or are closed." width="16" />
+             Resolved
+            </span>
+                    </div>
+    </li>
+            <li class="item">
+            <div class="wrap">
+                <strong class="name">Priority:</strong>
+                <span id="priority-val" class="value">
+                                                                <img alt="Minor" height="16" src="/images/icons/priority_minor.gif" title="Minor - Minor loss of function, or other problem where easy workaround is present." width="16" />
+             Minor
+                </span>
+            </div>
+        </li>
+                                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Resolution:</strong>
+                <span id="resolution-val" class="value resolved" >
+                                         Fixed
+                                </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Affects Version/s:</strong>
+                <span id="versions-val" class="value">
+                                            <span class="shorten" id="versions-field">
+                                                            <span title="2.0.5 SUSR-95 - Igor Minar fixed the javascript errors in Confluence 2.10 and up. Was breaking delete group in Confluence 3.x.">2.0.5</span>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Fix Version/s:</strong>
+                <span id="fixfor-val" class="value">
+                                            <span class="shorten" id="fixVersions-field">
+                                                            <a href="/browse/SUSR/fixforversion/13771" title="2.0.6 SUSR-117 &amp; SUSR-120 - checking read-only before group and membership actions. Not listing groups that are read-only unless using Jira integration (in which case all groups are read-only). SUSR-118 - Adding more logging around LDAP user creation. SUSR-115 - Fixing support for ampersand in names. SUSR-108 - Was url encoding values passed in form that apparently are already encoded. Should only have to url encode things put directly into url. SUSR-107 - Implemented configurable paging. SUSR-103 - Updated pom.xml to more up-to-date confluence and repo. SUSR-102 - Jira user management should not add or remove from jira-users group per Wells Fargo.">2.0.6</a>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Component/s:</strong>
+                <span id="components-val" class="value">
+                                            <span class="shorten" id="components-field">
+                                                            <a href="/browse/SUSR/component/10362" title="Confluence User and Group Management User and group management issues/suggestions for those using the plugin to manage users/groups in Confluence">Confluence User and Group Management</a>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                    <li class="item full-width">
+            <div class="wrap" id="wrap-labels">
+                <strong class="name">Labels:</strong>
+                    <div class="labels-wrap value">
+            <span class="labels" id="labels-23765-value">None</span>
+                </div>
+            </div>
+        </li>
+                <li class="item full-width">
+            <div class="wrap">
+                <strong class="name">Environment:</strong>
+                <div id="environment-val" class="value">
+                                  <div id="field-environment" class=" inverted-twixi-block collapsed ">
+            <div Class="twixi-wrap verbose">
+                <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+                <div class="flooded">
+                    Confluence Information <br/>
+System Date Tuesday, 05 Oct 2010 <br/>
+System Time 23:47:53 <br/>
+Uptime 7 days, 12 hours, 22 minutes, 20 seconds <br/>
+Confluence Version 3.1.2 <br/>
+Build Number 1725 <br/>
+Server Base Url <a href="https://rikiqa.rambus.com">https://rikiqa.rambus.com</a> <br/>
+Confluence Home d:/confluence/data <br/>
+Server ID A6N5-LHZ0-GEIX-NCQE <br/>
+Support Entitlement Number N/A <br/>
+Daily XML Backup Disabled  <br/>
+<br/>
+<br/>
+Java Runtime Environment <br/>
+Operating System Windows Server 2008 6.0 <br/>
+OS Architecture x86 <br/>
+Application Server Apache Tomcat/6.0.14 <br/>
+Servlet Version 2.5 <br/>
+Java Version 1.5.0_22 <br/>
+Java Vendor Sun Microsystems Inc. <br/>
+JVM Version 1.0 <br/>
+JVM Vendor Sun Microsystems Inc. <br/>
+JVM Implementation Version 1.5.0_22-b03 <br/>
+Java Runtime Java(TM) 2 Runtime Environment, Standard Edition <br/>
+Java VM Java HotSpot(TM) Server VM <br/>
+Java Runtime Arguments -Dcatalina.base=D:\confluence3.1\confluence-3.1.2-std -Dcatalina.home=D:\confluence3.1\confluence-3.1.2-std -Djava.endorsed.dirs=D:\confluence3.1\confluence-3.1.2-std\endorsed -Djava.io.tmpdir=D:\confluence3.1\confluence-3.1.2-std\temp -XX:MaxPermSize=256m vfprintf -Xms512m -Xmx1024m  <br/>
+Application Server Working Directory C:\Windows\system32 <br/>
+Temp Directory D:\confluence3.1\confluence-3.1.2-std\temp <br/>
+User Name HQWSV-RIKIQA$ <br/>
+System Language en <br/>
+System Timezone America/Los_Angeles <br/>
+System Favourite Colour Heliotrope <br/>
+Filesystem Encoding Cp1252 <br/>
+<br/>
+<br/>
+Java VM Memory Statistics <br/>
+Heap Memory     <br/>
+&nbsp;&nbsp;&nbsp;54 % Free  <br/>
+&nbsp;<br/>
+Maximum Heap Size 986 MB <br/>
+Total Allocated Memory 752 MB <br/>
+Used Memory 451 MB <br/>
+Free Allocated Memory 300 MB <br/>
+Total Free Memory 534 MB <br/>
+Permanent Generation Memory     <br/>
+&nbsp;&nbsp;&nbsp;64 % Free  <br/>
+&nbsp;<br/>
+Maximum PermGen 256 MB <br/>
+Used PermGen 92 MB <br/>
+<br/>
+<br/>
+Database Information <br/>
+Database name Microsoft SQL Server <br/>
+Database version 9.00.4035 <br/>
+Database Dialect net.sf.hibernate.dialect.SQLServerDialect <br/>
+Database Driver Name com.microsoft.sqlserver.jdbc.SQLServerDriver <br/>
+Database Driver Version 1.2 <br/>
+Database Connection URL jdbc:<a href="sqlserver://hqwsv-sql5dev2:1141;databasename=confluence">sqlserver://hqwsv-sql5dev2:1141;databasename=confluence</a> <br/>
+Database Connection Transaction Isolation N/A <br/>
+Database Latency 0 <br/>
+<br/>
+<br/>
+Confluence Usage <br/>
+Total Spaces 372 <br/>
+Global Spaces 213 <br/>
+Personal Spaces 159 <br/>
+Content (All Versions) 157438 <br/>
+Content (Current Versions) 26074 <br/>
+Local Users 10 <br/>
+Local Groups 107 <br/>
+Search Index Size 270954 <br/>
+Modification <br/>
+Modified template/includes/actionerrors.vm, log4j.properties, includes/js/macro-browser-fields.js, WEB-INF/web.servlet2-4.xml, includes/css/master.css, users/userpopup.vm, decorators/components/comments.vmd, atlassian-user.xml, includes/js/network-macro.js, spaces/editspacelabels.vm, WEB-INF/web.xml, includes/js/page-move-dialog-breadcrumbs.js, includes/js/macro-browser.js, includes/js/labels.js, includes/js/contentnamesearch.js, includes/js/page-move-dialog-location.js, com/atlassian/confluence/setup/atlassian-bundled-plugins-dev.zip, admin/cachecontents.jsp, pages/viewinfo.vm, WEB-INF/web.resin3.xml, com/atlassian/confluence/setup/atlassian-bundled-plugins.zip, includes/js/page-permissions-form.js, WEB-INF/lib/atlassian-config-0.13.jar, follow/follow-user-result.vm, includes/js/menu.js, includes/js/quicksearchdropdown.js, includes/js/page-move-dialog.js <br/>
+Removed WEB-INF/lib/confluence-3.1.1-SNAPSHOT.jar, WEB-INF/lib/confluence-bucket-3.1.1-SNAPSHOT.jar, WEB-INF/lib/mail-1.4.1.jar, WEB-INF/lib/confluence-tinymce-plugin-3.1.1-SNAPSHOT.jar, log4j2.properties, WEB-INF/lib/confluence-rpc-plugin-3.1.1-SNAPSHOT.jar, WEB-INF/lib/confluence-compatibility-3.1.1-SNAPSHOT.jar, log4jold.properties, WEB-INF/lib/activation-1.0.2.jar, WEB-INF/lib/confluence-upgrade-3.1.1-SNAPSHOT.jar, WEB-INF/lib/confluence-cache-ehcache-3.1.1-SNAPSHOT.jar <br/>
+<br/>
+<br/>
+<br/>
+Plugins<br/>
+Name Version Vendor Enabled or Disabled <br/>
+Adaptavist Advanced Search 1.0.6 Adaptavist.com Ltd Enabled <br/>
+Adaptavist Content Formatting Macros 1.6.14 Adaptavist.com Ltd Enabled <br/>
+Advanced Macros 1.6.8 Atlassian Enabled <br/>
+Apache HttpClient OSGi bundle 4.0 Apache Software Foundation Enabled <br/>
+Apache HttpCore OSGi bundle 4.0 Apache Software Foundation Enabled <br/>
+Atlassian Gadgets API 2.0.2.2 Atlassian Enabled <br/>
+Atlassian Gadgets OAuth Service Provider Plugin 2.0.2.2 Atlassian Enabled <br/>
+Atlassian Gadgets SPI 2.0.2.2 Atlassian Enabled <br/>
+Atlassian OAuth API 1.0.12 Atlassian Enabled <br/>
+Atlassian OAuth Consumer SAL SPI Implementation 1.0.12 Atlassian Enabled <br/>
+Atlassian OAuth Consumer SPI 1.0.12 Atlassian Enabled <br/>
+Atlassian OAuth Service Provider SAL SPI Implementation 1.0.12 Atlassian Enabled <br/>
+Atlassian OAuth Service Provider SPI 1.0.12 Atlassian Enabled <br/>
+Atlassian REST - Module Types 1.1.0.beta5 Atlassian Enabled <br/>
+Atlassian Template Renderer API 1.0.3 Atlassian Enabled <br/>
+Atlassian Template Renderer Velocity 1.6 Plugin 1.0.3 Atlassian Enabled <br/>
+Atlassian UI Plugin 2.0.2.2 Atlassian Pty Ltd Enabled <br/>
+Atlassian Universal Plugin Manager Plugin 1.0 Atlassian Pty Ltd Disabled <br/>
+Attachment Checkout Plugin 2.0.3-RC01 Locus-Global Software Pvt. Ltd. Enabled <br/>
+Attachment Extractors 1.1 Atlassian Pty Ltd Enabled <br/>
+BND Library 0.0.255 aQute SARL <a href="http://www.aQute.biz">http://www.aQute.biz</a> Enabled <br/>
+Basic Macros 1.4 Atlassian Pty Ltd Enabled <br/>
+Cache Plugin 4.0.0 Bob Swift, Jason Dillon, and other contributors Enabled <br/>
+Calendar Plugin 2.7.2.1 Atlassian Enabled <br/>
+Chart Plugin 1.15 Atlassian Enabled <br/>
+Classic Left Navigation Theme 2.9.1 Atlassian Enabled <br/>
+Clickr Theme 2.6.1 Atlassian Pty Ltd Enabled <br/>
+Code Macro 1.5 Atlassian Pty Ltd Enabled <br/>
+Compatibility Macros 1.5 Atlassian Pty Ltd Disabled <br/>
+Confluence Activity Stream Plugin 3.1 Atlassian Enabled <br/>
+Confluence Atlassian Plugin Repository 2.1.6 Adaptavist.com Ltd Enabled <br/>
+Confluence Attachments Plugin 2.17 Atlassian Disabled <br/>
+Confluence Blogging RPC Plugin 1.2.4 Atlassian Pty Ltd Enabled <br/>
+Confluence Contributors Plugin 1.2.3 Atlassian Pty Ltd Enabled <br/>
+Confluence Drag and Drop Plugin 1.0.4 Atlassian Disabled <br/>
+Confluence HTML Macros 1.8.1 Atlassian Enabled <br/>
+Confluence Legacy Web Resources 1.0 Atlassian Software Systems Pty Ltd Enabled <br/>
+Confluence PDF Export 1.6 (unknown) Enabled <br/>
+Confluence REST API 3.1.2 Atlassian Software Enabled <br/>
+Confluence Remote API 3.1.2 Atlassian Software Systems Enabled <br/>
+Confluence Thread Dump Plugin 1.2.1 Atlassian Enabled <br/>
+Confluence Usage Stats 0.12 Atlassian Enabled <br/>
+Copy Space Plugin 1.1 Atlassian Software Systems Pty Ltd Enabled <br/>
+Create Page Macro 1.2.1 Adaptavist.com Ltd Enabled <br/>
+Custom Space User Management Plugin 2.0.5 Custom Space User Management Plugin Team Enabled <br/>
+CustomWare Composition Plugin 2.3.5 CustomWare Asia Pacific Enabled <br/>
+CustomWare Redirection Plugin 2.4.1 CustomWare Asia Pacific Enabled <br/>
+DB Integrity Plugin 1.0.1 Comala Technology Solutions, Inc. Enabled <br/>
+Dashboard Actions 1.7 Atlassian Pty Ltd Enabled <br/>
+Dashboard Macros 1.13 Atlassian Pty Ltd Enabled <br/>
+Dynamic Table Macros 1.2 Revere Data LLC Enabled <br/>
+Dynamic Task List 2 Plugin 3.2.5 Atlassian Pty Ltd Enabled <br/>
+Excel Plugin 3.6.0 Bob Swift and other contributors Enabled <br/>
+French language pack 1.18 Atlassian Software Systems Enabled <br/>
+Gadgets Plugin 1.0.3 Atlassian Pty Ltd Enabled <br/>
+German language pack 1.12 Atlassian Software Systems Enabled <br/>
+Google Collections Bundle 1.0.0.rc1 Atlassian Pty Ltd Enabled <br/>
+Graphviz Plugin 1.2.0 Atlassian Software Systems Pty Ltd and other contributors Enabled <br/>
+ICU4J 3.8.0.1 Atlassian Pty Ltd Enabled <br/>
+IM Presence NG Plugin 2.6 Atlassian Pty Ltd Enabled <br/>
+Information Macros 1.3 Atlassian Pty Ltd Enabled <br/>
+JDOM DOM Processor 1.0.0 SpringSource Enabled <br/>
+JIRA Macros 2.8.15 Atlassian Pty Ltd Enabled <br/>
+JSON Library 20070829.0.0.1 Atlassian Pty Ltd Enabled <br/>
+JSR 305 Annotations 1.0 Atlassian Pty Ltd Enabled <br/>
+Java Concurrency in Practice Annotations 1.0.0 SpringSource Enabled <br/>
+Layout Macros 1.3 Atlassian Pty Ltd Enabled <br/>
+Linking Plugin 2.10.1 CustomWare Asia Pacific Enabled <br/>
+Live Search Macros 2.11 Atlassian Enabled <br/>
+Mail Page Plugin 1.9 Atlassian Enabled <br/>
+Metadata Plugin 2.1.4 Andy Armstrong, Kelsey Grant and other contributors Enabled <br/>
+Office Connector plugin 1.6 Atlassian Pty Ltd Enabled <br/>
+PDF Gen Servlet 1.2.1.6 Rambus Enabled <br/>
+Page Information Tools 1.3 Adaptavist.com Ltd Enabled <br/>
+Page Tree 1.16 Atlassian Enabled <br/>
+PageContentPlugin 4.10.19.333 (unknown) Enabled <br/>
+Profile Macros 1.0 Atlassian Software Systems Enabled <br/>
+ROME, RSS and atOM utilitiEs for Java 1.0 Sun Microsystems Enabled <br/>
+Reporting Plugin 3.3.0 CustomWare Asia Pacific Enabled <br/>
+Shared Application Access Layer API 2.0.15 Atlassian Enabled <br/>
+Shared Application Access Layer Confluence Plugin 2.0.15 Atlassian Software Systems Enabled <br/>
+Slideshow Plugin 0.3 Atlassian Software Systems Pty Ltd Enabled <br/>
+Social Bookmarking Plugin 1.3.1 Atlassian Pty Ltd Enabled <br/>
+Survey Macros 1.1.8.5 Confluence Community Enabled <br/>
+Table Plugin 4.0.0 Bob Swift Enabled <br/>
+Table of Contents Plugin 2.4.11 CustomWare Asia Pacific Enabled <br/>
+Tabular Metadata 2.9 Atlassian Pty Ltd Enabled <br/>
+Template-Plugin 3.9.6.2 (unknown) Enabled <br/>
+TinyMCE Editor Plugin 3.1.2 Atlassian Enabled <br/>
+Tracking Plugin 2.5.0 CustomWare Asia Pacific Enabled <br/>
+UWC Importer Admin Panel 1.2.1 Atlassian Software Systems Enabled <br/>
+User Lister 2.4.4 Atlassian Pty Ltd Enabled <br/>
+User Status 1.0 Atlassian Software Systems Enabled <br/>
+Visio Plugin 1.0 Bob Swift Enabled <br/>
+WebDAV Plugin 2.4 Atlassian Pty Ltd Enabled <br/>
+Widget Connector 1.3.2 Atlassian Enabled <br/>
+atlassian-gadgets-shared-2.0.2.2.jar 0.0 (unknown) Disabled <br/>
+<br/>
+<br/>
+License Details<br/>
+Support Entitlement Number None <br/>
+Server ID A6N5-LHZ0-GEIX-NCQE <br/>
+Clustered false <br/>
+<br/>
+<br/>
+System Properties<br/>
+sun.io.unicode.encoding UnicodeLittle <br/>
+java.version 1.5.0_22 <br/>
+com.sun.jndi.ldap.connect.pool.authentication simple <br/>
+catalina.useNaming true <br/>
+java.class.path D:\confluence3.1\confluence-3.1.2-std\bin\bootstrap.jar <br/>
+java.awt.graphicsenv sun.awt.Win32GraphicsEnvironment <br/>
+user.language en <br/>
+catalina.home D:\confluence3.1\confluence-3.1.2-std <br/>
+package.definition sun.,java.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper. <br/>
+sun.os.patch.level Service Pack 2 <br/>
+java.specification.vendor Sun Microsystems Inc. <br/>
+os.version 6.0 <br/>
+server.loader  <br/>
+sun.boot.class.path C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\rt.jar<br/>
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\i18n.jar<br/>
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\sunrsasign.jar<br/>
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\jsse.jar<br/>
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\jce.jar<br/>
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\charsets.jar<br/>
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\classes <br/>
+java.class.version 49.0 <br/>
+file.encoding Cp1252 <br/>
+java.vm.version 1.5.0_22-b03 <br/>
+sun.desktop windows <br/>
+java.io.tmpdir D:\confluence3.1\confluence-3.1.2-std\temp <br/>
+java.home C:\Program Files (x86)\Java\jdk1.5.0_22\jre <br/>
+user.name HQWSV-RIKIQA$ <br/>
+catalina.base D:\confluence3.1\confluence-3.1.2-std <br/>
+com.sun.jndi.ldap.connect.pool.protocol plain <br/>
+awt.toolkit sun.awt.windows.WToolkit <br/>
+java.specification.name Java Platform API Specification <br/>
+user.variant  <br/>
+java.ext.dirs C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\ext <br/>
+common.loader ${catalina.home}/lib<br/>
+${catalina.home}/lib/*.jar <br/>
+java.vm.info mixed mode <br/>
+sun.arch.data.model 32 <br/>
+java.vm.specification.name Java Virtual Machine Specification <br/>
+java.vm.specification.version 1.0 <br/>
+sun.cpu.endian little <br/>
+sun.management.compiler HotSpot Server Compiler <br/>
+path.separator ; <br/>
+com.sun.jndi.ldap.connect.pool.debug none <br/>
+java.vm.name Java HotSpot(TM) Server VM <br/>
+user.country US <br/>
+shared.loader  <br/>
+tomcat.util.buf.StringCache.byte.enabled true <br/>
+user.timezone America/Los_Angeles <br/>
+com.sun.jndi.ldap.connect.pool.timeout 300000 <br/>
+file.separator \ <br/>
+package.access sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.,sun.beans. <br/>
+os.arch x86 <br/>
+sun.boot.library.path C:\Program Files (x86)\Java\jdk1.5.0_22\jre\bin <br/>
+file.encoding.pkg sun.io <br/>
+line.separator  <br/>
+com.sun.jndi.ldap.connect.pool.prefsize 10 <br/>
+java.vendor.url.bug <a href="http://java.sun.com/cgi-bin/bugreport.cgi">http://java.sun.com/cgi-bin/bugreport.cgi</a> <br/>
+java.vm.vendor Sun Microsystems Inc. <br/>
+os.name Windows Server 2008 <br/>
+com.sun.jndi.ldap.connect.pool.initsize 1 <br/>
+com.sun.jndi.ldap.connect.pool.maxsize 0 <br/>
+java.vendor.url <a href="http://java.sun.com/">http://java.sun.com/</a> <br/>
+java.naming.factory.url.pkgs org.apache.naming <br/>
+java.awt.printerjob sun.awt.windows.WPrinterJob <br/>
+sun.jnu.encoding Cp1252 <br/>
+java.vm.specification.vendor Sun Microsystems Inc. <br/>
+java.naming.factory.initial org.apache.naming.java.javaURLContextFactory <br/>
+java.runtime.name Java(TM) 2 Runtime Environment, Standard Edition <br/>
+java.endorsed.dirs D:\confluence3.1\confluence-3.1.2-std\endorsed <br/>
+java.runtime.version 1.5.0_22-b03 <br/>
+sun.cpu.isalist pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86 <br/>
+java.library.path D:\confluence3.1\confluence-3.1.2-std\bin<br/>
+.<br/>
+C:\Windows\system32<br/>
+C:\Windows<br/>
+C:\Windows\system32<br/>
+C:\Windows<br/>
+C:\Windows\System32\Wbem<br/>
+C:\Program Files\NetApp\Windows Host Utilities\<br/>
+C:\Program Files\NetApp\SnapDrive\<br/>
+D:\htmldoc\<br/>
+C:\Program Files (x86)\Graphviz2.26.3\bin <br/>
+user.dir C:\Windows\system32 <br/>
+user.home C:\ <br/>
+java.vendor Sun Microsystems Inc. <br/>
+java.specification.version 1.5 <br/>
+<br/>
+<br/>
+Installed Languages<br/>
+de (DE) <br/>
+en (GB) <br/>
+fr (FR) 
+                </div>
+            </div>
+            <div Class="twixi-wrap concise">
+                <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+                <div class="flooded">
+                                            Confluence Information 
+System Date Tuesday, 05 Oct 2010 
+System Time 23:47:53 
+Uptime 7 days, 12 hours, 22 minutes, 20 seconds 
+Confluence Version 3.1.2 
+Build Number 1725 
+Server Base Url <a href="https://rikiqa.rambus.com">https://rikiqa.rambus.com</a> 
+Confluence Home d:/confluence/data 
+Server ID A6N5-LHZ0-GEIX-NCQE 
+Support Entitlement Number N/A 
+Daily XML Backup Disabled  
+
+
+Java Runtime Environment 
+Operating System Windows Server 2008 6.0 
+OS Architecture x86 
+Application Server Apache Tomcat/6.0.14 
+Servlet Version 2.5 
+Java Version 1.5.0_22 
+Java Vendor Sun Microsystems Inc. 
+JVM Version 1.0 
+JVM Vendor Sun Microsystems Inc. 
+JVM Implementation Version 1.5.0_22-b03 
+Java Runtime Java(TM) 2 Runtime Environment, Standard Edition 
+Java VM Java HotSpot(TM) Server VM 
+Java Runtime Arguments -Dcatalina.base=D:\confluence3.1\confluence-3.1.2-std -Dcatalina.home=D:\confluence3.1\confluence-3.1.2-std -Djava.endorsed.dirs=D:\confluence3.1\confluence-3.1.2-std\endorsed -Djava.io.tmpdir=D:\confluence3.1\confluence-3.1.2-std\temp -XX:MaxPermSize=256m vfprintf -Xms512m -Xmx1024m  
+Application Server Working Directory C:\Windows\system32 
+Temp Directory D:\confluence3.1\confluence-3.1.2-std\temp 
+User Name HQWSV-RIKIQA$ 
+System Language en 
+System Timezone America/Los_Angeles 
+System Favourite Colour Heliotrope 
+Filesystem Encoding Cp1252 
+
+
+Java VM Memory Statistics 
+Heap Memory     
+&nbsp;&nbsp;&nbsp;54 % Free  
+&nbsp;
+Maximum Heap Size 986 MB 
+Total Allocated Memory 752 MB 
+Used Memory 451 MB 
+Free Allocated Memory 300 MB 
+Total Free Memory 534 MB 
+Permanent Generation Memory     
+&nbsp;&nbsp;&nbsp;64 % Free  
+&nbsp;
+Maximum PermGen 256 MB 
+Used PermGen 92 MB 
+
+
+Database Information 
+Database name Microsoft SQL Server 
+Database version 9.00.4035 
+Database Dialect net.sf.hibernate.dialect.SQLServerDialect 
+Database Driver Name com.microsoft.sqlserver.jdbc.SQLServerDriver 
+Database Driver Version 1.2 
+Database Connection URL jdbc:<a href="sqlserver://hqwsv-sql5dev2:1141;databasename=confluence">sqlserver://hqwsv-sql5dev2:1141;databasename=confluence</a> 
+Database Connection Transaction Isolation N/A 
+Database Latency 0 
+
+
+Confluence Usage 
+Total Spaces 372 
+Global Spaces 213 
+Personal Spaces 159 
+Content (All Versions) 157438 
+Content (Current Versions) 26074 
+Local Users 10 
+Local Groups 107 
+Search Index Size 270954 
+Modification 
+Modified template/includes/actionerrors.vm, log4j.properties, includes/js/macro-browser-fields.js, WEB-INF/web.servlet2-4.xml, includes/css/master.css, users/userpopup.vm, decorators/components/comments.vmd, atlassian-user.xml, includes/js/network-macro.js, spaces/editspacelabels.vm, WEB-INF/web.xml, includes/js/page-move-dialog-breadcrumbs.js, includes/js/macro-browser.js, includes/js/labels.js, includes/js/contentnamesearch.js, includes/js/page-move-dialog-location.js, com/atlassian/confluence/setup/atlassian-bundled-plugins-dev.zip, admin/cachecontents.jsp, pages/viewinfo.vm, WEB-INF/web.resin3.xml, com/atlassian/confluence/setup/atlassian-bundled-plugins.zip, includes/js/page-permissions-form.js, WEB-INF/lib/atlassian-config-0.13.jar, follow/follow-user-result.vm, includes/js/menu.js, includes/js/quicksearchdropdown.js, includes/js/page-move-dialog.js 
+Removed WEB-INF/lib/confluence-3.1.1-SNAPSHOT.jar, WEB-INF/lib/confluence-bucket-3.1.1-SNAPSHOT.jar, WEB-INF/lib/mail-1.4.1.jar, WEB-INF/lib/confluence-tinymce-plugin-3.1.1-SNAPSHOT.jar, log4j2.properties, WEB-INF/lib/confluence-rpc-plugin-3.1.1-SNAPSHOT.jar, WEB-INF/lib/confluence-compatibility-3.1.1-SNAPSHOT.jar, log4jold.properties, WEB-INF/lib/activation-1.0.2.jar, WEB-INF/lib/confluence-upgrade-3.1.1-SNAPSHOT.jar, WEB-INF/lib/confluence-cache-ehcache-3.1.1-SNAPSHOT.jar 
+
+
+
+Plugins
+Name Version Vendor Enabled or Disabled 
+Adaptavist Advanced Search 1.0.6 Adaptavist.com Ltd Enabled 
+Adaptavist Content Formatting Macros 1.6.14 Adaptavist.com Ltd Enabled 
+Advanced Macros 1.6.8 Atlassian Enabled 
+Apache HttpClient OSGi bundle 4.0 Apache Software Foundation Enabled 
+Apache HttpCore OSGi bundle 4.0 Apache Software Foundation Enabled 
+Atlassian Gadgets API 2.0.2.2 Atlassian Enabled 
+Atlassian Gadgets OAuth Service Provider Plugin 2.0.2.2 Atlassian Enabled 
+Atlassian Gadgets SPI 2.0.2.2 Atlassian Enabled 
+Atlassian OAuth API 1.0.12 Atlassian Enabled 
+Atlassian OAuth Consumer SAL SPI Implementation 1.0.12 Atlassian Enabled 
+Atlassian OAuth Consumer SPI 1.0.12 Atlassian Enabled 
+Atlassian OAuth Service Provider SAL SPI Implementation 1.0.12 Atlassian Enabled 
+Atlassian OAuth Service Provider SPI 1.0.12 Atlassian Enabled 
+Atlassian REST - Module Types 1.1.0.beta5 Atlassian Enabled 
+Atlassian Template Renderer API 1.0.3 Atlassian Enabled 
+Atlassian Template Renderer Velocity 1.6 Plugin 1.0.3 Atlassian Enabled 
+Atlassian UI Plugin 2.0.2.2 Atlassian Pty Ltd Enabled 
+Atlassian Universal Plugin Manager Plugin 1.0 Atlassian Pty Ltd Disabled 
+Attachment Checkout Plugin 2.0.3-RC01 Locus-Global Software Pvt. Ltd. Enabled 
+Attachment Extractors 1.1 Atlassian Pty Ltd Enabled 
+BND Library 0.0.255 aQute SARL <a href="http://www.aQute.biz">http://www.aQute.biz</a> Enabled 
+Basic Macros 1.4 Atlassian Pty Ltd Enabled 
+Cache Plugin 4.0.0 Bob Swift, Jason Dillon, and other contributors Enabled 
+Calendar Plugin 2.7.2.1 Atlassian Enabled 
+Chart Plugin 1.15 Atlassian Enabled 
+Classic Left Navigation Theme 2.9.1 Atlassian Enabled 
+Clickr Theme 2.6.1 Atlassian Pty Ltd Enabled 
+Code Macro 1.5 Atlassian Pty Ltd Enabled 
+Compatibility Macros 1.5 Atlassian Pty Ltd Disabled 
+Confluence Activity Stream Plugin 3.1 Atlassian Enabled 
+Confluence Atlassian Plugin Repository 2.1.6 Adaptavist.com Ltd Enabled 
+Confluence Attachments Plugin 2.17 Atlassian Disabled 
+Confluence Blogging RPC Plugin 1.2.4 Atlassian Pty Ltd Enabled 
+Confluence Contributors Plugin 1.2.3 Atlassian Pty Ltd Enabled 
+Confluence Drag and Drop Plugin 1.0.4 Atlassian Disabled 
+Confluence HTML Macros 1.8.1 Atlassian Enabled 
+Confluence Legacy Web Resources 1.0 Atlassian Software Systems Pty Ltd Enabled 
+Confluence PDF Export 1.6 (unknown) Enabled 
+Confluence REST API 3.1.2 Atlassian Software Enabled 
+Confluence Remote API 3.1.2 Atlassian Software Systems Enabled 
+Confluence Thread Dump Plugin 1.2.1 Atlassian Enabled 
+Confluence Usage Stats 0.12 Atlassian Enabled 
+Copy Space Plugin 1.1 Atlassian Software Systems Pty Ltd Enabled 
+Create Page Macro 1.2.1 Adaptavist.com Ltd Enabled 
+Custom Space User Management Plugin 2.0.5 Custom Space User Management Plugin Team Enabled 
+CustomWare Composition Plugin 2.3.5 CustomWare Asia Pacific Enabled 
+CustomWare Redirection Plugin 2.4.1 CustomWare Asia Pacific Enabled 
+DB Integrity Plugin 1.0.1 Comala Technology Solutions, Inc. Enabled 
+Dashboard Actions 1.7 Atlassian Pty Ltd Enabled 
+Dashboard Macros 1.13 Atlassian Pty Ltd Enabled 
+Dynamic Table Macros 1.2 Revere Data LLC Enabled 
+Dynamic Task List 2 Plugin 3.2.5 Atlassian Pty Ltd Enabled 
+Excel Plugin 3.6.0 Bob Swift and other contributors Enabled 
+French language pack 1.18 Atlassian Software Systems Enabled 
+Gadgets Plugin 1.0.3 Atlassian Pty Ltd Enabled 
+German language pack 1.12 Atlassian Software Systems Enabled 
+Google Collections Bundle 1.0.0.rc1 Atlassian Pty Ltd Enabled 
+Graphviz Plugin 1.2.0 Atlassian Software Systems Pty Ltd and other contributors Enabled 
+ICU4J 3.8.0.1 Atlassian Pty Ltd Enabled 
+IM Presence NG Plugin 2.6 Atlassian Pty Ltd Enabled 
+Information Macros 1.3 Atlassian Pty Ltd Enabled 
+JDOM DOM Processor 1.0.0 SpringSource Enabled 
+JIRA Macros 2.8.15 Atlassian Pty Ltd Enabled 
+JSON Library 20070829.0.0.1 Atlassian Pty Ltd Enabled 
+JSR 305 Annotations 1.0 Atlassian Pty Ltd Enabled 
+Java Concurrency in Practice Annotations 1.0.0 SpringSource Enabled 
+Layout Macros 1.3 Atlassian Pty Ltd Enabled 
+Linking Plugin 2.10.1 CustomWare Asia Pacific Enabled 
+Live Search Macros 2.11 Atlassian Enabled 
+Mail Page Plugin 1.9 Atlassian Enabled 
+Metadata Plugin 2.1.4 Andy Armstrong, Kelsey Grant and other contributors Enabled 
+Office Connector plugin 1.6 Atlassian Pty Ltd Enabled 
+PDF Gen Servlet 1.2.1.6 Rambus Enabled 
+Page Information Tools 1.3 Adaptavist.com Ltd Enabled 
+Page Tree 1.16 Atlassian Enabled 
+PageContentPlugin 4.10.19.333 (unknown) Enabled 
+Profile Macros 1.0 Atlassian Software Systems Enabled 
+ROME, RSS and atOM utilitiEs for Java 1.0 Sun Microsystems Enabled 
+Reporting Plugin 3.3.0 CustomWare Asia Pacific Enabled 
+Shared Application Access Layer API 2.0.15 Atlassian Enabled 
+Shared Application Access Layer Confluence Plugin 2.0.15 Atlassian Software Systems Enabled 
+Slideshow Plugin 0.3 Atlassian Software Systems Pty Ltd Enabled 
+Social Bookmarking Plugin 1.3.1 Atlassian Pty Ltd Enabled 
+Survey Macros 1.1.8.5 Confluence Community Enabled 
+Table Plugin 4.0.0 Bob Swift Enabled 
+Table of Contents Plugin 2.4.11 CustomWare Asia Pacific Enabled 
+Tabular Metadata 2.9 Atlassian Pty Ltd Enabled 
+Template-Plugin 3.9.6.2 (unknown) Enabled 
+TinyMCE Editor Plugin 3.1.2 Atlassian Enabled 
+Tracking Plugin 2.5.0 CustomWare Asia Pacific Enabled 
+UWC Importer Admin Panel 1.2.1 Atlassian Software Systems Enabled 
+User Lister 2.4.4 Atlassian Pty Ltd Enabled 
+User Status 1.0 Atlassian Software Systems Enabled 
+Visio Plugin 1.0 Bob Swift Enabled 
+WebDAV Plugin 2.4 Atlassian Pty Ltd Enabled 
+Widget Connector 1.3.2 Atlassian Enabled 
+atlassian-gadgets-shared-2.0.2.2.jar 0.0 (unknown) Disabled 
+
+
+License Details
+Support Entitlement Number None 
+Server ID A6N5-LHZ0-GEIX-NCQE 
+Clustered false 
+
+
+System Properties
+sun.io.unicode.encoding UnicodeLittle 
+java.version 1.5.0_22 
+com.sun.jndi.ldap.connect.pool.authentication simple 
+catalina.useNaming true 
+java.class.path D:\confluence3.1\confluence-3.1.2-std\bin\bootstrap.jar 
+java.awt.graphicsenv sun.awt.Win32GraphicsEnvironment 
+user.language en 
+catalina.home D:\confluence3.1\confluence-3.1.2-std 
+package.definition sun.,java.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper. 
+sun.os.patch.level Service Pack 2 
+java.specification.vendor Sun Microsystems Inc. 
+os.version 6.0 
+server.loader  
+sun.boot.class.path C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\rt.jar
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\i18n.jar
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\sunrsasign.jar
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\jsse.jar
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\jce.jar
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\charsets.jar
+C:\Program Files (x86)\Java\jdk1.5.0_22\jre\classes 
+java.class.version 49.0 
+file.encoding Cp1252 
+java.vm.version 1.5.0_22-b03 
+sun.desktop windows 
+java.io.tmpdir D:\confluence3.1\confluence-3.1.2-std\temp 
+java.home C:\Program Files (x86)\Java\jdk1.5.0_22\jre 
+user.name HQWSV-RIKIQA$ 
+catalina.base D:\confluence3.1\confluence-3.1.2-std 
+com.sun.jndi.ldap.connect.pool.protocol plain 
+awt.toolkit sun.awt.windows.WToolkit 
+java.specification.name Java Platform API Specification 
+user.variant  
+java.ext.dirs C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\ext 
+common.loader ${catalina.home}/lib
+${catalina.home}/lib/*.jar 
+java.vm.info mixed mode 
+sun.arch.data.model 32 
+java.vm.specification.name Java Virtual Machine Specification 
+java.vm.specification.version 1.0 
+sun.cpu.endian little 
+sun.management.compiler HotSpot Server Compiler 
+path.separator ; 
+com.sun.jndi.ldap.connect.pool.debug none 
+java.vm.name Java HotSpot(TM) Server VM 
+user.country US 
+shared.loader  
+tomcat.util.buf.StringCache.byte.enabled true 
+user.timezone America/Los_Angeles 
+com.sun.jndi.ldap.connect.pool.timeout 300000 
+file.separator \ 
+package.access sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.,sun.beans. 
+os.arch x86 
+sun.boot.library.path C:\Program Files (x86)\Java\jdk1.5.0_22\jre\bin 
+file.encoding.pkg sun.io 
+line.separator  
+com.sun.jndi.ldap.connect.pool.prefsize 10 
+java.vendor.url.bug <a href="http://java.sun.com/cgi-bin/bugreport.cgi">http://java.sun.com/cgi-bin/bugreport.cgi</a> 
+java.vm.vendor Sun Microsystems Inc. 
+os.name Windows Server 2008 
+com.sun.jndi.ldap.connect.pool.initsize 1 
+com.sun.jndi.ldap.connect.pool.maxsize 0 
+java.vendor.url <a href="http://java.sun.com/">http://java.sun.com/</a> 
+java.naming.factory.url.pkgs org.apache.naming 
+java.awt.printerjob sun.awt.windows.WPrinterJob 
+sun.jnu.encoding Cp1252 
+java.vm.specification.vendor Sun Microsystems Inc. 
+java.naming.factory.initial org.apache.naming.java.javaURLContextFactory 
+java.runtime.name Java(TM) 2 Runtime Environment, Standard Edition 
+java.endorsed.dirs D:\confluence3.1\confluence-3.1.2-std\endorsed 
+java.runtime.version 1.5.0_22-b03 
+sun.cpu.isalist pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86 
+java.library.path D:\confluence3.1\confluence-3.1.2-std\bin
+.
+C:\Windows\system32
+C:\Windows
+C:\Windows\system32
+C:\Windows
+C:\Windows\System32\Wbem
+C:\Program Files\NetApp\Windows Host Utilities\
+C:\Program Files\NetApp\SnapDrive\
+D:\htmldoc\
+C:\Program Files (x86)\Graphviz2.26.3\bin 
+user.dir C:\Windows\system32 
+user.home C:\ 
+java.vendor Sun Microsystems Inc. 
+java.specification.version 1.5 
+
+
+Installed Languages
+de (DE) 
+en (GB) 
+fr (FR) 
+                                    </div>
+            </div>
+        </div>
+      
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+                            
+                                
+
+<div id="customfieldmodule">
+    
+
+    
+    
+    <ul id="tabCellPane1" class="property-list">
+        
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10061" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Complexity" class="name">Internal Complexity:</strong>
+                            <div id="customfield_10061-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10060" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Value" class="name">Internal Value:</strong>
+                            <div id="customfield_10060-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10082" class="item">
+                        <div class="wrap">
+                            <strong title="Rank" class="name">Rank:</strong>
+                            <div id="customfield_10082-val" class="value type-greenhopper-ranking">
+                                
+<div id="RankField_customfield_10082view">	<span id="RankValue_customfield_10082view">Issue can not be ranked.</span>&nbsp;
+			<span id="RankPage_customfield_10082view" class="gh-rankpage gh-jira-rankpage"></span>
+</div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+    </ul>
+    
+</div>
+
+                            
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+<div id="descriptionmodule" class="module toggle-wrap">
+    <div class="mod-header">
+        <h3 class="toggle-title">Description</h3>
+    </div>
+    <div id="issue-description" class="mod-content">
+        <p>Hi,<br/>
+I am trying to remove two users from the group created under 'Manage Users/Groups' tab. Once i clicked on remove it's showing the message 'users removed from the group successfully' but still the user name is displaying on the group and total number of users also remain same (please refer the attached screenshot for details information). Please verify and let me know the root cause of these issue. </p>
+
+<p>Thank <br/>
+Rinku     </p>
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+
+
+
+
+
+
+	<div id="attachmentmodule" class="module toggle-wrap">
+		<div class="mod-header">
+            <ul class="ops">
+            
+                <li class="drop" id="attachment-sorting-options">
+                    <div class="aui-dd-parent">
+                        <a href="#" id="attachment-sort-key-list" class="icon drop-menu aui-dropdown-trigger" title="More Options"><span>More Options</span></a>
+                        <div class="aui-dropdown-content aui-list aui-list-checked">
+                            <ul class="aui-list-section">
+                                <li class="aui-list-item  aui-checked">
+                                    <a id="attachment-sort-key-name" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SUSR-117?attachmentSortBy=fileName#attachmentmodule"
+                                       title="Sort By Name">
+                                        Sort By Name
+                                    </a>
+                                </li>
+                                <li class="aui-list-item">
+                                    <a id="attachment-sort-key-date" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SUSR-117?attachmentSortBy=dateTime#attachmentmodule"
+                                       title="Sort By Date">
+                                        Sort By Date
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="aui-list-section " id="attachment-sort-direction-list">
+                                <li class="aui-list-item aui-checked">
+                                    <a id="attachment-sort-direction-asc" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SUSR-117?attachmentOrder=asc#attachmentmodule"
+                                       title="Ascending">
+                                        Ascending
+                                    </a>
+                                </li>
+                                <li class="aui-list-item">
+                                    <a id="attachment-sort-direction-desc" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SUSR-117?attachmentOrder=desc#attachmentmodule"
+                                       title="Descending">
+                                        Descending
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                                <ul class="aui-list-section aui-last">
+                                    
+                                        <li class="aui-list-item">
+                                            <a id="aszip" href="/secure/attachmentzip/23765.zip"
+                                               class="aui-list-item-link" title="Download all attachments as a ZIP file">
+                                                Download All
+                                            </a>
+                                        </li>
+                                    
+                                    
+                                </ul>
+                            
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <h3 class="toggle-title">Attachments</h3>
+        </div>
+        <div class="mod-content">
+        
+            <ol id="file_attachments" class="item-attachments">
+            
+                
+                
+
+                <li class="attachment-content ">
+                    
+                        <div class="twixi-block collapsed">
+                            <div class="twixi-wrap verbose">
+                                <a href="#" class="twixi"><span class="icon twixi-opened"><span>$i18n.getText("admin.common.words.hide")</span></span></a>
+                                <div class="attachment-thumb">
+                                    <a href="/secure/attachment/15828/permission-management-2.0.6-SNAPSHOT.jar">
+                                        
+
+    
+        <img src="/images/icons/attach/java.gif" height="16" width="16"
+             border="0" alt="Java Archive File">        
+        
+    
+
+
+                                    </a>
+                                </div>
+                                <dl>
+                                    
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/15828/permission-management-2.0.6-SNAPSHOT.jar"
+                           title="Latest 25/Oct/10 8:56 AM - Gary S. Weaver">permission-management-2.0.6-SNAPSHOT.jar
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        25/Oct/10 8:56 AM</dd>
+                    <dd class="attachment-size">
+                        1.00 MB</dd>
+                    <dd class="attachment-author">
+                        Gary S. Weaver
+                    </dd>
+                
+                                    <dd class="zip-contents">
+                                        
+                                        <ol>
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B1%5D/META-INF/MANIFEST.MF">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B1%5D/META-INF/MANIFEST.MF" title="META-INF/MANIFEST.MF">
+                                                            META-INF/MANIFEST.MF
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.1 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B27%5D/atlassian-plugin.xml">
+                                                                
+
+    
+        <img src="/images/icons/attach/xml.gif" height="16" width="16"
+             border="0" alt="XML File">        
+        
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B27%5D/atlassian-plugin.xml" title="atlassian-plugin.xml">
+                                                            atlassian-plugin.xml
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            8 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B28%5D/csum/confluence/permissionmgmt/AbstractPagerPaginationSupportCachingSpaceAction.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B28%5D/csum/confluence/permissionmgmt/AbstractPagerPaginationSupportCachingSpaceAction.class" title="csum/confluence/permissionmgmt/AbstractPagerPaginationSupportCachingSpaceAction.class">
+                                                            csum/.../AbstractPagerPaginationSupportCachingSpaceAction.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            12 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B29%5D/csum/confluence/permissionmgmt/AtlassianPlugin.properties">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B29%5D/csum/confluence/permissionmgmt/AtlassianPlugin.properties" title="csum/confluence/permissionmgmt/AtlassianPlugin.properties">
+                                                            csum/.../AtlassianPlugin.properties
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            17 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B30%5D/csum/confluence/permissionmgmt/AtlassianPlugin_de.properties">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B30%5D/csum/confluence/permissionmgmt/AtlassianPlugin_de.properties" title="csum/confluence/permissionmgmt/AtlassianPlugin_de.properties">
+                                                            csum/.../AtlassianPlugin_de.properties
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            19 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B31%5D/csum/confluence/permissionmgmt/AtlassianPlugin_en.properties">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B31%5D/csum/confluence/permissionmgmt/AtlassianPlugin_en.properties" title="csum/confluence/permissionmgmt/AtlassianPlugin_en.properties">
+                                                            csum/.../AtlassianPlugin_en.properties
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            17 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B32%5D/csum/confluence/permissionmgmt/CacheConstants.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B32%5D/csum/confluence/permissionmgmt/CacheConstants.class" title="csum/confluence/permissionmgmt/CacheConstants.class">
+                                                            csum/confluence/.../CacheConstants.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.8 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B33%5D/csum/confluence/permissionmgmt/config/BaseCustomPermissionConfigAction.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B33%5D/csum/confluence/permissionmgmt/config/BaseCustomPermissionConfigAction.class" title="csum/confluence/permissionmgmt/config/BaseCustomPermissionConfigAction.class">
+                                                            csum/.../BaseCustomPermissionConfigAction.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            6 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B34%5D/csum/confluence/permissionmgmt/config/CsumConfigValidationResponse.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B34%5D/csum/confluence/permissionmgmt/config/CsumConfigValidationResponse.class" title="csum/confluence/permissionmgmt/config/CsumConfigValidationResponse.class">
+                                                            csum/.../CsumConfigValidationResponse.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            1 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B35%5D/csum/confluence/permissionmgmt/config/CustomPermissionConfigAction.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B35%5D/csum/confluence/permissionmgmt/config/CustomPermissionConfigAction.class" title="csum/confluence/permissionmgmt/config/CustomPermissionConfigAction.class">
+                                                            csum/.../CustomPermissionConfigAction.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            8 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B36%5D/csum/confluence/permissionmgmt/config/CustomPermissionConfigConstants.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B36%5D/csum/confluence/permissionmgmt/config/CustomPermissionConfigConstants.class" title="csum/confluence/permissionmgmt/config/CustomPermissionConfigConstants.class">
+                                                            csum/.../CustomPermissionConfigConstants.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            4 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B37%5D/csum/confluence/permissionmgmt/config/CustomPermissionConfigurable.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B37%5D/csum/confluence/permissionmgmt/config/CustomPermissionConfigurable.class" title="csum/confluence/permissionmgmt/config/CustomPermissionConfigurable.class">
+                                                            csum/.../CustomPermissionConfigurable.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            2 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B38%5D/csum/confluence/permissionmgmt/config/CustomPermissionConfiguration.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B38%5D/csum/confluence/permissionmgmt/config/CustomPermissionConfiguration.class" title="csum/confluence/permissionmgmt/config/CustomPermissionConfiguration.class">
+                                                            csum/.../CustomPermissionConfiguration.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            19 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B39%5D/csum/confluence/permissionmgmt/config/LegacyConfigConstants.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B39%5D/csum/confluence/permissionmgmt/config/LegacyConfigConstants.class" title="csum/confluence/permissionmgmt/config/LegacyConfigConstants.class">
+                                                            csum/.../LegacyConfigConstants.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            1 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B40%5D/csum/confluence/permissionmgmt/config/LegacyConfigurationMigrator.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B40%5D/csum/confluence/permissionmgmt/config/LegacyConfigurationMigrator.class" title="csum/confluence/permissionmgmt/config/LegacyConfigurationMigrator.class">
+                                                            csum/.../LegacyConfigurationMigrator.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            4 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B41%5D/csum/confluence/permissionmgmt/CsumAbstractSpaceAction.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B41%5D/csum/confluence/permissionmgmt/CsumAbstractSpaceAction.class" title="csum/confluence/permissionmgmt/CsumAbstractSpaceAction.class">
+                                                            csum/.../CsumAbstractSpaceAction.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.5 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B42%5D/csum/confluence/permissionmgmt/CsumConfluenceActionSupport.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B42%5D/csum/confluence/permissionmgmt/CsumConfluenceActionSupport.class" title="csum/confluence/permissionmgmt/CsumConfluenceActionSupport.class">
+                                                            csum/.../CsumConfluenceActionSupport.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.5 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B43%5D/csum/confluence/permissionmgmt/CustomPermissionConstants.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B43%5D/csum/confluence/permissionmgmt/CustomPermissionConstants.class" title="csum/confluence/permissionmgmt/CustomPermissionConstants.class">
+                                                            csum/.../CustomPermissionConstants.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.5 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B44%5D/csum/confluence/permissionmgmt/CustomPermissionManagerAction.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B44%5D/csum/confluence/permissionmgmt/CustomPermissionManagerAction.class" title="csum/confluence/permissionmgmt/CustomPermissionManagerAction.class">
+                                                            csum/.../CustomPermissionManagerAction.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            43 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B45%5D/csum/confluence/permissionmgmt/CustomPermissionManagerActionContext.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B45%5D/csum/confluence/permissionmgmt/CustomPermissionManagerActionContext.class" title="csum/confluence/permissionmgmt/CustomPermissionManagerActionContext.class">
+                                                            csum/.../CustomPermissionManagerActionContext.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            3 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B46%5D/csum/confluence/permissionmgmt/service/CustomPermissionServiceManager.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B46%5D/csum/confluence/permissionmgmt/service/CustomPermissionServiceManager.class" title="csum/confluence/permissionmgmt/service/CustomPermissionServiceManager.class">
+                                                            csum/.../CustomPermissionServiceManager.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            4 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B47%5D/csum/confluence/permissionmgmt/service/exception/AddException.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B47%5D/csum/confluence/permissionmgmt/service/exception/AddException.class" title="csum/confluence/permissionmgmt/service/exception/AddException.class">
+                                                            csum/confluence/.../AddException.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.8 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B48%5D/csum/confluence/permissionmgmt/service/exception/FindException.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B48%5D/csum/confluence/permissionmgmt/service/exception/FindException.class" title="csum/confluence/permissionmgmt/service/exception/FindException.class">
+                                                            csum/confluence/.../FindException.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.8 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B49%5D/csum/confluence/permissionmgmt/service/exception/RemoveException.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B49%5D/csum/confluence/permissionmgmt/service/exception/RemoveException.class" title="csum/confluence/permissionmgmt/service/exception/RemoveException.class">
+                                                            csum/confluence/.../RemoveException.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.8 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B50%5D/csum/confluence/permissionmgmt/service/exception/ServiceAuthenticationException.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B50%5D/csum/confluence/permissionmgmt/service/exception/ServiceAuthenticationException.class" title="csum/confluence/permissionmgmt/service/exception/ServiceAuthenticationException.class">
+                                                            csum/.../ServiceAuthenticationException.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.9 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B51%5D/csum/confluence/permissionmgmt/service/exception/ServiceException.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B51%5D/csum/confluence/permissionmgmt/service/exception/ServiceException.class" title="csum/confluence/permissionmgmt/service/exception/ServiceException.class">
+                                                            csum/confluence/.../ServiceException.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            2 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B52%5D/csum/confluence/permissionmgmt/service/exception/UsersNotFoundException.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B52%5D/csum/confluence/permissionmgmt/service/exception/UsersNotFoundException.class" title="csum/confluence/permissionmgmt/service/exception/UsersNotFoundException.class">
+                                                            csum/.../UsersNotFoundException.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.9 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B53%5D/csum/confluence/permissionmgmt/service/GroupManagementService.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B53%5D/csum/confluence/permissionmgmt/service/GroupManagementService.class" title="csum/confluence/permissionmgmt/service/GroupManagementService.class">
+                                                            csum/.../GroupManagementService.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.9 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B54%5D/csum/confluence/permissionmgmt/service/impl/BaseGroupManagementService.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B54%5D/csum/confluence/permissionmgmt/service/impl/BaseGroupManagementService.class" title="csum/confluence/permissionmgmt/service/impl/BaseGroupManagementService.class">
+                                                            csum/.../BaseGroupManagementService.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            8 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/23765/15828%5B55%5D/csum/confluence/permissionmgmt/service/impl/BaseUserManagementService.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/23765/15828%5B55%5D/csum/confluence/permissionmgmt/service/impl/BaseUserManagementService.class" title="csum/confluence/permissionmgmt/service/impl/BaseUserManagementService.class">
+                                                            csum/.../BaseUserManagementService.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            11 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                        </ol>
+                                        <span class="zip-contents-trailer">
+                                            
+                                                Showing 30 of 124 items
+                                            
+                                            <a href="/secure/attachment/15828/permission-management-2.0.6-SNAPSHOT.jar">Download Zip</a>
+                                        </span>                
+                                        
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="twixi-wrap concise">
+                                <a href="#" class="twixi"><span class="icon twixi-closed"><span>$i18n.getText("admin.common.words.show")</span></span></a>
+
+                                <div class="attachment-thumb">
+                                    <a href="/secure/attachment/15828/permission-management-2.0.6-SNAPSHOT.jar">
+                                        
+
+    
+        <img src="/images/icons/attach/java.gif" height="16" width="16"
+             border="0" alt="Java Archive File">        
+        
+    
+
+
+                                    </a>
+                                </div>
+                                <dl>
+                                    
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/15828/permission-management-2.0.6-SNAPSHOT.jar"
+                           title="Latest 25/Oct/10 8:56 AM - Gary S. Weaver">permission-management-2.0.6-SNAPSHOT.jar
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        25/Oct/10 8:56 AM</dd>
+                    <dd class="attachment-size">
+                        1.00 MB</dd>
+                    <dd class="attachment-author">
+                        Gary S. Weaver
+                    </dd>
+                
+                                </dl>
+                            </div>
+                        </div>
+
+                    
+                    
+                </li>
+            
+            </ol>
+    
+        
+
+        
+            <ol id="attachment_thumbnails" class="item-attachments section">
+            
+                <li class="attachment-content">
+                    
+                        
+                        
+                            <div class="attachment-thumb">
+                                <a class="gallery" rel="gallery" href="/secure/attachment/15725/space_Group_member_Removing_Issue.JPG" title="space_Group_member_Removing_Issue.JPG - Latest 05/Oct/10 11:57 PM - Rinku Saha">
+                                    
+                                    
+                                        <img src="/secure/thumbnail/15725/_thumb_15725.png" width="200" height="160" alt="" />
+                                    
+                                </a>
+                            </div>
+                            <dl>
+                                <dt><span class="blender"></span><a class="attachment-title" href="/secure/attachment/15725/space_Group_member_Removing_Issue.JPG" title="space_Group_member_Removing_Issue.JPG - Latest 05/Oct/10 11:57 PM - Rinku Saha">space_Group_member_Removing_Issue.JPG</a></dt>
+                                <dd class="attachment-size">170 kB</dd>
+                                <dd class="attachment-date">05/Oct/10 11:57 PM</dd>
+                            </dl>
+                        
+                    
+                </li>
+            
+            </ol>
+        
+        </div>
+    </div>
+
+    
+
+
+                    
+                
+                
+                    <div class='module toggle-wrap' id='linkingmodule'><div id='linkingmodule_heading' class='mod-header'><h3 class='toggle-title'>Issue Links</h3></div><div class='mod-content'>                    <table class="aui issue-links links-inward aui-table-rowhover">
+        <thead>
+            <tr>
+                <td colspan="5">
+                    This issue <strong>is duplicated by</strong>:
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+            <td class="issuekey">
+                <a href="/browse/SUSR-132" title="Not able to remove &#39;Existing member&#39; from the space group"  class="resolution" >SUSR-132</a>
+            </td>
+            <td class="summary"> Not able to remove &#39;Existing member&#39; from the space group </td>
+            <td class="priority">
+                                                <img src="/images/icons/priority_minor.gif" height="16" width="16" border="0" align="absmiddle" alt="Minor" title="Minor - Minor loss of function, or other problem where easy workaround is present.">
+                                </td>
+            <td class="status">
+                            <img src="/images/icons/status_resolved.gif" height="16" width="16" border="0" align="absmiddle" alt="Resolved" title="Resolved - A resolution has been taken, and it is awaiting verification by reporter. From here issues are either reopened, or are closed.">
+                </td>
+            <td class="actions">
+                            </td>
+        </tr>
+                </tbody>
+    </table>
+    </div></div><div class='module toggle-wrap' id='activitymodule'><div id='activitymodule_heading' class='mod-header'><h3 class='toggle-title'>Activity</h3></div><div class='mod-content'>    <div class="tabwrap tabs2">
+                    <div class="sortwrap">
+                                    <a class="icon icon-sort-down" rel="nofollow" href="/browse/SUSR-117?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                            </div>
+                <ul id="issue-tabs" class="tabs horizontal">
+                                    <li><a id="all-tabpanel" href="/browse/SUSR-117?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel#issue-tabs"><strong>All</strong></a></li>
+                                                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+                                                <li><a id="worklog-tabpanel" href="/browse/SUSR-117?page=com.atlassian.jira.plugin.system.issuetabpanels:worklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+                                                <li><a id="changehistory-tabpanel" href="/browse/SUSR-117?page=com.atlassian.jira.plugin.system.issuetabpanels:changehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+                                                <li><a id="activity-stream-issue-tab" href="/browse/SUSR-117?page=com.atlassian.streams.streams-jira-plugin:activity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+                            </ul>
+    </div>
+    <div class="issuePanelContainer" id="issue_actions_container">
+                        <div id="comment-35793" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-117?focusedCommentId=35793&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-35793" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_35793_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_35793_verbose subText'><span class='date user-tz' title='06/Oct/10 7:24 AM'><time datetime='2010-10-06T07:24-0700'>06/Oct/10 7:24 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Rinku,</p>
+
+<p>Two things for you to check first:</p>
+
+<p>1. After you attempt to delete and you close the browser completely and wait an hour and come back, is the user with the username you deleted still there? I know that at least one large institution, that used OSUser schema sharing with Jira, reported that changes to their repository didn't happen immediately, because of how it was setup. If they waited a little while, the data would reflect the change. They only typically would have to wait seconds to a few minutes at most and click the "refresh" <b>link</b> (not the browser refresh) in CSUM (to reset the cache), and it would display properly. Since CSUM plugin relies on Confluence's user/group management, we have to rely on it to provide the information in a timely fashion, and when it doesn't, there isn't much we can do about it, if that is the case.</p>
+
+<p>2. Can you ensure that user is able to be removed from the repository? For example, perhaps it is a read-only user from an LDAP repository. We may have trouble removing read-only users, in which case we'd need to provide an adequate error message, and we'd need to fix that.</p>
+
+<p>Thanks for your help,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_35793_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_35793_concise subText'><span class='date user-tz' title='06/Oct/10 7:24 AM'><time datetime='2010-10-06T07:24-0700'>06/Oct/10 7:24 AM</time></span></span>               Rinku,
+
+Two things for you to check first:
+
+1. After you attempt to delete and you close the browser completely and wait an hour and come back, is the user with the username you deleted still there? I know that at least one large institution, that used OSUser schema sharing with Jira, reported that changes to their repository didn't happen immediately, because of how it was setup. If they waited a little while, the data would reflect the change. They only typically would have to wait seconds to a few minutes at most and click the "refresh" <b>link</b> (not the browser refresh) in CSUM (to reset the cache), and it would display properly. Since CSUM plugin relies on Confluence's user/group management, we have to rely on it to provide the information in a timely fashion, and when it doesn't, there isn't much we can do about it, if that is the case.
+
+2. Can you ensure that user is able to be removed from the repository? For example, perhaps it is a read-only user from an LDAP repository. We may have trouble removing read-only users, in which case we'd need to provide an adequate error message, and we'd need to fix that.
+
+Thanks for your help,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-35857" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-117?focusedCommentId=35857&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-35857" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="rsahapuja" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_35857_verbose" href="/secure/ViewProfile.jspa?name=rsahapuja">Rinku Saha</a>
+ added a comment  - <span class='commentdate_35857_verbose subText'><span class='date user-tz' title='08/Oct/10 5:04 AM'><time datetime='2010-10-08T05:04-0700'>08/Oct/10 5:04 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Hi Gary,</p>
+
+<p>Please find my update below;</p>
+
+<p>1. After you attempt to delete and you close the browser completely and wait an hour and come back, is the user with the username you deleted still there? I know that at least one large institution, that used OSUser schema sharing with Jira, reported that changes to their repository didn't happen immediately, because of how it was setup. If they waited a little while, the data would reflect the change. They only typically would have to wait seconds to a few minutes at most and click the "refresh" link (not the browser refresh) in CSUM (to reset the cache), and it would display properly. Since CSUM plugin relies on Confluence's user/group management, we have to rely on it to provide the information in a timely fashion, and when it doesn't, there isn't much we can do about it, if that is the case.</p>
+
+<p>Rinku: After removing user name from the list we closed the browser and after 4 hours i opened the page in new bowser, but still the user name is displaying in the list</p>
+
+<p>2. Can you ensure that user is able to be removed from the repository? For example, perhaps it is a read-only user from an LDAP repository. We may have trouble removing read-only users, in which case we'd need to provide an adequate error message, and we'd need to fix that.</p>
+
+<p>Rinku: in our environment we used LDAP repository and user is an Admin user. </p>
+
+<p>Let me know if you need any more information from my end.</p>
+
+<p>Thanks'<br/>
+Rinku</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="rsahapuja" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_35857_concise" href="/secure/ViewProfile.jspa?name=rsahapuja">Rinku Saha</a>
+ added a comment  - <span class='commentdate_35857_concise subText'><span class='date user-tz' title='08/Oct/10 5:04 AM'><time datetime='2010-10-08T05:04-0700'>08/Oct/10 5:04 AM</time></span></span>               Hi Gary,
+
+Please find my update below;
+
+1. After you attempt to delete and you close the browser completely and wait an hour and come back, is the user with the username you deleted still there? I know that at least one large institution, that used OSUser schema sharing with Jira, reported that changes to their repository didn't happen immediately, because of how it was setup. If they waited a little while, the data would reflect the change. They only typically would have to wait seconds to a few minutes at most and click the "refresh" link (not the browser refresh) in CSUM (to reset the cache), and it would display properly. Since CSUM plugin relies on Confluence's user/group management, we have to rely on it to provide the information in a timely fashion, and when it doesn't, there isn't much we can do about it, if that is the case.
+
+Rinku: After removing user name from the list we closed the browser and after 4 hours i opened the page in new bowser, but still the user name is displaying in the list
+
+2. Can you ensure that user is able to be removed from the repository? For example, perhaps it is a read-only user from an LDAP repository. We may have trouble removing read-only users, in which case we'd need to provide an adequate error message, and we'd need to fix that.
+
+Rinku: in our environment we used LDAP repository and user is an Admin user. 
+
+Let me know if you need any more information from my end.
+
+Thanks'
+Rinku         </div>
+    </div>
+</div>
+                     <div id="comment-35862" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-117?focusedCommentId=35862&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-35862" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_35862_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_35862_verbose subText'><span class='date user-tz' title='08/Oct/10 6:22 AM'><time datetime='2010-10-08T06:22-0700'>08/Oct/10 6:22 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Rinku,</p>
+
+<p>The CSUM plugin needs read/write access via the Confluence API to the repository in order to manage users and/or groups. I can confirm (because we and others use it) that it supports LDAP (at least for now) as a secondary repository used to authenticate that the user is a valid user before adding to a group in the primary repository defined for Confluence (typically a normal Confluence repository, but can be any other than allows read/write via the Confluence API). These repositories up to Confluence 3.5 (not yet out) are defined (in order) in atlassian-user.xml.</p>
+
+<p>If you are not using the normal Confluence repository or another read/write repository (for group member management, in this case), then CSUM is not able to modify the repository, and nothing gets added.</p>
+
+<p>The bug I think that you found is that we must not be checking to see if the thing we are trying to modify/remove (group, user, etc.) is read-only. And perhaps it would be nice if CSUM could manage users in LDAP, but we'd prefer to do that through Confluence/Crowd via the Confluence API, as that ensures we are more compatible with future changes in Confluence. So if the API doesn't support it, we don't.</p>
+
+<p>Hopefully we'll have time to fix this issue soon (check for read-only), however that probably won't help you. If you are unable to use a read/write repository for Confluence, then the CSUM plugin is not going to work for you. I'll add this information to our wiki page also. You might check with Atlassian support and Atlassian documentation about repository configuration as well as your LDAP server documentation/configuration/etc. to see whether there is a way to let Confluence modify LDAP, but I know if it does support that, I'm not aware of it.</p>
+
+<p>Sorry for the trouble,</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_35862_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_35862_concise subText'><span class='date user-tz' title='08/Oct/10 6:22 AM'><time datetime='2010-10-08T06:22-0700'>08/Oct/10 6:22 AM</time></span></span>               Rinku,
+
+The CSUM plugin needs read/write access via the Confluence API to the repository in order to manage users and/or groups. I can confirm (because we and others use it) that it supports LDAP (at least for now) as a secondary repository used to authenticate that the user is a valid user before adding to a group in the primary repository defined for Confluence (typically a normal Confluence repository, but can be any other than allows read/write via the Confluence API). These repositories up to Confluence 3.5 (not yet out) are defined (in order) in atlassian-user.xml.
+
+If you are not using the normal Confluence repository or another read/write repository (for group member management, in this case), then CSUM is not able to modify the repository, and nothing gets added.
+
+The bug I think that you found is that we must not be checking to see if the thing we are trying to modify/remove (group, user, etc.) is read-only. And perhaps it would be nice if CSUM could manage users in LDAP, but we'd prefer to do that through Confluence/Crowd via the Confluence API, as that ensures we are more compatible with future changes in Confluence. So if the API doesn't support it, we don't.
+
+Hopefully we'll have time to fix this issue soon (check for read-only), however that probably won't help you. If you are unable to use a read/write repository for Confluence, then the CSUM plugin is not going to work for you. I'll add this information to our wiki page also. You might check with Atlassian support and Atlassian documentation about repository configuration as well as your LDAP server documentation/configuration/etc. to see whether there is a way to let Confluence modify LDAP, but I know if it does support that, I'm not aware of it.
+
+Sorry for the trouble,
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-36276" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-117?focusedCommentId=36276&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-36276" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_36276_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_36276_verbose subText'><span class='date user-tz' title='25/Oct/10 8:56 AM'><time datetime='2010-10-25T08:56-0700'>25/Oct/10 8:56 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Attaching fixed version. Let us know if it works for you,</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_36276_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_36276_concise subText'><span class='date user-tz' title='25/Oct/10 8:56 AM'><time datetime='2010-10-25T08:56-0700'>25/Oct/10 8:56 AM</time></span></span>               Attaching fixed version. Let us know if it works for you,
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-36281" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-117?focusedCommentId=36281&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-36281" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_36281_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_36281_verbose subText'><span class='date user-tz' title='25/Oct/10 9:42 AM'><time datetime='2010-10-25T09:42-0700'>25/Oct/10 9:42 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>2.0.6 release will contain fix. Should be out shortly.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_36281_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_36281_concise subText'><span class='date user-tz' title='25/Oct/10 9:42 AM'><time datetime='2010-10-25T09:42-0700'>25/Oct/10 9:42 AM</time></span></span>               2.0.6 release will contain fix. Should be out shortly.
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-41193" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-117?focusedCommentId=41193&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-41193" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_41193_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_41193_verbose subText'><span class='date user-tz' title='23/Mar/11 11:46 AM'><time datetime='2011-03-23T11:46-0700'>23/Mar/11 11:46 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Customer reports issue not fixed. See <a href="/browse/SUSR-132" title="Not able to remove &#39;Existing member&#39; from the space group"><del>SUSR-132</del></a></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_41193_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_41193_concise subText'><span class='date user-tz' title='23/Mar/11 11:46 AM'><time datetime='2011-03-23T11:46-0700'>23/Mar/11 11:46 AM</time></span></span>               Customer reports issue not fixed. See <a href="/browse/SUSR-132" title="Not able to remove &#39;Existing member&#39; from the space group"><del>SUSR-132</del></a>         </div>
+    </div>
+</div>
+                 </div>
+</div></div>
+                
+
+            </div>
+        </div>
+
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                    <div class='module toggle-wrap' id='peoplemodule'><div id='peoplemodule_heading' class='mod-header'><h3 class='toggle-title'>People</h3></div><div class='mod-content'><ul class="item-details" id="peopledetails">
+    <li class="people-details">
+                <dl>
+            <dt>Assignee:</dt>
+            <dd id="assignee-val">
+                        <a class="user-hover" rel="gswduke" id="issue_summary_assignee_gswduke" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+            </dd>
+        </dl>
+                        <dl>
+            <dt>Reporter:</dt>
+            <dd id="reporter-val">
+                        <a class="user-hover" rel="rsahapuja" id="issue_summary_reporter_rsahapuja" href="/secure/ViewProfile.jspa?name=rsahapuja">Rinku Saha</a>
+            </dd>
+        </dl>
+                    </li>
+</ul>
+<div id="votes-val">
+                <span id="vote-label" title="You cannot vote or change your vote on resolved issues."><span class="icon icon-vote-disabled"></span><span class="action-text">Vote</span></span>
+    
+                (<span id="vote-data">0</span>)
+    </div>
+<div id="watchers-val">
+            <span id="watch-label" title="You have to be logged in to watch an issue."><span class="icon icon-watch-disabled"></span>Watch</span>
+    
+        
+            (<span id="watcher-data">1</span>)
+    </div>
+</div></div><div class='module toggle-wrap' id='datesmodule'><div id='datesmodule_heading' class='mod-header'><h3 class='toggle-title'>Dates</h3></div><div class='mod-content'><ul class="item-details">
+    <li>
+            <dl class="dates">
+            <dt>Created:</dt>
+            <dd id="create-date" class="date user-tz"  title="05/Oct/10 11:57 PM" >
+                        <time datetime="2010-10-05T23:57-0700">05/Oct/10 11:57 PM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Updated:</dt>
+            <dd id="updated-date" class="date user-tz"  title="23/Mar/11 12:02 PM" >
+                        <time datetime="2011-03-23T12:02-0700">23/Mar/11 12:02 PM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Resolved:</dt>
+            <dd id="resolved-date" class="date user-tz"  title="25/Oct/10 9:42 AM" >
+                        <time datetime="2010-10-25T09:42-0700">25/Oct/10 9:42 AM</time></dd>                     </dd>
+        </dl>
+        </li>
+</ul>
+</div></div>
+                
+
+            </div>
+        </div>
+        
+            
+                
+            
+        
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fbrowse%2FSUSR-117&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+            <script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/safe-ajax.js"></script>
+    
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+            document.cookie = "studio.project.rec.used.cookie=" + escape("SUSR-_-") + "; Max-Age=31536000; path=/;";
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<form id="jira_request_timing_info" class="dont-default-focus" >
+	<fieldset class="parameters hidden">
+		<input type="hidden" title="jira.request.start.millis" value="1358008711918" />
+		<input type="hidden" title="jira.request.server.time" value="806" />
+		<input type="hidden" title="jira.request.id" value="518x6601087x1" />
+		<input type="hidden" title="jira.session.expiry.time" value="-" />
+		<input type="hidden" title="jira.session.expiry.in.mins" value="-" />
+		<input id="jiraConcurrentRequests" type="hidden" name="jira.request.concurrent.requests" value="1" />
+	</fieldset>
+</form>
+<!--
+	                 REQUEST ID : 518x6601087x1
+	          REQUEST TIMESTAMP : [12/Jan/2013:08:38:31 -0800]
+	               REQUEST TIME : 0.8060
+	                 ASESSIONID : tsetx8
+	        CONCURRENT REQUESTS : 1
+-->
+</body>
+</html>

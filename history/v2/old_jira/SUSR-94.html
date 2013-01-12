@@ -1,0 +1,1454 @@
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>[#SUSR-94] Unable to Delete Group - Atlassian Plugins JIRA Studio </title>
+
+    <meta content="general" name="decorator" />
+    <link rel="index" href="/secure/IssueNavigator.jspa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="A5G2-B7UC-JLK8-Z7KY|3e9d407459a6ffa84a618f7936c0e8fcf6d8c106|lout">
+
+
+    <link rel="shortcut icon" href="/s/en_US-31q2po/650/149/_/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/en_US-31q2po/650/149/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '';</script>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.css" media="all">
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar/jira.webresources:calendar.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:viewissue/jira.webresources:viewissue.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jira-fields/jira.webresources:jira-fields.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar-en/jira.webresources:calendar-en.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.4/_/download/batch/com.atlassian.jira.plugins.jira-github-connector-plugin:resources/com.atlassian.jira.plugins.jira-github-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-soy-plugin:soy-deps/com.atlassian.jira.jira-soy-plugin:soy-deps.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.js" ></script>
+
+    
+        <script type="text/javascript" src="/rest/api/1.0/shortcuts/650/2c704f3b1c272597f28d679bb85da011/shortcuts.js?context=issueaction&amp;context=issuenavigation"></script>
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="/osd.jsp" title="Atlassian Plugins JIRA Studio"/>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="jira" class="nl type-ab stalker sn">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/menu.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog.css">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog-ie.css">
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/userstatus.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_admin_styles/css/studioadmin.css">
+<link rel="stylesheet" type="text/css" href="/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.theme.jira:studio_jira_resources/css/studio-jira-theme-override.css">
+
+<div id="header" style="display:none">
+</div>
+<div class="studio-header" id="studio-header">
+
+	<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="studio-context-path" name="studio-context-path" content=""/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Space User Management Plugin </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                                                                                                                <li><a href="/browse/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/browse/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/browse/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/browse/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/browse/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/browse/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/browse/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/browse/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/browse/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/browse/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/browse/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/browse/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/browse/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/browse/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/browse/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/browse/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/browse/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/browse/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/browse/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/browse/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+	    <div id="studio-user-menu-container">
+        <a class="login-link" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-94">Log In</a>
+    </div>
+    
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li class="current"><a href="/browse/SUSR">Issues</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/wiki/display/SUSR">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SUSR">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SUSR">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SUSR">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+
+    <div id="header-bottom">
+
+        <div class="second-level-nav studio-menu">
+
+                            
+                
+<ul id="main-nav" class="menu-bar standard-menu-bar">
+                        <li class="aui-dd-parent lazy  ">
+                    <a class="lnk"
+                href="/secure/Dashboard.jspa"
+                 id="home_link"                 accessKey="h"                 title="View your current Dashboard"                >Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="home_link_drop"
+                    rel="home_link"
+                    accessKey="d"
+                    title="Access more options (Alt+d)"
+                                href="#"><span>Access more options (Alt+d)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent lazy  selected  ">
+                    <a class="lnk"
+                href="/secure/IssueNavigator.jspa"
+                 id="find_link"                 accessKey="f"                 title="View your current filter"                >Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="find_link_drop"
+                    rel="find_link"
+                    accessKey="i"
+                    title="Access more options (Alt+i)"
+                                href="#"><span>Access more options (Alt+i)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent nonlazy  ">
+                    <a class="lnk"
+                href="/secure/GreenHopper.jspa"
+                 id="greenhopper_menu"                                 title="Manage your project with GreenHopper"                >Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link"
+                                                                    id="greenhopper_menu_drop"
+                                    accessKey="g"
+                                    rel="greenhopper_menu"
+                                    title="Access more options (Alt+g)"
+                                                                href="#"><span>Access more options</span></a></span>
+                            <div class="aui-list hidden">
+                                                
+                            <ul id="greenhopper_menu_dropdown" class="aui-list-section aui-first   aui-last  ">
+                                                                    <li class="aui-list-item"><a
+                                         id="planningboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="taskboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/TaskBoard.jspa">Task Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="chartboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="releasedboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                            </ul>
+                                                    </div>
+                            </li>
+    </ul>
+
+                
+            
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+
+            
+            <a id="keyshortscuthelp" class="item-link hidden" title="Get more information about JIRA's Keyboard Shortcuts"
+               href="/secure/ViewKeyboardShortcuts!default.jspa">Keyboard Shortcuts</a>
+                            <a id="browse_link" class="hidden" href="/browse/SUSR">Selected Project</a>
+            
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-second-level -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="ajaxTimeout" value="The call to the JIRA server did not complete within the timeout period.  We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxUnauthorised" value="You are not authorised to perform this operation.  Please try to <a href='/login.jsp?os_destination=%2Fbrowse%2FSUSR-94'>log in</a> or <a href='/secure/Signup!default.jspa'>sign up</a> for an account.">
+    <input type="hidden" title="ajaxUnauthorisedAlert" value="You are not authorised to perform this operation.  Please log in.">
+    <input type="hidden" title="baseURL" value="https://studio.plugins.atlassian.com:443">
+    <input type="hidden" title="ajaxCommsError" value="The JIRA server could not be contacted.  This may be a temporary glitch or the server may be down.">
+    <input type="hidden" title="ajaxServerError" value="The JIRA server was contacted but has returned an error response. We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxErrorCloseDialog" value="Close this dialog and press refresh in your browser">
+    <input type="hidden" title="ajaxErrorDialogHeading" value="Communications Breakdown">
+
+    <input type="hidden" title="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.">
+    <input type="hidden" title="dirtyDialogMessage" value="You have entered new data in this dialog. If you navigate away from this dialog without first saving your data, the changes will be lost. Click cancel to return to the dialog.">
+    <input type="hidden" title="keyType" value="Type">
+    <input type="hidden" title="keyThen" value="then">
+    <input type="hidden" title="dblClickToExpand" value="Double click to expand">
+    <input type="hidden" title="actions" value="Actions">
+    <input type="hidden" title="removeItem" value="Remove">
+    <input type="hidden" title="workflow" value="Workflow">
+    <input type="hidden" title="labelNew" value="New Label">
+    <input type="hidden" title="enterIssueKey" value="Enter issue key">
+    <input type="hidden" title="issueActionsHint" value="Begin typing for available operations or press down to see all">
+    <input type="hidden" title="closelink" value="Close">
+    <input type="hidden" title="dotOperations" value="Operations">
+    <input type="hidden" title="dotLoading" value="Loading...">
+    <input type="hidden" title="frotherSuggestions" value="Suggestions">
+    <input type="hidden" title="frotherNomatches" value="No Matches">
+    <input type="hidden" title="multiselectVersionsError" value="{0} is not a valid version.">
+    <input type="hidden" title="multiselectComponentsError" value="{0} is not a valid component.">
+    <input type="hidden" title="multiselectGenericError" value="The value {0} is invalid.">
+</fieldset>
+
+
+
+
+<div class="alertHeader">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript" charset="utf-8">
+  (function(){
+    t = document.createElement('script');t.async=true;t.type ='text/javascript';
+    t.src = ('https:' == document.location.protocol ? 'https://secure.' : 'http://api.') + 'tellthemwhen.com/api/v2/notices/9ffb4ac1f71.js';
+    var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(t,s);
+  })();
+</script>
+
+<!-- <div id="TTWNotify" style="display:none"></div> -->
+
+<div style="text-align: center; border: #C00; background-color: #FF6600; line-height: 2em">studio.plugins.atlassian.com will be decommissioned in early 2013. If you are a project maintainer, please email <a href="mailto:developer-relations@atlassian.com">Atlassian Developer Relations</a> if you require assistance to migrate your project off this server.</div>
+</div>
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="viewMoreMsg" value="Click to view {0} more">
+    <input type="hidden" id="hideMsg" value="Hide" >
+    <input type="hidden" id="error-401" value="Cannot perform this operation. You are not logged in." >
+    <input type="hidden" id="issueOpTitleUnvote" value="Remove vote for this issue" >
+    <input type="hidden" id="issueOpTitleVote" value="Vote for this issue" >
+    <input type="hidden" id="issueOpTitleWatch" value="Start watching this issue" >
+    <input type="hidden" id="issueOpTitleUnwatch" value="Stop watching this issue" >
+    <input type="hidden" id="issueOpUnvote" value="Remove Vote" >
+    <input type="hidden" id="issueOpVote" value="Add Vote" >
+    <input type="hidden" id="issueOpWatch" value="Watch Issue" >
+    <input type="hidden" id="issueOpUnwatch" value="Stop Watching" >
+    <input type="hidden" id="i18nVote" value="Vote" >
+    <input type="hidden" id="i18nVoted" value="Voted" >
+    <input type="hidden" id="i18nWatch" value="Watch" >
+    <input type="hidden" id="i18nWatching" value="Watching" >
+</fieldset>
+
+<div id="stalker"  class="stalker">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image:url(/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large)">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" height="48" src="/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large" width="48" />
+        
+        <span>Confluence Space User Management Plugin</span>
+</h1>
+
+
+<ul class="breadcrumbs">
+    <li><a id="project-name-val" href="/browse/SUSR">Confluence Space User Management Plugin</a></li>
+    
+    <li><a id="key-val" rel="18788" href="/browse/SUSR-94">SUSR-94</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="/browse/SUSR-94">Unable to Delete Group</a></h2>
+
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                
+                    <ul id="opsbar-login" class="first ops">
+                        <li id="ops-login" class="last">
+                            <a id="ops-login-lnk" class="button first last" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-94">Log In</a>
+                        </li>
+                    </ul>
+                
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent">
+                                    <a href="#" title="View this issue in another format" class="drop lnk aui-dd-link standard icon-views"><span>Views</span></a>
+                                        <div class="aui-list hidden">
+                                        <ul class="aui-first aui-last aui-list-section">
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-xml/SUSR-94/SUSR-94.xml">XML</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-word/SUSR-94/SUSR-94.doc">Word</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-html/SUSR-94/SUSR-94.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+        </div>
+    </div>          
+
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+                
+                
+                
+
+                    <div id="details-module" class="module toggle-wrap">
+                        <div class="mod-header">
+                            <h3 class="toggle-title">Details</h3>
+                        </div>
+                        <div class="mod-content">
+                            <ul id="issuedetails" class="property-list two-cols">
+    <li class="item">
+        <div class="wrap">
+            <strong class="name">Type:</strong>
+            <span id="type-val" class="value">
+                                                        <img alt="Bug" height="16" src="/images/icons/bug.gif" title="Bug - A problem which impairs or prevents the functions of the product." width="16" />
+             Bug
+            </span>
+        </div>
+    </li>
+    <li class="item item-right">
+        <div class="wrap">
+            <strong class="name">Status:</strong>
+            <span id="status-val" class="value">
+                                                        <img alt="Closed" height="16" src="/images/icons/status_closed.gif" title="Closed - The issue is considered finished, the resolution is correct. Issues which are closed can be reopened." width="16" />
+             Closed
+            </span>
+                    </div>
+    </li>
+            <li class="item">
+            <div class="wrap">
+                <strong class="name">Priority:</strong>
+                <span id="priority-val" class="value">
+                                                                <img alt="Major" height="16" src="/images/icons/priority_major.gif" title="Major - Major loss of function." width="16" />
+             Major
+                </span>
+            </div>
+        </li>
+                                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Resolution:</strong>
+                <span id="resolution-val" class="value resolved" >
+                                         Invalid
+                                </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Affects Version/s:</strong>
+                <span id="versions-val" class="value">
+                                            <span class="shorten" id="versions-field">
+                                                            <span title="2.0.2 LDAP fix - sets &#39;ldaputil.ldap.initialContextValidationLookupUser&#39; property for LDAP Util library 1.0.11">2.0.2</span>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Fix Version/s:</strong>
+                <span id="fixfor-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Component/s:</strong>
+                <span id="components-val" class="value">
+                                            <span class="shorten" id="components-field">
+                                                            <a href="/browse/SUSR/component/10362" title="Confluence User and Group Management User and group management issues/suggestions for those using the plugin to manage users/groups in Confluence">Confluence User and Group Management</a>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                    <li class="item full-width">
+            <div class="wrap" id="wrap-labels">
+                <strong class="name">Labels:</strong>
+                    <div class="labels-wrap value">
+            <span class="labels" id="labels-18788-value">None</span>
+                </div>
+            </div>
+        </li>
+                <li class="item full-width">
+            <div class="wrap">
+                <strong class="name">Environment:</strong>
+                <div id="environment-val" class="value">
+                                  <div id="field-environment" class=" inverted-twixi-block collapsed ">
+            <div Class="twixi-wrap verbose">
+                <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+                <div class="flooded">
+                    System Information<br/>
+System Date	Wednesday, 22 Apr 2009<br/>
+System Time	11:43:27<br/>
+System Favourite Colour	Gamboge<br/>
+Java Version	1.6.0_06<br/>
+Java Vendor	Sun Microsystems Inc.<br/>
+JVM Version	1.0<br/>
+JVM Vendor	Sun Microsystems Inc.<br/>
+JVM Implementation Version	10.0-b22<br/>
+Java Runtime	Java(TM) SE Runtime Environment<br/>
+Java VM	Java HotSpot(TM) Client VM<br/>
+User Name	confluence<br/>
+User Timezone	America/New_York<br/>
+Operating System	Linux 2.6.9-78.0.13.ELsmp<br/>
+OS Architecture	i386<br/>
+Filesystem Encoding	UTF-8<br/>
+<br/>
+Java VM Memory Statistics<br/>
+Total Memory	300 MB<br/>
+Free Memory	46 MB<br/>
+Used Memory	254 MB<br/>
+Memory Graph 	<br/>
+[Used Memory (85 %)] 	[Free Memory (15 %)]<br/>
+	  15 % Free<br/>
+<br/>
+Runtime Information<br/>
+Database Dialect	net.sf.hibernate.dialect.Oracle9Dialect<br/>
+Database Connection URL	jdbc:oracle:thin:@oratest6.dc.nd.edu:1521:infspprd<br/>
+Database Driver Name	oracle.jdbc.OracleDriver<br/>
+Database Driver Version	10.2<br/>
+Database Connection Transaction Isolation	Read committed<br/>
+Database name	Oracle<br/>
+Database version	Oracle Database 10g Enterprise Edition Release 10.2.0.4.0 - 64bit Production With the Partitioning, OLAP, Data Mining and Real Application Testing options<br/>
+Database Latency	1 ms<br/>
+Application Server	Apache Tomcat/6.0.14<br/>
+Servlet Version	2.5<br/>
+Server Base Url	<a href="http://wikipprd.cc.nd.edu">http://wikipprd.cc.nd.edu</a><br/>
+Confluence Home	/opt/confluence<br/>
+Uptime	11 hours, 34 minutes, 56 seconds<br/>
+Confluence Version	2.10<br/>
+Build Number	1515
+                </div>
+            </div>
+            <div Class="twixi-wrap concise">
+                <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+                <div class="flooded">
+                                            System Information
+System Date	Wednesday, 22 Apr 2009
+System Time	11:43:27
+System Favourite Colour	Gamboge
+Java Version	1.6.0_06
+Java Vendor	Sun Microsystems Inc.
+JVM Version	1.0
+JVM Vendor	Sun Microsystems Inc.
+JVM Implementation Version	10.0-b22
+Java Runtime	Java(TM) SE Runtime Environment
+Java VM	Java HotSpot(TM) Client VM
+User Name	confluence
+User Timezone	America/New_York
+Operating System	Linux 2.6.9-78.0.13.ELsmp
+OS Architecture	i386
+Filesystem Encoding	UTF-8
+
+Java VM Memory Statistics
+Total Memory	300 MB
+Free Memory	46 MB
+Used Memory	254 MB
+Memory Graph 	
+[Used Memory (85 %)] 	[Free Memory (15 %)]
+	  15 % Free
+
+Runtime Information
+Database Dialect	net.sf.hibernate.dialect.Oracle9Dialect
+Database Connection URL	jdbc:oracle:thin:@oratest6.dc.nd.edu:1521:infspprd
+Database Driver Name	oracle.jdbc.OracleDriver
+Database Driver Version	10.2
+Database Connection Transaction Isolation	Read committed
+Database name	Oracle
+Database version	Oracle Database 10g Enterprise Edition Release 10.2.0.4.0 - 64bit Production With the Partitioning, OLAP, Data Mining and Real Application Testing options
+Database Latency	1 ms
+Application Server	Apache Tomcat/6.0.14
+Servlet Version	2.5
+Server Base Url	<a href="http://wikipprd.cc.nd.edu">http://wikipprd.cc.nd.edu</a>
+Confluence Home	/opt/confluence
+Uptime	11 hours, 34 minutes, 56 seconds
+Confluence Version	2.10
+Build Number	1515
+                                    </div>
+            </div>
+        </div>
+      
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+                            
+                                
+
+<div id="customfieldmodule">
+    
+
+    
+    
+    <ul id="tabCellPane1" class="property-list">
+        
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10061" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Complexity" class="name">Internal Complexity:</strong>
+                            <div id="customfield_10061-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10060" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Value" class="name">Internal Value:</strong>
+                            <div id="customfield_10060-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10082" class="item">
+                        <div class="wrap">
+                            <strong title="Rank" class="name">Rank:</strong>
+                            <div id="customfield_10082-val" class="value type-greenhopper-ranking">
+                                
+<div id="RankField_customfield_10082view">	<span id="RankValue_customfield_10082view">59</span>&nbsp;
+			<span id="RankPage_customfield_10082view" class="gh-rankpage gh-jira-rankpage"></span>
+</div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+    </ul>
+    
+</div>
+
+                            
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+<div id="descriptionmodule" class="module toggle-wrap">
+    <div class="mod-header">
+        <h3 class="toggle-title">Description</h3>
+    </div>
+    <div id="issue-description" class="mod-content">
+        <p>We get the following error when trying to delete a group the Confluence Admin view after the group has been deleted from the individual space view.</p>
+
+<p>Cause</p>
+
+<p>org.springframework.transaction.IllegalTransactionStateException: Transaction is already completed - do not call commit or rollback more than once per transaction<br/>
+    at org.springframework.transaction.support.AbstractPlatformTransactionManager.rollback(AbstractPlatformTransactionManager.java:725)<br/>
+Stack Trace:<a href="https://studio.plugins.atlassian.com/wiki/display/SUSR/hide">hide</a></p>
+
+<p>org.springframework.transaction.IllegalTransactionStateException: Transaction is already completed - do not call commit or rollback more than once per transaction<br/>
+    at org.springframework.transaction.support.AbstractPlatformTransactionManager.rollback(AbstractPlatformTransactionManager.java:725)<br/>
+    at com.atlassian.xwork.interceptors.TransactionalInvocation.commitOrRollbackTransaction(TransactionalInvocation.java:93)<br/>
+    at com.atlassian.xwork.interceptors.TransactionalInvocation.invokeInTransaction(TransactionalInvocation.java:63)<br/>
+    at com.atlassian.xwork.interceptors.XWorkTransactionInterceptor.intercept(XWorkTransactionInterceptor.java:56)<br/>
+    at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:165)<br/>
+    at com.opensymphony.xwork.interceptor.AroundInterceptor.intercept(AroundInterceptor.java:35)<br/>
+    at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:165)<br/>
+    at com.opensymphony.xwork.DefaultActionProxy.execute(DefaultActionProxy.java:115)<br/>
+    at com.atlassian.confluence.servlet.ConfluenceServletDispatcher.serviceAction(ConfluenceServletDispatcher.java:53)<br/>
+    at com.opensymphony.webwork.dispatcher.ServletDispatcher.service(ServletDispatcher.java:199)<br/>
+    at javax.servlet.http.HttpServlet.service(HttpServlet.java:803)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+    at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:54)<br/>
+    at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:40)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.opensymphony.module.sitemesh.filter.PageFilter.parsePage(PageFilter.java:118)<br/>
+    at com.atlassian.confluence.util.profiling.ProfilingPageFilter.parsePage(ProfilingPageFilter.java:153)<br/>
+    at com.opensymphony.module.sitemesh.filter.PageFilter.doFilter(PageFilter.java:54)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+    at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:54)<br/>
+    at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:40)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.confluence.jmx.JmxFilter.doFilter(JmxFilter.java:105)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.core.filters.ServletContextThreadLocalFilter.doFilter(ServletContextThreadLocalFilter.java:28)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.confluence.util.LoggingContextFilter.doFilter(LoggingContextFilter.java:54)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.confluence.web.filter.ThreadLocalCacheFilter.doFilter(ThreadLocalCacheFilter.java:23)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.confluence.util.UserThreadLocalFilter.doFilter(UserThreadLocalFilter.java:44)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.seraph.filter.SecurityFilter.doFilter(SecurityFilter.java:192)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.seraph.filter.TrustedApplicationsFilter.doFilter(TrustedApplicationsFilter.java:120)<br/>
+    at com.atlassian.confluence.util.AbstractBootstrapHotSwappingFilter.doFilter(AbstractBootstrapHotSwappingFilter.java:28)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.seraph.filter.BaseLoginFilter.doFilter(BaseLoginFilter.java:134)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+    at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:54)<br/>
+    at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:40)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.confluence.util.ClusterHeaderFilter.doFilter(ClusterHeaderFilter.java:35)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.johnson.filters.AbstractJohnsonFilter.doFilter(AbstractJohnsonFilter.java:72)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at org.springframework.orm.hibernate.support.OpenSessionInViewFilter.doFilterInternal(OpenSessionInViewFilter.java:170)<br/>
+    at com.atlassian.spring.filter.FlushingSpringSessionInViewFilter.doFilterInternal(FlushingSpringSessionInViewFilter.java:29)<br/>
+    at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:75)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.util.profiling.filters.ProfilingFilter.doFilter(ProfilingFilter.java:99)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.confluence.core.datetime.RequestTimeThreadLocalFilter.doFilter(RequestTimeThreadLocalFilter.java:34)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.confluence.util.RequestCacheThreadLocalFilter.doFilter(RequestCacheThreadLocalFilter.java:25)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.gzipfilter.GzipFilter.doFilterInternal(GzipFilter.java:94)<br/>
+    at com.atlassian.gzipfilter.GzipFilter.doFilter(GzipFilter.java:64)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+    at com.atlassian.confluence.extra.webdav.servlet.filter.ReverseProxyFilter.doFilter(ReverseProxyFilter.java:427)<br/>
+    at com.atlassian.confluence.extra.webdav.servlet.filter.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:34)<br/>
+    at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:57)<br/>
+    at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)<br/>
+    at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:54)<br/>
+    at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:40)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at com.atlassian.core.filters.AbstractEncodingFilter.doFilter(AbstractEncodingFilter.java:33)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+    at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)<br/>
+    at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:175)<br/>
+    at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:128)<br/>
+    at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)<br/>
+    at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)<br/>
+    at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:263)<br/>
+    at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:844)<br/>
+    at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:584)<br/>
+    at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:447)<br/>
+    at java.lang.Thread.run(Thread.java:619)</p>
+
+
+
+<p>Referer URL</p>
+
+<p><a href="https://wikipprd.cc.nd.edu/admin/users/removegroup-confirm.action?name=irmain-osp">https://wikipprd.cc.nd.edu/admin/users/removegroup-confirm.action?name=irmain-osp</a><br/>
+Confluence Application Information<br/>
+Build Information</p>
+
+<p>home: /opt/confluence<br/>
+buildNumber: 1515<br/>
+upTime: 30 days, 3 hours, 29 minutes, 43 seconds<br/>
+devMode: false<br/>
+version: 2.10<br/>
+Unique ID: 0x00000120C968A243AC13EAAA781E66281CF7B5661C9E597ECEE1B79C83740A80<br/>
+Server information</p>
+
+<p>Application Server: Apache Tomcat/6.0.14<br/>
+Servlet Version: 2.5<br/>
+Database Dialect: net.sf.hibernate.dialect.Oracle9Dialect<br/>
+Database Driver Name: oracle.jdbc.OracleDriver<br/>
+Database Driver Version: 10.2<br/>
+Database Name: Oracle<br/>
+Database Version: Oracle Database 10g Enterprise Edition Release 10.2.0.4.0 - 64bit Production With the Partitioning, OLAP, Data Mining and Real Application Testing options<br/>
+Database Transaction Isolation: Read committed Database Latency: 3<br/>
+Memory Information</p>
+
+<p>Total Memory: 254 MB<br/>
+Used Memory: 228 MB<br/>
+Free Memory: 26 MB<br/>
+System Information</p>
+
+<p>favouriteColour: Gamboge<br/>
+javaRuntime: Java(TM) SE Runtime Environment<br/>
+jvmVersion: 1.0<br/>
+operatingSystem: Linux 2.6.9-78.0.13.ELsmp<br/>
+fileSystemEncoding: UTF-8<br/>
+javaVm: Java HotSpot(TM) Client VM<br/>
+javaVendor: Sun Microsystems Inc.<br/>
+userTimezone: America/New_York<br/>
+jvmImplementationVersion: 10.0-b22<br/>
+appServer: Apache Tomcat<br/>
+date: Tuesday, 21 Apr 2009<br/>
+time: 12:00:58<br/>
+jvmVendor: Sun Microsystems Inc.<br/>
+userName: confluence<br/>
+javaVersion: 1.6.0_06<br/>
+operatingSystemArchitecture: i386<br/>
+Cluster Information</p>
+
+<p>Not clustered.<br/>
+Plugins</p>
+
+<ul>
+	<li>Adaptavist Rate Macro (com.adaptavist.confluence.rate, Version: 2.0.3)</li>
+	<li>Add Content Menu Sections (confluence.menu.add, Version: 1.0)</li>
+	<li>Admin Sections (confluence.sections.admin, Version: 1.0)</li>
+	<li>Advanced Macros (confluence.macros.advanced, Version: 1.5.5)</li>
+	<li>Attachment Actions (confluence.sections.attachments, Version: 1.0)</li>
+	<li>Attachment Extractors (com.atlassian.confluence.plugins.attachmentExtractors, Version: 1.0-SNAPSHOT)</li>
+	<li>Basic Macros (confluence.macros.basic, Version: 1.4)</li>
+	<li>Browse Menu Items (confluence.sections.browse, Version: 1.0)</li>
+	<li>Calendar Plugin (confluence.extra.calendar, Version: 2.7.1)</li>
+	<li>Chart Plugin (confluence.extra.chart, Version: 1.12)</li>
+	<li>Checklists Macros (com.comalatech.checklists, Version: 1.4.0)</li>
+	<li>Clickr Theme (com.atlassian.confluence.themes.clickr, Version: 2.3)</li>
+	<li>Code Macro (confluence.macros.code, Version: 1.5)</li>
+	<li>Comment Action Sections (confluence.comment.action, Version: 1.0)</li>
+	<li>Composition Plugin (net.customware.confluence.plugin.composition, Version: 2.3.2)</li>
+	<li>Confluence Atlassian Plugin Repository (confluence.repository.client, Version: 2.1.1)</li>
+	<li>Confluence Attachments Plugin (confluence.extra.attachments, Version: 2.12)</li>
+	<li>Confluence Blogging RPC Plugin (com.atlassian.confluence.plugins.xmlrpc.bloggingrpc, Version: 1.2.4)</li>
+	<li>Confluence Contributors Plugin (com.atlassian.confluence.contributors, Version: 1.2.1)</li>
+	<li>Confluence Remote API (confluence.extra.confluencerpc, Version: 2.10)</li>
+	<li>Confluence Usage Stats (com.atlassian.confluence.ext.usage, Version: 0.8)</li>
+	<li>Confluence iPhone Plugin (com.atlassian.confluence.plugins.iphone, Version: 0.0.6)</li>
+	<li>Content Action Menu Sections (confluence.content.action.menu, Version: 1.0)</li>
+	<li>Content Buttons (confluence.sections.page.temp, Version: 1.0)</li>
+	<li>Content Metadata (confluence.sections.content.metadata, Version: 1.0)</li>
+	<li>Core Extractors (confluence.extractors.core, Version: 1.4)</li>
+	<li>Core Listeners (confluence.listeners.core, Version: 1.3)</li>
+	<li>Core Path Converters (confluence.converters.core, Version: 1.0)</li>
+	<li>Core Startup and Shutdown (confluence.lifecycle.core, Version: 1)</li>
+	<li>Custom Space User Management Plugin (raju.kadam.confluence.permissionmgmt, Version: 2.0.2)</li>
+	<li>Dashboard Macros (confluence.macros.dashboard, Version: 1.6)</li>
+	<li>Default Theme (com.atlassian.confluence.themes.default, Version: 1.0)</li>
+	<li>Did You Mean Index Building Interface (confluence.sections.admin.indexing, Version: 1.0)</li>
+	<li>Dynamic Task List 2 Plugin (confluence.extra.dynamictasklist2, Version: 3.1.1)</li>
+	<li>Edit Profile Sections (confluence.sections.profile.edit, Version: 1.0)</li>
+	<li>Form Mail NG (com.adaptavist.confluence.formMailNG, Version: 1.2.3)</li>
+	<li>French language pack (confluence.languages.fr_FR, Version: 1.10)</li>
+	<li>German language pack (confluence.languages.de_DE, Version: 1.5)</li>
+	<li>Global Labels Sections (confluence.sections.labels, Version: 1.0)</li>
+	<li>HTML Plugin (org.swift.confluence.html, Version: 3.1.0)</li>
+	<li>IM Presence NG Plugin (confluence.extra.impresence2, Version: 2.3)</li>
+	<li>Information Macros (confluence.extra.information, Version: 1.0)</li>
+	<li>JIRA Macros (confluence.extra.jira, Version: 2.8.7)</li>
+	<li>Layout Macros (confluence.extra.layout, Version: 1.2)</li>
+	<li>Left Navigation Theme (com.atlassian.confluence.themes.leftnavigation, Version: 2.4)</li>
+	<li>Live Search Macros (confluence.extra.livesearch, Version: 2.9)</li>
+	<li>Metadata Plugin (org.andya.confluence.plugins.metadata, Version: 2.1.0)</li>
+	<li>News Tabs (confluence.sections.news, Version: 1.0)</li>
+	<li>Office Connector plugin (com.atlassian.confluence.extra.officeconnector, Version: 1.4.1)</li>
+	<li>Page Operations (confluence.sections.page.operations, Version: 1.0)</li>
+	<li>Page Tabs (confluence.search.mappers.lucene, Version: 1.0)</li>
+	<li>Page Tabs (confluence.sections.page, Version: 1.0)</li>
+	<li>Page Tree (com.atlassian.confluence.plugins.pagetree, Version: 1.10.2)</li>
+	<li>Page View Links (confluence.sections.page.actions, Version: 1.0)</li>
+	<li>Profile Tabs (confluence.sections.profile, Version: 1.0)</li>
+	<li>Reporting Plugin (net.customware.confluence.plugin.reporting, Version: 3.1.0)</li>
+	<li>Search Web Interface (confluence.sections.admin.generalconfig, Version: 1.0)</li>
+	<li>Search Web Interface (confluence.sections.search.view, Version: 1.0)</li>
+	<li>Social Bookmarking Plugin (com.atlassian.confluence.plugins.socialbookmarking, Version: 1.2.4)</li>
+	<li>Space Actions Sections (confluence.sections.space.actions, Version: 1.0)</li>
+	<li>Space Admin Sections (confluence.sections.space.admin, Version: 1.0)</li>
+	<li>Space Advanced Sections (confluence.sections.space.advanced, Version: 1.0)</li>
+	<li>Space Browse Sections (confluence.sections.space.browse, Version: 1.0)</li>
+	<li>Space Item Tabs (confluence.sections.space, Version: 1.0)</li>
+	<li>Space Labels Sections (confluence.sections.space.labels, Version: 1.0)</li>
+	<li>Space Pages Sections (confluence.sections.space.pages, Version: 1.0)</li>
+	<li>Survey Macros (com.nearinfinity.confluence.survey-plugin, Version: 1.1.7)</li>
+	<li>System Web Resources (confluence.web.resources, Version: 1.0)</li>
+	<li>Table of Contents Plugin (org.randombits.confluence.toc, Version: 2.4.10.1)</li>
+	<li>Tabular Metadata (confluence.extra.masterdetail, Version: 2.7)</li>
+	<li>TinyMCE Editor Plugin (com.atlassian.confluence.tinymceplugin, Version: 2.10)</li>
+	<li>UWC Importer Admin Panel (com.atlassian.confluence.plugins.uwc.uwcimporter-adminpanel, Version: 1.1)</li>
+	<li>User Administration (confluence.admin.user, Version: 1.0)</li>
+	<li>User Information Plugin (com.atlassian.confluence.extra.userinfo, Version: 0.3.0)</li>
+	<li>User Lister (confluence.extra.userlister, Version: 2.4.2)</li>
+	<li>User Menu Sections (confluence.user.menu, Version: 1.0)</li>
+	<li>View Profile Web Interface (confluence.sections.profile.view, Version: 1.0)</li>
+	<li>Visibility Plugin (net.customware.confluence.plugin.visibility, Version: 1.7.1)</li>
+	<li>WebDAV Plugin (confluence.extra.webdav, Version: 2.0-beta2)</li>
+	<li>Widget Connector (com.atlassian.confluence.extra.widgetconnector, Version: 1.2.2)</li>
+	<li>Wiki Renderer Components (confluence.renderer.components, Version: 1.0)</li>
+</ul>
+
+
+<p>Request<br/>
+Information</p>
+
+<p>URL<br/>
+    <a href="http://wikipprd.cc.nd.edu/500page.jsp">http://wikipprd.cc.nd.edu/500page.jsp</a> <br/>
+URI<br/>
+    /500page.jsp <br/>
+Context Path<br/>
+Servlet Path<br/>
+    /500page.jsp</p>
+
+<p>Headers (Limited subset)</p>
+
+<p>host<br/>
+    wikipprd.cc.nd.edu<br/>
+user-agent<br/>
+    Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.0.8) Gecko/2009032608 Firefox/3.0.8<br/>
+keep-alive<br/>
+    300<br/>
+connection<br/>
+    keep-alive</p>
+
+<p>Attributes</p>
+
+<p>javax.servlet.forward.request_uri<br/>
+    /admin/users/doremovegroup.action<br/>
+javax.servlet.forward.context_path<br/>
+javax.servlet.forward.servlet_path<br/>
+    /admin/users/doremovegroup.action<br/>
+javax.servlet.forward.path_info<br/>
+    /500page.jsp<br/>
+os_securityfilter_already_filtered<br/>
+    true<br/>
+javax.servlet.jsp.jspException<br/>
+    org.springframework.transaction.IllegalTransactionStateException: Transaction is already completed - do not call commit or rollback more than once per transaction<br/>
+atlassian.core.seraph.original.url<br/>
+    /admin/users/doremovegroup.action<br/>
+javax.servlet.error.status_code<br/>
+    500<br/>
+javax.servlet.error.servlet_name<br/>
+    action<br/>
+_<em>sitemesh</em>_using_stream<br/>
+    false<br/>
+com.atlassian.gzipfilter.GzipFilter_already_filtered<br/>
+    true<br/>
+loginfilter.already.filtered<br/>
+    true<br/>
+com.atlassian.confluence.web.ConfluenceJohnsonFilter_already_filtered<br/>
+    true<br/>
+Confluence-Request-Time<br/>
+    1240329657996<br/>
+javax.servlet.error.message<br/>
+webwork.valueStack<br/>
+    com.opensymphony.xwork.util.OgnlValueStack@67da37<br/>
+sessioninview.FILTERED<br/>
+    true<br/>
+_<em>sitemesh</em>_filterapplied<br/>
+    true<br/>
+javax.servlet.error.exception<br/>
+    org.springframework.transaction.IllegalTransactionStateException: Transaction is already completed - do not call commit or rollback more than once per transaction<br/>
+javax.servlet.error.request_uri<br/>
+    /admin/users/doremovegroup.action</p>
+
+<p>Parameters (Limited subset)</p>
+
+<p>name<br/>
+    irmain-osp<br/>
+confirm<br/>
+    Confirm</p>
+
+<p>Confluence User</p>
+
+<p>anonymous </p>
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+
+
+
+
+
+
+                    
+                
+                
+                    <div class='module toggle-wrap' id='activitymodule'><div id='activitymodule_heading' class='mod-header'><h3 class='toggle-title'>Activity</h3></div><div class='mod-content'>    <div class="tabwrap tabs2">
+                    <div class="sortwrap">
+                                    <a class="icon icon-sort-down" rel="nofollow" href="/browse/SUSR-94?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                            </div>
+                <ul id="issue-tabs" class="tabs horizontal">
+                                    <li><a id="all-tabpanel" href="/browse/SUSR-94?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel#issue-tabs"><strong>All</strong></a></li>
+                                                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+                                                <li><a id="worklog-tabpanel" href="/browse/SUSR-94?page=com.atlassian.jira.plugin.system.issuetabpanels:worklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+                                                <li><a id="changehistory-tabpanel" href="/browse/SUSR-94?page=com.atlassian.jira.plugin.system.issuetabpanels:changehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+                                                <li><a id="activity-stream-issue-tab" href="/browse/SUSR-94?page=com.atlassian.streams.streams-jira-plugin:activity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+                            </ul>
+    </div>
+    <div class="issuePanelContainer" id="issue_actions_container">
+                        <div id="comment-24822" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-94?focusedCommentId=24822&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-24822" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_24822_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_24822_verbose subText'><span class='date user-tz' title='22/Apr/09 11:18 AM'><time datetime='2009-04-22T11:18-0700'>22/Apr/09 11:18 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Jon,</p>
+
+<p>Sorry to hear you are having trouble, but I hope I can help.</p>
+
+<p>Here are some suggestions:</p>
+
+<ul>
+	<li>You might want to update to v2.0.3 of our plugin just for UI sake with Confluence v2.10 (v2.0.2 and previous versions of v2.x don't render well in Firefox from v2.8 on)</li>
+	<li>You might also want (but I can't say for sure) to upgrade your Confluence to the latest version if it isn't already (last I checked it was 2.10.3- they update quickly).</li>
+	<li>(Most importantly) The issue you are having seems to be with Confluence itself (as you said that you are trying to delete the group in the Confluence admin section after having deleted it in the csum plugin), so you'll want to file a support ticket with Atlassian. They will not officially support use of our plugin, but they do officially support the Confluence user-atlassian API that our plugin uses and that Confluence uses to manage users and groups. Basically it looks like the code in Confluence to handle group deletion is not handling the situation very well where a group has been deleted and someone else tries to delete it, if it is spitting it back to the user in the UI. If you don't mind, when you file a support ticket with Atlassian, ask them to add me (Gary Weaver- my user id in their system is gswduke), Rajendra Kadam, Andy Brook, and Igor Minar (who are the other developers of the CSUM plugin) to the ticket.</li>
+	<li>If you can replicate this issue in Confluence admin itself (apart from the CSUM plugin) by opening up two different browsers and having the page ready to delete the same group and then deleting it twice, or perhaps just going (back) in the browser after doing a delete to hit delete again, then you can isolate the issue completely from CSUM plugin, which will help you get help, but either way, please include us, and please update this ticket to let us know whether you figure it out or not and what the solution is, so we can help others with the same issue.</li>
+</ul>
+
+
+<p>For now, I'm going to mark this issue as "not a bug" but please make additional comments to let us know how it was resolved, or re-open it if there is anything we can do to assist.</p>
+
+<p>Thanks in advance!</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_24822_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_24822_concise subText'><span class='date user-tz' title='22/Apr/09 11:18 AM'><time datetime='2009-04-22T11:18-0700'>22/Apr/09 11:18 AM</time></span></span>               Jon,
+
+Sorry to hear you are having trouble, but I hope I can help.
+
+Here are some suggestions:
+
+<ul>
+	<li>You might want to update to v2.0.3 of our plugin just for UI sake with Confluence v2.10 (v2.0.2 and previous versions of v2.x don't render well in Firefox from v2.8 on)</li>
+	<li>You might also want (but I can't say for sure) to upgrade your Confluence to the latest version if it isn't already (last I checked it was 2.10.3- they update quickly).</li>
+	<li>(Most importantly) The issue you are having seems to be with Confluence itself (as you said that you are trying to delete the group in the Confluence admin section after having deleted it in the csum plugin), so you'll want to file a support ticket with Atlassian. They will not officially support use of our plugin, but they do officially support the Confluence user-atlassian API that our plugin uses and that Confluence uses to manage users and groups. Basically it looks like the code in Confluence to handle group deletion is not handling the situation very well where a group has been deleted and someone else tries to delete it, if it is spitting it back to the user in the UI. If you don't mind, when you file a support ticket with Atlassian, ask them to add me (Gary Weaver- my user id in their system is gswduke), Rajendra Kadam, Andy Brook, and Igor Minar (who are the other developers of the CSUM plugin) to the ticket.</li>
+	<li>If you can replicate this issue in Confluence admin itself (apart from the CSUM plugin) by opening up two different browsers and having the page ready to delete the same group and then deleting it twice, or perhaps just going (back) in the browser after doing a delete to hit delete again, then you can isolate the issue completely from CSUM plugin, which will help you get help, but either way, please include us, and please update this ticket to let us know whether you figure it out or not and what the solution is, so we can help others with the same issue.</li>
+</ul>
+
+
+For now, I'm going to mark this issue as "not a bug" but please make additional comments to let us know how it was resolved, or re-open it if there is anything we can do to assist.
+
+Thanks in advance!
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-24823" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-94?focusedCommentId=24823&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-24823" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_24823_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_24823_verbose subText'><span class='date user-tz' title='22/Apr/09 11:20 AM'><time datetime='2009-04-22T11:20-0700'>22/Apr/09 11:20 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Marking as not a bug because it is an issue with Confluence afaik.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_24823_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_24823_concise subText'><span class='date user-tz' title='22/Apr/09 11:20 AM'><time datetime='2009-04-22T11:20-0700'>22/Apr/09 11:20 AM</time></span></span>               Marking as not a bug because it is an issue with Confluence afaik.         </div>
+    </div>
+</div>
+                     <div id="comment-24853" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-94?focusedCommentId=24853&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-24853" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_24853_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_24853_verbose subText'><span class='date user-tz' title='23/Apr/09 8:26 AM'><time datetime='2009-04-23T08:26-0700'>23/Apr/09 8:26 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Confluence support ticket: <a href="https://support.atlassian.com/browse/CSP-31299">CSP-31299</a>.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_24853_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_24853_concise subText'><span class='date user-tz' title='23/Apr/09 8:26 AM'><time datetime='2009-04-23T08:26-0700'>23/Apr/09 8:26 AM</time></span></span>               Confluence support ticket: <a href="https://support.atlassian.com/browse/CSP-31299">CSP-31299</a>.         </div>
+    </div>
+</div>
+                     <div id="comment-24857" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-94?focusedCommentId=24857&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-24857" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_24857_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_24857_verbose subText'><span class='date user-tz' title='23/Apr/09 11:46 AM'><time datetime='2009-04-23T11:46-0700'>23/Apr/09 11:46 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 23/Apr/09 11:48 AM">edited</span> </div>
+        <div class="action-body flooded"><p>Note: this was also posted in the customer support ticket. Just noting here so people know that we tested it and could not reproduce, although granted not with the same DB setup, and perhaps we didn't delete the groups fast enough (I did one and then the other after the first was done).</p>
+
+<p>Ok,</p>
+
+<p>I just tested and was unable to reproduce the customer's issue in standalone Confluence 2.10.2 using built-in HSQLDB database, although that is not the environment in which the customer was able to reproduce the issue:</p>
+
+<ul>
+	<li>Pointed two different browsers at the same group and attempted to remove the same group in CSUM in both browsers. The group was deleted the first time and a customer friendly error message (not the one described above) showed up when the second was attempted to be deleted.</li>
+	<li>Pointed two different browsers at the same group and attempted to remove the same group in confluence admin -&gt; manage group in both browsers. The group was deleted the first time and a customer friendly error message (not the one described above) showed up when the second was attempted to be deleted.</li>
+	<li>Pointed two different browsers at the same group and attempted to remove the same group the first time via confluence admin -&gt; manage group in one browser and then via CSUM in the other browser. The group was deleted the first time and a customer friendly error message (not the one described above) showed up in CSUM when the second was attempted to be deleted.</li>
+	<li>Pointed two different browsers at the same group and attempted to remove the same group the first time via CSUM in one browser and then via confluence admin -&gt; manage group in the other browser. The group was deleted the first time and a customer friendly error message (not the one described above) showed up in Confluence admin when the second was attempted to be deleted.</li>
+</ul>
+
+
+<p>Jon or Daniel, could you follow the steps above and let us know which situations fail with the long system error you described? Can it be reproduced in the latest Confluence 2.10.3 with the same DB setup?</p>
+
+<p>Thanks!<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_24857_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_24857_concise subText'><span class='date user-tz' title='23/Apr/09 11:46 AM'><time datetime='2009-04-23T11:46-0700'>23/Apr/09 11:46 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 23/Apr/09 11:48 AM">edited</span>              Note: this was also posted in the customer support ticket. Just noting here so people know that we tested it and could not reproduce, although granted not with the same DB setup, and perhaps we didn't delete the groups fast enough (I did one and then the other after the first was done).
+
+Ok,
+
+I just tested and was unable to reproduce the customer's issue in standalone Confluence 2.10.2 using built-in HSQLDB database, although that is not the environment in which the customer was able to reproduce the issue:
+
+<ul>
+	<li>Pointed two different browsers at the same group and attempted to remove the same group in CSUM in both browsers. The group was deleted the first time and a customer friendly error message (not the one described above) showed up when the second was attempted to be deleted.</li>
+	<li>Pointed two different browsers at the same group and attempted to remove the same group in confluence admin -&gt; manage group in both browsers. The group was deleted the first time and a customer friendly error message (not the one described above) showed up when the second was attempted to be deleted.</li>
+	<li>Pointed two different browsers at the same group and attempted to remove the same group the first time via confluence admin -&gt; manage group in one browser and then via CSUM in the other browser. The group was deleted the first time and a customer friendly error message (not the one described above) showed up in CSUM when the second was attempted to be deleted.</li>
+	<li>Pointed two different browsers at the same group and attempted to remove the same group the first time via CSUM in one browser and then via confluence admin -&gt; manage group in the other browser. The group was deleted the first time and a customer friendly error message (not the one described above) showed up in Confluence admin when the second was attempted to be deleted.</li>
+</ul>
+
+
+Jon or Daniel, could you follow the steps above and let us know which situations fail with the long system error you described? Can it be reproduced in the latest Confluence 2.10.3 with the same DB setup?
+
+Thanks!
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-25361" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-94?focusedCommentId=25361&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-25361" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_25361_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_25361_verbose subText'><span class='date user-tz' title='08/May/09 7:44 AM'><time datetime='2009-05-08T07:44-0700'>08/May/09 7:44 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Atlassian closed this because no one followed up: <a href="https://support.atlassian.com/browse/CSP-31299">https://support.atlassian.com/browse/CSP-31299</a> </p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_25361_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_25361_concise subText'><span class='date user-tz' title='08/May/09 7:44 AM'><time datetime='2009-05-08T07:44-0700'>08/May/09 7:44 AM</time></span></span>               Atlassian closed this because no one followed up: <a href="https://support.atlassian.com/browse/CSP-31299">https://support.atlassian.com/browse/CSP-31299</a>          </div>
+    </div>
+</div>
+                 </div>
+</div></div>
+                
+
+            </div>
+        </div>
+
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                    <div class='module toggle-wrap' id='peoplemodule'><div id='peoplemodule_heading' class='mod-header'><h3 class='toggle-title'>People</h3></div><div class='mod-content'><ul class="item-details" id="peopledetails">
+    <li class="people-details">
+                <dl>
+            <dt>Assignee:</dt>
+            <dd id="assignee-val">
+                        <a class="user-hover" rel="gswduke" id="issue_summary_assignee_gswduke" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+            </dd>
+        </dl>
+                        <dl>
+            <dt>Reporter:</dt>
+            <dd id="reporter-val">
+                        <a class="user-hover" rel="jon.crutchfield@nd.edu" id="issue_summary_reporter_jon.crutchfield@nd.edu" href="/secure/ViewProfile.jspa?name=jon.crutchfield%40nd.edu">Jon Crutchfield</a>
+            </dd>
+        </dl>
+                    </li>
+</ul>
+<div id="votes-val">
+                <span id="vote-label" title="You cannot vote or change your vote on resolved issues."><span class="icon icon-vote-disabled"></span><span class="action-text">Vote</span></span>
+    
+                (<span id="vote-data">0</span>)
+    </div>
+<div id="watchers-val">
+            <span id="watch-label" title="You have to be logged in to watch an issue."><span class="icon icon-watch-disabled"></span>Watch</span>
+    
+        
+            (<span id="watcher-data">1</span>)
+    </div>
+</div></div><div class='module toggle-wrap' id='datesmodule'><div id='datesmodule_heading' class='mod-header'><h3 class='toggle-title'>Dates</h3></div><div class='mod-content'><ul class="item-details">
+    <li>
+            <dl class="dates">
+            <dt>Created:</dt>
+            <dd id="create-date" class="date user-tz"  title="22/Apr/09 10:44 AM" >
+                        <time datetime="2009-04-22T10:44-0700">22/Apr/09 10:44 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Updated:</dt>
+            <dd id="updated-date" class="date user-tz"  title="08/May/09 7:44 AM" >
+                        <time datetime="2009-05-08T07:44-0700">08/May/09 7:44 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Resolved:</dt>
+            <dd id="resolved-date" class="date user-tz"  title="22/Apr/09 11:20 AM" >
+                        <time datetime="2009-04-22T11:20-0700">22/Apr/09 11:20 AM</time></dd>                     </dd>
+        </dl>
+        </li>
+</ul>
+</div></div>
+                
+
+            </div>
+        </div>
+        
+            
+                
+            
+        
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fbrowse%2FSUSR-94&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+            <script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/safe-ajax.js"></script>
+    
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+            document.cookie = "studio.project.rec.used.cookie=" + escape("SUSR-_-") + "; Max-Age=31536000; path=/;";
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<form id="jira_request_timing_info" class="dont-default-focus" >
+	<fieldset class="parameters hidden">
+		<input type="hidden" title="jira.request.start.millis" value="1358008679464" />
+		<input type="hidden" title="jira.request.server.time" value="863" />
+		<input type="hidden" title="jira.request.id" value="517x6601048x1" />
+		<input type="hidden" title="jira.session.expiry.time" value="-" />
+		<input type="hidden" title="jira.session.expiry.in.mins" value="-" />
+		<input id="jiraConcurrentRequests" type="hidden" name="jira.request.concurrent.requests" value="2" />
+	</fieldset>
+</form>
+<!--
+	                 REQUEST ID : 517x6601048x1
+	          REQUEST TIMESTAMP : [12/Jan/2013:08:37:59 -0800]
+	               REQUEST TIME : 0.8630
+	                 ASESSIONID : gw38ea
+	        CONCURRENT REQUESTS : 2
+-->
+</body>
+</html>

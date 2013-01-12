@@ -1,0 +1,1620 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+            <title>Custom Space User Management Plugin - Old v1 Stuff - Custom Space User Management Plugin - Confluence</title>
+    
+        
+
+                        
+    
+	<link rel="stylesheet" type="text/css" href="/wiki/s/en/2172/2/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="/wiki/s/en/2172/2/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+    <![endif]-->
+    <!--[if IE 9]>
+    <link rel="stylesheet" type="text/css" href="/wiki/s/en/2172/2/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+    <![endif]-->
+
+		<link rel="stylesheet" type="text/css" href="https://studio.plugins.atlassian.com/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+
+            <meta http-equiv="X-UA-Compatible" content="IE=8">
+<meta charset="UTF-8">
+
+<!-- Deprecated since 3.4. To be removed in a future version of Confluence; use AJS.Confluence.getContextPath() -->
+<meta id="confluence-context-path" name="confluence-context-path" content="/wiki">
+<meta name="ajs-context-path" content="/wiki">
+<meta name="ajs-version-number" content="3.5.16">
+<meta name="ajs-build-number" content="2172">
+<meta id="atlassian-token" name="atlassian-token" content="3364e15635ca061bb4fef70ac1be574c11b0f944">
+<meta id="confluence-space-key" name="confluence-space-key" content="SUSR">
+<meta name="ajs-remote-user" content="garysweaver">
+<meta name="ajs-static-resource-url-prefix" content="/wiki/s/en/2172/2/_">
+
+<script type="text/javascript">
+    // Deprecated global variables. To be removed in a future version of Confluence.
+    var contextPath = '/wiki';
+</script>
+
+    
+
+<!-- include system css resources -->
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/26/_/download/superbatch/css/batch.css" media="all">
+<!--[if IE]>
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/26/_/download/superbatch/css/batch.css?ieonly=true" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/26/_/download/superbatch/css/batch.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.16-SEC1/_/download/batch/confluence.macros.advanced:fancy-box/confluence.macros.advanced:fancy-box.css" media="all">
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.16-SEC1/_/download/batch/confluence.macros.advanced:gallery-resources/confluence.macros.advanced:gallery-resources.css" media="all">
+<!--[if IE]>
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.16-SEC1/_/download/batch/confluence.macros.advanced:gallery-resources/confluence.macros.advanced:gallery-resources.css?ieonly=true" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.0/_/download/batch/confluence.web.resources:attachments/confluence.web.resources:attachments.css" media="all">
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.0/_/download/resources/confluence.web.resources:aui-forms/confluence-forms.css" media="all">
+<!--[if IE]>
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.0/_/download/batch/confluence.web.resources:aui-forms/confluence.web.resources:aui-forms.css?ieonly=true" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.8/_/download/batch/com.atlassian.confluence.plugins.share-page:mail-page-resources/com.atlassian.confluence.plugins.share-page:mail-page-resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.0/_/download/batch/confluence.web.resources:view-comment/confluence.web.resources:view-comment.css" media="all">
+<!--[if IE]>
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.0/_/download/batch/confluence.web.resources:view-comment/confluence.web.resources:view-comment.css?ieonly=true" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/1.0.16/_/download/batch/com.atlassian.confluence.plugins.drag-and-drop:support/com.atlassian.confluence.plugins.drag-and-drop:support.css" media="all">
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/4.0.4/_/download/batch/com.gliffy.integration.confluence:gliffy-macro-resources/com.gliffy.integration.confluence:gliffy-macro-resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/0.8/_/download/batch/com.atlassian.plugins.shortcuts.atlassian-shortcuts-module:shortcuts/com.atlassian.plugins.shortcuts.atlassian-shortcuts-module:shortcuts.css" media="all">
+<link type="text/css" rel="stylesheet" href="/wiki/s/en/2172/2/3.5.16/_/download/batch/com.atlassian.confluence.keyboardshortcuts:confluence-keyboard-shortcuts/com.atlassian.confluence.keyboardshortcuts:confluence-keyboard-shortcuts.css" media="all">
+
+<!-- end system css resources -->
+
+    <link rel="stylesheet" href="/wiki/s/en/2172/2/1/_/styles/combined.css?spaceKey=SUSR" type="text/css">
+
+    <meta name="confluence-request-time" content="1358006157303">
+
+<meta name="loggedInUsername" content="garysweaver">
+            <meta name="ajs-keyboardshortcut-hash" content="161274fbfad9fbb969b7ad6704f7e911">
+    <!-- Deprecated since 3.4. To be removed in a future version of Confluence; use atl.header -->
+            <script type="text/x-template" title="gliffy-footer-webpanel">
+    <div class="gliffy-footer-webpanel"><span></span></div>
+</script>
+
+            <script type="text/x-template" title="share-content-popup">
+    <form action="#" method="post" class="aui share-content-popup">
+        <fieldset>
+            <label for="users">User name or email</label>
+            <div class="autocomplete-user-target">
+                <input class="text autocomplete-sharepage" id="users" data-max="10" data-dropdown-target=".autocomplete-user-target" data-none-message="No matching user or email found"/>
+            </div>
+            <ol class="recipients">
+            </ol>
+            <div><label for="note">Note</label></div>
+            <textarea class="textarea" id="note" placeholder="Add an optional note"/>
+        </fieldset>
+        <div class="button-panel">
+            <div class="progress-messages-icon"></div>
+            <div class="progress-messages">
+            </div>
+            <input class="button submit" type="submit" value="Share" disabled/>
+            <a class="close-dialog" href="#">Cancel</a>
+        </div>
+    </form>
+</script>
+
+<script type="text/x-template" title="share-content-popup-recipient-username">
+    <li data-username="{username}" style="display: none">
+        <span>
+            <img src="{thumbnailLink.href}" title="{title}">
+            <span>{title}</span>
+            <span class="remove-recipient"/>
+        </span>
+    </li>
+</script>
+
+<script type="text/x-template" title="share-content-popup-recipient-email">
+    <li data-email="{email}" style="display: none">
+        <span>
+            <img src="{icon}" title="{email}">
+            <span>{email}</span>
+            <span class="remove-recipient"/>
+        </span>
+    </li>
+</script>
+            <meta name="ajs-use-keyboard-shortcuts" content="true">
+    
+    <link rel="shortcut icon" href="/wiki/favicon.ico">
+    <link rel="icon" type="image/png" href="/wiki/s/en/2172/2/_/images/logo/confluence_16.png">
+
+<link rel="search" type="application/opensearchdescription+xml" href="/wiki/opensearch/osd.action" title="Confluence"/>
+
+        <!-- include system javascript resources -->
+                        
+    
+    <script type="text/javascript" src="/wiki/s/en/2172/2/26/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/1.16-SEC1/_/download/batch/confluence.macros.advanced:fancy-box/confluence.macros.advanced:fancy-box.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/1.16-SEC1/_/download/batch/confluence.macros.advanced:gallery-resources/confluence.macros.advanced:gallery-resources.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/1.0/_/download/batch/confluence.web.resources:attachments/confluence.web.resources:attachments.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/2.20/_/download/batch/confluence.extra.attachments:attachments-javascript/confluence.extra.attachments:attachments-javascript.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/1.8/_/download/batch/com.atlassian.confluence.plugins.share-page:mail-page-resources/com.atlassian.confluence.plugins.share-page:mail-page-resources.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/1.16-SEC1/_/download/batch/confluence.macros.advanced:thumbnail-images/confluence.macros.advanced:thumbnail-images.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/1.0.16/_/download/batch/com.atlassian.confluence.plugins.drag-and-drop:support/com.atlassian.confluence.plugins.drag-and-drop:support.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/1.0.16/_/download/batch/com.atlassian.confluence.plugins.drag-and-drop:drag-and-drop-for-view-content/com.atlassian.confluence.plugins.drag-and-drop:drag-and-drop-for-view-content.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/4.0.4/_/download/batch/com.gliffy.integration.confluence:gliffy-macro-resources/com.gliffy.integration.confluence:gliffy-macro-resources.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/1.9/_/download/batch/com.atlassian.confluence.plugins.doctheme:splitter/com.atlassian.confluence.plugins.doctheme:splitter.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/0.8/_/download/batch/com.atlassian.plugins.shortcuts.atlassian-shortcuts-module:shortcuts/com.atlassian.plugins.shortcuts.atlassian-shortcuts-module:shortcuts.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/3.5.16/_/download/batch/com.atlassian.confluence.keyboardshortcuts:confluence-keyboard-shortcuts/com.atlassian.confluence.keyboardshortcuts:confluence-keyboard-shortcuts.js" ></script>
+<script type="text/javascript" src="/wiki/s/en/2172/2/1.0/_/download/batch/legacy.confluence.web.resources:prototype/legacy.confluence.web.resources:prototype.js" ></script>
+
+    
+    <!-- end system javascript resources -->
+
+    
+
+    
+    <link rel="canonical" href="https://studio.plugins.atlassian.com/wiki/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff">
+    <link rel="shortlink" href="https://studio.plugins.atlassian.com/wiki/x/FwIq">
+    <meta name="wikilink" content="[SUSR:Custom Space User Management Plugin - Old v1 Stuff]">
+    <meta name="page-version" content="1">
+
+</head>
+
+<body             onload="placeFocus()"
+     id="com-atlassian-confluence" class="theme-documentation ">
+<div id="full-height-container">
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="statusDialogHeading" value="What are you working on?">
+    <input type="hidden" id="statusDialogAccessibilityLabel" value="Enter your status (140 character limit)">
+    <input type="hidden" id="statusDialogLatestLabel" value="Last update:">
+    <input type="hidden" id="statusDialogUpdateButtonLabel" value="Update">
+    <input type="hidden" id="statusDialogCancelButtonLabel" value="Cancel">
+</fieldset>
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="globalSettingsAttachmentMaxSize" value="104857600">
+    <input type="hidden" id="userLocale" value="en_GB">
+    <input type="hidden" id="staticResourceUrlPrefix" value="/wiki/s/en/2172/2/_">
+    <input type="hidden" id="contextPath" value="/wiki">
+</fieldset>
+
+    
+<div id="studio-header" class="studio-header">
+	
+
+
+
+
+    
+<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+<meta id="studio-context-path" name="studio-context-path" content="/wiki"/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Space User Management Plugin </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                        <li class="ds-sectionLabel">Recent Projects</li>
+                		                                                    <li><a href="/wiki/display/SHBL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10580&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Confluence Shibboleth Authenticator</span></a></li>
+                                                    					    </ul><ul>
+                                                                                        <li><a href="/wiki/display/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/wiki/display/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/wiki/display/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/wiki/display/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/wiki/display/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/wiki/display/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/wiki/display/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/wiki/display/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/wiki/display/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/wiki/display/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/wiki/display/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/wiki/display/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/wiki/display/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/wiki/display/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/wiki/display/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/wiki/display/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/wiki/display/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/wiki/display/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/wiki/display/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/wiki/display/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+<div id="studio-user-menu-container">
+    <ul class="ajs-menu-bar">
+    	<li id="studio-user-menu" class="normal ajs-menu-item user-name">
+            <a class="user trigger ajs-menu-title js-user" href="#"><span><span>Gary S. Weaver</span></span></a>
+    		<div class="ajs-drop-down hidden">
+				    			<ul class="section-user-status first">
+    				<li><a href="https://studio.plugins.atlassian.com/wiki/display/~garysweaver" class="user-item update-status-link" id="set-user-status-link"> <span>Update Status...</span> </a></li>
+    			</ul>
+    			<ul class="section-user-preferences">
+                    					<li><a href="https://studio.plugins.atlassian.com/wiki/plugins/servlet/personalspace" class="user-item"><span>Personal Space</span> </a></li>
+                        				<li><a href="https://studio.plugins.atlassian.com/secure/ViewProfile.jspa" class="user-item profile"><span>Profile</span> </a></li>
+    			</ul>
+				    			<ul class="section-user-content">
+    				<li><a href="https://studio.plugins.atlassian.com/secure/project/ViewProjects.jspa" class="user-item administration"><span>Administration</span> </a></li>
+    			</ul>
+				    			<ul class="section-user-operations">
+    				<li><a href="https://studio.plugins.atlassian.com/secure/Logout!default.jspa?atl_token=A5G2-B7UC-JLK8-Z7KY|afc5852c751303583523002528d90f049ca080b6|lin" class="user-item logout-link"> <span>Log Out</span> </a></li>
+    			</ul>
+    		</div>
+    	</li>
+
+    	<li id="studio-history-menu" class="normal ajs-menu-item">
+        	<a class="browse trigger ajs-menu-title js-history" href="#"><span><span>History</span></span></a>
+        	<div class="ajs-drop-down hidden" style="right: 0px;">
+        		<ul class="section-global first">
+    				<li><a><span><i>Loading... </i></span> </a></li>
+        		</ul>
+        	</div>
+    	</li>
+    </ul>
+</div>
+
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li><a href="https://studio.plugins.atlassian.com/browse/SUSR">Issues</a></li>
+			<li class="current"><a href="/wiki/display/SUSR">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SUSR">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SUSR">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SUSR">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+	
+
+	    
+	        <div id="header-bottom" class="">
+
+	    <div class="second-level-nav studio-menu">
+
+            
+    
+    <ol id="breadcrumbs">
+                    
+                        
+        <li class="first" >
+                                            <span><a href="/wiki/dashboard.action" title="Go to Dashboard">Dashboard</a></span>
+                </li>
+                    
+                
+        <li>
+                                            <span><a href="/wiki/display/SUSR">Custom Space User Management Plugin</a></span>
+                </li>
+                    
+                
+        <li>
+                                            <span><a href="/wiki/display/SUSR/Confluence+Space+User+Management+Plugin">Confluence Space User Management Plugin</a></span>
+                </li>
+                    
+                
+        <li>
+                                            <span>Custom Space User Management Plugin - Old v1 Stuff</span>
+                </li>
+        </ol>
+
+
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+            <div id="spaces-dropdown-div">
+	            <ul id="header-menu-bar" class="ajs-menu-bar">
+                                            
+        
+            <li class="normal ajs-menu-item">
+        <a id="browse-menu-link" class="browse trigger ajs-menu-title" href="#"><span><span>Browse</span></span></a>         <div class="assistive ajs-drop-down">
+                        <ul  id="browse-menu-link-leading"                 class="section-leading first">
+                                        <li>
+    
+        
+    
+    <a  id="space-pages-link" href="/wiki/pages/listpages.action?key=SUSR"  class=""   title="Browse pages in the Custom Space User Management Plugin space">
+                   <span>Pages</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="space-blogposts-link" href="/wiki/pages/viewrecentblogposts.action?key=SUSR"  class=""   title="Browse blogs in the Custom Space User Management Plugin space">
+                   <span>Blog</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="space-labels-link" href="/wiki/labels/listlabels-heatmap.action?key=SUSR"  class=""   title="Browse labels in the Custom Space User Management Plugin space">
+                   <span>Labels</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="space-attachments-link" href="/wiki/spaces/listattachmentsforspace.action?key=SUSR"  class=""   title="Browse attachments in the Custom Space User Management Plugin space">
+                   <span>Attachments</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  href="/wiki/spaces/space-bookmarks.action?spaceKey=SUSR"  class=""   title="Browse bookmarks in the Custom Space User Management Plugin space">
+                   <span>Bookmarks</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="space-mail-link" href="/wiki/spaces/viewmailarchive.action?key=SUSR"  class=""   title="Browse mail in the Custom Space User Management Plugin space">
+                   <span>Mail</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="space-advanced-link" href="/wiki/spaces/viewspacesummary.action?key=SUSR"  class=""   title="Browse additional space functions in the Custom Space User Management Plugin space">
+                   <span>Advanced</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="space-admin-link" href="/wiki/spaces/editspace.action?key=SUSR"  class=""   title="Administer the Custom Space User Management Plugin space">
+                   <span>Space Admin</span></a>        </li>
+                            </ul>
+                        <ul  id="browse-menu-link-global"                 class="section-global">
+                                        <li>
+    
+        
+    
+    <a  id="people-directory-link" href="/wiki/peopledirectory.action"  class=""   title="Browse the Confluence people directory">
+                   <span>People Directory</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="space-directory-link" href="/wiki/spacedirectory/view.action"  class=""   title="Browse the Confluence space directory">
+                   <span>Space Directory</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  href="/wiki/users/viewfollow.action?username=garysweaver"  class="follow-link"   title="">
+                   <span>Network</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="keyboard-shortcuts-link" href="/wiki"  class=""   title="View available keyboard shortcuts">
+                   <span>Keyboard Shortcuts</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="gadget-directory-link" href="/wiki"  class="user-item administration-link"   title="Browse gadgets provided by Confluence">
+                   <span>Confluence Gadgets</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="user-settings-link" href="/wiki/users/viewmysettings.action"  class="user-item"   title="">
+                   <span>User Settings</span></a>        </li>
+                            </ul>
+                    </div>
+    </li>
+        
+                                        <li class="normal ajs-menu-item">
+                        <div id="splitter-button" class="hidden" title="Show or hide sidebar"></div>
+                    </li>
+
+                </ul>
+            </div>
+
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-bottom -->
+</div>
+
+
+<div id="main" >
+    
+    
+    <div id="navigation" class="content-navigation view">
+        <fieldset class="hidden parameters">
+            <input type="hidden" id="pageId" value="2753047">
+        </fieldset>
+        <ul class="ajs-menu-bar">
+                                <li class="ajs-button normal">
+    
+        
+    
+    <a  id="editPageLink" href="/wiki/pages/editpage.action?pageId=2753047"  class="edit"  accessKey="e"  title="Edit">
+                   <span><u>E</u>dit</span></a>        </li>
+                    <li class="ajs-button normal">
+    
+        
+    
+    <a  id="shareContentLink" href="/wiki"  class="share"  accessKey="e"  title="Share this content by emailing other users">
+                   <span>Share</span></a>        </li>
+                    
+            <li class="normal ajs-menu-item">
+        <a id="add-menu-link" class="add trigger ajs-menu-title" href="#"><span><span>Add</span></span></a>         <div class="assistive ajs-drop-down">
+                        <ul  id="add-menu-link-space"                 class="section-space first">
+                                        <li>
+    
+        
+    
+    <a  id="createPageLink" href="/wiki/pages/createpage.action?spaceKey=SUSR&amp;fromPageId=2753047"  class="add-page"  accessKey="p"  title="Add a Page">
+                   <span>Page</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="createBlogpostLink" href="/wiki/pages/createblogpost.action?spaceKey=SUSR"  class="add-news"   title="Add a Blog Post">
+                   <span>Blog Post</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  href="/wiki/plugins/socialbookmarking/updatebookmark.action?spaceKey=SUSR&amp;redirect=spacebookmarks"  class=""   title="">
+                    <span>
+                <img alt="Bookmark" src="/wiki/images/icons/adfav_16.gif" height="16" width="16" title="Bookmark">
+                Bookmark
+            </span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  href="/wiki/plugins/gliffy/showgliffyeditor.action?pageId=2753047&amp;key=SUSR&amp;ceoid=2753047&amp;lastPage=/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff"  class=""   title="">
+                    <span>
+                <img alt="Gliffy Diagram" src="/wiki/download/resources/com.gliffy.integration.confluence:gliffy-macro-key/resources/icons/add_diagram_16.gif" height="16" width="16" title="Gliffy Diagram">
+                Gliffy Diagram
+            </span></a>        </li>
+                            </ul>
+                        <ul  id="add-menu-link-page"                 class="section-page">
+                                        <li>
+    
+        
+    
+    <a  id="add-comment-menu-link" href="/wiki/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff?showComments=true&amp;showCommentArea=true#addcomment"  class="add-comment"   title="Add a Comment">
+                   <span>Comment</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="add-attachment-link" href="/wiki/pages/viewpageattachments.action?pageId=2753047"  class="add-attachment"  accessKey="a"  title="">
+                   <span>Attachment</span></a>        </li>
+                            </ul>
+                    </div>
+    </li>
+                    
+            <li class="normal ajs-menu-item">
+        <a id="action-menu-link" class="action trigger ajs-menu-title" href="#"><span><span>Tools</span></span></a>         <div class="assistive ajs-drop-down">
+                        <ul  id="action-menu-link-primary"                 class="section-primary first">
+                                        <li>
+    
+        
+    
+    <a  id="view-attachments-link" href="/wiki/pages/viewpageattachments.action?pageId=2753047"  class="action-view-attachments"  accessKey="a"  title="View Attachments">
+                   <span><u>A</u>ttachments (6)</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="action-view-history-link" href="/wiki/pages/viewpreviousversions.action?pageId=2753047"  class="action-view-history"   title="">
+                   <span>Page History</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="action-page-permissions-link" href="/wiki/pages/viewinfo.action?pageId=2753047"  class="action-page-permissions"   title="Edit restrictions">
+                   <span>Restrictions</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="edit-in-word" href="/wiki/plugins/servlet/confluence/editinword/2753047/content/Custom Space User Management Plugin - Old v1 Stuff.doc"  class=""   title="">
+                    <span>
+                <img alt="Edit in Word" src="/wiki/download/resources/com.atlassian.confluence.extra.officeconnector:editinworditem3/editinwordblue.png" height="16" width="16" title="Edit in Word">
+                Edit in Word
+            </span></a>        </li>
+                            </ul>
+                        <ul  id="action-menu-link-marker"                 class="section-marker">
+                                        <li>
+    
+        
+    
+    <a  id="page-favourite" href="/wiki/labels/addfavourite.action?entityId=2753047&amp;atl_token=3364e15635ca061bb4fef70ac1be574c11b0f944"  class="action-page-favourite"   title="">
+                   <span>Favourite</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="page-watch" href="/wiki/pages/addpagenotification.action?pageId=2753047&amp;atl_token=3364e15635ca061bb4fef70ac1be574c11b0f944"  class="action-page-watching"   title="">
+                   <span>Watch</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="page-unwatch" href="/wiki/pages/removepagenotification.action?pageId=2753047&amp;atl_token=3364e15635ca061bb4fef70ac1be574c11b0f944"  class="action-page-watching selected ie-page-watching-selected inactive"   title="">
+                   <span>Stop Watching</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="manage-watchers-menu-item" href="/wiki/pages/managepagenotifications.action?pageId=2753047"  class="action-manage-watchers"   title="Manage page watchers">
+                   <span>Manage Watchers</span></a>        </li>
+                            </ul>
+                        <ul  id="action-menu-link-secondary"                 class="section-secondary">
+                                        <li>
+    
+        
+    
+    <a  id="view-page-info-link" href="/wiki/pages/viewinfo.action?pageId=2753047"  class="action-view-info"   title="">
+                   <span>Info</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="link-to-page-link" href="/wiki/pages/viewinfo.action?pageId=2753047"  class=""   title="Link to this Page">
+                   <span>Link to this Page&hellip;</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="view-in-hierarchy-link" href="/wiki/pages/listpages-dirview.action?key=SUSR&amp;openId=2753047#selectedPageInHierarchy"  class=""   title="">
+                   <span>View in Hierarchy</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="action-view-source-link" href="/wiki/pages/viewpagesrc.action?pageId=2753047"  class="action-view-source popup-link"   title="">
+                   <span>View Wiki Markup</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="action-export-pdf-link" href="/wiki/spaces/flyingpdf/pdfpageexport.action?pageId=2753047"  class=""   title="">
+                   <span>Export to PDF</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="action-export-word-link" href="/wiki/exportword?pageId=2753047"  class="action-export-word"   title="">
+                   <span>Export to Word</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="import-word-doc" href="/wiki/pages/worddav/uploadimport.action?pageId=2753047"  class=""   title="">
+                   <span>Import Word Document</span></a>        </li>
+                            </ul>
+                        <ul  id="action-menu-link-modify"                 class="section-modify">
+                                        <li>
+    
+        
+    
+    <a  id="action-copy-page-link" href="/wiki/pages/copypage.action?idOfPageToCopy=2753047&amp;spaceKey=SUSR"  class="action-copy"   title="">
+                   <span>Copy</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="action-move-page-dialog-link" href="/wiki/pages/viewpage.action?pageId=2753047"  class="action-move"   title="">
+                   <span>Move</span></a>        </li>
+                                        <li>
+    
+        
+    
+    <a  id="action-remove-content-link" href="/wiki/pages/removepage.action?pageId=2753047"  class="action-remove"   title="">
+                   <span>Remove</span></a>        </li>
+                            </ul>
+                    </div>
+    </li>
+            </ul>
+    </div>
+
+    
+    <h1 id="title-heading" class="pagetitle">
+                    <a href="/wiki/display/SUSR"><img class="logo global" src="/wiki/images/logo/confluence_48_white.png" alt=""></a>        
+		<span id="title-text">
+					            <a href="/wiki/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff">Custom Space User Management Plugin - Old v1 Stuff</a>
+    				</span>
+    </h1>
+
+    
+
+    
+    
+    
+    <div id="content" class="page view">
+    
+
+
+
+<div id="link-to-page-fields" class="hidden parameters">
+    <input type="hidden" id="linkToThisPageHeading" value="Link to this Page">
+    <input type="hidden" id="linkToThisPageLink" value="Link">
+    <input type="hidden" id="linkToThisPageTinyLink" value="Tiny Link">
+    <input type="hidden" id="linkToThisPageWikiMarkup" value="Wiki Markup">
+    <input type="hidden" id="linkToThisPageClose" value="Close">
+</div>
+<fieldset class="hidden parameters">
+    <input type="hidden" title="movePageDialogViewPageTitle" value="Move Page &ndash; &#8216;Custom Space User Management Plugin - Old v1 Stuff&#8217;">
+    <input type="hidden" title="movePageDialogEditPageTitle" value="Set Page Location">
+    <input type="hidden" title="movePageDialogMoveButton" value="Move">
+    <input type="hidden" title="movePageDialogCancelButton" value="Cancel">
+    <input type="hidden" title="movePageDialogBrowsePanelTip" value="Click to select the new parent page for this page and its children.">
+    <input type="hidden" title="movePageDialogSearchPanel" value="Search">
+    <input type="hidden" title="movePageDialogHistoryPanel" value="Recently Viewed">
+    <input type="hidden" title="movePageDialogHistoryNoResults" value="There were no recently viewed pages found.">
+    <input type="hidden" title="movePageDialogLocationPanel" value="Known Location">
+    <input type="hidden" title="movePageDialogLocationNotFound" value="The specified page was not found.">
+    <input type="hidden" title="movePageDialogBrowsePanel" value="Browse">
+    <input type="hidden" title="movePageDialogPanelLoadErrorMsg" value="Error reading the panel content from the server.">
+    <input type="hidden" title="movePageDialogPanelLoadErrorTip" value="You could try reloading the page and launching the dialog again.">
+    <input type="hidden" title="movePageDialogPanelLoadErrorStatus" value="HTTP Status">
+    <input type="hidden" title="movePageDialogNoSelectionErrorMsg" value="You must make a selection in the tree before you can move the page.">
+    <input type="hidden" title="movePageDialogSearchError" value="Failed to retrieve search results from the server.">
+    <input type="hidden" title="movePageDialogSearchNoResults" value="There were no pages found containing <b>{0}</b>.">
+    <input type="hidden" title="movePageDialogSearchResultCount" value="Showing <b>{0}</b>-<b>{1}</b> of <b>{2}</b> pages containing <b>{3}</b>.">
+    <input type="hidden" title="movePageDialogMoveFailed" value="Move failed. There was a problem contacting the server.">
+    <input type="hidden" title="movePageDialogCannotChangeSpace" value="You cannot move this page to another space because you do not have permission to remove it from this space.">
+    <input type="hidden" title="pageTitle" value="Custom Space User Management Plugin - Old v1 Stuff"/>
+    <input type="hidden" title="parentPageTitle" value="Confluence Space User Management Plugin"/>
+    <input type="hidden" title="fromPageTitle" value=""/>
+    <input type="hidden" title="spaceKey" value="SUSR"/>
+    <input type="hidden" title="spaceName" value="Custom Space User Management Plugin"/>
+    <input type="hidden" title="movePageDialogInvalidLocation" value="You cannot move a page to be underneath itself or its children."/>
+    <input type="hidden" title="movePageDialogOrderingTitle" value="Page Ordering"/>
+    <input type="hidden" title="movePageDialogBackButton" value="Back"/>
+    <input type="hidden" title="movePageDialogMoveAndOrderButton" value="Reorder"/>
+    <input type="hidden" title="movePageDialogNextButton" value="Move"/>
+</fieldset>
+
+<script type="text/x-template" title="movePageDialog">
+    <div class="row information">
+        <div class="inner">
+            <div class="element">
+                Specify the new parent page for this page and its children by space and title.
+            </div>
+        </div>
+    </div>
+    <div class="form">
+        <fieldset>
+                
+
+    <legend class="assistive"><span>Change the Parent Page to a Known Page</span></legend>
+            <div class="row">
+                <label for="new-space">New space:</label>
+                <div class="value new-space-value">
+                    <input id="new-space-key" name="new-space-key" type="hidden" value="SUSR">
+                                            <span class="space-input">
+                            <input id="new-space" name="new-space" value="Custom Space User Management Plugin">
+                        </span>
+                        <span class="description hidden">Start typing a space name to see a list of suggestions.</span>
+                                        <div class="new-space-dropdown aui-dd-parent autocomplete"></div>
+                </div>
+            </div>
+            <div class="row">
+                <label for="new-parent-page">New parent page:</label>
+                <div class="value new-parent-page-value">
+                    <span class="page-input">
+                        <input id="new-parent-page" name="new-parent-page" value="Confluence Space User Management Plugin">
+                    </span>
+                    <span class="description">Start typing a page title to see a list of suggestions.</span>
+                    <div class="new-parent-page-dropdown aui-dd-parent autocomplete"></div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="location-info">
+        <div class="row">
+            <label>Current location:</label>
+            <div class="value breadcrumbs-container">
+                <div class="breadcrumbs-line">
+                    <ul id="current-parent-breadcrumbs" class="breadcrumbs">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label>New location:</label>
+            <div class="value breadcrumbs-container">
+                <div class="breadcrumbs-line">
+                    <ul id="new-parent-breadcrumbs" class="breadcrumbs">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-template" title="movePageErrors">
+    <div id="move-errors" class="hidden warning"></div>
+</script>
+<script type="text/x-template" title="movePageBreadcrumb">
+    <li><a class="{2}" title="{3}" tabindex="-1"><span>{0}</span></a></li>
+</script>
+<script type="text/x-template" title="movePageBreadcrumbLoading">
+    <li class="loading"><span>Loading breadcrumbs&hellip;</span></li>
+</script>
+<script type="text/x-template" title="movePageBreadcrumbError">
+    <li class="warning last"><span>Error retrieving breadcrumbs.</span></li>
+</script>
+<script type="text/x-template" title="movePageNoMatchingPages">
+    <ol><li><span class="warning">No matching pages found.</span></li></ol>
+</script>
+<script type="text/x-template" title="movePageNoMatchingSpaces">
+    <ol><li><span class="warning">No matching spaces found.</span></li></ol>
+</script>
+
+<script type="text/x-template" title="movePageSearchPanel">
+    <div class="row information">
+        <div class="inner">
+            <div class="element">
+                Search for and select the new parent page for this page and its children.
+            </div>
+        </div>
+    </div>
+    <div id="move-page-search-container" class="row">
+        <div class="search-form">
+            <fieldset>
+                    
+
+    <legend class="assistive"><span>Search for a New Parent Page</span></legend>
+                    
+
+    <label  for="move-page-search-query" class="assistive">Search keywords</label>
+                <input class="search-query" id="move-page-search-query">
+                    
+
+    <label  for="move-page-search-space" class="assistive">Search in space</label>
+                                    <select id="move-page-search-space" class="search-space">
+                        <option value="conf_all" selected="selected">All Spaces</option>
+                        <option value="SUSR">Custom Space User Management Plugin</option>
+                    </select>
+                                <input type="button" value="Search">
+                            </fieldset>
+        </div>
+        <div class="search-results">
+        </div>
+    </div>
+</script>
+<script type="text/x-template" title="movePageSearchResultsLoading">
+    <div class="searching">Searching…</div>
+</script>
+
+<script type="text/x-template" title="movePageHistoryPanel">
+    <div class="row information">
+        <div class="inner">
+            <div class="element">
+                Select the new parent page for this page and its children from your history.
+            </div>
+        </div>
+    </div>
+    <div id="move-page-search-container" class="row">
+        <div class="search-results">
+        </div>
+    </div>
+</script>
+<script type="text/x-template" title="movePageHistoryLoading">
+    <div class="searching">Loading…</div>
+</script>
+<script type="text/x-template" title="movePageBrowsePanel">
+    <div class="row information">
+        <div class="inner">
+            <div class="element">
+                Click to select the new parent page for this page and its children.
+            </div>
+        </div>
+    </div>
+    <div class="tree"></div>
+</script>
+<script type="text/x-template" title="movePagePanelLoading">
+    <span>Loading…</span>
+</script>
+<script type="text/x-template" title="movePageBrowsePanelSpace">
+    <ul><li id='tree-root-node-item' class='root-node-list-item'><a class='root-node' href='#'>{0}</a></li></ul>
+</script>
+<script type="text/x-template" title="orderingPagePanel">
+<div id="orderingPlaceHolder"></div>
+</script>
+<script type="text/x-template" title="reorderCheckbox">
+<span id="reorderRequirement"><input id="reorderCheck" type="checkbox" name="reorderFlag" title="Choose the position of this page within the list of child pages."/><label for="reorderCheck" title="Choose the position of this page within the list of child pages.">Reorder</label></span>
+</script>
+<script type="text/x-template" title="move-help-link">
+    <div class="dialog-help-link">
+            <a href="http://docs.atlassian.com/confluence/docs-35/Moving+a+Page" target="_blank">Help</a>
+    </div>
+</script>
+<script type="text/x-template" title="searchResultsGrid">
+    <table>
+        <thead>
+            <tr class="header">
+                <th class="search-result-title">Page Title</th>
+                <th class="search-result-space">Space</th>
+                <th class="search-result-date">Updated</th>
+            </tr>
+        </thead>
+    </table>
+</script>
+<script type="text/x-template" title="searchResultsGridCount">
+    <p class="search-result-count">{0}</p>
+</script>
+<script type="text/x-template" title="searchResultsGridRow">
+    <tr class="search-result">
+        <th class="search-result-title"><a href="{1}" class="content-type-{2}"><span>{0}</span></a></th>
+        <td class="search-result-space"><a class="space" href="/wiki/display/{4}/" title="{3}">{3}</a></td>
+        <td class="search-result-date"><span class="date" title="{6}">{5}</span></td>
+    </tr>
+</script>
+<!-- Start restrictions section -->
+<script type="text/x-template" title="page-permissions-div">
+<div id="page-permissions-div">
+    <div id="page-permissions-editor-form">
+
+                <div id="page-permissions-error-div" class="hidden">
+            <a href="#" id="permissions-error-div-close">Ok</a>
+            <div></div>
+        </div>
+
+                <div id="page-permissions-type-radios" class="page-permissions-label-rows">
+            <div>
+                <input id="restrictViewRadio" type="radio" checked="checked" name="pagePermissionTypeRadio" value="view"/>
+                <label for="restrictViewRadio">Restrict viewing of this page</label>
+                <input id="restrictEditRadio" type="radio" name="pagePermissionTypeRadio" value="edit"/>
+                <label for="restrictEditRadio">Restrict editing of this page</label>
+            </div>
+        </div>
+        <div id="page-permissions-input" class="page-permissions-label-rows">
+            <div class="page-permissions-label">To:</div>
+            <div id="page-permissions-chooser-box">
+                                    <span id="page-permissions-choose-me" class="ajs-button normal">
+                        <img class="permission-entity-picture" src="/wiki/images/icons/profilepics/default.gif" border="0" alt="Me" align="absmiddle"/>
+                        <a href="#">Me</a>
+                        <span class="remote-user-name hidden">garysweaver</span>
+                    </span>
+                                <span id="page-permissions-choose-user" class="ajs-button">
+                    
+
+
+
+    
+
+
+
+<a href="#" id='userpicker-popup-link-image' onClick="var picker = window.open('/wiki/spaces/openuserpicker.action?key=SUSR&amp;startIndex=0&amp;onPopupSubmit=AJS.PagePermissions.addUserPermissions', 'EntitiesPicker', 'status=yes,resizable=yes,top=100,left=200,width=700,height=680,scrollbars=yes'); picker.focus(); return false;"><img src="/wiki/s/en/2172/2/_/images/icons/user_16.gif" height=16 width=16 border=0 align="absmiddle"  title="Choose users" /></a>
+<a href="#" id='userpicker-popup-link-text' onClick="var picker = window.open('/wiki/spaces/openuserpicker.action?key=SUSR&amp;startIndex=0&amp;onPopupSubmit=AJS.PagePermissions.addUserPermissions', 'EntitiesPicker', 'status=yes,resizable=yes,top=100,left=200,width=700,height=680,scrollbars=yes'); picker.focus(); return false;">Person...</a>
+
+
+                </span>
+                <span id="page-permissions-choose-group" class="ajs-button">
+                    
+
+
+
+    
+
+ 
+
+<a href="#" id='grouppicker-popup-link-image' onClick="var picker = window.open('/wiki/spaces/opengrouppicker.action?key=SUSR&amp;startIndex=0&amp;actionName=dosearchgroups.action&amp;onPopupSubmit=AJS.PagePermissions.addGroupPermissions', 'EntitiesPicker', 'status=yes,resizable=yes,top=100,left=200,width=580,height=550,scrollbars=yes'); picker.focus(); return false;"><img src="/wiki/s/en/2172/2/_/images/icons/group_16.gif" height=16 width=16 border=0 align="absmiddle"  title="Choose groups" /></a>
+<a href="#" id='grouppicker-popup-link-text' onClick="var picker = window.open('/wiki/spaces/opengrouppicker.action?key=SUSR&amp;startIndex=0&amp;actionName=dosearchgroups.action&amp;onPopupSubmit=AJS.PagePermissions.addGroupPermissions', 'EntitiesPicker', 'status=yes,resizable=yes,top=100,left=200,width=580,height=550,scrollbars=yes'); picker.focus(); return false;">Group...</a>
+
+
+                </span>
+            </div>
+            <div id="page-permissions-input-box">
+                                <span>
+                    <input type="text" id="page-permissions-names-input" class="input-placeholder" value="Enter user or group name" name="permissionNames" size="30" autocomplete="off"/>
+                </span>
+                <input
+    type="hidden"
+                            id="page-permissions-names-hidden"           />                <img height="16px" width="1px" src="/wiki/s/en/2172/2/_/images/border/spacer.gif"/>
+                <input type="button" id="add-typed-names" value="Restrict">
+            </div>
+        </div>
+    </div>
+    <div id="page-permissions-tables">
+        <div id="page-permissions-table-div">
+                        <table id="page-permissions-table" class="page-permissions-table">
+                <tr id="page-permissions-no-views" class="marker-row">
+                    <td colspan="3" class="page-permissions-marker-cell"><span>No view restrictions are defined for this page</span></td>
+                </tr>
+                <tr id="page-permissions-no-edits" class="marker-row">
+                    <td colspan="3" class="page-permissions-marker-cell"><span>No edit restrictions are defined for this page</span></td>
+                </tr>
+            </table>
+        </div>
+        <div id="page-inherited-permissions-table-div" class="hidden">
+            <span id="page-inherited-permissions-table-desc">
+                <a class="icon twisty-closed">Show/Hide</a>
+                <a id="toggle-inherited-permissions" title="Click to see inherited restrictions">This page has restricted parent pages. It can only be seen by users who can see those parent pages.</a>
+            </span>
+            <div id="page-inherited-permissions-tables" class="hidden page-inheritance-togglable"></div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/x-template" title="permissions-row-template">
+    <tr class="permission-row">
+                                
+                <td class="page-permissions-marker-cell" width="20%">
+            <span>Viewing restricted to:</span>
+        </td>
+                <td class="permission-entity" nowrap="true" width="40%">
+            <span class="entity-container">
+                <img class="permission-entity-picture"/>
+                <span class="permission-entity-display-name"></span>
+                <span class="permission-entity-name-wrap">&nbsp;(<span class="permission-entity-name"></span>)</span>
+            </span>
+        </td>
+        <td class="permission-detail-column">
+            <div class="permission-remove-div">
+                <a href="#" class="remove-permission-link">Remove restriction</a>
+            </div>
+        </td>
+    </tr>
+</script>
+<script type="text/x-template" title="permissions-username-no-suggestion-template">
+    <ol>
+        <li><a href="#" class="message"><span>No matches</span></a></li>
+    </ol>
+</script>
+<script type="text/x-template" title="page-inherited-permissions-table-div-template">
+        <div class="page-inherited-permissions-owner-div">
+        <div class="page-inherited-permissions-table-desc">Viewing restrictions apply to “<a></a>”. In order to see “<span></span>”, a user must be in the following list of users and groups:</div>
+        <table class="page-permissions-table"></table>
+    </div>
+</script>
+<script type="text/x-template" title="page-restrictions-help-link">
+    <div class="dialog-help-link">
+            <a href="http://docs.atlassian.com/confluence/docs-35/Page+Restrictions" target="_blank">Help</a>
+    </div>
+</script>
+<!-- End restrictions section -->
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="spaceKeyEncoded" value="SUSR">
+    <input type="hidden" title="spaceKeyDecoded" value="SUSR">
+</fieldset>
+
+
+        
+    
+    
+        
+                            
+    
+
+                    
+
+        
+        <a href="#page-metadata-end" class="assistive">Skip to end of metadata</a>
+<div id="page-metadata-start" class="assistive"></div>
+
+    <div class="page-metadata">
+        <ul>
+                            <li class="page-metadata-item noprint">
+    
+            
+    
+    <a  id="content-metadata-page-restrictions" href="#"  class="page-metadata-icon page-restrictions hidden"   title="Page restrictions apply. Click the lock icon to view or edit the restriction.">
+                   <span>Page restrictions apply</span></a>        </li>
+                            <li class="page-metadata-item noprint">
+    
+        
+    
+    <a  id="content-metadata-attachments" href="/wiki/pages/viewpageattachments.action?pageId=2753047&amp;metadataLink=true"  class="page-metadata-icon action-view-attachments"  accessKey="a"  title="Attachments: 6">
+                   <span><span class="page-metadata-attachments-text">Attachments:</span><span class="page-metadata-attachments-count">6</span></span></a>        </li>
+                        <li class="page-metadata-modification-info">
+                                    Added by <a href="/wiki/display/~jnolen"
+                          class="url fn confluence-userlink" data-username="jnolen"
+                   >Jonathan Nolen</a>, last edited by <a href="/wiki/display/~jnolen"
+                          class="url fn confluence-userlink" data-username="jnolen"
+                   >Jonathan Nolen</a> on Nov 23, 2009
+                                                                    </li>
+                    </ul>
+          <div id="version-comment" class="noteMacro" style="display: none;">
+      <strong>Comment:</strong>
+      <br />
+  </div>
+    </div>
+
+
+<a href="#page-metadata-start" class="assistive">Go to start of metadata</a>
+<div id="page-metadata-end" class="assistive"></div>
+        
+        <fieldset class="hidden parameters">
+                        <input type="hidden" title="browsePageTreeMode" value="view">
+            <input type="hidden" title="parentPageId" value="2261741">
+        </fieldset>
+
+        <div class="wiki-content">
+           <!-- wiki content -->
+            <p>Here are some screenshots from the v1 (old) version of CSUM. Archived here just so we wouldn't lose them.</p>
+
+<p>CSUM v1 is no longer supported.</p>
+
+    
+    
+    
+
+<div class="gallery">
+        <table>
+
+                        <tr>
+                                    <td class="gallery-image" style="width: 200px">
+                                    <a class="gallery-link"
+                       href="/wiki/download/attachments/2753047/custom-usermanagement-plugin-sample-usage.png"
+                       rel="gallery-0"
+                       target="_gallery_slideshow"
+                       title=""
+                    ><img border='0' src='/wiki/download/thumbnails/2753047/custom-usermanagement-plugin-sample-usage.png' width='200' height='103' ></a>
+                                </td>
+                                                <td class="gallery-image" style="width: 200px">
+                                    <a class="gallery-link"
+                       href="/wiki/download/attachments/2753047/custom-usermanagement-plugin-no-groups-available.png"
+                       rel="gallery-0"
+                       target="_gallery_slideshow"
+                       title=""
+                    ><img border='0' src='/wiki/download/thumbnails/2753047/custom-usermanagement-plugin-no-groups-available.png' width='200' height='44' ></a>
+                                </td>
+                                                <td class="gallery-image" style="width: 200px">
+                                    <a class="gallery-link"
+                       href="/wiki/download/attachments/2753047/config-custom-usermanagement.png"
+                       rel="gallery-0"
+                       target="_gallery_slideshow"
+                       title=""
+                    ><img border='0' src='/wiki/download/thumbnails/2753047/config-custom-usermanagement.png' width='200' height='151' ></a>
+                                </td>
+                                                <td class="gallery-image" style="width: 200px">
+                                    <a class="gallery-link"
+                       href="/wiki/download/attachments/2753047/custom-user-management.jpg"
+                       rel="gallery-0"
+                       target="_gallery_slideshow"
+                       title=""
+                    ><img border='0' src='/wiki/download/thumbnails/2753047/custom-user-management.jpg' width='200' height='75' ></a>
+                                </td>
+                                </tr>
+                    <tr>
+                                    <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                </tr>
+                        <tr>
+                                    <td class="gallery-image" style="width: 200px">
+                                    <a class="gallery-link"
+                       href="/wiki/download/attachments/2753047/custom-usermanagement-plugin-b4-configuration.png"
+                       rel="gallery-0"
+                       target="_gallery_slideshow"
+                       title=""
+                    ><img border='0' src='/wiki/download/thumbnails/2753047/custom-usermanagement-plugin-b4-configuration.png' width='200' height='43' ></a>
+                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                </tr>
+                    <tr>
+                                    <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                </tr>
+             </table>
+</div>
+
+
+
+
+    
+
+<div class="plugin_attachments_container">
+    <div class="plugin_attachments_table_container">
+        <fieldset class="hidden">
+            <input type="hidden" class="plugin_attachments_macro_render_param" name="pageId" value="2753047">
+            <input type="hidden" name="deleteConfirmMessage" value="Are you sure you want to remove the attached file {0}?"/>
+            <input type="hidden" name="i18n-notpermitted" value="You are not permitted to perform this operation.">
+                                                    <input type="hidden" name="outputType" value="display">
+        </fieldset>
+                    <fieldset class="hidden parameters">
+    <input type="hidden" id="removeAttachmentWarning" value="Are you sure you want to remove the attached file {0}?">
+</fieldset>
+
+<table class="tableview attachments">
+    <tr>
+                <th class="filename-column">            <a href="/wiki/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff?sortBy=name">Name</a>
+    </th>
+        <th>            <a href="/wiki/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff?sortBy=size">Size</a>
+    </th>
+        <th>Creator</th>
+        <th>            <a href="/wiki/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff?sortBy=createddate">Creation Date</a>
+    </th>
+        <th class="comment">Comment</th>
+                    <th>&nbsp;</th>
+            </tr>
+
+    
+    
+                
+        
+                <tr id="attachment-2656451">
+                                <td class="filename-column">
+                
+<span class="icon icon-file-image" title=PNG File>PNG File</span>                <a class="filename" href="/wiki/download/attachments/2753047/custom-usermanagement-plugin-sample-usage.png"
+                   title="custom-usermanagement-plugin-sample-usage.png"
+                   data-filename="custom-usermanagement-plugin-sample-usage.png">
+                    custom-usermanagement-plugin-sample...
+                </a>
+            </td>
+            <td>32 kB</td>
+            <td><a href="/wiki/display/~jnolen"
+                          class="url fn confluence-userlink" data-username="jnolen"
+                   >Jonathan Nolen</a></td>
+            <td>Nov 23, 2009 15:08</td>
+            <td class="comment">
+                                    &nbsp;
+                            </td>
+                        <td class="attachment-actions">
+                                                <ul>
+                                            <li class="first">
+    
+        
+    
+    <a  href="/wiki/pages/editattachment.action?pageId=2753047&amp;fileName=custom-usermanagement-plugin-sample-usage.png"  class="editAttachmentLink"   title="">
+                   <span>Properties</span></a>        </li>
+                                            <li class="">
+    
+        
+    
+    <a  href="/wiki/pages/removeattachment.action?pageId=2753047&amp;fileName=custom-usermanagement-plugin-sample-usage.png&amp;version=1"  class="removeAttachmentLink"   title="">
+                   <span>Remove</span></a>        </li>
+                                    </ul>
+                            </td>
+                    </tr>
+
+            
+                
+        
+                <tr id="attachment-2656450">
+                                <td class="filename-column">
+                
+<span class="icon icon-file-image" title=PNG File>PNG File</span>                <a class="filename" href="/wiki/download/attachments/2753047/custom-usermanagement-plugin-no-groups-available.png"
+                   title="custom-usermanagement-plugin-no-groups-available.png"
+                   data-filename="custom-usermanagement-plugin-no-groups-available.png">
+                    custom-usermanagement-plugin-no-gro...
+                </a>
+            </td>
+            <td>6 kB</td>
+            <td><a href="/wiki/display/~jnolen"
+                          class="url fn confluence-userlink" data-username="jnolen"
+                   >Jonathan Nolen</a></td>
+            <td>Nov 23, 2009 15:08</td>
+            <td class="comment">
+                                    &nbsp;
+                            </td>
+                        <td class="attachment-actions">
+                                                <ul>
+                                            <li class="first">
+    
+        
+    
+    <a  href="/wiki/pages/editattachment.action?pageId=2753047&amp;fileName=custom-usermanagement-plugin-no-groups-available.png"  class="editAttachmentLink"   title="">
+                   <span>Properties</span></a>        </li>
+                                            <li class="">
+    
+        
+    
+    <a  href="/wiki/pages/removeattachment.action?pageId=2753047&amp;fileName=custom-usermanagement-plugin-no-groups-available.png&amp;version=1"  class="removeAttachmentLink"   title="">
+                   <span>Remove</span></a>        </li>
+                                    </ul>
+                            </td>
+                    </tr>
+
+            
+                
+        
+                <tr id="attachment-2656449">
+                                <td class="filename-column">
+                
+<span class="icon icon-file-image" title=PNG File>PNG File</span>                <a class="filename" href="/wiki/download/attachments/2753047/config-custom-usermanagement.png"
+                   title="config-custom-usermanagement.png"
+                   data-filename="config-custom-usermanagement.png">
+                    config-custom-usermanagement.png
+                </a>
+            </td>
+            <td>20 kB</td>
+            <td><a href="/wiki/display/~jnolen"
+                          class="url fn confluence-userlink" data-username="jnolen"
+                   >Jonathan Nolen</a></td>
+            <td>Nov 23, 2009 15:08</td>
+            <td class="comment">
+                                    &nbsp;
+                            </td>
+                        <td class="attachment-actions">
+                                                <ul>
+                                            <li class="first">
+    
+        
+    
+    <a  href="/wiki/pages/editattachment.action?pageId=2753047&amp;fileName=config-custom-usermanagement.png"  class="editAttachmentLink"   title="">
+                   <span>Properties</span></a>        </li>
+                                            <li class="">
+    
+        
+    
+    <a  href="/wiki/pages/removeattachment.action?pageId=2753047&amp;fileName=config-custom-usermanagement.png&amp;version=1"  class="removeAttachmentLink"   title="">
+                   <span>Remove</span></a>        </li>
+                                    </ul>
+                            </td>
+                    </tr>
+
+            
+                
+        
+                <tr id="attachment-2656448">
+                                <td class="filename-column">
+                
+<span class="icon icon-file-image" title=JPEG File>JPEG File</span>                <a class="filename" href="/wiki/download/attachments/2753047/custom-user-management.jpg"
+                   title="custom-user-management.jpg"
+                   data-filename="custom-user-management.jpg">
+                    custom-user-management.jpg
+                </a>
+            </td>
+            <td>13 kB</td>
+            <td><a href="/wiki/display/~jnolen"
+                          class="url fn confluence-userlink" data-username="jnolen"
+                   >Jonathan Nolen</a></td>
+            <td>Nov 23, 2009 15:08</td>
+            <td class="comment">
+                                    &nbsp;
+                            </td>
+                        <td class="attachment-actions">
+                                                <ul>
+                                            <li class="first">
+    
+        
+    
+    <a  href="/wiki/pages/editattachment.action?pageId=2753047&amp;fileName=custom-user-management.jpg"  class="editAttachmentLink"   title="">
+                   <span>Properties</span></a>        </li>
+                                            <li class="">
+    
+        
+    
+    <a  href="/wiki/pages/removeattachment.action?pageId=2753047&amp;fileName=custom-user-management.jpg&amp;version=1"  class="removeAttachmentLink"   title="">
+                   <span>Remove</span></a>        </li>
+                                    </ul>
+                            </td>
+                    </tr>
+
+            
+                
+        
+                <tr id="attachment-2656447">
+                                <td class="filename-column">
+                
+<span class="icon icon-file-image" title=PNG File>PNG File</span>                <a class="filename" href="/wiki/download/attachments/2753047/custom-usermanagement-plugin-b4-configuration.png"
+                   title="custom-usermanagement-plugin-b4-configuration.png"
+                   data-filename="custom-usermanagement-plugin-b4-configuration.png">
+                    custom-usermanagement-plugin-b4-con...
+                </a>
+            </td>
+            <td>12 kB</td>
+            <td><a href="/wiki/display/~jnolen"
+                          class="url fn confluence-userlink" data-username="jnolen"
+                   >Jonathan Nolen</a></td>
+            <td>Nov 23, 2009 15:08</td>
+            <td class="comment">
+                                    &nbsp;
+                            </td>
+                        <td class="attachment-actions">
+                                                <ul>
+                                            <li class="first">
+    
+        
+    
+    <a  href="/wiki/pages/editattachment.action?pageId=2753047&amp;fileName=custom-usermanagement-plugin-b4-configuration.png"  class="editAttachmentLink"   title="">
+                   <span>Properties</span></a>        </li>
+                                            <li class="">
+    
+        
+    
+    <a  href="/wiki/pages/removeattachment.action?pageId=2753047&amp;fileName=custom-usermanagement-plugin-b4-configuration.png&amp;version=1"  class="removeAttachmentLink"   title="">
+                   <span>Remove</span></a>        </li>
+                                    </ul>
+                            </td>
+                    </tr>
+
+            
+                
+        
+                <tr id="attachment-2656446">
+                                <td class="filename-column">
+                
+<span class="icon icon-file-java" title=Java Source>Java Source</span>                <a class="filename" href="/wiki/download/attachments/2753047/delegateusermgmt-3.5.1-1.jar"
+                   title="delegateusermgmt-3.5.1-1.jar"
+                   data-filename="delegateusermgmt-3.5.1-1.jar">
+                    delegateusermgmt-3.5.1-1.jar
+                </a>
+            </td>
+            <td>14 kB</td>
+            <td><a href="/wiki/display/~jnolen"
+                          class="url fn confluence-userlink" data-username="jnolen"
+                   >Jonathan Nolen</a></td>
+            <td>Nov 23, 2009 15:08</td>
+            <td class="comment">
+                                    &nbsp;
+                            </td>
+                        <td class="attachment-actions">
+                                                <ul>
+                                            <li class="first">
+    
+        
+    
+    <a  href="/wiki/pages/editattachment.action?pageId=2753047&amp;fileName=delegateusermgmt-3.5.1-1.jar"  class="editAttachmentLink"   title="">
+                   <span>Properties</span></a>        </li>
+                                            <li class="">
+    
+        
+    
+    <a  href="/wiki/pages/removeattachment.action?pageId=2753047&amp;fileName=delegateusermgmt-3.5.1-1.jar&amp;version=1"  class="removeAttachmentLink"   title="">
+                   <span>Remove</span></a>        </li>
+                                    </ul>
+                            </td>
+                    </tr>
+
+            </table>
+            </div>
+
+    <div class="plugin_attachments_upload_container">
+            </div>
+</div>
+        </div>
+
+        <!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+         <rdf:Description
+    rdf:about="https://studio.plugins.atlassian.com/wiki/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff"
+    dc:identifier="https://studio.plugins.atlassian.com/wiki/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff"
+    dc:title="Custom Space User Management Plugin - Old v1 Stuff"
+    trackback:ping="https://studio.plugins.atlassian.com/wiki/rpc/trackback/2753047"/>
+</rdf:RDF>
+-->
+
+            
+    
+
+
+<fieldset class="hidden parameters">
+    <legend>Labels parameters</legend>
+    <input type="hidden" id="domainName" value="https://studio.plugins.atlassian.com/wiki">
+    <input type="hidden" id="pageId" value="2753047">
+    <input type="hidden" id="spaceKey" value="SUSR">
+</fieldset>
+
+<div id="labels-section" class="pageSection">
+    <div class="labels-editor">
+        <span id="labels-section-title" class="label-title">
+            <b>Labels:</b>
+        </span>
+        <div id="labels-section-content" class="content-column">
+            <span id="labels-section-title-none" class="label-title none ">
+                None
+            </span>
+
+            <div id="labelsList" class="label-list">
+                            </div>
+
+                            <a id="labels-edit" href="#" class="show-labels-editor editor-icon" title="Edit Labels">
+                    <span class="icon icon-edit">Edit Labels</span>
+                </a>
+                    </div>
+
+        <span class="errorMessage error" id="errorSpan"></span>
+        <form method="GET" action="" id="add-labels-form">
+            <div id="labelInputSpan" class="labels-input">
+                <div id="labelOperationErrorContainer" class="hidden">
+                    <span class="error"><span class="errorMessage" id="labelOperationErrorMessage"></span></span>
+                </div>
+
+                <div class="caption">Enter labels to add to this page:</div>
+                <div id="label-input-fields">
+                    <input autocomplete="off" id="labelsString" name="labelsString" value="" size="40">
+                    <input id="add-labels-editor-button" type="submit" class="add-labels" value="Add">
+                    <input id="close-labels-editor-button" type="submit" class="hide-labels-editor" value="Done">
+                </div>
+                <div id="waitImageAndStatus">
+                    <img class="waiting" alt="Please wait" src="/wiki/s/en/2172/2/_/images/icons/wait.gif">&nbsp;
+                    <span id="labelOperationStatus" class="smalltext"></span>
+                </div>
+                <div id="labelsAutocompleteList" class="aui-dd-parent"></div>
+                <div class="labels-tip">
+                    <div id="suggestedLabelsSpan"></div>
+                    Looking for a label? Just start typing.
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+            
+            
+
+
+
+
+            
+    
+
+        
+<fieldset class="parameters hidden">
+    <input type="hidden" id="deleteCommentConfirmMessage" value="Are you sure you want to remove the comment?">
+    <input type="hidden" id="collapseTooltip" value="Click to toggle the display of this comment.">
+        </fieldset>
+
+<fieldset class="hidden parameters i18n">
+        <input type="hidden" title="i18n.cancel.name" value="Cancel">
+</fieldset>
+
+
+
+
+
+
+<div id="comments-section" class="pageSection">
+    
+    
+    
+    
+                                        <a id="add-comment-bottom" href="/wiki/display/SUSR/Custom+Space+User+Management+Plugin+-+Old+v1+Stuff?showComments=true&amp;showCommentArea=true#addcomment">
+                    Add Comment
+                </a>
+                        </div>
+
+
+            
+</div>
+
+
+    
+
+
+
+    
+    
+
+    
+    
+    
+
+
+<script type="text/x-template" title="manage-watchers-dialog">
+<div class="dialog-content">
+    <div class="column page-watchers">
+        <h3>Watching this page</h3>
+        <p class="description">These people are notified when the page is changed. You can add or remove people from this list.</p>
+        <form action="/wiki/json/addwatch.action" method="POST">
+                <input type="hidden" name="atl_token" value="3364e15635ca061bb4fef70ac1be574c11b0f944">
+            <input type="hidden" name="pageId" value="2753047"/>
+            <input type="hidden" id="add-watcher-username" name="username" value=""/>
+            <label for="add-watcher-user">User</label>
+            <input id="add-watcher-user" name="userFullName" type="search" class="autocomplete-user"
+               value="" placeholder="Full name or username" autocomplete="off"
+               data-max="10" data-target="#add-watcher-username" data-dropdown-target="#add-watcher-dropdown"
+               data-template="{title}" data-none-message="No matching users found.">
+            <input id="add-watcher-submit" type="submit" name="add" value="Add">
+            <div id="add-watcher-dropdown" class="aui-dd-parent autocomplete"></div>
+            <div class="status hidden"></div>
+        </form>
+        <ul class="user-list">
+            <li class="loading">Loading&hellip;</li>
+            <li class="no-users hidden">No page watchers</li>
+        </ul>
+    </div>
+    <div class="column space-watchers">
+        <h3>Watching this space</h3>
+        <p class="description">These people are notified when any content in the space is changed. You cannot modify this list.</p>
+        <ul class="user-list">
+            <li class="loading">Loading&hellip;</li>
+            <li class="no-users hidden">No space watchers</li>
+        </ul>
+    </div>
+</div>
+</script>
+<script type="text/x-template" title="manage-watchers-user">
+    <li class="watch-user">
+        <img class="profile-picture confluence-userlink" src="{iconUrl}" data-username="{username}">
+        <a class="confluence-userlink" href="{url}" data-username="{username}">{fullName} <span class="username">({username})</span></a>
+        <span class="remove-watch" title="Remove"
+            data-username="{username}">Remove</span>
+    </li>
+</script>
+<script type="text/x-template" title="manage-watchers-help-link">
+    <div class="dialog-help-link">
+            <a href="http://docs.atlassian.com/confluence/docs-35/Managing+Watchers" target="_blank">Help</a>
+    </div>
+</script>
+    <br class="clear">
+</div>
+
+            <div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fwiki%2Fdisplay%2FSUSR%2FCustom%2BSpace%2BUser%2BManagement%2BPlugin%2B-%2BOld%2Bv1%2BStuff&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/wiki/s/en/2172/2/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/wiki/s/en/2172/2/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/wiki/s/en/2172/2/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+    
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</div>
+</body>
+</html>

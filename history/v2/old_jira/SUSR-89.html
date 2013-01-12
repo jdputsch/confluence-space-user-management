@@ -1,0 +1,1266 @@
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>[#SUSR-89] CSUM throwing errors in v2.9.2 logs - Atlassian Plugins JIRA Studio </title>
+
+    <meta content="general" name="decorator" />
+    <link rel="index" href="/secure/IssueNavigator.jspa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="A5G2-B7UC-JLK8-Z7KY|0f944782b1595d9a2a3c30eea200191fea8ffb9a|lout">
+
+
+    <link rel="shortcut icon" href="/s/en_US-31q2po/650/149/_/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/en_US-31q2po/650/149/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '';</script>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.css" media="all">
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar/jira.webresources:calendar.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:viewissue/jira.webresources:viewissue.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jira-fields/jira.webresources:jira-fields.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar-en/jira.webresources:calendar-en.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.4/_/download/batch/com.atlassian.jira.plugins.jira-github-connector-plugin:resources/com.atlassian.jira.plugins.jira-github-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-soy-plugin:soy-deps/com.atlassian.jira.jira-soy-plugin:soy-deps.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.js" ></script>
+
+    
+        <script type="text/javascript" src="/rest/api/1.0/shortcuts/650/2c704f3b1c272597f28d679bb85da011/shortcuts.js?context=issueaction&amp;context=issuenavigation"></script>
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="/osd.jsp" title="Atlassian Plugins JIRA Studio"/>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="jira" class="nl type-ab stalker sn">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/menu.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog.css">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog-ie.css">
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/userstatus.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_admin_styles/css/studioadmin.css">
+<link rel="stylesheet" type="text/css" href="/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.theme.jira:studio_jira_resources/css/studio-jira-theme-override.css">
+
+<div id="header" style="display:none">
+</div>
+<div class="studio-header" id="studio-header">
+
+	<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="studio-context-path" name="studio-context-path" content=""/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Space User Management Plugin </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                                                                                                                <li><a href="/browse/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/browse/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/browse/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/browse/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/browse/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/browse/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/browse/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/browse/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/browse/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/browse/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/browse/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/browse/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/browse/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/browse/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/browse/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/browse/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/browse/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/browse/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/browse/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/browse/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+	    <div id="studio-user-menu-container">
+        <a class="login-link" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-89">Log In</a>
+    </div>
+    
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li class="current"><a href="/browse/SUSR">Issues</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/wiki/display/SUSR">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SUSR">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SUSR">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SUSR">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+
+    <div id="header-bottom">
+
+        <div class="second-level-nav studio-menu">
+
+                            
+                
+<ul id="main-nav" class="menu-bar standard-menu-bar">
+                        <li class="aui-dd-parent lazy  ">
+                    <a class="lnk"
+                href="/secure/Dashboard.jspa"
+                 id="home_link"                 accessKey="h"                 title="View your current Dashboard"                >Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="home_link_drop"
+                    rel="home_link"
+                    accessKey="d"
+                    title="Access more options (Alt+d)"
+                                href="#"><span>Access more options (Alt+d)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent lazy  selected  ">
+                    <a class="lnk"
+                href="/secure/IssueNavigator.jspa"
+                 id="find_link"                 accessKey="f"                 title="View your current filter"                >Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="find_link_drop"
+                    rel="find_link"
+                    accessKey="i"
+                    title="Access more options (Alt+i)"
+                                href="#"><span>Access more options (Alt+i)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent nonlazy  ">
+                    <a class="lnk"
+                href="/secure/GreenHopper.jspa"
+                 id="greenhopper_menu"                                 title="Manage your project with GreenHopper"                >Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link"
+                                                                    id="greenhopper_menu_drop"
+                                    accessKey="g"
+                                    rel="greenhopper_menu"
+                                    title="Access more options (Alt+g)"
+                                                                href="#"><span>Access more options</span></a></span>
+                            <div class="aui-list hidden">
+                                                
+                            <ul id="greenhopper_menu_dropdown" class="aui-list-section aui-first   aui-last  ">
+                                                                    <li class="aui-list-item"><a
+                                         id="planningboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="taskboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/TaskBoard.jspa">Task Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="chartboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="releasedboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                            </ul>
+                                                    </div>
+                            </li>
+    </ul>
+
+                
+            
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+
+            
+            <a id="keyshortscuthelp" class="item-link hidden" title="Get more information about JIRA's Keyboard Shortcuts"
+               href="/secure/ViewKeyboardShortcuts!default.jspa">Keyboard Shortcuts</a>
+                            <a id="browse_link" class="hidden" href="/browse/SUSR">Selected Project</a>
+            
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-second-level -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="ajaxTimeout" value="The call to the JIRA server did not complete within the timeout period.  We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxUnauthorised" value="You are not authorised to perform this operation.  Please try to <a href='/login.jsp?os_destination=%2Fbrowse%2FSUSR-89'>log in</a> or <a href='/secure/Signup!default.jspa'>sign up</a> for an account.">
+    <input type="hidden" title="ajaxUnauthorisedAlert" value="You are not authorised to perform this operation.  Please log in.">
+    <input type="hidden" title="baseURL" value="https://studio.plugins.atlassian.com:443">
+    <input type="hidden" title="ajaxCommsError" value="The JIRA server could not be contacted.  This may be a temporary glitch or the server may be down.">
+    <input type="hidden" title="ajaxServerError" value="The JIRA server was contacted but has returned an error response. We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxErrorCloseDialog" value="Close this dialog and press refresh in your browser">
+    <input type="hidden" title="ajaxErrorDialogHeading" value="Communications Breakdown">
+
+    <input type="hidden" title="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.">
+    <input type="hidden" title="dirtyDialogMessage" value="You have entered new data in this dialog. If you navigate away from this dialog without first saving your data, the changes will be lost. Click cancel to return to the dialog.">
+    <input type="hidden" title="keyType" value="Type">
+    <input type="hidden" title="keyThen" value="then">
+    <input type="hidden" title="dblClickToExpand" value="Double click to expand">
+    <input type="hidden" title="actions" value="Actions">
+    <input type="hidden" title="removeItem" value="Remove">
+    <input type="hidden" title="workflow" value="Workflow">
+    <input type="hidden" title="labelNew" value="New Label">
+    <input type="hidden" title="enterIssueKey" value="Enter issue key">
+    <input type="hidden" title="issueActionsHint" value="Begin typing for available operations or press down to see all">
+    <input type="hidden" title="closelink" value="Close">
+    <input type="hidden" title="dotOperations" value="Operations">
+    <input type="hidden" title="dotLoading" value="Loading...">
+    <input type="hidden" title="frotherSuggestions" value="Suggestions">
+    <input type="hidden" title="frotherNomatches" value="No Matches">
+    <input type="hidden" title="multiselectVersionsError" value="{0} is not a valid version.">
+    <input type="hidden" title="multiselectComponentsError" value="{0} is not a valid component.">
+    <input type="hidden" title="multiselectGenericError" value="The value {0} is invalid.">
+</fieldset>
+
+
+
+
+<div class="alertHeader">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript" charset="utf-8">
+  (function(){
+    t = document.createElement('script');t.async=true;t.type ='text/javascript';
+    t.src = ('https:' == document.location.protocol ? 'https://secure.' : 'http://api.') + 'tellthemwhen.com/api/v2/notices/9ffb4ac1f71.js';
+    var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(t,s);
+  })();
+</script>
+
+<!-- <div id="TTWNotify" style="display:none"></div> -->
+
+<div style="text-align: center; border: #C00; background-color: #FF6600; line-height: 2em">studio.plugins.atlassian.com will be decommissioned in early 2013. If you are a project maintainer, please email <a href="mailto:developer-relations@atlassian.com">Atlassian Developer Relations</a> if you require assistance to migrate your project off this server.</div>
+</div>
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="viewMoreMsg" value="Click to view {0} more">
+    <input type="hidden" id="hideMsg" value="Hide" >
+    <input type="hidden" id="error-401" value="Cannot perform this operation. You are not logged in." >
+    <input type="hidden" id="issueOpTitleUnvote" value="Remove vote for this issue" >
+    <input type="hidden" id="issueOpTitleVote" value="Vote for this issue" >
+    <input type="hidden" id="issueOpTitleWatch" value="Start watching this issue" >
+    <input type="hidden" id="issueOpTitleUnwatch" value="Stop watching this issue" >
+    <input type="hidden" id="issueOpUnvote" value="Remove Vote" >
+    <input type="hidden" id="issueOpVote" value="Add Vote" >
+    <input type="hidden" id="issueOpWatch" value="Watch Issue" >
+    <input type="hidden" id="issueOpUnwatch" value="Stop Watching" >
+    <input type="hidden" id="i18nVote" value="Vote" >
+    <input type="hidden" id="i18nVoted" value="Voted" >
+    <input type="hidden" id="i18nWatch" value="Watch" >
+    <input type="hidden" id="i18nWatching" value="Watching" >
+</fieldset>
+
+<div id="stalker"  class="stalker">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image:url(/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large)">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" height="48" src="/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large" width="48" />
+        
+        <span>Confluence Space User Management Plugin</span>
+</h1>
+
+
+<ul class="breadcrumbs">
+    <li><a id="project-name-val" href="/browse/SUSR">Confluence Space User Management Plugin</a></li>
+    
+    <li><a id="key-val" rel="17305" href="/browse/SUSR-89">SUSR-89</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="/browse/SUSR-89">CSUM throwing errors in v2.9.2 logs</a></h2>
+
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                
+                    <ul id="opsbar-login" class="first ops">
+                        <li id="ops-login" class="last">
+                            <a id="ops-login-lnk" class="button first last" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-89">Log In</a>
+                        </li>
+                    </ul>
+                
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent">
+                                    <a href="#" title="View this issue in another format" class="drop lnk aui-dd-link standard icon-views"><span>Views</span></a>
+                                        <div class="aui-list hidden">
+                                        <ul class="aui-first aui-last aui-list-section">
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-xml/SUSR-89/SUSR-89.xml">XML</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-word/SUSR-89/SUSR-89.doc">Word</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-html/SUSR-89/SUSR-89.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+        </div>
+    </div>          
+
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+                
+                
+                
+
+                    <div id="details-module" class="module toggle-wrap">
+                        <div class="mod-header">
+                            <h3 class="toggle-title">Details</h3>
+                        </div>
+                        <div class="mod-content">
+                            <ul id="issuedetails" class="property-list two-cols">
+    <li class="item">
+        <div class="wrap">
+            <strong class="name">Type:</strong>
+            <span id="type-val" class="value">
+                                                        <img alt="Bug" height="16" src="/images/icons/bug.gif" title="Bug - A problem which impairs or prevents the functions of the product." width="16" />
+             Bug
+            </span>
+        </div>
+    </li>
+    <li class="item item-right">
+        <div class="wrap">
+            <strong class="name">Status:</strong>
+            <span id="status-val" class="value">
+                                                        <img alt="Open" height="16" src="/images/icons/status_open.gif" title="Open - The issue is open and ready for the assignee to start work on it." width="16" />
+             Open
+            </span>
+                    </div>
+    </li>
+            <li class="item">
+            <div class="wrap">
+                <strong class="name">Priority:</strong>
+                <span id="priority-val" class="value">
+                                                                <img alt="Major" height="16" src="/images/icons/priority_major.gif" title="Major - Major loss of function." width="16" />
+             Major
+                </span>
+            </div>
+        </li>
+                                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Resolution:</strong>
+                <span id="resolution-val" class="value unresolved" >
+                                    Unresolved
+                                </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Affects Version/s:</strong>
+                <span id="versions-val" class="value">
+                                            <span class="shorten" id="versions-field">
+                                                            <span title="2.0.2 LDAP fix - sets &#39;ldaputil.ldap.initialContextValidationLookupUser&#39; property for LDAP Util library 1.0.11">2.0.2</span>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Fix Version/s:</strong>
+                <span id="fixfor-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Component/s:</strong>
+                <span id="components-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                    <li class="item full-width">
+            <div class="wrap" id="wrap-labels">
+                <strong class="name">Labels:</strong>
+                    <div class="labels-wrap value">
+            <span class="labels" id="labels-17305-value">None</span>
+                </div>
+            </div>
+        </li>
+                <li class="item full-width">
+            <div class="wrap">
+                <strong class="name">Environment:</strong>
+                <div id="environment-val" class="value">
+                                  <div id="field-environment" class=" inverted-twixi-block collapsed ">
+            <div Class="twixi-wrap verbose">
+                <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+                <div class="flooded">
+                    System Information <br/>
+System Date Monday, 24 Nov 2008 <br/>
+System Time 18:16:24 <br/>
+System Favourite Colour Sangria <br/>
+Java Version 1.5.0 <br/>
+Java Vendor IBM Corporation <br/>
+JVM Version 1.0 <br/>
+JVM Vendor Sun Microsystems Inc. <br/>
+JVM Implementation Version 2.3 <br/>
+Java Runtime Java(TM) 2 Runtime Environment, Standard Edition <br/>
+Java VM IBM J9 VM <br/>
+User Name wiki <br/>
+User Timezone America/Phoenix <br/>
+Operating System AIX 5.3 <br/>
+OS Architecture ppc64 <br/>
+Filesystem Encoding ISO8859-1 <br/>
+<br/>
+<br/>
+Java VM Memory Statistics <br/>
+Total Memory 613 MB <br/>
+Free Memory 204 MB <br/>
+Used Memory 409 MB <br/>
+Memory Graph     <br/>
+&nbsp;&nbsp;&nbsp;33 % Free  <br/>
+&nbsp;<br/>
+<br/>
+<br/>
+Runtime Information <br/>
+Database Dialect net.sf.hibernate.dialect.Oracle9Dialect <br/>
+Database Connection URL jdbc:oracle:thin:@DBINFOREMOVED<br/>
+Database Driver Name oracle.jdbc.OracleDriver <br/>
+Database Driver Version 10.1 <br/>
+Database Connection Transaction Isolation Read committed <br/>
+Database name Oracle <br/>
+Database version Oracle Database 10g Enterprise Edition Release 10.2.0.3.0 - 64bit Production With the Partitioning, OLAP and Data Mining options <br/>
+Database Latency 1 ms  <br/>
+Application Server IBM WebSphere Application Server/6.1 <br/>
+Servlet Version 2.4 <br/>
+Server Base Url <a href="https://wiki.companydomain.com">https://wiki.companydomain.com</a><br/>
+Confluence Home /... <br/>
+Uptime 30 minutes, 33 seconds <br/>
+Confluence Version 2.9.2 <br/>
+Build Number 1419 <br/>
+<br/>
+
+                </div>
+            </div>
+            <div Class="twixi-wrap concise">
+                <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+                <div class="flooded">
+                                            System Information 
+System Date Monday, 24 Nov 2008 
+System Time 18:16:24 
+System Favourite Colour Sangria 
+Java Version 1.5.0 
+Java Vendor IBM Corporation 
+JVM Version 1.0 
+JVM Vendor Sun Microsystems Inc. 
+JVM Implementation Version 2.3 
+Java Runtime Java(TM) 2 Runtime Environment, Standard Edition 
+Java VM IBM J9 VM 
+User Name wiki 
+User Timezone America/Phoenix 
+Operating System AIX 5.3 
+OS Architecture ppc64 
+Filesystem Encoding ISO8859-1 
+
+
+Java VM Memory Statistics 
+Total Memory 613 MB 
+Free Memory 204 MB 
+Used Memory 409 MB 
+Memory Graph     
+&nbsp;&nbsp;&nbsp;33 % Free  
+&nbsp;
+
+
+Runtime Information 
+Database Dialect net.sf.hibernate.dialect.Oracle9Dialect 
+Database Connection URL jdbc:oracle:thin:@DBINFOREMOVED
+Database Driver Name oracle.jdbc.OracleDriver 
+Database Driver Version 10.1 
+Database Connection Transaction Isolation Read committed 
+Database name Oracle 
+Database version Oracle Database 10g Enterprise Edition Release 10.2.0.3.0 - 64bit Production With the Partitioning, OLAP and Data Mining options 
+Database Latency 1 ms  
+Application Server IBM WebSphere Application Server/6.1 
+Servlet Version 2.4 
+Server Base Url <a href="https://wiki.companydomain.com">https://wiki.companydomain.com</a>
+Confluence Home /... 
+Uptime 30 minutes, 33 seconds 
+Confluence Version 2.9.2 
+Build Number 1419 
+
+
+                                    </div>
+            </div>
+        </div>
+      
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+                            
+                                
+
+<div id="customfieldmodule">
+    
+
+    
+    
+    <ul id="tabCellPane1" class="property-list">
+        
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10061" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Complexity" class="name">Internal Complexity:</strong>
+                            <div id="customfield_10061-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10060" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Value" class="name">Internal Value:</strong>
+                            <div id="customfield_10060-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10082" class="item">
+                        <div class="wrap">
+                            <strong title="Rank" class="name">Rank:</strong>
+                            <div id="customfield_10082-val" class="value type-greenhopper-ranking">
+                                
+<div id="RankField_customfield_10082view">	<span id="RankValue_customfield_10082view">17</span>&nbsp;
+			<span id="RankPage_customfield_10082view" class="gh-rankpage gh-jira-rankpage"></span>
+</div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+    </ul>
+    
+</div>
+
+                            
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+<div id="descriptionmodule" class="module toggle-wrap">
+    <div class="mod-header">
+        <h3 class="toggle-title">Description</h3>
+    </div>
+    <div id="issue-description" class="mod-content">
+        <p>From CSP-25510:</p>
+
+<blockquote>
+<p>Our logs - 2008-11-23 06:47:18,526 ERROR <a href="https://studio.plugins.atlassian.com/wiki/display/WebContainer/15">WebContainer : 15</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SUSR/opensymphony.webwork.dispatcher.VelocityResult">opensymphony.webwork.dispatcher.VelocityResult</a> doExecute Unable to render Velocity Template, '/templates/permissionmgmt/display.vm'</p>
+<ul class="alternate" type="square">
+	<li>url: /customspacemgmt/permissions/custompermissionsmanage.action | userName: anonymous | action: custompermissionsmanage<br/>
+java.lang.RuntimeException: Error rendering template for decorator root</li>
+</ul>
+
+
+<p>Gurleen of Atlassian - This is from the unsupported, third-party Custom Space User Management Plugin. </p></blockquote>
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+
+
+
+
+
+
+                    
+                
+                
+                    <div class='module toggle-wrap' id='activitymodule'><div id='activitymodule_heading' class='mod-header'><h3 class='toggle-title'>Activity</h3></div><div class='mod-content'>    <div class="tabwrap tabs2">
+                    <div class="sortwrap">
+                                    <a class="icon icon-sort-down" rel="nofollow" href="/browse/SUSR-89?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                            </div>
+                <ul id="issue-tabs" class="tabs horizontal">
+                                    <li><a id="all-tabpanel" href="/browse/SUSR-89?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel#issue-tabs"><strong>All</strong></a></li>
+                                                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+                                                <li><a id="worklog-tabpanel" href="/browse/SUSR-89?page=com.atlassian.jira.plugin.system.issuetabpanels:worklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+                                                <li><a id="changehistory-tabpanel" href="/browse/SUSR-89?page=com.atlassian.jira.plugin.system.issuetabpanels:changehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+                                                <li><a id="activity-stream-issue-tab" href="/browse/SUSR-89?page=com.atlassian.streams.streams-jira-plugin:activity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+                            </ul>
+    </div>
+    <div class="issuePanelContainer" id="issue_actions_container">
+                        <div id="comment-21311" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-89?focusedCommentId=21311&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-21311" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21311_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_21311_verbose subText'><span class='date user-tz' title='25/Nov/08 8:50 AM'><time datetime='2008-11-25T08:50-0800'>25/Nov/08 8:50 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>It would appear from the error that velocity (maybe?) is failing, and CSUM uses the velocity packaged with Confluence. Why this would be the case, I don't know.</p>
+
+<p>Since I've never seen this error before, it would be great if you could turn on debug logging as indicated in the CSUM page and attach debug logs for the CSUM plugin to this ticket. The goal would be to have enough logging turned on to determine the error leading to the template rendering error (velocity most likely).</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21311_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_21311_concise subText'><span class='date user-tz' title='25/Nov/08 8:50 AM'><time datetime='2008-11-25T08:50-0800'>25/Nov/08 8:50 AM</time></span></span>               It would appear from the error that velocity (maybe?) is failing, and CSUM uses the velocity packaged with Confluence. Why this would be the case, I don't know.
+
+Since I've never seen this error before, it would be great if you could turn on debug logging as indicated in the CSUM page and attach debug logs for the CSUM plugin to this ticket. The goal would be to have enough logging turned on to determine the error leading to the template rendering error (velocity most likely).         </div>
+    </div>
+</div>
+                     <div id="comment-21313" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-89?focusedCommentId=21313&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-21313" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21313_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_21313_verbose subText'><span class='date user-tz' title='25/Nov/08 9:10 AM'><time datetime='2008-11-25T09:10-0800'>25/Nov/08 9:10 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>(as noted in CSUM page comments)</p>
+
+<p>One possibility is that it relates to a mixture of the theme used (for example <a href="http://confluence.atlassian.com/display/KB/CSP-18160+-+Error+when+accessing+Space%27s+Admin+console">CSP-18160</a> noted a theme issue with Confluence's Space Admin page), CSUM, and changes in some recent version of Confluence.</p>
+
+<p>Will look forward to seeing debug logs (and I may need you to do that a few times to get enough info, unless you want to turn on root debug logging, but that might give away more info than you care to post in a public facing ticket).</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21313_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_21313_concise subText'><span class='date user-tz' title='25/Nov/08 9:10 AM'><time datetime='2008-11-25T09:10-0800'>25/Nov/08 9:10 AM</time></span></span>               (as noted in CSUM page comments)
+
+One possibility is that it relates to a mixture of the theme used (for example <a href="http://confluence.atlassian.com/display/KB/CSP-18160+-+Error+when+accessing+Space%27s+Admin+console">CSP-18160</a> noted a theme issue with Confluence's Space Admin page), CSUM, and changes in some recent version of Confluence.
+
+Will look forward to seeing debug logs (and I may need you to do that a few times to get enough info, unless you want to turn on root debug logging, but that might give away more info than you care to post in a public facing ticket).         </div>
+    </div>
+</div>
+                     <div id="comment-21323" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-89?focusedCommentId=21323&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-21323" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21323_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_21323_verbose subText'><span class='date user-tz' title='25/Nov/08 12:16 PM'><time datetime='2008-11-25T12:16-0800'>25/Nov/08 12:16 PM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 25/Nov/08 12:17 PM">edited</span> </div>
+        <div class="action-body flooded"><p>Peter,</p>
+
+<p>Thanks! Got your logs offline. Here is the stuff you agreed was ok to share in the ticket.</p>
+
+<p>Some things I've noticed:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">confluence.log:2008-11-24 06:53:17,414 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/popularlabels-help.vm
+confluence.log:2008-11-24 06:53:17,423 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/labelledcontent-help.vm
+confluence.log:2008-11-24 06:53:17,430 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/relatedlabelsmacro-help.vm
+confluence.log:2008-11-24 06:53:17,439 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/recentlyusedlabels-help.vm
+confluence.log:2008-11-24 06:53:17,447 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/navmap-help.vm
+confluence.log:2008-11-24 06:53:17,455 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/listlabelsmacro-help.vm</pre>
+</div></div>
+<p>Those are not CSUM, those are confluence, so you might want to take those up with Atlassian.</p>
+
+<p>This one isn't ours either:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">confluence.log:2008-11-23 08:28:49,802 ERROR [WebContainer : 13] [renderer.v2.components.MacroRendererComponent] processMacro Unexpected error formatting macro: recently-updated</pre>
+</div></div>
+
+<p>Here is the issue as I see it:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">2008-11-23 06:47:06,437 WARN [WebContainer : 15] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:10,264 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:10,268 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:10,323 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:14,038 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:14,043 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:14,073 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:18,428 WARN [WebContainer : 15] [csum.confluence.permissionmgmt.CustomPermissionManagerAction] execute Space was <span class="code-keyword">null</span>
+2008-11-23 06:47:18,526 ERROR [WebContainer : 15] [opensymphony.webwork.dispatcher.VelocityResult] doExecute Unable to render Velocity Template, '/templates/permissionmgmt/display.vm'
+-- url: /customspacemgmt/permissions/custompermissionsmanage.action | userName: anonymous | action: custompermissionsmanage
+java.lang.RuntimeException: Error rendering template <span class="code-keyword">for</span> decorator root
+at com.atlassian.confluence.setup.velocity.ApplyDecoratorDirective.render(ApplyDecoratorDirective.java:232)
+at org.apache.velocity.runtime.parser.node.ASTDirective.render(ASTDirective.java:170)
+at org.apache.velocity.runtime.parser.node.SimpleNode.render(SimpleNode.java:318)
+at org.apache.velocity.Template.merge(Template.java:254)
+at com.opensymphony.webwork.dispatcher.VelocityResult.doExecute(VelocityResult.java:91)
+at com.atlassian.xwork.results.ProfiledVelocityResult.doExecute(ProfiledVelocityResult.java:21)
+at com.opensymphony.webwork.dispatcher.WebWorkResultSupport.execute(WebWorkResultSupport.java:116)
+at com.opensymphony.xwork.DefaultActionInvocation.executeResult(DefaultActionInvocation.java:263)
+at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:187)
+at com.opensymphony.xwork.interceptor.AroundInterceptor.intercept(AroundInterceptor.java:35)
+at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:165)
+at com.atlassian.confluence.util.LoggingContextInterceptor.intercept(LoggingContextInterceptor.java:48)
+at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:165)
+at com.atlassian.confluence.core.CancellingInterceptor.intercept(CancellingInterceptor.java:23)
+at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:165)
+at com.atlassian.confluence.security.actions.PermissionCheckInterceptor.intercept(PermissionCheckInterceptor.java:
+...
+Caused by: org.apache.velocity.exception.MethodInvocationException: Invocation of method 'getBreadcrumbs' in class com.atlassian.confluence.themes.GlobalHelper threw exception java.lang.NullPointerException @ /breadcrumbs.vm[6,34]
+at org.apache.velocity.runtime.parser.node.ASTIdentifier.execute(ASTIdentifier.java:205)
+at org.apache.velocity.runtime.parser.node.ASTReference.execute(ASTReference.java:203)
+...</pre>
+</div></div>
+
+<p>Some ideas:</p>
+
+<p>1) anonymous sounds like it is not a space admin. The user must be a space admin to use CSUM. I don't think that it should spit out that error, but in earlier versions of Confluence non-space-managers could not see the space admin area, so if that is a new ability, please let me know. If it is something you've customized, then I don't know what we should do to help fix it in a generic way. I'm probably way off-base with that one though, right?</p>
+
+<p>2) It really looks like it can't find the theme it is configured to use, and that is what is causing the error. My guess is that you replicated the DB and setup a new version of confluence and pointed it at that DB, but you didn't install all of the plugins/set it up yet. Am I way off base with that also? I would bet I'm 0 for 2 right now.</p>
+
+<p>3) The breadcrumbs thing looks like the issue I pointed out in the ticket and in the comments that affects space admin in general (not just CSUM). Can you get into space admin? Even if you can, could you take a look at this page and see if it makes any sense?: <a href="http://confluence.atlassian.com/display/KB/CSP-18160+-+Error+when+accessing+Space%27s+Admin+console">http://confluence.atlassian.com/display/KB/CSP-18160+-+Error+when+accessing+Space%27s+Admin+console</a><br/>
+I have a feeling that the issue you are having may be related to that issue. If it requires us to change the CSUM plugin, I'd be very surprised, but I'd do it. My guess is that Atlassian inadvertantly (in an attempt to get through this support issue quickly) did not fully assist you at getting to the root of this issue, which I think is likely a combination of themebuilder + theme you are using + changes in confluence somewhere around 2.8.</p>
+
+<p>Best of luck and as always (or has been thus far since CSUM inception), we are here to help.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21323_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_21323_concise subText'><span class='date user-tz' title='25/Nov/08 12:16 PM'><time datetime='2008-11-25T12:16-0800'>25/Nov/08 12:16 PM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 25/Nov/08 12:17 PM">edited</span>              Peter,
+
+Thanks! Got your logs offline. Here is the stuff you agreed was ok to share in the ticket.
+
+Some things I've noticed:
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">confluence.log:2008-11-24 06:53:17,414 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/popularlabels-help.vm
+confluence.log:2008-11-24 06:53:17,423 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/labelledcontent-help.vm
+confluence.log:2008-11-24 06:53:17,430 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/relatedlabelsmacro-help.vm
+confluence.log:2008-11-24 06:53:17,439 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/recentlyusedlabels-help.vm
+confluence.log:2008-11-24 06:53:17,447 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/navmap-help.vm
+confluence.log:2008-11-24 06:53:17,455 ERROR [WebContainer : 10] [confluence.util.velocity.VelocityUtils] getRenderedTemplate Error occurred rendering template: templates/macros/listlabelsmacro-help.vm</pre>
+</div></div>
+Those are not CSUM, those are confluence, so you might want to take those up with Atlassian.
+
+This one isn't ours either:
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">confluence.log:2008-11-23 08:28:49,802 ERROR [WebContainer : 13] [renderer.v2.components.MacroRendererComponent] processMacro Unexpected error formatting macro: recently-updated</pre>
+</div></div>
+
+Here is the issue as I see it:
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">2008-11-23 06:47:06,437 WARN [WebContainer : 15] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:10,264 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:10,268 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:10,323 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:14,038 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:14,043 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:14,073 WARN [WebContainer : 14] [atlassian.confluence.themes.DefaultThemeManager] extractTheme Unable to find configured theme module: com.adaptavist.confluence.themes.sitebuilder:sitebuilder
+2008-11-23 06:47:18,428 WARN [WebContainer : 15] [csum.confluence.permissionmgmt.CustomPermissionManagerAction] execute Space was <span class="code-keyword">null</span>
+2008-11-23 06:47:18,526 ERROR [WebContainer : 15] [opensymphony.webwork.dispatcher.VelocityResult] doExecute Unable to render Velocity Template, '/templates/permissionmgmt/display.vm'
+-- url: /customspacemgmt/permissions/custompermissionsmanage.action | userName: anonymous | action: custompermissionsmanage
+java.lang.RuntimeException: Error rendering template <span class="code-keyword">for</span> decorator root
+at com.atlassian.confluence.setup.velocity.ApplyDecoratorDirective.render(ApplyDecoratorDirective.java:232)
+at org.apache.velocity.runtime.parser.node.ASTDirective.render(ASTDirective.java:170)
+at org.apache.velocity.runtime.parser.node.SimpleNode.render(SimpleNode.java:318)
+at org.apache.velocity.Template.merge(Template.java:254)
+at com.opensymphony.webwork.dispatcher.VelocityResult.doExecute(VelocityResult.java:91)
+at com.atlassian.xwork.results.ProfiledVelocityResult.doExecute(ProfiledVelocityResult.java:21)
+at com.opensymphony.webwork.dispatcher.WebWorkResultSupport.execute(WebWorkResultSupport.java:116)
+at com.opensymphony.xwork.DefaultActionInvocation.executeResult(DefaultActionInvocation.java:263)
+at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:187)
+at com.opensymphony.xwork.interceptor.AroundInterceptor.intercept(AroundInterceptor.java:35)
+at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:165)
+at com.atlassian.confluence.util.LoggingContextInterceptor.intercept(LoggingContextInterceptor.java:48)
+at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:165)
+at com.atlassian.confluence.core.CancellingInterceptor.intercept(CancellingInterceptor.java:23)
+at com.opensymphony.xwork.DefaultActionInvocation.invoke(DefaultActionInvocation.java:165)
+at com.atlassian.confluence.security.actions.PermissionCheckInterceptor.intercept(PermissionCheckInterceptor.java:
+...
+Caused by: org.apache.velocity.exception.MethodInvocationException: Invocation of method 'getBreadcrumbs' in class com.atlassian.confluence.themes.GlobalHelper threw exception java.lang.NullPointerException @ /breadcrumbs.vm[6,34]
+at org.apache.velocity.runtime.parser.node.ASTIdentifier.execute(ASTIdentifier.java:205)
+at org.apache.velocity.runtime.parser.node.ASTReference.execute(ASTReference.java:203)
+...</pre>
+</div></div>
+
+Some ideas:
+
+1) anonymous sounds like it is not a space admin. The user must be a space admin to use CSUM. I don't think that it should spit out that error, but in earlier versions of Confluence non-space-managers could not see the space admin area, so if that is a new ability, please let me know. If it is something you've customized, then I don't know what we should do to help fix it in a generic way. I'm probably way off-base with that one though, right?
+
+2) It really looks like it can't find the theme it is configured to use, and that is what is causing the error. My guess is that you replicated the DB and setup a new version of confluence and pointed it at that DB, but you didn't install all of the plugins/set it up yet. Am I way off base with that also? I would bet I'm 0 for 2 right now.
+
+3) The breadcrumbs thing looks like the issue I pointed out in the ticket and in the comments that affects space admin in general (not just CSUM). Can you get into space admin? Even if you can, could you take a look at this page and see if it makes any sense?: <a href="http://confluence.atlassian.com/display/KB/CSP-18160+-+Error+when+accessing+Space%27s+Admin+console">http://confluence.atlassian.com/display/KB/CSP-18160+-+Error+when+accessing+Space%27s+Admin+console</a>
+I have a feeling that the issue you are having may be related to that issue. If it requires us to change the CSUM plugin, I'd be very surprised, but I'd do it. My guess is that Atlassian inadvertantly (in an attempt to get through this support issue quickly) did not fully assist you at getting to the root of this issue, which I think is likely a combination of themebuilder + theme you are using + changes in confluence somewhere around 2.8.
+
+Best of luck and as always (or has been thus far since CSUM inception), we are here to help.
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-21325" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-89?focusedCommentId=21325&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-21325" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21325_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_21325_verbose subText'><span class='date user-tz' title='25/Nov/08 1:37 PM'><time datetime='2008-11-25T13:37-0800'>25/Nov/08 1:37 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>I have 2.9.2 in production, CSUM causes no issues with default theme for me.  Theme details would appear to be key, who wrote the theme?</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21325_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_21325_concise subText'><span class='date user-tz' title='25/Nov/08 1:37 PM'><time datetime='2008-11-25T13:37-0800'>25/Nov/08 1:37 PM</time></span></span>               I have 2.9.2 in production, CSUM causes no issues with default theme for me.  Theme details would appear to be key, who wrote the theme?         </div>
+    </div>
+</div>
+                     <div id="comment-21331" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-89?focusedCommentId=21331&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-21331" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="peter.raymond" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21331_verbose" href="/secure/ViewProfile.jspa?name=peter.raymond">Peter Raymond</a>
+ added a comment  - <span class='commentdate_21331_verbose subText'><span class='date user-tz' title='25/Nov/08 3:44 PM'><time datetime='2008-11-25T15:44-0800'>25/Nov/08 3:44 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Andy - We had Adaptavist Theme Builder v3.2 but we removed it. We're starting to think, as is Adaptavist, that Builder didn't properly remove itself entirely.</p>
+
+<p>Gary - your numbered notes at the bottom (the ones above that aren't yours I'll pursue in the Atlassian case where this turned up):</p>
+
+<p>1 - Anonymous is not a space admin, no. It's, as you might guess, a non-logged in user. I looked at the themes and the CSUM doesn't show unless you have the rights to use it. What I'm thinking, maybe someone has it bookmarked and is trying to go straight to it without logging in first? That would explain how this could happen, eh?</p>
+
+<p>2 - 0 for 2 but I appreciate the effort! As mentioned to Andy, I think it's the removal of Builder and the traces it left behind that's causing this issue, the more I look at it.</p>
+
+<p>3 - I wouldn't be surprised at your analysis. </p>
+ </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="peter.raymond" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21331_concise" href="/secure/ViewProfile.jspa?name=peter.raymond">Peter Raymond</a>
+ added a comment  - <span class='commentdate_21331_concise subText'><span class='date user-tz' title='25/Nov/08 3:44 PM'><time datetime='2008-11-25T15:44-0800'>25/Nov/08 3:44 PM</time></span></span>               Andy - We had Adaptavist Theme Builder v3.2 but we removed it. We're starting to think, as is Adaptavist, that Builder didn't properly remove itself entirely.
+
+Gary - your numbered notes at the bottom (the ones above that aren't yours I'll pursue in the Atlassian case where this turned up):
+
+1 - Anonymous is not a space admin, no. It's, as you might guess, a non-logged in user. I looked at the themes and the CSUM doesn't show unless you have the rights to use it. What I'm thinking, maybe someone has it bookmarked and is trying to go straight to it without logging in first? That would explain how this could happen, eh?
+
+2 - 0 for 2 but I appreciate the effort! As mentioned to Andy, I think it's the removal of Builder and the traces it left behind that's causing this issue, the more I look at it.
+
+3 - I wouldn't be surprised at your analysis. 
+         </div>
+    </div>
+</div>
+                     <div id="comment-21332" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-89?focusedCommentId=21332&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-21332" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="peter.raymond" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21332_verbose" href="/secure/ViewProfile.jspa?name=peter.raymond">Peter Raymond</a>
+ added a comment  - <span class='commentdate_21332_verbose subText'><span class='date user-tz' title='25/Nov/08 4:06 PM'><time datetime='2008-11-25T16:06-0800'>25/Nov/08 4:06 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>After brief consultation with Adaptavist and Atlassian, we're putting Builder back in to see if the errors resolve themselves. I'll report back in a few days - Thanksgiving will delay things a little. Thank you!</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="peter.raymond" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21332_concise" href="/secure/ViewProfile.jspa?name=peter.raymond">Peter Raymond</a>
+ added a comment  - <span class='commentdate_21332_concise subText'><span class='date user-tz' title='25/Nov/08 4:06 PM'><time datetime='2008-11-25T16:06-0800'>25/Nov/08 4:06 PM</time></span></span>               After brief consultation with Adaptavist and Atlassian, we're putting Builder back in to see if the errors resolve themselves. I'll report back in a few days - Thanksgiving will delay things a little. Thank you!         </div>
+    </div>
+</div>
+                 </div>
+</div></div>
+                
+
+            </div>
+        </div>
+
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                    <div class='module toggle-wrap' id='peoplemodule'><div id='peoplemodule_heading' class='mod-header'><h3 class='toggle-title'>People</h3></div><div class='mod-content'><ul class="item-details" id="peopledetails">
+    <li class="people-details">
+                <dl>
+            <dt>Assignee:</dt>
+            <dd id="assignee-val">
+                        <a class="user-hover" rel="rakadam" id="issue_summary_assignee_rakadam" href="/secure/ViewProfile.jspa?name=rakadam">Rajendra Kadam</a>
+            </dd>
+        </dl>
+                        <dl>
+            <dt>Reporter:</dt>
+            <dd id="reporter-val">
+                        <a class="user-hover" rel="peter.raymond" id="issue_summary_reporter_peter.raymond" href="/secure/ViewProfile.jspa?name=peter.raymond">Peter Raymond</a>
+            </dd>
+        </dl>
+                    </li>
+</ul>
+<div id="votes-val">
+                <span id="vote-label" title="You have to be logged in to vote for an issue."><span class="icon icon-vote-disabled"></span><span class="action-text">Vote</span></span>
+    
+                (<span id="vote-data">0</span>)
+    </div>
+<div id="watchers-val">
+            <span id="watch-label" title="You have to be logged in to watch an issue."><span class="icon icon-watch-disabled"></span>Watch</span>
+    
+        
+            (<span id="watcher-data">1</span>)
+    </div>
+</div></div><div class='module toggle-wrap' id='datesmodule'><div id='datesmodule_heading' class='mod-header'><h3 class='toggle-title'>Dates</h3></div><div class='mod-content'><ul class="item-details">
+    <li>
+            <dl class="dates">
+            <dt>Created:</dt>
+            <dd id="create-date" class="date user-tz"  title="24/Nov/08 7:18 PM" >
+                        <time datetime="2008-11-24T19:18-0800">24/Nov/08 7:18 PM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Updated:</dt>
+            <dd id="updated-date" class="date user-tz"  title="25/Nov/08 4:06 PM" >
+                        <time datetime="2008-11-25T16:06-0800">25/Nov/08 4:06 PM</time></dd>                     </dd>
+        </dl>
+        </li>
+</ul>
+</div></div>
+                
+
+            </div>
+        </div>
+        
+            
+                
+            
+        
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fbrowse%2FSUSR-89&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+            <script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/safe-ajax.js"></script>
+    
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+            document.cookie = "studio.project.rec.used.cookie=" + escape("SUSR-_-") + "; Max-Age=31536000; path=/;";
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<form id="jira_request_timing_info" class="dont-default-focus" >
+	<fieldset class="parameters hidden">
+		<input type="hidden" title="jira.request.start.millis" value="1358008672197" />
+		<input type="hidden" title="jira.request.server.time" value="869" />
+		<input type="hidden" title="jira.request.id" value="517x6601042x1" />
+		<input type="hidden" title="jira.session.expiry.time" value="-" />
+		<input type="hidden" title="jira.session.expiry.in.mins" value="-" />
+		<input id="jiraConcurrentRequests" type="hidden" name="jira.request.concurrent.requests" value="1" />
+	</fieldset>
+</form>
+<!--
+	                 REQUEST ID : 517x6601042x1
+	          REQUEST TIMESTAMP : [12/Jan/2013:08:37:52 -0800]
+	               REQUEST TIME : 0.8690
+	                 ASESSIONID : 1dah0dl
+	        CONCURRENT REQUESTS : 1
+-->
+</body>
+</html>

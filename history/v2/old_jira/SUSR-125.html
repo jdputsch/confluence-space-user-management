@@ -1,0 +1,1230 @@
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>[#SUSR-125] Ability to export groups &amp; group permissions along with space export - Atlassian Plugins JIRA Studio </title>
+
+    <meta content="general" name="decorator" />
+    <link rel="index" href="/secure/IssueNavigator.jspa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="A5G2-B7UC-JLK8-Z7KY|1d7f92d44811fbb33ebc426b23d464d8d58c0652|lout">
+
+
+    <link rel="shortcut icon" href="/s/en_US-31q2po/650/149/_/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/en_US-31q2po/650/149/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '';</script>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.css" media="all">
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar/jira.webresources:calendar.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:viewissue/jira.webresources:viewissue.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jira-fields/jira.webresources:jira-fields.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar-en/jira.webresources:calendar-en.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.4/_/download/batch/com.atlassian.jira.plugins.jira-github-connector-plugin:resources/com.atlassian.jira.plugins.jira-github-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-soy-plugin:soy-deps/com.atlassian.jira.jira-soy-plugin:soy-deps.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.js" ></script>
+
+    
+        <script type="text/javascript" src="/rest/api/1.0/shortcuts/650/2c704f3b1c272597f28d679bb85da011/shortcuts.js?context=issueaction&amp;context=issuenavigation"></script>
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="/osd.jsp" title="Atlassian Plugins JIRA Studio"/>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="jira" class="nl type-ab stalker sn">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/menu.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog.css">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog-ie.css">
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/userstatus.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_admin_styles/css/studioadmin.css">
+<link rel="stylesheet" type="text/css" href="/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.theme.jira:studio_jira_resources/css/studio-jira-theme-override.css">
+
+<div id="header" style="display:none">
+</div>
+<div class="studio-header" id="studio-header">
+
+	<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="studio-context-path" name="studio-context-path" content=""/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Space User Management Plugin </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                                                                                                                <li><a href="/browse/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/browse/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/browse/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/browse/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/browse/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/browse/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/browse/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/browse/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/browse/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/browse/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/browse/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/browse/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/browse/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/browse/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/browse/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/browse/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/browse/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/browse/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/browse/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/browse/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+	    <div id="studio-user-menu-container">
+        <a class="login-link" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-125">Log In</a>
+    </div>
+    
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li class="current"><a href="/browse/SUSR">Issues</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/wiki/display/SUSR">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SUSR">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SUSR">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SUSR">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+
+    <div id="header-bottom">
+
+        <div class="second-level-nav studio-menu">
+
+                            
+                
+<ul id="main-nav" class="menu-bar standard-menu-bar">
+                        <li class="aui-dd-parent lazy  ">
+                    <a class="lnk"
+                href="/secure/Dashboard.jspa"
+                 id="home_link"                 accessKey="h"                 title="View your current Dashboard"                >Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="home_link_drop"
+                    rel="home_link"
+                    accessKey="d"
+                    title="Access more options (Alt+d)"
+                                href="#"><span>Access more options (Alt+d)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent lazy  selected  ">
+                    <a class="lnk"
+                href="/secure/IssueNavigator.jspa"
+                 id="find_link"                 accessKey="f"                 title="View your current filter"                >Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="find_link_drop"
+                    rel="find_link"
+                    accessKey="i"
+                    title="Access more options (Alt+i)"
+                                href="#"><span>Access more options (Alt+i)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent nonlazy  ">
+                    <a class="lnk"
+                href="/secure/GreenHopper.jspa"
+                 id="greenhopper_menu"                                 title="Manage your project with GreenHopper"                >Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link"
+                                                                    id="greenhopper_menu_drop"
+                                    accessKey="g"
+                                    rel="greenhopper_menu"
+                                    title="Access more options (Alt+g)"
+                                                                href="#"><span>Access more options</span></a></span>
+                            <div class="aui-list hidden">
+                                                
+                            <ul id="greenhopper_menu_dropdown" class="aui-list-section aui-first   aui-last  ">
+                                                                    <li class="aui-list-item"><a
+                                         id="planningboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="taskboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/TaskBoard.jspa">Task Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="chartboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="releasedboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                            </ul>
+                                                    </div>
+                            </li>
+    </ul>
+
+                
+            
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+
+            
+            <a id="keyshortscuthelp" class="item-link hidden" title="Get more information about JIRA's Keyboard Shortcuts"
+               href="/secure/ViewKeyboardShortcuts!default.jspa">Keyboard Shortcuts</a>
+                            <a id="browse_link" class="hidden" href="/browse/SUSR">Selected Project</a>
+            
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-second-level -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="ajaxTimeout" value="The call to the JIRA server did not complete within the timeout period.  We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxUnauthorised" value="You are not authorised to perform this operation.  Please try to <a href='/login.jsp?os_destination=%2Fbrowse%2FSUSR-125'>log in</a> or <a href='/secure/Signup!default.jspa'>sign up</a> for an account.">
+    <input type="hidden" title="ajaxUnauthorisedAlert" value="You are not authorised to perform this operation.  Please log in.">
+    <input type="hidden" title="baseURL" value="https://studio.plugins.atlassian.com:443">
+    <input type="hidden" title="ajaxCommsError" value="The JIRA server could not be contacted.  This may be a temporary glitch or the server may be down.">
+    <input type="hidden" title="ajaxServerError" value="The JIRA server was contacted but has returned an error response. We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxErrorCloseDialog" value="Close this dialog and press refresh in your browser">
+    <input type="hidden" title="ajaxErrorDialogHeading" value="Communications Breakdown">
+
+    <input type="hidden" title="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.">
+    <input type="hidden" title="dirtyDialogMessage" value="You have entered new data in this dialog. If you navigate away from this dialog without first saving your data, the changes will be lost. Click cancel to return to the dialog.">
+    <input type="hidden" title="keyType" value="Type">
+    <input type="hidden" title="keyThen" value="then">
+    <input type="hidden" title="dblClickToExpand" value="Double click to expand">
+    <input type="hidden" title="actions" value="Actions">
+    <input type="hidden" title="removeItem" value="Remove">
+    <input type="hidden" title="workflow" value="Workflow">
+    <input type="hidden" title="labelNew" value="New Label">
+    <input type="hidden" title="enterIssueKey" value="Enter issue key">
+    <input type="hidden" title="issueActionsHint" value="Begin typing for available operations or press down to see all">
+    <input type="hidden" title="closelink" value="Close">
+    <input type="hidden" title="dotOperations" value="Operations">
+    <input type="hidden" title="dotLoading" value="Loading...">
+    <input type="hidden" title="frotherSuggestions" value="Suggestions">
+    <input type="hidden" title="frotherNomatches" value="No Matches">
+    <input type="hidden" title="multiselectVersionsError" value="{0} is not a valid version.">
+    <input type="hidden" title="multiselectComponentsError" value="{0} is not a valid component.">
+    <input type="hidden" title="multiselectGenericError" value="The value {0} is invalid.">
+</fieldset>
+
+
+
+
+<div class="alertHeader">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript" charset="utf-8">
+  (function(){
+    t = document.createElement('script');t.async=true;t.type ='text/javascript';
+    t.src = ('https:' == document.location.protocol ? 'https://secure.' : 'http://api.') + 'tellthemwhen.com/api/v2/notices/9ffb4ac1f71.js';
+    var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(t,s);
+  })();
+</script>
+
+<!-- <div id="TTWNotify" style="display:none"></div> -->
+
+<div style="text-align: center; border: #C00; background-color: #FF6600; line-height: 2em">studio.plugins.atlassian.com will be decommissioned in early 2013. If you are a project maintainer, please email <a href="mailto:developer-relations@atlassian.com">Atlassian Developer Relations</a> if you require assistance to migrate your project off this server.</div>
+</div>
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="viewMoreMsg" value="Click to view {0} more">
+    <input type="hidden" id="hideMsg" value="Hide" >
+    <input type="hidden" id="error-401" value="Cannot perform this operation. You are not logged in." >
+    <input type="hidden" id="issueOpTitleUnvote" value="Remove vote for this issue" >
+    <input type="hidden" id="issueOpTitleVote" value="Vote for this issue" >
+    <input type="hidden" id="issueOpTitleWatch" value="Start watching this issue" >
+    <input type="hidden" id="issueOpTitleUnwatch" value="Stop watching this issue" >
+    <input type="hidden" id="issueOpUnvote" value="Remove Vote" >
+    <input type="hidden" id="issueOpVote" value="Add Vote" >
+    <input type="hidden" id="issueOpWatch" value="Watch Issue" >
+    <input type="hidden" id="issueOpUnwatch" value="Stop Watching" >
+    <input type="hidden" id="i18nVote" value="Vote" >
+    <input type="hidden" id="i18nVoted" value="Voted" >
+    <input type="hidden" id="i18nWatch" value="Watch" >
+    <input type="hidden" id="i18nWatching" value="Watching" >
+</fieldset>
+
+<div id="stalker"  class="stalker">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image:url(/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large)">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" height="48" src="/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large" width="48" />
+        
+        <span>Confluence Space User Management Plugin</span>
+</h1>
+
+
+<ul class="breadcrumbs">
+    <li><a id="project-name-val" href="/browse/SUSR">Confluence Space User Management Plugin</a></li>
+    
+    <li><a id="key-val" rel="25249" href="/browse/SUSR-125">SUSR-125</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="/browse/SUSR-125">Ability to export groups &amp; group permissions along with space export</a></h2>
+
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                
+                    <ul id="opsbar-login" class="first ops">
+                        <li id="ops-login" class="last">
+                            <a id="ops-login-lnk" class="button first last" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-125">Log In</a>
+                        </li>
+                    </ul>
+                
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent">
+                                    <a href="#" title="View this issue in another format" class="drop lnk aui-dd-link standard icon-views"><span>Views</span></a>
+                                        <div class="aui-list hidden">
+                                        <ul class="aui-first aui-last aui-list-section">
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-xml/SUSR-125/SUSR-125.xml">XML</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-word/SUSR-125/SUSR-125.doc">Word</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-html/SUSR-125/SUSR-125.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+        </div>
+    </div>          
+
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+                
+                
+                
+
+                    <div id="details-module" class="module toggle-wrap">
+                        <div class="mod-header">
+                            <h3 class="toggle-title">Details</h3>
+                        </div>
+                        <div class="mod-content">
+                            <ul id="issuedetails" class="property-list two-cols">
+    <li class="item">
+        <div class="wrap">
+            <strong class="name">Type:</strong>
+            <span id="type-val" class="value">
+                                                        <img alt="Improvement" height="16" src="/images/icons/improvement.gif" title="Improvement - An improvement or enhancement to an existing feature or task." width="16" />
+             Improvement
+            </span>
+        </div>
+    </li>
+    <li class="item item-right">
+        <div class="wrap">
+            <strong class="name">Status:</strong>
+            <span id="status-val" class="value">
+                                                        <img alt="Reopened" height="16" src="/images/icons/status_reopened.gif" title="Reopened - This issue was once resolved, but the resolution was deemed incorrect. From here issues are either marked assigned or resolved." width="16" />
+             Reopened
+            </span>
+                    </div>
+    </li>
+            <li class="item">
+            <div class="wrap">
+                <strong class="name">Priority:</strong>
+                <span id="priority-val" class="value">
+                                                                <img alt="Major" height="16" src="/images/icons/priority_major.gif" title="Major - Major loss of function." width="16" />
+             Major
+                </span>
+            </div>
+        </li>
+                                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Resolution:</strong>
+                <span id="resolution-val" class="value unresolved" >
+                                    Unresolved
+                                </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Affects Version/s:</strong>
+                <span id="versions-val" class="value">
+                                            <span class="shorten" id="versions-field">
+                                                            <span title="2.0.6 SUSR-117 &amp; SUSR-120 - checking read-only before group and membership actions. Not listing groups that are read-only unless using Jira integration (in which case all groups are read-only). SUSR-118 - Adding more logging around LDAP user creation. SUSR-115 - Fixing support for ampersand in names. SUSR-108 - Was url encoding values passed in form that apparently are already encoded. Should only have to url encode things put directly into url. SUSR-107 - Implemented configurable paging. SUSR-103 - Updated pom.xml to more up-to-date confluence and repo. SUSR-102 - Jira user management should not add or remove from jira-users group per Wells Fargo.">2.0.6</span>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Fix Version/s:</strong>
+                <span id="fixfor-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Component/s:</strong>
+                <span id="components-val" class="value">
+                                            <span class="shorten" id="components-field">
+                                                            <a href="/browse/SUSR/component/10362" title="Confluence User and Group Management User and group management issues/suggestions for those using the plugin to manage users/groups in Confluence">Confluence User and Group Management</a>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                    <li class="item full-width">
+            <div class="wrap" id="wrap-labels">
+                <strong class="name">Labels:</strong>
+                    <div class="labels-wrap value">
+            <ul class="labels" id="labels-25249-value">
+                                                        <li><a class="lozenge" href="/secure/IssueNavigator.jspa?reset=true&jqlQuery=labels+%3D+export" title="export"><span>export</span></a></li>
+                                                                                    <li><a class="lozenge" href="/secure/IssueNavigator.jspa?reset=true&jqlQuery=labels+%3D+permissions" title="permissions"><span>permissions</span></a></li>
+                                                    </ul>
+        </div>
+            </div>
+        </li>
+        </ul>
+
+
+                            
+                                
+
+<div id="customfieldmodule">
+    
+
+    
+    
+    <ul id="tabCellPane1" class="property-list">
+        
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10061" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Complexity" class="name">Internal Complexity:</strong>
+                            <div id="customfield_10061-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10060" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Value" class="name">Internal Value:</strong>
+                            <div id="customfield_10060-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10082" class="item">
+                        <div class="wrap">
+                            <strong title="Rank" class="name">Rank:</strong>
+                            <div id="customfield_10082-val" class="value type-greenhopper-ranking">
+                                
+<div id="RankField_customfield_10082view">	<span id="RankValue_customfield_10082view">74</span>&nbsp;
+			<span id="RankPage_customfield_10082view" class="gh-rankpage gh-jira-rankpage"></span>
+</div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+    </ul>
+    
+</div>
+
+                            
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+<div id="descriptionmodule" class="module toggle-wrap">
+    <div class="mod-header">
+        <h3 class="toggle-title">Description</h3>
+    </div>
+    <div id="issue-description" class="mod-content">
+        <p>It would be helpful (though I am not sure technologically feasible) to be able to export the groups and group permissions for a given space so that space migration of individual spaces between Confluence instances could be possible. Currently, when a space is exported (xml format) none of that spaces groups or group permissions are exported along with it. Is there any simple way to do this currently? Not having this ability makes it difficult to bring up a new instance of Confluence and move individual spaces given that none of the heavily relied upon groups and group permissions within those spaces are able to be migrated.</p>
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+
+
+
+
+
+
+                    
+                
+                
+                    <div class='module toggle-wrap' id='activitymodule'><div id='activitymodule_heading' class='mod-header'><h3 class='toggle-title'>Activity</h3></div><div class='mod-content'>    <div class="tabwrap tabs2">
+                    <div class="sortwrap">
+                                    <a class="icon icon-sort-down" rel="nofollow" href="/browse/SUSR-125?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                            </div>
+                <ul id="issue-tabs" class="tabs horizontal">
+                                    <li><a id="all-tabpanel" href="/browse/SUSR-125?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel#issue-tabs"><strong>All</strong></a></li>
+                                                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+                                                <li><a id="worklog-tabpanel" href="/browse/SUSR-125?page=com.atlassian.jira.plugin.system.issuetabpanels:worklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+                                                <li><a id="changehistory-tabpanel" href="/browse/SUSR-125?page=com.atlassian.jira.plugin.system.issuetabpanels:changehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+                                                <li><a id="activity-stream-issue-tab" href="/browse/SUSR-125?page=com.atlassian.streams.streams-jira-plugin:activity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+                            </ul>
+    </div>
+    <div class="issuePanelContainer" id="issue_actions_container">
+                        <div id="comment-39128" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-125?focusedCommentId=39128&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39128" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39128_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39128_verbose subText'><span class='date user-tz' title='25/Jan/11 11:32 AM'><time datetime='2011-01-25T11:32-0800'>25/Jan/11 11:32 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 25/Jan/11 11:39 AM">edited</span> </div>
+        <div class="action-body flooded"><p>Billy,</p>
+
+<p>I'd like to leave this as a requested feature, but unfortunately, I don't think this would be a feature for this plugin.</p>
+
+<p>The reason is that this plugin's job in life is to manage a set of groups and users that have access to the space. (Not all groups that have access, but just the ones matching the spacekey name "pattern" defined in the CSUM plugin configuration.)</p>
+
+<p>However, you could easily write a plugin or script to do what you are saying.</p>
+
+<p>Basically, what this plugin does is to create regular confluence groups that have the spacekey in part of the name and gives those groups access to the space. Everything is done using the Confluence API, so there is nothing stopping anyone from writing something to manage those groups.</p>
+
+<p>Am assuming you'd do this:</p>
+
+<p>1. Write a plugin/script that would use Confluence API to get a list of the groups in Confluence that match the spacekey "pattern" specified in the CSUM plugin. Perhaps instead of using the CSUM's config, you require the admin to just copy and paste that "pattern" into whatever interface that you devise.</p>
+
+<p>2. It also should list memberships for each group.</p>
+
+<p>3. It should create some sort of export file with this information. I'd say version the file, but so far, Confluence hasn't really made much of a change in the basic info for groups and users. But maybe version it, just in case.</p>
+
+<p>4. Allow it to read this export file on another server with the same admin plugin, if is same version of file (same version of Confluence really not important for the most part).</p>
+
+<p>5. Attempt to create groups for each of these groups, replacing the spacekey of the old group with the spacekey of the new one.</p>
+
+<p>6. This is the hard part. You need to add membership from the old groups to the new one, but on the new instance, are you sure that the same username = same user? Hope so, otherwise you are giving rights to data to the wrong user. What if the user doesn't exist? Should it be created with the same username? Are we ok not creating the email or fullname or should that be part of the export? Should we set the password to null and hope for the best that the new server is using an alternative authentication mechanism, because you can't get password from the user object via the Confluence API on the original server?</p>
+
+<p>The other things to think about are:</p>
+
+<p>1. Confluence 3.5/Embedded Crowd</p>
+
+<p>In Confluence 3.5, Confluence will be using embedded Crowd. This could mean that groups and users will be shared across various instances in future versions of Confluence, so this may become a non-issue in future versions. So any work put towards the goal in this ticket may not be used for very long.</p>
+
+<p>2. If you are worried about copying groups from one instance to another, you might be getting big enough to have other problems that should be addressed to make things more manageable.</p>
+
+<p>There are large institutions using CSUM, and there is nothing wrong with that. But, if you get to the point of having groups that you need to delegate creation of, and then want to copy those groups from one instance to another, odds are that your organization is big enough to benefit from a shared system that manages groups. That way, those groups can be used for other things as well. That isn't to say that there isn't benefit from having the ability to create groups specifically for Confluence content. But, it is more often the case that a group that needs access to one thing may need access to something else, so why not centralize it? However, assuming that you start using Crowd, and Crowd can integrate with any other group/user management solution you have, then integration of CSUM with crowd in Confluence 3.5 (once we do that) <b>may</b> allow you to have your space managers manage groups not only across Confluence instances, but across other things as well. The naming convention of those groups might be a little screwy though, because they would contain the spacekey. Instead of using the spacekey naming convention, maybe CSUM should start requiring admins to define the groups that a space can manage, etc. That way, the same group could be used across spaces. But, then why not give them access to Crowd or whatever else you are using to manage groups?</p>
+
+<p>(I'm resolving this ticket, because this work should be done outside of the project, but feel free to continue to comment.)</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39128_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39128_concise subText'><span class='date user-tz' title='25/Jan/11 11:32 AM'><time datetime='2011-01-25T11:32-0800'>25/Jan/11 11:32 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 25/Jan/11 11:39 AM">edited</span>              Billy,
+
+I'd like to leave this as a requested feature, but unfortunately, I don't think this would be a feature for this plugin.
+
+The reason is that this plugin's job in life is to manage a set of groups and users that have access to the space. (Not all groups that have access, but just the ones matching the spacekey name "pattern" defined in the CSUM plugin configuration.)
+
+However, you could easily write a plugin or script to do what you are saying.
+
+Basically, what this plugin does is to create regular confluence groups that have the spacekey in part of the name and gives those groups access to the space. Everything is done using the Confluence API, so there is nothing stopping anyone from writing something to manage those groups.
+
+Am assuming you'd do this:
+
+1. Write a plugin/script that would use Confluence API to get a list of the groups in Confluence that match the spacekey "pattern" specified in the CSUM plugin. Perhaps instead of using the CSUM's config, you require the admin to just copy and paste that "pattern" into whatever interface that you devise.
+
+2. It also should list memberships for each group.
+
+3. It should create some sort of export file with this information. I'd say version the file, but so far, Confluence hasn't really made much of a change in the basic info for groups and users. But maybe version it, just in case.
+
+4. Allow it to read this export file on another server with the same admin plugin, if is same version of file (same version of Confluence really not important for the most part).
+
+5. Attempt to create groups for each of these groups, replacing the spacekey of the old group with the spacekey of the new one.
+
+6. This is the hard part. You need to add membership from the old groups to the new one, but on the new instance, are you sure that the same username = same user? Hope so, otherwise you are giving rights to data to the wrong user. What if the user doesn't exist? Should it be created with the same username? Are we ok not creating the email or fullname or should that be part of the export? Should we set the password to null and hope for the best that the new server is using an alternative authentication mechanism, because you can't get password from the user object via the Confluence API on the original server?
+
+The other things to think about are:
+
+1. Confluence 3.5/Embedded Crowd
+
+In Confluence 3.5, Confluence will be using embedded Crowd. This could mean that groups and users will be shared across various instances in future versions of Confluence, so this may become a non-issue in future versions. So any work put towards the goal in this ticket may not be used for very long.
+
+2. If you are worried about copying groups from one instance to another, you might be getting big enough to have other problems that should be addressed to make things more manageable.
+
+There are large institutions using CSUM, and there is nothing wrong with that. But, if you get to the point of having groups that you need to delegate creation of, and then want to copy those groups from one instance to another, odds are that your organization is big enough to benefit from a shared system that manages groups. That way, those groups can be used for other things as well. That isn't to say that there isn't benefit from having the ability to create groups specifically for Confluence content. But, it is more often the case that a group that needs access to one thing may need access to something else, so why not centralize it? However, assuming that you start using Crowd, and Crowd can integrate with any other group/user management solution you have, then integration of CSUM with crowd in Confluence 3.5 (once we do that) <b>may</b> allow you to have your space managers manage groups not only across Confluence instances, but across other things as well. The naming convention of those groups might be a little screwy though, because they would contain the spacekey. Instead of using the spacekey naming convention, maybe CSUM should start requiring admins to define the groups that a space can manage, etc. That way, the same group could be used across spaces. But, then why not give them access to Crowd or whatever else you are using to manage groups?
+
+(I'm resolving this ticket, because this work should be done outside of the project, but feel free to continue to comment.)
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-39129" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-125?focusedCommentId=39129&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39129" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39129_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39129_verbose subText'><span class='date user-tz' title='25/Jan/11 11:46 AM'><time datetime='2011-01-25T11:46-0800'>25/Jan/11 11:46 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 25/Jan/11 11:49 AM">edited</span> </div>
+        <div class="action-body flooded"><p>Ok, given more thought, I'm reopening the issue.</p>
+
+<p>Since the space admin has rights to create groups via this plugin, I could see where you'd want to import a list of groups, transform the names, and then attempt to create those groups.</p>
+
+<p>However, as stated in last comment:</p>
+
+<ul>
+	<li>I think that the complexity involved is high enough where it wouldn't be implemented easily.</li>
+	<li>Giving the wrong username access to the space if the same username is not the same person in the new space would be bad, and I'm not sure if you could force the admin to confirm each username because in some environments there are thousands of users in a group.</li>
+	<li>One alternative to doing the work defined in the ticket might be to just use Crowd, as it would be available in 3.5. This might solve the issue perhaps of sharing the same group to the same space across instances. While it doesn't solve the issue of sharing the same group among two different spaces in the same instance (or two different spacekeys), that would be a separate issue and would require a lot more rework (as well as being better done elsewhere).</li>
+</ul>
+
+
+<p>Basically, I'm not sure this ticket will have much traction. <img class="emoticon" src="/images/icons/emoticons/sad.gif" height="20" width="20" align="absmiddle" alt="" border="0"/></p>
+
+<p>We'll see, though.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39129_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39129_concise subText'><span class='date user-tz' title='25/Jan/11 11:46 AM'><time datetime='2011-01-25T11:46-0800'>25/Jan/11 11:46 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 25/Jan/11 11:49 AM">edited</span>              Ok, given more thought, I'm reopening the issue.
+
+Since the space admin has rights to create groups via this plugin, I could see where you'd want to import a list of groups, transform the names, and then attempt to create those groups.
+
+However, as stated in last comment:
+
+<ul>
+	<li>I think that the complexity involved is high enough where it wouldn't be implemented easily.</li>
+	<li>Giving the wrong username access to the space if the same username is not the same person in the new space would be bad, and I'm not sure if you could force the admin to confirm each username because in some environments there are thousands of users in a group.</li>
+	<li>One alternative to doing the work defined in the ticket might be to just use Crowd, as it would be available in 3.5. This might solve the issue perhaps of sharing the same group to the same space across instances. While it doesn't solve the issue of sharing the same group among two different spaces in the same instance (or two different spacekeys), that would be a separate issue and would require a lot more rework (as well as being better done elsewhere).</li>
+</ul>
+
+
+Basically, I'm not sure this ticket will have much traction. <img class="emoticon" src="/images/icons/emoticons/sad.gif" height="20" width="20" align="absmiddle" alt="" border="0"/>
+
+We'll see, though.         </div>
+    </div>
+</div>
+                     <div id="comment-39136" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-125?focusedCommentId=39136&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39136" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="will3" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39136_verbose" href="/secure/ViewProfile.jspa?name=will3">Billy Schneider</a>
+ added a comment  - <span class='commentdate_39136_verbose subText'><span class='date user-tz' title='25/Jan/11 12:42 PM'><time datetime='2011-01-25T12:42-0800'>25/Jan/11 12:42 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Thank you for taking time to think about this issue, I appreciate it. I didn't see this as being easy, or to be honest even possible at all. I hope someone is able to work this through, but if not it's understandably complex and potentially detrimental to the overall stability of the plugin if implemented incorrectly.</p>
+
+<p>I am using LDAP/Hibernate for user management along with Shibboleth for SSO (using the Remote User Authenticator plugin for that). Because of this, users between the two instances will essentially be identical, however for other setups this would not necessarily be the case.</p>
+
+
+<p>Thanks again.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="will3" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39136_concise" href="/secure/ViewProfile.jspa?name=will3">Billy Schneider</a>
+ added a comment  - <span class='commentdate_39136_concise subText'><span class='date user-tz' title='25/Jan/11 12:42 PM'><time datetime='2011-01-25T12:42-0800'>25/Jan/11 12:42 PM</time></span></span>               Thank you for taking time to think about this issue, I appreciate it. I didn't see this as being easy, or to be honest even possible at all. I hope someone is able to work this through, but if not it's understandably complex and potentially detrimental to the overall stability of the plugin if implemented incorrectly.
+
+I am using LDAP/Hibernate for user management along with Shibboleth for SSO (using the Remote User Authenticator plugin for that). Because of this, users between the two instances will essentially be identical, however for other setups this would not necessarily be the case.
+
+
+Thanks again.         </div>
+    </div>
+</div>
+                     <div id="comment-39139" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-125?focusedCommentId=39139&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39139" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39139_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39139_verbose subText'><span class='date user-tz' title='25/Jan/11 1:44 PM'><time datetime='2011-01-25T13:44-0800'>25/Jan/11 1:44 PM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 25/Jan/11 1:47 PM">edited</span> </div>
+        <div class="action-body flooded"><p>Billy,</p>
+
+<p>If you are using two user repos (Hibernate and LDAP), then assuming that each Confluence instance's DB/schema is different (otherwise you need a cluster, and you wouldn't have this issue), then you couldn't guarantee the same users are in the same DB/schema (Hibernate repo). So, do you only have LDAP configured as the user repo for each in atlassian-user.xml? If that is the case, is it read-write?</p>
+
+<p>Just trying to understand your need a bit better. Thanks for the info,</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39139_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39139_concise subText'><span class='date user-tz' title='25/Jan/11 1:44 PM'><time datetime='2011-01-25T13:44-0800'>25/Jan/11 1:44 PM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 25/Jan/11 1:47 PM">edited</span>              Billy,
+
+If you are using two user repos (Hibernate and LDAP), then assuming that each Confluence instance's DB/schema is different (otherwise you need a cluster, and you wouldn't have this issue), then you couldn't guarantee the same users are in the same DB/schema (Hibernate repo). So, do you only have LDAP configured as the user repo for each in atlassian-user.xml? If that is the case, is it read-write?
+
+Just trying to understand your need a bit better. Thanks for the info,
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-39160" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-125?focusedCommentId=39160&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39160" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="will3" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39160_verbose" href="/secure/ViewProfile.jspa?name=will3">Billy Schneider</a>
+ added a comment  - <span class='commentdate_39160_verbose subText'><span class='date user-tz' title='26/Jan/11 6:51 AM'><time datetime='2011-01-26T06:51-0800'>26/Jan/11 6:51 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>We have Hibernate configured to work in our seraph config, however it is only for internal, administrative confluence accounts. Plus, as I understand it (and I could be way off), if there is a conflict where a hibernate and LDAP user have the same username, user access is deferred to the LDAP account info.</p>
+
+<p>I do have LDAP configured for both instances, and it is read-only (since I think that is all LDAP integration supports currently). We do not manage groups with LDAP, and instead rely on Confluence to manage those due to the volume of groups and the contained nature of those groups to Confluence; I figure it doesn't make sense to set global LDAP group attributes for users which are only used within Confluence.</p>
+
+<p>Thanks for the genuine concern for this situation, I really appreciate the help.</p>
+
+<p>-Billy</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="will3" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39160_concise" href="/secure/ViewProfile.jspa?name=will3">Billy Schneider</a>
+ added a comment  - <span class='commentdate_39160_concise subText'><span class='date user-tz' title='26/Jan/11 6:51 AM'><time datetime='2011-01-26T06:51-0800'>26/Jan/11 6:51 AM</time></span></span>               We have Hibernate configured to work in our seraph config, however it is only for internal, administrative confluence accounts. Plus, as I understand it (and I could be way off), if there is a conflict where a hibernate and LDAP user have the same username, user access is deferred to the LDAP account info.
+
+I do have LDAP configured for both instances, and it is read-only (since I think that is all LDAP integration supports currently). We do not manage groups with LDAP, and instead rely on Confluence to manage those due to the volume of groups and the contained nature of those groups to Confluence; I figure it doesn't make sense to set global LDAP group attributes for users which are only used within Confluence.
+
+Thanks for the genuine concern for this situation, I really appreciate the help.
+
+-Billy         </div>
+    </div>
+</div>
+                     <div id="comment-39161" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-125?focusedCommentId=39161&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39161" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39161_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39161_verbose subText'><span class='date user-tz' title='26/Jan/11 7:33 AM'><time datetime='2011-01-26T07:33-0800'>26/Jan/11 7:33 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Billy,</p>
+
+<p>I believe that it checks for users in the repositories in the order listed in atlassian-user.xml, or at least that is what I found out from Atlassian in the past, but that was some time ago.</p>
+
+<p>Note that if you are using LDAP for additional groups, then the space admin could currently go into the permissions area to assign space permissions to that LDAP group (without even using the plugin). This might suffice for some groups and may be better than managing groups basically in two places using CSUM (by the space admin) and LDAP (possibly by an LDAP admin).</p>
+
+<p>Perhaps the Manage Users/Groups tab (the CSUM plugin) should show the read-only groups as well that have access to the space, but would not allow you to manage those groups. Then, when you export for import into another space, it would include the permissions to those groups also that the space admin is not allowed to manage. Then when you reimported into the other confluence instance, if that group wasn't there, it was just list it as a warning after the import (for example, "Couldn't assign permission to some_other_department because that group was not found, and you don't have rights to create or administer that group.").</p>
+
+<p>Let me know if that sounds right.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39161_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39161_concise subText'><span class='date user-tz' title='26/Jan/11 7:33 AM'><time datetime='2011-01-26T07:33-0800'>26/Jan/11 7:33 AM</time></span></span>               Billy,
+
+I believe that it checks for users in the repositories in the order listed in atlassian-user.xml, or at least that is what I found out from Atlassian in the past, but that was some time ago.
+
+Note that if you are using LDAP for additional groups, then the space admin could currently go into the permissions area to assign space permissions to that LDAP group (without even using the plugin). This might suffice for some groups and may be better than managing groups basically in two places using CSUM (by the space admin) and LDAP (possibly by an LDAP admin).
+
+Perhaps the Manage Users/Groups tab (the CSUM plugin) should show the read-only groups as well that have access to the space, but would not allow you to manage those groups. Then, when you export for import into another space, it would include the permissions to those groups also that the space admin is not allowed to manage. Then when you reimported into the other confluence instance, if that group wasn't there, it was just list it as a warning after the import (for example, "Couldn't assign permission to some_other_department because that group was not found, and you don't have rights to create or administer that group.").
+
+Let me know if that sounds right.
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-39162" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-125?focusedCommentId=39162&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39162" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="will3" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39162_verbose" href="/secure/ViewProfile.jspa?name=will3">Billy Schneider</a>
+ added a comment  - <span class='commentdate_39162_verbose subText'><span class='date user-tz' title='26/Jan/11 8:07 AM'><time datetime='2011-01-26T08:07-0800'>26/Jan/11 8:07 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Hey Gary,</p>
+
+<p>Currently, we do not perform any Confluence group management in LDAP. That said, I might be able to convince the LDAP admin that this would be a good idea going forward. I think your proposal sounds good, and if I understand it correctly, would mean that groups from LDAP which have been granted permissions to a given space would be able to be exported along with CSUM created groups. Since space imports are (at least for our University) performed by confluence site admins, permissions for group creation upon import likely wouldn't pose any issues.</p>
+
+<p>Thanks</p>
+
+<p>-Billy</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="will3" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39162_concise" href="/secure/ViewProfile.jspa?name=will3">Billy Schneider</a>
+ added a comment  - <span class='commentdate_39162_concise subText'><span class='date user-tz' title='26/Jan/11 8:07 AM'><time datetime='2011-01-26T08:07-0800'>26/Jan/11 8:07 AM</time></span></span>               Hey Gary,
+
+Currently, we do not perform any Confluence group management in LDAP. That said, I might be able to convince the LDAP admin that this would be a good idea going forward. I think your proposal sounds good, and if I understand it correctly, would mean that groups from LDAP which have been granted permissions to a given space would be able to be exported along with CSUM created groups. Since space imports are (at least for our University) performed by confluence site admins, permissions for group creation upon import likely wouldn't pose any issues.
+
+Thanks
+
+-Billy         </div>
+    </div>
+</div>
+                     <div id="comment-39163" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-125?focusedCommentId=39163&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-39163" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39163_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39163_verbose subText'><span class='date user-tz' title='26/Jan/11 8:53 AM'><time datetime='2011-01-26T08:53-0800'>26/Jan/11 8:53 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 26/Jan/11 9:05 AM">edited</span> </div>
+        <div class="action-body flooded"><p>Billy,</p>
+
+<p>Yes, and to be clear, the LDAP was really just a separate topic. Basically I meant that if you do use LDAP, Crowd, Active Directory, etc. etc. for group management, then managing what is essentially the same group (same group membership) in two places and calling them two different names (one in LDAP and one in Confluence via CSUM) is not efficient, unless it is just to weighty of a process for users to manage groups that way (because of tech limitations, politics...).</p>
+
+<p>The exporting thing was about making sure that "other" groups (with permissions to the space that don't match the spacekey pattern) have those permissions propagated to the new server during import, if possible. We'd not been showing these "other" groups in CSUM, and I think that causes confusion. Possibly we should at least list those groups on the main CSUM page somewhere, even though there is a link already to the security page that shows them. That way, if we export those permissions, it wouldn't be a surprise. Exporting/importing these "other" groups' permissions is more than I really feel responsibility for, since those permissions are managed by Confluence and not by this plugin. But, somebody would need to do it. Really, all of this should be part of Confluence's space export, IMO, but that would mean having them integrate CSUM into Confluence, and I think, instead, Atlassian might rather have Crowd be the place that handles delegated group management. However, CSUM does something that Crowd probably never will, which is to skip the step of delegating group admin rights to the space admins, and instead just give that responsibility as part of the responsibility of space administration. But CSUM can also bring the pain and inefficiency of inevitable duplication of groups in organizations where there is a separate layer of group management.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_39163_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_39163_concise subText'><span class='date user-tz' title='26/Jan/11 8:53 AM'><time datetime='2011-01-26T08:53-0800'>26/Jan/11 8:53 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 26/Jan/11 9:05 AM">edited</span>              Billy,
+
+Yes, and to be clear, the LDAP was really just a separate topic. Basically I meant that if you do use LDAP, Crowd, Active Directory, etc. etc. for group management, then managing what is essentially the same group (same group membership) in two places and calling them two different names (one in LDAP and one in Confluence via CSUM) is not efficient, unless it is just to weighty of a process for users to manage groups that way (because of tech limitations, politics...).
+
+The exporting thing was about making sure that "other" groups (with permissions to the space that don't match the spacekey pattern) have those permissions propagated to the new server during import, if possible. We'd not been showing these "other" groups in CSUM, and I think that causes confusion. Possibly we should at least list those groups on the main CSUM page somewhere, even though there is a link already to the security page that shows them. That way, if we export those permissions, it wouldn't be a surprise. Exporting/importing these "other" groups' permissions is more than I really feel responsibility for, since those permissions are managed by Confluence and not by this plugin. But, somebody would need to do it. Really, all of this should be part of Confluence's space export, IMO, but that would mean having them integrate CSUM into Confluence, and I think, instead, Atlassian might rather have Crowd be the place that handles delegated group management. However, CSUM does something that Crowd probably never will, which is to skip the step of delegating group admin rights to the space admins, and instead just give that responsibility as part of the responsibility of space administration. But CSUM can also bring the pain and inefficiency of inevitable duplication of groups in organizations where there is a separate layer of group management.
+
+Gary         </div>
+    </div>
+</div>
+                 </div>
+</div></div>
+                
+
+            </div>
+        </div>
+
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                    <div class='module toggle-wrap' id='peoplemodule'><div id='peoplemodule_heading' class='mod-header'><h3 class='toggle-title'>People</h3></div><div class='mod-content'><ul class="item-details" id="peopledetails">
+    <li class="people-details">
+                <dl>
+            <dt>Assignee:</dt>
+            <dd id="assignee-val">
+                        <a class="user-hover" rel="gswduke" id="issue_summary_assignee_gswduke" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+            </dd>
+        </dl>
+                        <dl>
+            <dt>Reporter:</dt>
+            <dd id="reporter-val">
+                        <a class="user-hover" rel="will3" id="issue_summary_reporter_will3" href="/secure/ViewProfile.jspa?name=will3">Billy Schneider</a>
+            </dd>
+        </dl>
+                    </li>
+</ul>
+<div id="votes-val">
+                <span id="vote-label" title="You have to be logged in to vote for an issue."><span class="icon icon-vote-disabled"></span><span class="action-text">Vote</span></span>
+    
+                (<span id="vote-data">0</span>)
+    </div>
+<div id="watchers-val">
+            <span id="watch-label" title="You have to be logged in to watch an issue."><span class="icon icon-watch-disabled"></span>Watch</span>
+    
+        
+            (<span id="watcher-data">1</span>)
+    </div>
+</div></div><div class='module toggle-wrap' id='datesmodule'><div id='datesmodule_heading' class='mod-header'><h3 class='toggle-title'>Dates</h3></div><div class='mod-content'><ul class="item-details">
+    <li>
+            <dl class="dates">
+            <dt>Created:</dt>
+            <dd id="create-date" class="date user-tz"  title="25/Jan/11 11:02 AM" >
+                        <time datetime="2011-01-25T11:02-0800">25/Jan/11 11:02 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Updated:</dt>
+            <dd id="updated-date" class="date user-tz"  title="26/Jan/11 9:05 AM" >
+                        <time datetime="2011-01-26T09:05-0800">26/Jan/11 9:05 AM</time></dd>                     </dd>
+        </dl>
+        </li>
+</ul>
+</div></div>
+                
+
+            </div>
+        </div>
+        
+            
+                
+            
+        
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fbrowse%2FSUSR-125&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+            <script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/safe-ajax.js"></script>
+    
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+            document.cookie = "studio.project.rec.used.cookie=" + escape("SUSR-_-") + "; Max-Age=31536000; path=/;";
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<form id="jira_request_timing_info" class="dont-default-focus" >
+	<fieldset class="parameters hidden">
+		<input type="hidden" title="jira.request.start.millis" value="1358008725393" />
+		<input type="hidden" title="jira.request.server.time" value="831" />
+		<input type="hidden" title="jira.request.id" value="518x6601109x1" />
+		<input type="hidden" title="jira.session.expiry.time" value="-" />
+		<input type="hidden" title="jira.session.expiry.in.mins" value="-" />
+		<input id="jiraConcurrentRequests" type="hidden" name="jira.request.concurrent.requests" value="1" />
+	</fieldset>
+</form>
+<!--
+	                 REQUEST ID : 518x6601109x1
+	          REQUEST TIMESTAMP : [12/Jan/2013:08:38:45 -0800]
+	               REQUEST TIME : 0.8310
+	                 ASESSIONID : n38o6d
+	        CONCURRENT REQUESTS : 1
+-->
+</body>
+</html>

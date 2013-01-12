@@ -1,0 +1,2281 @@
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>[#SUSR-60] ldap lookup broken in trunk - Atlassian Plugins JIRA Studio </title>
+
+    <meta content="general" name="decorator" />
+    <link rel="index" href="/secure/IssueNavigator.jspa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="A5G2-B7UC-JLK8-Z7KY|60cfb2873b4f6744418ac4a22e97dbce12da7e47|lout">
+
+
+    <link rel="shortcut icon" href="/s/en_US-31q2po/650/149/_/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/en_US-31q2po/650/149/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '';</script>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.css" media="all">
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar/jira.webresources:calendar.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:viewissue/jira.webresources:viewissue.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jira-fields/jira.webresources:jira-fields.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar-en/jira.webresources:calendar-en.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.4/_/download/batch/com.atlassian.jira.plugins.jira-github-connector-plugin:resources/com.atlassian.jira.plugins.jira-github-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-soy-plugin:soy-deps/com.atlassian.jira.jira-soy-plugin:soy-deps.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.js" ></script>
+
+    
+        <script type="text/javascript" src="/rest/api/1.0/shortcuts/650/2c704f3b1c272597f28d679bb85da011/shortcuts.js?context=issueaction&amp;context=issuenavigation"></script>
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="/osd.jsp" title="Atlassian Plugins JIRA Studio"/>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="jira" class="nl type-ab stalker sn">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/menu.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog.css">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog-ie.css">
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/userstatus.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_admin_styles/css/studioadmin.css">
+<link rel="stylesheet" type="text/css" href="/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.theme.jira:studio_jira_resources/css/studio-jira-theme-override.css">
+
+<div id="header" style="display:none">
+</div>
+<div class="studio-header" id="studio-header">
+
+	<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="studio-context-path" name="studio-context-path" content=""/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Space User Management Plugin </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                                                                                                                <li><a href="/browse/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/browse/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/browse/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/browse/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/browse/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/browse/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/browse/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/browse/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/browse/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/browse/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/browse/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/browse/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/browse/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/browse/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/browse/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/browse/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/browse/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/browse/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/browse/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/browse/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+	    <div id="studio-user-menu-container">
+        <a class="login-link" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-60">Log In</a>
+    </div>
+    
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li class="current"><a href="/browse/SUSR">Issues</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/wiki/display/SUSR">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SUSR">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SUSR">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SUSR">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+
+    <div id="header-bottom">
+
+        <div class="second-level-nav studio-menu">
+
+                            
+                
+<ul id="main-nav" class="menu-bar standard-menu-bar">
+                        <li class="aui-dd-parent lazy  ">
+                    <a class="lnk"
+                href="/secure/Dashboard.jspa"
+                 id="home_link"                 accessKey="h"                 title="View your current Dashboard"                >Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="home_link_drop"
+                    rel="home_link"
+                    accessKey="d"
+                    title="Access more options (Alt+d)"
+                                href="#"><span>Access more options (Alt+d)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent lazy  selected  ">
+                    <a class="lnk"
+                href="/secure/IssueNavigator.jspa"
+                 id="find_link"                 accessKey="f"                 title="View your current filter"                >Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="find_link_drop"
+                    rel="find_link"
+                    accessKey="i"
+                    title="Access more options (Alt+i)"
+                                href="#"><span>Access more options (Alt+i)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent nonlazy  ">
+                    <a class="lnk"
+                href="/secure/GreenHopper.jspa"
+                 id="greenhopper_menu"                                 title="Manage your project with GreenHopper"                >Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link"
+                                                                    id="greenhopper_menu_drop"
+                                    accessKey="g"
+                                    rel="greenhopper_menu"
+                                    title="Access more options (Alt+g)"
+                                                                href="#"><span>Access more options</span></a></span>
+                            <div class="aui-list hidden">
+                                                
+                            <ul id="greenhopper_menu_dropdown" class="aui-list-section aui-first   aui-last  ">
+                                                                    <li class="aui-list-item"><a
+                                         id="planningboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="taskboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/TaskBoard.jspa">Task Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="chartboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="releasedboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                            </ul>
+                                                    </div>
+                            </li>
+    </ul>
+
+                
+            
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+
+            
+            <a id="keyshortscuthelp" class="item-link hidden" title="Get more information about JIRA's Keyboard Shortcuts"
+               href="/secure/ViewKeyboardShortcuts!default.jspa">Keyboard Shortcuts</a>
+                            <a id="browse_link" class="hidden" href="/browse/SUSR">Selected Project</a>
+            
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-second-level -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="ajaxTimeout" value="The call to the JIRA server did not complete within the timeout period.  We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxUnauthorised" value="You are not authorised to perform this operation.  Please try to <a href='/login.jsp?os_destination=%2Fbrowse%2FSUSR-60'>log in</a> or <a href='/secure/Signup!default.jspa'>sign up</a> for an account.">
+    <input type="hidden" title="ajaxUnauthorisedAlert" value="You are not authorised to perform this operation.  Please log in.">
+    <input type="hidden" title="baseURL" value="https://studio.plugins.atlassian.com:443">
+    <input type="hidden" title="ajaxCommsError" value="The JIRA server could not be contacted.  This may be a temporary glitch or the server may be down.">
+    <input type="hidden" title="ajaxServerError" value="The JIRA server was contacted but has returned an error response. We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxErrorCloseDialog" value="Close this dialog and press refresh in your browser">
+    <input type="hidden" title="ajaxErrorDialogHeading" value="Communications Breakdown">
+
+    <input type="hidden" title="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.">
+    <input type="hidden" title="dirtyDialogMessage" value="You have entered new data in this dialog. If you navigate away from this dialog without first saving your data, the changes will be lost. Click cancel to return to the dialog.">
+    <input type="hidden" title="keyType" value="Type">
+    <input type="hidden" title="keyThen" value="then">
+    <input type="hidden" title="dblClickToExpand" value="Double click to expand">
+    <input type="hidden" title="actions" value="Actions">
+    <input type="hidden" title="removeItem" value="Remove">
+    <input type="hidden" title="workflow" value="Workflow">
+    <input type="hidden" title="labelNew" value="New Label">
+    <input type="hidden" title="enterIssueKey" value="Enter issue key">
+    <input type="hidden" title="issueActionsHint" value="Begin typing for available operations or press down to see all">
+    <input type="hidden" title="closelink" value="Close">
+    <input type="hidden" title="dotOperations" value="Operations">
+    <input type="hidden" title="dotLoading" value="Loading...">
+    <input type="hidden" title="frotherSuggestions" value="Suggestions">
+    <input type="hidden" title="frotherNomatches" value="No Matches">
+    <input type="hidden" title="multiselectVersionsError" value="{0} is not a valid version.">
+    <input type="hidden" title="multiselectComponentsError" value="{0} is not a valid component.">
+    <input type="hidden" title="multiselectGenericError" value="The value {0} is invalid.">
+</fieldset>
+
+
+
+
+<div class="alertHeader">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript" charset="utf-8">
+  (function(){
+    t = document.createElement('script');t.async=true;t.type ='text/javascript';
+    t.src = ('https:' == document.location.protocol ? 'https://secure.' : 'http://api.') + 'tellthemwhen.com/api/v2/notices/9ffb4ac1f71.js';
+    var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(t,s);
+  })();
+</script>
+
+<!-- <div id="TTWNotify" style="display:none"></div> -->
+
+<div style="text-align: center; border: #C00; background-color: #FF6600; line-height: 2em">studio.plugins.atlassian.com will be decommissioned in early 2013. If you are a project maintainer, please email <a href="mailto:developer-relations@atlassian.com">Atlassian Developer Relations</a> if you require assistance to migrate your project off this server.</div>
+</div>
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="viewMoreMsg" value="Click to view {0} more">
+    <input type="hidden" id="hideMsg" value="Hide" >
+    <input type="hidden" id="error-401" value="Cannot perform this operation. You are not logged in." >
+    <input type="hidden" id="issueOpTitleUnvote" value="Remove vote for this issue" >
+    <input type="hidden" id="issueOpTitleVote" value="Vote for this issue" >
+    <input type="hidden" id="issueOpTitleWatch" value="Start watching this issue" >
+    <input type="hidden" id="issueOpTitleUnwatch" value="Stop watching this issue" >
+    <input type="hidden" id="issueOpUnvote" value="Remove Vote" >
+    <input type="hidden" id="issueOpVote" value="Add Vote" >
+    <input type="hidden" id="issueOpWatch" value="Watch Issue" >
+    <input type="hidden" id="issueOpUnwatch" value="Stop Watching" >
+    <input type="hidden" id="i18nVote" value="Vote" >
+    <input type="hidden" id="i18nVoted" value="Voted" >
+    <input type="hidden" id="i18nWatch" value="Watch" >
+    <input type="hidden" id="i18nWatching" value="Watching" >
+</fieldset>
+
+<div id="stalker"  class="stalker">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image:url(/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large)">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" height="48" src="/secure/projectavatar?pid=10342&amp;avatarId=10011&amp;size=large" width="48" />
+        
+        <span>Confluence Space User Management Plugin</span>
+</h1>
+
+
+<ul class="breadcrumbs">
+    <li><a id="project-name-val" href="/browse/SUSR">Confluence Space User Management Plugin</a></li>
+    
+    <li><a id="key-val" rel="12910" href="/browse/SUSR-60">SUSR-60</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="/browse/SUSR-60">ldap lookup broken in trunk</a></h2>
+
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                
+                    <ul id="opsbar-login" class="first ops">
+                        <li id="ops-login" class="last">
+                            <a id="ops-login-lnk" class="button first last" href="/login.jsp?os_destination=%2Fbrowse%2FSUSR-60">Log In</a>
+                        </li>
+                    </ul>
+                
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent">
+                                    <a href="#" title="View this issue in another format" class="drop lnk aui-dd-link standard icon-views"><span>Views</span></a>
+                                        <div class="aui-list hidden">
+                                        <ul class="aui-first aui-last aui-list-section">
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-xml/SUSR-60/SUSR-60.xml">XML</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-word/SUSR-60/SUSR-60.doc">Word</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-html/SUSR-60/SUSR-60.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+        </div>
+    </div>          
+
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+                
+                
+                
+
+                    <div id="details-module" class="module toggle-wrap">
+                        <div class="mod-header">
+                            <h3 class="toggle-title">Details</h3>
+                        </div>
+                        <div class="mod-content">
+                            <ul id="issuedetails" class="property-list two-cols">
+    <li class="item">
+        <div class="wrap">
+            <strong class="name">Type:</strong>
+            <span id="type-val" class="value">
+                                                        <img alt="Bug" height="16" src="/images/icons/bug.gif" title="Bug - A problem which impairs or prevents the functions of the product." width="16" />
+             Bug
+            </span>
+        </div>
+    </li>
+    <li class="item item-right">
+        <div class="wrap">
+            <strong class="name">Status:</strong>
+            <span id="status-val" class="value">
+                                                        <img alt="Closed" height="16" src="/images/icons/status_closed.gif" title="Closed - The issue is considered finished, the resolution is correct. Issues which are closed can be reopened." width="16" />
+             Closed
+            </span>
+                    </div>
+    </li>
+            <li class="item">
+            <div class="wrap">
+                <strong class="name">Priority:</strong>
+                <span id="priority-val" class="value">
+                                                                <img alt="Blocker" height="16" src="/images/icons/priority_blocker.gif" title="Blocker - Blocks development and/or testing work, production could not run." width="16" />
+             Blocker
+                </span>
+            </div>
+        </li>
+                                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Resolution:</strong>
+                <span id="resolution-val" class="value resolved" >
+                                         Fixed
+                                </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Affects Version/s:</strong>
+                <span id="versions-val" class="value">
+                                            <span class="shorten" id="versions-field">
+                                                            <span title="2.0 Maven 2.0 compliant, new UI, add/remove group, search users, paging, creation of user upon addition to group by getting user info from anonymous or authenticated LDAP">2.0</span>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Fix Version/s:</strong>
+                <span id="fixfor-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Component/s:</strong>
+                <span id="components-val" class="value">
+                                            <span class="shorten" id="components-field">
+                                                            <a href="/browse/SUSR/component/10380" title="LDAP LDAP parsers / support code">LDAP</a>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                    <li class="item full-width">
+            <div class="wrap" id="wrap-labels">
+                <strong class="name">Labels:</strong>
+                    <div class="labels-wrap value">
+            <span class="labels" id="labels-12910-value">None</span>
+                </div>
+            </div>
+        </li>
+                <li class="item full-width">
+            <div class="wrap">
+                <strong class="name">Environment:</strong>
+                <div id="environment-val" class="value">
+                                  Confluence 2.5.7
+      
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+                            
+                                
+
+<div id="customfieldmodule">
+    
+
+    
+    
+    <ul id="tabCellPane1" class="property-list">
+        
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10082" class="item">
+                        <div class="wrap">
+                            <strong title="Rank" class="name">Rank:</strong>
+                            <div id="customfield_10082-val" class="value type-greenhopper-ranking">
+                                
+<div id="RankField_customfield_10082view">	<span id="RankValue_customfield_10082view">36</span>&nbsp;
+			<span id="RankPage_customfield_10082view" class="gh-rankpage gh-jira-rankpage"></span>
+</div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+    </ul>
+    
+</div>
+
+                            
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+<div id="descriptionmodule" class="module toggle-wrap">
+    <div class="mod-header">
+        <h3 class="toggle-title">Description</h3>
+    </div>
+    <div id="issue-description" class="mod-content">
+        <p>ldaputil 1.0.7 breaks csum ldap lookup with attached error</p>
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+
+
+
+
+
+
+	<div id="attachmentmodule" class="module toggle-wrap">
+		<div class="mod-header">
+            <ul class="ops">
+            
+                <li class="drop" id="attachment-sorting-options">
+                    <div class="aui-dd-parent">
+                        <a href="#" id="attachment-sort-key-list" class="icon drop-menu aui-dropdown-trigger" title="More Options"><span>More Options</span></a>
+                        <div class="aui-dropdown-content aui-list aui-list-checked">
+                            <ul class="aui-list-section">
+                                <li class="aui-list-item  aui-checked">
+                                    <a id="attachment-sort-key-name" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SUSR-60?attachmentSortBy=fileName#attachmentmodule"
+                                       title="Sort By Name">
+                                        Sort By Name
+                                    </a>
+                                </li>
+                                <li class="aui-list-item">
+                                    <a id="attachment-sort-key-date" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SUSR-60?attachmentSortBy=dateTime#attachmentmodule"
+                                       title="Sort By Date">
+                                        Sort By Date
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="aui-list-section " id="attachment-sort-direction-list">
+                                <li class="aui-list-item aui-checked">
+                                    <a id="attachment-sort-direction-asc" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SUSR-60?attachmentOrder=asc#attachmentmodule"
+                                       title="Ascending">
+                                        Ascending
+                                    </a>
+                                </li>
+                                <li class="aui-list-item">
+                                    <a id="attachment-sort-direction-desc" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SUSR-60?attachmentOrder=desc#attachmentmodule"
+                                       title="Descending">
+                                        Descending
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                                <ul class="aui-list-section aui-last">
+                                    
+                                        <li class="aui-list-item">
+                                            <a id="aszip" href="/secure/attachmentzip/12910.zip"
+                                               class="aui-list-item-link" title="Download all attachments as a ZIP file">
+                                                Download All
+                                            </a>
+                                        </li>
+                                    
+                                    
+                                </ul>
+                            
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <h3 class="toggle-title">Attachments</h3>
+        </div>
+        <div class="mod-content">
+        
+            <ol id="file_attachments" class="item-attachments">
+            
+                
+                
+
+                <li class="attachment-content ">
+                    
+                    
+                        <div class="attachment-thumb">
+                            <a href="/secure/attachment/10961/atlassian-user.xml">
+                                
+
+    
+        <img src="/images/icons/attach/xml.gif" height="16" width="16"
+             border="0" alt="XML File">        
+        
+    
+
+
+                            </a>
+                        </div>
+                        <dl>
+                            
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/10961/atlassian-user.xml"
+                           title="Latest 01/Oct/07 12:34 PM - Gary S. Weaver">atlassian-user.xml
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        01/Oct/07 12:34 PM</dd>
+                    <dd class="attachment-size">
+                        2 kB</dd>
+                    <dd class="attachment-author">
+                        Gary S. Weaver
+                    </dd>
+                
+                        </dl>
+                    
+                </li>
+            
+                
+                
+
+                <li class="attachment-content ">
+                    
+                    
+                        <div class="attachment-thumb">
+                            <a href="/secure/attachment/10971/debug.txt">
+                                
+
+    
+        <img src="/images/icons/attach/text.gif" height="16" width="16"
+             border="0" alt="Text File">        
+        
+    
+
+
+                            </a>
+                        </div>
+                        <dl>
+                            
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/10971/debug.txt"
+                           title="Latest 03/Oct/07 1:01 PM - Gary S. Weaver">debug.txt
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        03/Oct/07 1:01 PM</dd>
+                    <dd class="attachment-size">
+                        246 kB</dd>
+                    <dd class="attachment-author">
+                        Gary S. Weaver
+                    </dd>
+                
+                        </dl>
+                    
+                </li>
+            
+                
+                
+
+                <li class="attachment-content ">
+                    
+                    
+                        <div class="attachment-thumb">
+                            <a href="/secure/attachment/10960/ldaputil_error.txt">
+                                
+
+    
+        <img src="/images/icons/attach/text.gif" height="16" width="16"
+             border="0" alt="Text File">        
+        
+    
+
+
+                            </a>
+                        </div>
+                        <dl>
+                            
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/10960/ldaputil_error.txt"
+                           title="Latest 01/Oct/07 8:47 AM - Gary S. Weaver">ldaputil_error.txt
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        01/Oct/07 8:47 AM</dd>
+                    <dd class="attachment-size">
+                        23 kB</dd>
+                    <dd class="attachment-author">
+                        Gary S. Weaver
+                    </dd>
+                
+                        </dl>
+                    
+                </li>
+            
+                
+                
+
+                <li class="attachment-content ">
+                    
+                    
+                        <div class="attachment-thumb">
+                            <a href="/secure/attachment/10970/sample-atlassian-user.xml">
+                                
+
+    
+        <img src="/images/icons/attach/xml.gif" height="16" width="16"
+             border="0" alt="XML File">        
+        
+    
+
+
+                            </a>
+                        </div>
+                        <dl>
+                            
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/10970/sample-atlassian-user.xml"
+                           title="Latest 03/Oct/07 1:01 PM - Gary S. Weaver">sample-atlassian-user.xml
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        03/Oct/07 1:01 PM</dd>
+                    <dd class="attachment-size">
+                        3 kB</dd>
+                    <dd class="attachment-author">
+                        Gary S. Weaver
+                    </dd>
+                
+                        </dl>
+                    
+                </li>
+            
+            </ol>
+    
+        
+
+        
+        </div>
+    </div>
+
+    
+
+
+                    
+                
+                
+                    <div class='module toggle-wrap' id='activitymodule'><div id='activitymodule_heading' class='mod-header'><h3 class='toggle-title'>Activity</h3></div><div class='mod-content'>    <div class="tabwrap tabs2">
+                    <div class="sortwrap">
+                                    <a class="icon icon-sort-down" rel="nofollow" href="/browse/SUSR-60?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                            </div>
+                <ul id="issue-tabs" class="tabs horizontal">
+                                    <li><a id="all-tabpanel" href="/browse/SUSR-60?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel#issue-tabs"><strong>All</strong></a></li>
+                                                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+                                                <li><a id="worklog-tabpanel" href="/browse/SUSR-60?page=com.atlassian.jira.plugin.system.issuetabpanels:worklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+                                                <li><a id="changehistory-tabpanel" href="/browse/SUSR-60?page=com.atlassian.jira.plugin.system.issuetabpanels:changehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+                                                <li><a id="activity-stream-issue-tab" href="/browse/SUSR-60?page=com.atlassian.streams.streams-jira-plugin:activity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+                            </ul>
+    </div>
+    <div class="issuePanelContainer" id="issue_actions_container">
+                        <div id="comment-14642" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14642&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14642" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14642_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14642_verbose subText'><span class='date user-tz' title='01/Oct/07 8:47 AM'><time datetime='2007-10-01T08:47-0700'>01/Oct/07 8:47 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>error: "getLdapEnvironment atlassian-user.xml not loaded, model not found, parse not called?" attached - ldaputil_error.txt</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14642_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14642_concise subText'><span class='date user-tz' title='01/Oct/07 8:47 AM'><time datetime='2007-10-01T08:47-0700'>01/Oct/07 8:47 AM</time></span></span>               error: "getLdapEnvironment atlassian-user.xml not loaded, model not found, parse not called?" attached - ldaputil_error.txt         </div>
+    </div>
+</div>
+                     <div id="comment-14643" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14643&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14643" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14643_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14643_verbose subText'><span class='date user-tz' title='01/Oct/07 8:49 AM'><time datetime='2007-10-01T08:49-0700'>01/Oct/07 8:49 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>ok, looking into it.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14643_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14643_concise subText'><span class='date user-tz' title='01/Oct/07 8:49 AM'><time datetime='2007-10-01T08:49-0700'>01/Oct/07 8:49 AM</time></span></span>               ok, looking into it.         </div>
+    </div>
+</div>
+                     <div id="comment-14645" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14645&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14645" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14645_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14645_verbose subText'><span class='date user-tz' title='01/Oct/07 11:06 AM'><time datetime='2007-10-01T11:06-0700'>01/Oct/07 11:06 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>I just built trunk csum with ldaputil 1.0.7, it 'configured' fine.  I created a csum group and added a few users.  I cannot reproduce this error in Confluence 2.5.6.</p>
+
+<p>I'll pull down confluence 2.5.7 but think this will be local to the configuration file.</p>
+
+<p>Please add 'debug' logs so that I can see what happened at parse time.</p>
+
+<p>Q.  If the 'test user' lookup worked during configuration, what is different now?</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14645_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14645_concise subText'><span class='date user-tz' title='01/Oct/07 11:06 AM'><time datetime='2007-10-01T11:06-0700'>01/Oct/07 11:06 AM</time></span></span>               I just built trunk csum with ldaputil 1.0.7, it 'configured' fine.  I created a csum group and added a few users.  I cannot reproduce this error in Confluence 2.5.6.
+
+I'll pull down confluence 2.5.7 but think this will be local to the configuration file.
+
+Please add 'debug' logs so that I can see what happened at parse time.
+
+Q.  If the 'test user' lookup worked during configuration, what is different now?         </div>
+    </div>
+</div>
+                     <div id="comment-14646" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14646&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14646" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14646_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14646_verbose subText'><span class='date user-tz' title='01/Oct/07 11:22 AM'><time datetime='2007-10-01T11:22-0700'>01/Oct/07 11:22 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Also, a sanitised atlassian-user.xml file would be good for info...</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14646_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14646_concise subText'><span class='date user-tz' title='01/Oct/07 11:22 AM'><time datetime='2007-10-01T11:22-0700'>01/Oct/07 11:22 AM</time></span></span>               Also, a sanitised atlassian-user.xml file would be good for info...         </div>
+    </div>
+</div>
+                     <div id="comment-14648" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14648&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14648" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14648_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14648_verbose subText'><span class='date user-tz' title='01/Oct/07 12:28 PM'><time datetime='2007-10-01T12:28-0700'>01/Oct/07 12:28 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Worked prior to the update to ldaputil 1.0.7. Sounds like Raju having the same/similar issue.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14648_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14648_concise subText'><span class='date user-tz' title='01/Oct/07 12:28 PM'><time datetime='2007-10-01T12:28-0700'>01/Oct/07 12:28 PM</time></span></span>               Worked prior to the update to ldaputil 1.0.7. Sounds like Raju having the same/similar issue.         </div>
+    </div>
+</div>
+                     <div id="comment-14649" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14649&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14649" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14649_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14649_verbose subText'><span class='date user-tz' title='01/Oct/07 12:34 PM'><time datetime='2007-10-01T12:34-0700'>01/Oct/07 12:34 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>attaching sample atlassian-user.xml</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14649_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14649_concise subText'><span class='date user-tz' title='01/Oct/07 12:34 PM'><time datetime='2007-10-01T12:34-0700'>01/Oct/07 12:34 PM</time></span></span>               attaching sample atlassian-user.xml         </div>
+    </div>
+</div>
+                     <div id="comment-14650" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14650&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14650" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14650_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14650_verbose subText'><span class='date user-tz' title='01/Oct/07 12:35 PM'><time datetime='2007-10-01T12:35-0700'>01/Oct/07 12:35 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>I'll also try testing this out in our other test environment just to be sure I didn't somehow screw something up in my local dev environment. However, test is messed up right now (for some reason can't ssh into one of the 2 nodes)</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14650_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14650_concise subText'><span class='date user-tz' title='01/Oct/07 12:35 PM'><time datetime='2007-10-01T12:35-0700'>01/Oct/07 12:35 PM</time></span></span>               I'll also try testing this out in our other test environment just to be sure I didn't somehow screw something up in my local dev environment. However, test is messed up right now (for some reason can't ssh into one of the 2 nodes)         </div>
+    </div>
+</div>
+                     <div id="comment-14691" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14691&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14691" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14691_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14691_verbose subText'><span class='date user-tz' title='03/Oct/07 1:01 PM'><time datetime='2007-10-03T13:01-0700'>03/Oct/07 1:01 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>attaching debug.txt and sample atlassian-user.xml from latest test of csum with pom.xml edited to use ldaputil 1.0.8.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14691_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14691_concise subText'><span class='date user-tz' title='03/Oct/07 1:01 PM'><time datetime='2007-10-03T13:01-0700'>03/Oct/07 1:01 PM</time></span></span>               attaching debug.txt and sample atlassian-user.xml from latest test of csum with pom.xml edited to use ldaputil 1.0.8.         </div>
+    </div>
+</div>
+                     <div id="comment-14712" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14712&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14712" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14712_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14712_verbose subText'><span class='date user-tz' title='04/Oct/07 7:22 AM'><time datetime='2007-10-04T07:22-0700'>04/Oct/07 7:22 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Raju reported that 1.0.8 worked for him, can you ensure you are using the correct jar?  How different is your setup to Raju?</p>
+
+<p>Will be looking at your configs now.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14712_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14712_concise subText'><span class='date user-tz' title='04/Oct/07 7:22 AM'><time datetime='2007-10-04T07:22-0700'>04/Oct/07 7:22 AM</time></span></span>               Raju reported that 1.0.8 worked for him, can you ensure you are using the correct jar?  How different is your setup to Raju?
+
+Will be looking at your configs now.         </div>
+    </div>
+</div>
+                     <div id="comment-14724" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14724&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14724" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14724_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14724_verbose subText'><span class='date user-tz' title='04/Oct/07 3:30 PM'><time datetime='2007-10-04T15:30-0700'>04/Oct/07 3:30 PM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 04/Oct/07 3:33 PM">edited</span> </div>
+        <div class="action-body flooded"><p>We're using atlassian-user and Raju is using osuser. I think maybe atlassian-user parsing is broken in 1.0.7 and 1.0.8 because of a missing dependency, since Raju said he noticed there were missing dependencies. I'm sure that I was using the correct jar.</p>
+
+<p>I just verified this again. I looked at local csum pom.xml. It is using ldaputil 1.0.8. Removed target dir, mvn clean install, uninstalled plugin in confluence 2.5.7, installed it, tried to open config screen and it checks the existing ldap info and has red error text over ldap stating " LDAP config test failed: Unable to parse atlassian-user file, SAX problem: Error at (1, 17: com.dolby.confluence.net.ldap.atlassianuser.AtlassianUserEl" which is same issue as before.</p>
+
+<p>Note: unit tests alone can't verify atlassian-user will parse correctly, so if that is what you are relying on, that is likely why you aren't seeing the issue. If you want to see the issue, you'll need to setup LDAP in atlassian-user.xml and specify atlassian-user in the csum config.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14724_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14724_concise subText'><span class='date user-tz' title='04/Oct/07 3:30 PM'><time datetime='2007-10-04T15:30-0700'>04/Oct/07 3:30 PM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 04/Oct/07 3:33 PM">edited</span>              We're using atlassian-user and Raju is using osuser. I think maybe atlassian-user parsing is broken in 1.0.7 and 1.0.8 because of a missing dependency, since Raju said he noticed there were missing dependencies. I'm sure that I was using the correct jar.
+
+I just verified this again. I looked at local csum pom.xml. It is using ldaputil 1.0.8. Removed target dir, mvn clean install, uninstalled plugin in confluence 2.5.7, installed it, tried to open config screen and it checks the existing ldap info and has red error text over ldap stating " LDAP config test failed: Unable to parse atlassian-user file, SAX problem: Error at (1, 17: com.dolby.confluence.net.ldap.atlassianuser.AtlassianUserEl" which is same issue as before.
+
+Note: unit tests alone can't verify atlassian-user will parse correctly, so if that is what you are relying on, that is likely why you aren't seeing the issue. If you want to see the issue, you'll need to setup LDAP in atlassian-user.xml and specify atlassian-user in the csum config.         </div>
+    </div>
+</div>
+                     <div id="comment-14729" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14729&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14729" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14729_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14729_verbose subText'><span class='date user-tz' title='05/Oct/07 3:53 AM'><time datetime='2007-10-05T03:53-0700'>05/Oct/07 3:53 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Strange.</p>
+
+<p>An old problem was that when these libraries didn't get bundled (specifically the digester), the confluence digester classes were used but they were loaded by a different classloader that could not dynamically instantiate the model classes required for the atlassian-user parse.</p>
+
+<p>In my csum pom, I depend on ldaputil 1.0.8, this has dependencies that are pulled in during the build of csum, I see the following in the mvn output:</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>[INFO] atlassian-pdk:bundle-jars
+[INFO] Bundling dependencies for 'permission-management' in /home/axb/workspaces/confluence/csum-trunk/target/classes
+[INFO] Bundling 'commons-beanutils' into plugin.
+[INFO] Bundling 'commons-digester' into plugin.
+[INFO] Bundling 'ldaputil' into plugin.
+[INFO] resources:testResources
+</pre>
+</div></div>
+
+<p>checking the jar content:</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>#~/workspaces/confluence/csum-trunk/target$ jar tf permission-management-2.0-SNAPSHOT.jar  | grep jar
+META-INF/lib/ldaputil-1.0.8.jar
+META-INF/lib/commons-digester-1.5.jar
+META-INF/lib/commons-beanutils-1.6.1.jar
+</pre>
+</div></div>
+
+<p>I've uploaded this to confluence 2.5.7, I'm also using atlassian-user.xml, and it works, hence confusion.  I'll step through point by point to see if I can spot something that may cause problems.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14729_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14729_concise subText'><span class='date user-tz' title='05/Oct/07 3:53 AM'><time datetime='2007-10-05T03:53-0700'>05/Oct/07 3:53 AM</time></span></span>               Strange.
+
+An old problem was that when these libraries didn't get bundled (specifically the digester), the confluence digester classes were used but they were loaded by a different classloader that could not dynamically instantiate the model classes required for the atlassian-user parse.
+
+In my csum pom, I depend on ldaputil 1.0.8, this has dependencies that are pulled in during the build of csum, I see the following in the mvn output:
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>[INFO] atlassian-pdk:bundle-jars
+[INFO] Bundling dependencies for 'permission-management' in /home/axb/workspaces/confluence/csum-trunk/target/classes
+[INFO] Bundling 'commons-beanutils' into plugin.
+[INFO] Bundling 'commons-digester' into plugin.
+[INFO] Bundling 'ldaputil' into plugin.
+[INFO] resources:testResources
+</pre>
+</div></div>
+
+checking the jar content:
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>#~/workspaces/confluence/csum-trunk/target$ jar tf permission-management-2.0-SNAPSHOT.jar  | grep jar
+META-INF/lib/ldaputil-1.0.8.jar
+META-INF/lib/commons-digester-1.5.jar
+META-INF/lib/commons-beanutils-1.6.1.jar
+</pre>
+</div></div>
+
+I've uploaded this to confluence 2.5.7, I'm also using atlassian-user.xml, and it works, hence confusion.  I'll step through point by point to see if I can spot something that may cause problems.         </div>
+    </div>
+</div>
+                     <div id="comment-14730" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14730&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14730" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14730_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14730_verbose subText'><span class='date user-tz' title='05/Oct/07 4:57 AM'><time datetime='2007-10-05T04:57-0700'>05/Oct/07 4:57 AM</time></span></span>   - <span class="redText subText" title="Andy Brook - 05/Oct/07 4:57 AM">edited</span> </div>
+        <div class="action-body flooded"><p>Heres the debug output from 1.0.8 lpdautil</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>10:40:35,646 INFO  [STDOUT] 2007-10-05 10:40:35,645 INFO [http-0.0.0.0-8041-1] [permissionmgmt.util.ldap.LDAPHelper] buildConfig LDAP Env: ldaputil.ldap.forceUserIDCase = 0
+10:40:35,647 INFO  [STDOUT] 2007-10-05 10:40:35,646 INFO [http-0.0.0.0-8041-1] [permissionmgmt.util.ldap.LDAPHelper] buildConfig LDAP Env: ldaputil.ldap.fullNameFormat = 0
+10:40:35,648 INFO  [STDOUT] 2007-10-05 10:40:35,647 INFO [http-0.0.0.0-8041-1] [permissionmgmt.util.ldap.LDAPHelper] buildConfig LDAP Env: ldaputil.providerType = atlassian-user
+10:40:35,649 INFO  [STDOUT] 2007-10-05 10:40:35,648 INFO [http-0.0.0.0-8041-1] [permissionmgmt.util.ldap.LDAPHelper] buildConfig LDAP Env: ldaputil.ldap.subtreeScope = 2
+10:40:35,706 INFO  [STDOUT] 2007-10-05 10:40:35,705 INFO [http-0.0.0.0-8041-1] [confluence.net.ldap.LDAPLookupUtil] processCommonConfig Processing common config
+10:40:37,064 INFO  [STDOUT] 2007-10-05 10:40:37,063 INFO [http-0.0.0.0-8041-1] [net.ldap.atlassianuser.AUParser] parse atlassian-user.xml parse completed.
+10:40:37,077 INFO  [STDOUT] 2007-10-05 10:40:37,076 INFO [http-0.0.0.0-8041-1] [confluence.net.ldap.LDAPLookupUtil] createInitialContext Creating InitialDirContext for LDAP server: ldap://server:389/dc=dolby,dc=net
+10:40:37,098 INFO  [STDOUT] 2007-10-05 10:40:37,094 INFO [http-0.0.0.0-8041-1] [confluence.net.ldap.LDAPLookupUtil] createInitialContext Context created.
+10:40:37,099 INFO  [STDOUT] 2007-10-05 10:40:37,098 INFO [http-0.0.0.0-8041-1] [confluence.net.ldap.LDAPLookupUtil] getUserDetails Searching for user [me] based on filter: (sAMAccountName=me)
+10:40:37,339 INFO  [STDOUT] 2007-10-05 10:40:37,338 INFO [http-0.0.0.0-8041-1] [user.impl.cache.CachingGroupManager] getGroups Retrieving groups for user [me]
+10:40:37,343 INFO  [STDOUT] 2007-10-05 10:40:37,342 INFO [http-0.0.0.0-8041-1] [user.impl.cache.CachingGroupManager] getGroups Retrieving groups for user [me]
+10:40:37,365 INFO  [STDOUT] 2007-10-05 10:40:37,364 INFO [http-0.0.0.0-8041-1] [user.impl.cache.CachingGroupManager] getGroups Retrieving groups for user [me]]
+10:40:37,369 INFO  [STDOUT] 2007-10-05 10:40:37,368 INFO [http-0.0.0.0-8041-1] [user.impl.cache.CachingGroupManager] getGroups Retrieving groups for user [me]
+</pre>
+</div></div>
+
+<p>Assuming your csum jar contains the necessary jars, including digester, I have no idea why the above doesn't happen for you. Your debug log shows </p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>2007-10-03 13:53:21,809 INFO [TP-Processor7] [net.ldap.atlassianuser.AUParser] parse atlassian-user.xml parse completed.
+</pre>
+</div></div>
+<p>Indicating the parse completed, this came directly after the assigned of the parse result:</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>fAtlassianUser = (AtlassianUserEl) gDigester.parse(is);
+LOG.info(AU_XML_FILENAME + " parse completed.");
+</pre>
+</div></div>
+
+<p>The subsequent error message you get:</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>2007-10-03 13:53:21,810 ERROR [TP-Processor7] [net.ldap.atlassianuser.AUParser] getLdapEnvironment atlassian-user.xml not loaded, model not found, parse not called?
+</pre>
+</div></div>
+
+<p>Is caused by the else of:</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>if (fAtlassianUser != null) {...}
+else
+{
+	String msg = AU_XML_FILENAME + " not loaded, model not found, parse not called?";
+	LOG.error(msg);
+	throw new LDAPException(msg);
+}
+</pre>
+</div></div>
+
+<p>What I don't understand is how this can happen, if the parse worked, the variable is assigned and your error should not occur, but it does.  Could you try debugging the parse and getLdapEnvironment methods to see that the AUParser object is the same in both cases, it should be as its a Singleton.  </p>
+
+<p>Not much help I'm afraid, the Unit Tests do their thing, could you try running those - copy your atlassian-user.xml file into the src/test/resources folder and run the atlassian-user tests (you'll have to uncomment them).  I've found mave2 in eclipse a bit flakey, running from the command line works, if you have trouble with your IDE, try that.</p>
+
+<p>Waiting for your feedback!<br/>
+andy.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14730_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14730_concise subText'><span class='date user-tz' title='05/Oct/07 4:57 AM'><time datetime='2007-10-05T04:57-0700'>05/Oct/07 4:57 AM</time></span></span>   - <span class="redText subText" title="Andy Brook - 05/Oct/07 4:57 AM">edited</span>              Heres the debug output from 1.0.8 lpdautil
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>10:40:35,646 INFO  [STDOUT] 2007-10-05 10:40:35,645 INFO [http-0.0.0.0-8041-1] [permissionmgmt.util.ldap.LDAPHelper] buildConfig LDAP Env: ldaputil.ldap.forceUserIDCase = 0
+10:40:35,647 INFO  [STDOUT] 2007-10-05 10:40:35,646 INFO [http-0.0.0.0-8041-1] [permissionmgmt.util.ldap.LDAPHelper] buildConfig LDAP Env: ldaputil.ldap.fullNameFormat = 0
+10:40:35,648 INFO  [STDOUT] 2007-10-05 10:40:35,647 INFO [http-0.0.0.0-8041-1] [permissionmgmt.util.ldap.LDAPHelper] buildConfig LDAP Env: ldaputil.providerType = atlassian-user
+10:40:35,649 INFO  [STDOUT] 2007-10-05 10:40:35,648 INFO [http-0.0.0.0-8041-1] [permissionmgmt.util.ldap.LDAPHelper] buildConfig LDAP Env: ldaputil.ldap.subtreeScope = 2
+10:40:35,706 INFO  [STDOUT] 2007-10-05 10:40:35,705 INFO [http-0.0.0.0-8041-1] [confluence.net.ldap.LDAPLookupUtil] processCommonConfig Processing common config
+10:40:37,064 INFO  [STDOUT] 2007-10-05 10:40:37,063 INFO [http-0.0.0.0-8041-1] [net.ldap.atlassianuser.AUParser] parse atlassian-user.xml parse completed.
+10:40:37,077 INFO  [STDOUT] 2007-10-05 10:40:37,076 INFO [http-0.0.0.0-8041-1] [confluence.net.ldap.LDAPLookupUtil] createInitialContext Creating InitialDirContext for LDAP server: ldap://server:389/dc=dolby,dc=net
+10:40:37,098 INFO  [STDOUT] 2007-10-05 10:40:37,094 INFO [http-0.0.0.0-8041-1] [confluence.net.ldap.LDAPLookupUtil] createInitialContext Context created.
+10:40:37,099 INFO  [STDOUT] 2007-10-05 10:40:37,098 INFO [http-0.0.0.0-8041-1] [confluence.net.ldap.LDAPLookupUtil] getUserDetails Searching for user [me] based on filter: (sAMAccountName=me)
+10:40:37,339 INFO  [STDOUT] 2007-10-05 10:40:37,338 INFO [http-0.0.0.0-8041-1] [user.impl.cache.CachingGroupManager] getGroups Retrieving groups for user [me]
+10:40:37,343 INFO  [STDOUT] 2007-10-05 10:40:37,342 INFO [http-0.0.0.0-8041-1] [user.impl.cache.CachingGroupManager] getGroups Retrieving groups for user [me]
+10:40:37,365 INFO  [STDOUT] 2007-10-05 10:40:37,364 INFO [http-0.0.0.0-8041-1] [user.impl.cache.CachingGroupManager] getGroups Retrieving groups for user [me]]
+10:40:37,369 INFO  [STDOUT] 2007-10-05 10:40:37,368 INFO [http-0.0.0.0-8041-1] [user.impl.cache.CachingGroupManager] getGroups Retrieving groups for user [me]
+</pre>
+</div></div>
+
+Assuming your csum jar contains the necessary jars, including digester, I have no idea why the above doesn't happen for you. Your debug log shows 
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>2007-10-03 13:53:21,809 INFO [TP-Processor7] [net.ldap.atlassianuser.AUParser] parse atlassian-user.xml parse completed.
+</pre>
+</div></div>
+Indicating the parse completed, this came directly after the assigned of the parse result:
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>fAtlassianUser = (AtlassianUserEl) gDigester.parse(is);
+LOG.info(AU_XML_FILENAME + " parse completed.");
+</pre>
+</div></div>
+
+The subsequent error message you get:
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>2007-10-03 13:53:21,810 ERROR [TP-Processor7] [net.ldap.atlassianuser.AUParser] getLdapEnvironment atlassian-user.xml not loaded, model not found, parse not called?
+</pre>
+</div></div>
+
+Is caused by the else of:
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>if (fAtlassianUser != null) {...}
+else
+{
+	String msg = AU_XML_FILENAME + " not loaded, model not found, parse not called?";
+	LOG.error(msg);
+	throw new LDAPException(msg);
+}
+</pre>
+</div></div>
+
+What I don't understand is how this can happen, if the parse worked, the variable is assigned and your error should not occur, but it does.  Could you try debugging the parse and getLdapEnvironment methods to see that the AUParser object is the same in both cases, it should be as its a Singleton.  
+
+Not much help I'm afraid, the Unit Tests do their thing, could you try running those - copy your atlassian-user.xml file into the src/test/resources folder and run the atlassian-user tests (you'll have to uncomment them).  I've found mave2 in eclipse a bit flakey, running from the command line works, if you have trouble with your IDE, try that.
+
+Waiting for your feedback!
+andy.         </div>
+    </div>
+</div>
+                     <div id="comment-14737" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14737&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14737" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14737_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14737_verbose subText'><span class='date user-tz' title='05/Oct/07 9:33 AM'><time datetime='2007-10-05T09:33-0700'>05/Oct/07 9:33 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Andy,</p>
+
+<p>The only code I really call in ldaputil from csum is here, and those two methods aren't called from it (at least as of 1.0.6 they didn't have to be):<br/>
+<a href="http://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk/src/main/java/csum/confluence/permissionmgmt/util/ldap/LDAPHelper.java">http://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk/src/main/java/csum/confluence/permissionmgmt/util/ldap/LDAPHelper.java</a></p>
+
+<p>I'm assuming you mean getting the latest trunk version of ldaputil and adding the debug logging into that and using that? I'll try that and let you know what happens.</p>
+
+<p>Thanks,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14737_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14737_concise subText'><span class='date user-tz' title='05/Oct/07 9:33 AM'><time datetime='2007-10-05T09:33-0700'>05/Oct/07 9:33 AM</time></span></span>               Andy,
+
+The only code I really call in ldaputil from csum is here, and those two methods aren't called from it (at least as of 1.0.6 they didn't have to be):
+<a href="http://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk/src/main/java/csum/confluence/permissionmgmt/util/ldap/LDAPHelper.java">http://svn.atlassian.com/svn/public/contrib/confluence/custom-space-user-management/trunk/src/main/java/csum/confluence/permissionmgmt/util/ldap/LDAPHelper.java</a>
+
+I'm assuming you mean getting the latest trunk version of ldaputil and adding the debug logging into that and using that? I'll try that and let you know what happens.
+
+Thanks,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-14738" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14738&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14738" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14738_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14738_verbose subText'><span class='date user-tz' title='05/Oct/07 10:01 AM'><time datetime='2007-10-05T10:01-0700'>05/Oct/07 10:01 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Yes, I've drawn a blank, having debugged through my atlassian-user initialisation that works fine, I just cant see how your error happens, not too helpful I know.  Let me know how you get on.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14738_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14738_concise subText'><span class='date user-tz' title='05/Oct/07 10:01 AM'><time datetime='2007-10-05T10:01-0700'>05/Oct/07 10:01 AM</time></span></span>               Yes, I've drawn a blank, having debugged through my atlassian-user initialisation that works fine, I just cant see how your error happens, not too helpful I know.  Let me know how you get on.         </div>
+    </div>
+</div>
+                     <div id="comment-14739" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14739&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14739" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14739_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14739_verbose subText'><span class='date user-tz' title='05/Oct/07 10:11 AM'><time datetime='2007-10-05T10:11-0700'>05/Oct/07 10:11 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>I'm thoroughly confused. I added the debug logging to ldaputil, did "mvn -Dmaven.test.skip=true clean install", made sure the pom.xml in csum was pointed at ldap 1.0.9-SNAPSHOT, did "mvn clean install" and ran it and it worked in my local dev environment. I don't know what changed between 1.0.8 and 1.0.9-SNAPSHOT, but maybe it fixed it. I can't test in my other test environment currently because of an "access denied" issue which started in our dual node test environment a few weeks ago. <img class="emoticon" src="/images/icons/emoticons/sad.gif" height="20" width="20" align="absmiddle" alt="" border="0"/> I don't see any ldaputil code changes between those releases that would have made any difference (did svn diff -<a wysiwyg="macro:_appLink" href="https://studio.plugins.atlassian.com/source/changelog/SUSR/?cs=10765">r10765</a>:10803 ).</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14739_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14739_concise subText'><span class='date user-tz' title='05/Oct/07 10:11 AM'><time datetime='2007-10-05T10:11-0700'>05/Oct/07 10:11 AM</time></span></span>               I'm thoroughly confused. I added the debug logging to ldaputil, did "mvn -Dmaven.test.skip=true clean install", made sure the pom.xml in csum was pointed at ldap 1.0.9-SNAPSHOT, did "mvn clean install" and ran it and it worked in my local dev environment. I don't know what changed between 1.0.8 and 1.0.9-SNAPSHOT, but maybe it fixed it. I can't test in my other test environment currently because of an "access denied" issue which started in our dual node test environment a few weeks ago. <img class="emoticon" src="/images/icons/emoticons/sad.gif" height="20" width="20" align="absmiddle" alt="" border="0"/> I don't see any ldaputil code changes between those releases that would have made any difference (did svn diff -<a wysiwyg="macro:_appLink" href="https://studio.plugins.atlassian.com/source/changelog/SUSR/?cs=10765">r10765</a>:10803 ).         </div>
+    </div>
+</div>
+                     <div id="comment-14740" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14740&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14740" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14740_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14740_verbose subText'><span class='date user-tz' title='05/Oct/07 10:14 AM'><time datetime='2007-10-05T10:14-0700'>05/Oct/07 10:14 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>heh, yea.  I ahvent actually made (that I can think of) any changes in 1.0.9-SNAPSHOT, it was just a pom update after a fix the other day for 1.0.8...  </p>
+
+<p>well, build it, test it, if you're happy Ill release 1.0.9 and we're done <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14740_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14740_concise subText'><span class='date user-tz' title='05/Oct/07 10:14 AM'><time datetime='2007-10-05T10:14-0700'>05/Oct/07 10:14 AM</time></span></span>               heh, yea.  I ahvent actually made (that I can think of) any changes in 1.0.9-SNAPSHOT, it was just a pom update after a fix the other day for 1.0.8...  
+
+well, build it, test it, if you're happy Ill release 1.0.9 and we're done <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/>         </div>
+    </div>
+</div>
+                     <div id="comment-14741" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14741&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14741" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14741_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14741_verbose subText'><span class='date user-tz' title='05/Oct/07 10:46 AM'><time datetime='2007-10-05T10:46-0700'>05/Oct/07 10:46 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Ok, I think I figured this out. The jar deployed to Atlassian is not 1.0.8 that is built when you build it locally. Will verify that when I come back from lunch.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14741_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14741_concise subText'><span class='date user-tz' title='05/Oct/07 10:46 AM'><time datetime='2007-10-05T10:46-0700'>05/Oct/07 10:46 AM</time></span></span>               Ok, I think I figured this out. The jar deployed to Atlassian is not 1.0.8 that is built when you build it locally. Will verify that when I come back from lunch.         </div>
+    </div>
+</div>
+                     <div id="comment-14744" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14744&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14744" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14744_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14744_verbose subText'><span class='date user-tz' title='05/Oct/07 1:24 PM'><time datetime='2007-10-05T13:24-0700'>05/Oct/07 1:24 PM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 05/Oct/07 1:25 PM">edited</span> </div>
+        <div class="action-body flooded"><p>Without changing code or poms, I checked out ldaputil 1.0.8 tag, built it without running tests. Then I deleted my local m2 repository, rebuilt csum so it could get ldaputil 1.0.8 from the atlassian repository. They are different sizes:</p>
+
+<p>The one I got from the atlassian maven 2 repository:<br/>
+<del>rw-r</del><del>r</del>-   1 &#8212;  &#8212;  32140 Oct  5 14:09 ldaputil-1.0.8.jar</p>
+
+<p>The one I built from the ldaputil 1.0.8 tag:<br/>
+<del>rw-r</del><del>r</del>-   1 &#8212;  &#8212;  32269 Oct  5 14:06 ../../../../ldaputil-1.0.8.jar</p>
+
+<p>Difference in MANIFEST is obvious:</p>
+
+<p>diff META-INF/MANIFEST.MF ../target/tmp/META-INF/lib/META-INF/MANIFEST.MF <br/>
+4,5c4,5<br/>
+&lt; Built-By: garyweaver<br/>
+&lt; Build-Jdk: 1.5.0_07<br/>
+&#8212;<br/>
+&gt; Built-By: axb<br/>
+&gt; Build-Jdk: 1.5.0_11</p>
+
+<p>But look, the AUParser class is different even though the ILdapEnvironmentProvider class isn't different between the two:<br/>
+$ diff com/dolby/confluence/net/ldap/atlassianuser/AUParser.class ../target/tmp/META-INF/lib/com/dolby/confluence/net/ldap/atlassianuser/AUParser.class   <br/>
+Binary files com/dolby/confluence/net/ldap/atlassianuser/AUParser.class and ../target/tmp/META-INF/lib/com/dolby/confluence/net/ldap/atlassianuser/AUParser.class differ<br/>
+$ diff com/dolby/confluence/net/ldap/ILdapEnvironmentProvider.class ../target/tmp/META-INF/lib/com/dolby/confluence/net/ldap/ILdapEnvironmentProvider.class <br/>
+$</p>
+
+<p>It looks like maybe you deployed an earlier version of 1.0.8 to the atlassian maven 2 repository?</p>
+
+<p>I don't know if you want to try redeploying 1.0.8 just to keep it straight in the repository, but just to make sure it might be good to do a super-clean deploy of ldap 1.0.9 and lets see if that helps.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14744_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14744_concise subText'><span class='date user-tz' title='05/Oct/07 1:24 PM'><time datetime='2007-10-05T13:24-0700'>05/Oct/07 1:24 PM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 05/Oct/07 1:25 PM">edited</span>              Without changing code or poms, I checked out ldaputil 1.0.8 tag, built it without running tests. Then I deleted my local m2 repository, rebuilt csum so it could get ldaputil 1.0.8 from the atlassian repository. They are different sizes:
+
+The one I got from the atlassian maven 2 repository:
+<del>rw-r</del><del>r</del>-   1 &#8212;  &#8212;  32140 Oct  5 14:09 ldaputil-1.0.8.jar
+
+The one I built from the ldaputil 1.0.8 tag:
+<del>rw-r</del><del>r</del>-   1 &#8212;  &#8212;  32269 Oct  5 14:06 ../../../../ldaputil-1.0.8.jar
+
+Difference in MANIFEST is obvious:
+
+diff META-INF/MANIFEST.MF ../target/tmp/META-INF/lib/META-INF/MANIFEST.MF 
+4,5c4,5
+&lt; Built-By: garyweaver
+&lt; Build-Jdk: 1.5.0_07
+&#8212;
+&gt; Built-By: axb
+&gt; Build-Jdk: 1.5.0_11
+
+But look, the AUParser class is different even though the ILdapEnvironmentProvider class isn't different between the two:
+$ diff com/dolby/confluence/net/ldap/atlassianuser/AUParser.class ../target/tmp/META-INF/lib/com/dolby/confluence/net/ldap/atlassianuser/AUParser.class   
+Binary files com/dolby/confluence/net/ldap/atlassianuser/AUParser.class and ../target/tmp/META-INF/lib/com/dolby/confluence/net/ldap/atlassianuser/AUParser.class differ
+$ diff com/dolby/confluence/net/ldap/ILdapEnvironmentProvider.class ../target/tmp/META-INF/lib/com/dolby/confluence/net/ldap/ILdapEnvironmentProvider.class 
+$
+
+It looks like maybe you deployed an earlier version of 1.0.8 to the atlassian maven 2 repository?
+
+I don't know if you want to try redeploying 1.0.8 just to keep it straight in the repository, but just to make sure it might be good to do a super-clean deploy of ldap 1.0.9 and lets see if that helps.         </div>
+    </div>
+</div>
+                     <div id="comment-14750" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14750&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14750" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14750_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14750_verbose subText'><span class='date user-tz' title='05/Oct/07 4:32 PM'><time datetime='2007-10-05T16:32-0700'>05/Oct/07 4:32 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Zzz long night.  ok 1.0.9 is in the repository, please verify it works for you.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14750_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14750_concise subText'><span class='date user-tz' title='05/Oct/07 4:32 PM'><time datetime='2007-10-05T16:32-0700'>05/Oct/07 4:32 PM</time></span></span>               Zzz long night.  ok 1.0.9 is in the repository, please verify it works for you.         </div>
+    </div>
+</div>
+                     <div id="comment-14765" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14765&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14765" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14765_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14765_verbose subText'><span class='date user-tz' title='08/Oct/07 7:43 AM'><time datetime='2007-10-08T07:43-0700'>08/Oct/07 7:43 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 08/Oct/07 7:45 AM">edited</span> </div>
+        <div class="action-body flooded"><p>Andy,</p>
+
+<p>Didn't work. Are you absolutely sure that you are doing a clean build of ldaputil and updating the one in the Atlassian repository with the freshly build 1.0.9 version of the library?</p>
+
+<p>It works for me when I build ldaputil locally and the classes in the jar that is built and installed in the local repository is different than the one in the Atlassian Maven 2 repository, leading me to believe that you may be installing the wrong version of ldaputil in the Atlassian repository, but with the newer pom version somehow.</p>
+
+<p>Maybe try:</p>
+
+<ul>
+	<li>delete old local repository<br/>
+rm -rf ~/.m2/repository</li>
+</ul>
+
+
+<ul>
+	<li>install maven 2 atlassian-pdk<br/>
+mkdir tmp<br/>
+cd tmp<br/>
+svn co <a href="http://svn.atlassian.com/svn/public/contrib/maven-plugins/com.atlassian.maven.plugins/atlassian-pdk/tags/2.1.1/">http://svn.atlassian.com/svn/public/contrib/maven-plugins/com.atlassian.maven.plugins/atlassian-pdk/tags/2.1.1/</a><br/>
+cd 2.1.1<br/>
+mvn clean install</li>
+</ul>
+
+
+<ul>
+	<li>cd to ldaputil 1.0.9 tag<br/>
+cd (tag)</li>
+</ul>
+
+
+<ul>
+	<li>do an ensured clean build<br/>
+rm -rf target<br/>
+mvn -Dmaven.test.skip=true clean install</li>
+</ul>
+
+
+<ul>
+	<li>deploy to atlassian repository<br/>
+(check this command to be absolutely sure you are deploying the jar you just built from the correct directory - this is where I think things are going wrong...)</li>
+</ul>
+
+
+<p>I don't know what else to say. I checked this out pretty thoroughly I'd thought on Friday and determined that the dependency you deployed for 1.0.8 was not built from the same source as the 1.0.8 tag, and now today 1.0.9 is not working either, although I know for sure that there were no significant changes in the code between 1.0.8 and 1.0.9 as of Friday.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14765_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14765_concise subText'><span class='date user-tz' title='08/Oct/07 7:43 AM'><time datetime='2007-10-08T07:43-0700'>08/Oct/07 7:43 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 08/Oct/07 7:45 AM">edited</span>              Andy,
+
+Didn't work. Are you absolutely sure that you are doing a clean build of ldaputil and updating the one in the Atlassian repository with the freshly build 1.0.9 version of the library?
+
+It works for me when I build ldaputil locally and the classes in the jar that is built and installed in the local repository is different than the one in the Atlassian Maven 2 repository, leading me to believe that you may be installing the wrong version of ldaputil in the Atlassian repository, but with the newer pom version somehow.
+
+Maybe try:
+
+<ul>
+	<li>delete old local repository
+rm -rf ~/.m2/repository</li>
+</ul>
+
+
+<ul>
+	<li>install maven 2 atlassian-pdk
+mkdir tmp
+cd tmp
+svn co <a href="http://svn.atlassian.com/svn/public/contrib/maven-plugins/com.atlassian.maven.plugins/atlassian-pdk/tags/2.1.1/">http://svn.atlassian.com/svn/public/contrib/maven-plugins/com.atlassian.maven.plugins/atlassian-pdk/tags/2.1.1/</a>
+cd 2.1.1
+mvn clean install</li>
+</ul>
+
+
+<ul>
+	<li>cd to ldaputil 1.0.9 tag
+cd (tag)</li>
+</ul>
+
+
+<ul>
+	<li>do an ensured clean build
+rm -rf target
+mvn -Dmaven.test.skip=true clean install</li>
+</ul>
+
+
+<ul>
+	<li>deploy to atlassian repository
+(check this command to be absolutely sure you are deploying the jar you just built from the correct directory - this is where I think things are going wrong...)</li>
+</ul>
+
+
+I don't know what else to say. I checked this out pretty thoroughly I'd thought on Friday and determined that the dependency you deployed for 1.0.8 was not built from the same source as the 1.0.8 tag, and now today 1.0.9 is not working either, although I know for sure that there were no significant changes in the code between 1.0.8 and 1.0.9 as of Friday.         </div>
+    </div>
+</div>
+                     <div id="comment-14766" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14766&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14766" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14766_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14766_verbose subText'><span class='date user-tz' title='08/Oct/07 7:57 AM'><time datetime='2007-10-08T07:57-0700'>08/Oct/07 7:57 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Investigating...</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14766_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14766_concise subText'><span class='date user-tz' title='08/Oct/07 7:57 AM'><time datetime='2007-10-08T07:57-0700'>08/Oct/07 7:57 AM</time></span></span>               Investigating...         </div>
+    </div>
+</div>
+                     <div id="comment-14767" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14767&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14767" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14767_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14767_verbose subText'><span class='date user-tz' title='08/Oct/07 8:42 AM'><time datetime='2007-10-08T08:42-0700'>08/Oct/07 8:42 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>well, local ldaputil tree has no changes pending in either direction, the JAR in the target folder (when I built it no Friday night) is the same one that comes down from the repository (md5sum match).</p>
+
+<p>The local project build compliance is 1.4, the pom is set for 1.4.</p>
+
+<p>I just built csum here, it only included the ldaputil, not the required digester dependency.  I thought this auto-bundling worked, it did the last time I checked, and a missing digester jar in csum would cause atlassian-user based configs to fail with cant find AtlassianUserEl or similar.</p>
+
+<p>I guess I am heavily depending on the SVN integration for eclipse, I sure hope that isn't the problem.</p>
+
+<p>I just checked out the 1.0.9 tag and built it.  Strangely, after building, I rebuild csum, and it magically included the additional dependencies. Hmmm.</p>
+
+<p>Given that it now does something it didnt do previously, and seeing as technically I haven't changed anything for 1.0.9, I've re-uploaded 1.0.9 to the repository.  Im at home right now so resources are scarce, will try to get a csum build deployed.  If you can test that would be great <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/></p>
+ </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14767_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14767_concise subText'><span class='date user-tz' title='08/Oct/07 8:42 AM'><time datetime='2007-10-08T08:42-0700'>08/Oct/07 8:42 AM</time></span></span>               well, local ldaputil tree has no changes pending in either direction, the JAR in the target folder (when I built it no Friday night) is the same one that comes down from the repository (md5sum match).
+
+The local project build compliance is 1.4, the pom is set for 1.4.
+
+I just built csum here, it only included the ldaputil, not the required digester dependency.  I thought this auto-bundling worked, it did the last time I checked, and a missing digester jar in csum would cause atlassian-user based configs to fail with cant find AtlassianUserEl or similar.
+
+I guess I am heavily depending on the SVN integration for eclipse, I sure hope that isn't the problem.
+
+I just checked out the 1.0.9 tag and built it.  Strangely, after building, I rebuild csum, and it magically included the additional dependencies. Hmmm.
+
+Given that it now does something it didnt do previously, and seeing as technically I haven't changed anything for 1.0.9, I've re-uploaded 1.0.9 to the repository.  Im at home right now so resources are scarce, will try to get a csum build deployed.  If you can test that would be great <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/>
+         </div>
+    </div>
+</div>
+                     <div id="comment-14768" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14768&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14768" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14768_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14768_verbose subText'><span class='date user-tz' title='08/Oct/07 9:37 AM'><time datetime='2007-10-08T09:37-0700'>08/Oct/07 9:37 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>I took CSUM current, with 1.0.9 rebuilt from TAG, fresh install of 2.5.7 with demo site, and csum plugin installed and configured.  Gary? any luck?</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14768_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14768_concise subText'><span class='date user-tz' title='08/Oct/07 9:37 AM'><time datetime='2007-10-08T09:37-0700'>08/Oct/07 9:37 AM</time></span></span>               I took CSUM current, with 1.0.9 rebuilt from TAG, fresh install of 2.5.7 with demo site, and csum plugin installed and configured.  Gary? any luck?         </div>
+    </div>
+</div>
+                     <div id="comment-14769" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14769&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14769" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14769_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14769_verbose subText'><span class='date user-tz' title='08/Oct/07 10:09 AM'><time datetime='2007-10-08T10:09-0700'>08/Oct/07 10:09 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>No luck. As I said previously, it does work with 1.0.6, and it works if I build ldaputil 1.0.8 from tag locally and set pom.xml to use the locally built version.</p>
+
+<p>Could you please try what I mentioned and make sure that the version you are deploying to the atlassian maven 2 repository is good?</p>
+
+<p>If you don't have time, then if you can just give me the command you used to install ldaputil to Atlassian, I can try building it here and deploying it to Atlassian to see if that helps.</p>
+
+<p>My Mac Pro died this morning because of a firmware update to the fan (totally hosed it- have to take it to apple store they said). And I just got a dev environment working<br/>
+on a spare laptop.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14769_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14769_concise subText'><span class='date user-tz' title='08/Oct/07 10:09 AM'><time datetime='2007-10-08T10:09-0700'>08/Oct/07 10:09 AM</time></span></span>               No luck. As I said previously, it does work with 1.0.6, and it works if I build ldaputil 1.0.8 from tag locally and set pom.xml to use the locally built version.
+
+Could you please try what I mentioned and make sure that the version you are deploying to the atlassian maven 2 repository is good?
+
+If you don't have time, then if you can just give me the command you used to install ldaputil to Atlassian, I can try building it here and deploying it to Atlassian to see if that helps.
+
+My Mac Pro died this morning because of a firmware update to the fan (totally hosed it- have to take it to apple store they said). And I just got a dev environment working
+on a spare laptop.         </div>
+    </div>
+</div>
+                     <div id="comment-14771" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14771&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14771" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14771_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14771_verbose subText'><span class='date user-tz' title='08/Oct/07 1:56 PM'><time datetime='2007-10-08T13:56-0700'>08/Oct/07 1:56 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>I wondered why it all went quiet.  Sorry, did you firmware update to a FAN... the mind boggles!</p>
+
+<p>OK, so to clarify, I took your suggestion and did as follows </p>
+<ul>
+	<li>cleared out the local ldaputil structure from the repo (I didn't really want to kill the whole repo):</li>
+	<li>I had the pdk 2.1.1 already - I've never messed with the source so could only have got it built by version</li>
+	<li>checked out 1.0.9 TAG</li>
+	<li>built TAG and deployed back to repository (clean install flushes the target folder reliably.  Jars built and deployed to the repo always come back from the repo 100%, md5sum corroborate.</li>
+</ul>
+
+
+<p>How do I deploy to the atlassian repo?<br/>
+In my eclipse environment, I have the SVN location for the maven2 ldaputil folder checked out.  To release a new version I create a folder manually locally, copy the built jar and pom into it, then run a script to generate md5 files.  After this I add to SVN and commit.  There is nothing more going on.</p>
+
+<p>I'm happy for you to investigate the problem further as I cannot replicate.  The SVN path to the atlassian repo is:<br/>
+<a href="https://svn.atlassian.com/svn/public/contrib/repository/maven2/com/dolby/confluence/net/ldaputil">https://svn.atlassian.com/svn/public/contrib/repository/maven2/com/dolby/confluence/net/ldaputil</a></p>
+
+<p>I'll check through the 1.06-109 tags for differences, now my head has cleared after the weekend lurgi, but you may have more luck as you're the only one who can see this issue...</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14771_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14771_concise subText'><span class='date user-tz' title='08/Oct/07 1:56 PM'><time datetime='2007-10-08T13:56-0700'>08/Oct/07 1:56 PM</time></span></span>               I wondered why it all went quiet.  Sorry, did you firmware update to a FAN... the mind boggles!
+
+OK, so to clarify, I took your suggestion and did as follows 
+<ul>
+	<li>cleared out the local ldaputil structure from the repo (I didn't really want to kill the whole repo):</li>
+	<li>I had the pdk 2.1.1 already - I've never messed with the source so could only have got it built by version</li>
+	<li>checked out 1.0.9 TAG</li>
+	<li>built TAG and deployed back to repository (clean install flushes the target folder reliably.  Jars built and deployed to the repo always come back from the repo 100%, md5sum corroborate.</li>
+</ul>
+
+
+How do I deploy to the atlassian repo?
+In my eclipse environment, I have the SVN location for the maven2 ldaputil folder checked out.  To release a new version I create a folder manually locally, copy the built jar and pom into it, then run a script to generate md5 files.  After this I add to SVN and commit.  There is nothing more going on.
+
+I'm happy for you to investigate the problem further as I cannot replicate.  The SVN path to the atlassian repo is:
+<a href="https://svn.atlassian.com/svn/public/contrib/repository/maven2/com/dolby/confluence/net/ldaputil">https://svn.atlassian.com/svn/public/contrib/repository/maven2/com/dolby/confluence/net/ldaputil</a>
+
+I'll check through the 1.06-109 tags for differences, now my head has cleared after the weekend lurgi, but you may have more luck as you're the only one who can see this issue...         </div>
+    </div>
+</div>
+                     <div id="comment-14784" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14784&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14784" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14784_verbose" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14784_verbose subText'><span class='date user-tz' title='09/Oct/07 9:13 AM'><time datetime='2007-10-09T09:13-0700'>09/Oct/07 9:13 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>OK, it took a while but I finally figured it out.  My 'what could go wrong' deploy process to the repository had a problem <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/>  </p>
+
+<p>I managed to deploy the poms as .pom.xml not .pom, which meant that the compile time dependencies would always be met when downloading fresh but the transitive dependencies would always be lost, and consequently never work live.  I've verified this by clearing out the ldaputil tree in the local repo, and building csum from the command line, for 1.0.7, 1.0.8 and 1.0.9, they all now build.  Gary, can you please check 1.0.9 works for you?</p>
+
+<p>How it worked for me I can only assume I'm not poking it in the way you are....  When building, you should see the pom get downloaded, which was the hint, as 1.0.6 did , but the other did not...</p>
+
+<p>I should have spotted this sooner :/</p>
+
+<p>cheers!</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="abrook" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14784_concise" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+ added a comment  - <span class='commentdate_14784_concise subText'><span class='date user-tz' title='09/Oct/07 9:13 AM'><time datetime='2007-10-09T09:13-0700'>09/Oct/07 9:13 AM</time></span></span>               OK, it took a while but I finally figured it out.  My 'what could go wrong' deploy process to the repository had a problem <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/>  
+
+I managed to deploy the poms as .pom.xml not .pom, which meant that the compile time dependencies would always be met when downloading fresh but the transitive dependencies would always be lost, and consequently never work live.  I've verified this by clearing out the ldaputil tree in the local repo, and building csum from the command line, for 1.0.7, 1.0.8 and 1.0.9, they all now build.  Gary, can you please check 1.0.9 works for you?
+
+How it worked for me I can only assume I'm not poking it in the way you are....  When building, you should see the pom get downloaded, which was the hint, as 1.0.6 did , but the other did not...
+
+I should have spotted this sooner :/
+
+cheers!         </div>
+    </div>
+</div>
+                     <div id="comment-14788" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14788&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14788" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14788_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14788_verbose subText'><span class='date user-tz' title='09/Oct/07 4:03 PM'><time datetime='2007-10-09T16:03-0700'>09/Oct/07 4:03 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Andy,</p>
+
+<p>Thanks! That worked. (Tried it earlier today.) Committed change to pom.xml so that is done. Ran into some other unrelated problems that I'll need to track down before final release, but this ticket is closed!</p>
+
+<p>Thanks so much for doing this.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14788_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_14788_concise subText'><span class='date user-tz' title='09/Oct/07 4:03 PM'><time datetime='2007-10-09T16:03-0700'>09/Oct/07 4:03 PM</time></span></span>               Andy,
+
+Thanks! That worked. (Tried it earlier today.) Committed change to pom.xml so that is done. Ran into some other unrelated problems that I'll need to track down before final release, but this ticket is closed!
+
+Thanks so much for doing this.
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-14794" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SUSR-60?focusedCommentId=14794&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-14794" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="rakadam" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14794_verbose" href="/secure/ViewProfile.jspa?name=rakadam">Rajendra Kadam</a>
+ added a comment  - <span class='commentdate_14794_verbose subText'><span class='date user-tz' title='09/Oct/07 8:48 PM'><time datetime='2007-10-09T20:48-0700'>09/Oct/07 8:48 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Thanks Guys.</p>
+
+<p>I will try to do as much testing as possible. (There are two bugs opened by user on my name) Will look into it. </p>
+
+<p>cheers,<br/>
+Rajendra</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="rakadam" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_14794_concise" href="/secure/ViewProfile.jspa?name=rakadam">Rajendra Kadam</a>
+ added a comment  - <span class='commentdate_14794_concise subText'><span class='date user-tz' title='09/Oct/07 8:48 PM'><time datetime='2007-10-09T20:48-0700'>09/Oct/07 8:48 PM</time></span></span>               Thanks Guys.
+
+I will try to do as much testing as possible. (There are two bugs opened by user on my name) Will look into it. 
+
+cheers,
+Rajendra         </div>
+    </div>
+</div>
+                 </div>
+</div></div>
+                
+
+            </div>
+        </div>
+
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                    <div class='module toggle-wrap' id='peoplemodule'><div id='peoplemodule_heading' class='mod-header'><h3 class='toggle-title'>People</h3></div><div class='mod-content'><ul class="item-details" id="peopledetails">
+    <li class="people-details">
+                <dl>
+            <dt>Assignee:</dt>
+            <dd id="assignee-val">
+                        <a class="user-hover" rel="abrook" id="issue_summary_assignee_abrook" href="/secure/ViewProfile.jspa?name=abrook">Andy Brook</a>
+            </dd>
+        </dl>
+                        <dl>
+            <dt>Reporter:</dt>
+            <dd id="reporter-val">
+                        <a class="user-hover" rel="gswduke" id="issue_summary_reporter_gswduke" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+            </dd>
+        </dl>
+                    </li>
+</ul>
+<div id="votes-val">
+                <span id="vote-label" title="You cannot vote or change your vote on resolved issues."><span class="icon icon-vote-disabled"></span><span class="action-text">Vote</span></span>
+    
+                (<span id="vote-data">0</span>)
+    </div>
+<div id="watchers-val">
+            <span id="watch-label" title="You have to be logged in to watch an issue."><span class="icon icon-watch-disabled"></span>Watch</span>
+    
+        
+            (<span id="watcher-data">1</span>)
+    </div>
+</div></div><div class='module toggle-wrap' id='datesmodule'><div id='datesmodule_heading' class='mod-header'><h3 class='toggle-title'>Dates</h3></div><div class='mod-content'><ul class="item-details">
+    <li>
+            <dl class="dates">
+            <dt>Created:</dt>
+            <dd id="create-date" class="date user-tz"  title="01/Oct/07 8:46 AM" >
+                        <time datetime="2007-10-01T08:46-0700">01/Oct/07 8:46 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Updated:</dt>
+            <dd id="updated-date" class="date user-tz"  title="09/Oct/07 8:48 PM" >
+                        <time datetime="2007-10-09T20:48-0700">09/Oct/07 8:48 PM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Resolved:</dt>
+            <dd id="resolved-date" class="date user-tz"  title="09/Oct/07 4:04 PM" >
+                        <time datetime="2007-10-09T16:04-0700">09/Oct/07 4:04 PM</time></dd>                     </dd>
+        </dl>
+        </li>
+</ul>
+</div></div>
+                
+
+            </div>
+        </div>
+        
+            
+                
+            
+        
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fbrowse%2FSUSR-60&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+            <script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/safe-ajax.js"></script>
+    
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+            document.cookie = "studio.project.rec.used.cookie=" + escape("SUSR-_-") + "; Max-Age=31536000; path=/;";
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<form id="jira_request_timing_info" class="dont-default-focus" >
+	<fieldset class="parameters hidden">
+		<input type="hidden" title="jira.request.start.millis" value="1358008628898" />
+		<input type="hidden" title="jira.request.server.time" value="880" />
+		<input type="hidden" title="jira.request.id" value="517x6601006x1" />
+		<input type="hidden" title="jira.session.expiry.time" value="-" />
+		<input type="hidden" title="jira.session.expiry.in.mins" value="-" />
+		<input id="jiraConcurrentRequests" type="hidden" name="jira.request.concurrent.requests" value="1" />
+	</fieldset>
+</form>
+<!--
+	                 REQUEST ID : 517x6601006x1
+	          REQUEST TIMESTAMP : [12/Jan/2013:08:37:08 -0800]
+	               REQUEST TIME : 0.8800
+	                 ASESSIONID : 9smr0d
+	        CONCURRENT REQUESTS : 1
+-->
+</body>
+</html>
