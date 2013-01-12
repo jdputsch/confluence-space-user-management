@@ -55,7 +55,7 @@ Past releases were done in Atlassian's hosted repositories in subversion, so we 
 
 2) Build master:
 
- atlas-mvn -Dmaven.test.skip=true clean install
+    atlas-mvn -Dmaven.test.skip=true clean install
 
 3) Manually install the built jar and make sure it works
 

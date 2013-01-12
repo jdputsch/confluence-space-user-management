@@ -135,7 +135,7 @@ Get Involved
 
 * Report [issues][issues].
 * Fork and do a pull request for anything you'd like to contribute.
-* See [README-dev.md][readme-dev] for further information.
+* See [README-dev][readme-dev] for further information.
 
 ### Contributors
 
