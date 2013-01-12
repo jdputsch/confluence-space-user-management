@@ -117,13 +117,13 @@ If you have any trouble and can't find the answers you need on this page and in 
    * Setup confluence user management debug logging using the config information here: http://confluence.atlassian.com/display/DOC/Requesting+External+User+Management+Support
    * Edit that same logging config (in many versions, I think it is the .../confluence/WEB-INF/classes/log4j.properties file), add the following line and restart Confluence: (This assumes that you have "log4j.appender.confluencelog=org.apache.log4j.ConsoleAppender" defined above it, otherwise basically do whatever you need to to enable debug logging for that package.)
 
-          log4j.logger.csum=DEBUG, confluencelog
+            log4j.logger.csum=DEBUG, confluencelog
 
    * Ensure that you start capturing logging before you reproduce the issue and then copy the log immediately after you reproduce the issue.
    * The log containing debug information for the plugin and Confluence is in (confluence.home)/logs/atlassian-confluence.log, not (confluence.install.directory)/logs/.
    * Starting to tail the log via:
 
-          tail -f (confluence.home)/logs/atlassian-confluence.log | ~/error.log
+            tail -f (confluence.home)/logs/atlassian-confluence.log | ~/error.log
 
    * Stop immediately after you reproduce the problem may produce the most efficient log to debug the issue, unless the log rolls over while you are tailing.
    * Ensure that it has captured debug logging. Preferably reproduce the issue in a test environment that is low traffic.
@@ -133,8 +133,9 @@ If you have any trouble and can't find the answers you need on this page and in 
 
 Get Involved
 
-* If you'd like to test it, it saves our time if you can get a Jira account and start posting bugs to the issue tracking link at the top of the page.
-* If you'd like to contribute code, we would love to have your assistance! See README-dev.txt.
+* Report [issues][issues].
+* Fork and do a pull request for anything you'd like to contribute.
+* See [README-dev.md][readme-dev] for further information.
 
 ### Contributors
 
@@ -175,5 +176,6 @@ Copyright (c) 2007-2013, Custom Space User Management Plugin Development Team, r
 [atlassian_confluence]: http://www.atlassian.com/software/confluence/_
 [atlassian_marketplace]: https://marketplace.atlassian.com/plugins/raju.kadam.confluence.permissionmgmt
 [issues]: https://github.com/sillycat/confluence-space-user-management/issues
+[readme-dev]: https://github.com/sillycat/confluence-space-user-management/blob/master/README-dev.md
 [git]: http://git-scm.com/
 [lic]: http://github.com/sillycat/confluence_space_user_management/blob/master/LICENSE
