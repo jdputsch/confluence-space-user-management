@@ -52,6 +52,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -92,6 +93,10 @@ public class ConfluenceGroupManagementService extends BaseGroupManagementService
                 //If group exists then set all required permissions
                 if (vGroup != null) {
                     SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION, space, vGroup.getName());
+                    perm.setCreatorName(AuthenticatedUserThreadLocal.getUsername());
+                    perm.setCreationDate(new Date());
+                    perm.setLastModifierName(AuthenticatedUserThreadLocal.getUsername());
+                    perm.setLastModificationDate(new Date());
                     space.addPermission(perm);
                     log.debug("added viewspace perm to " + groupName);
                 }

@@ -33,6 +33,7 @@ import com.atlassian.confluence.security.PermissionManager;
 import com.atlassian.confluence.security.SpacePermission;
 import com.atlassian.confluence.security.SpacePermissionManager;
 import com.atlassian.confluence.spaces.Space;
+import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
 import com.atlassian.crowd.embedded.api.CrowdService;
@@ -56,6 +57,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -110,6 +112,10 @@ public class JiraSoapGroupManagementService extends BaseGroupManagementService {
                     //If group exists then set all required permissions
                     if (vGroup != null) {
                         SpacePermission perm = new SpacePermission(SpacePermission.VIEWSPACE_PERMISSION, space, vGroup.getName());
+                        perm.setCreatorName(AuthenticatedUserThreadLocal.getUsername());
+                        perm.setCreationDate(new Date());
+                        perm.setLastModifierName(AuthenticatedUserThreadLocal.getUsername());
+                        perm.setLastModificationDate(new Date());
                         space.addPermission(perm);
                         log.debug("added viewspace perm to " + groupName);
                     }
